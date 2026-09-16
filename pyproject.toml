@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "securemailscope"
+version = "0.1.0"
+description = "Passive PCAP cryptographic security posture assessment for email (SIH26159)"
+requires-python = ">=3.9"
+# Core has ZERO runtime dependencies: the evidence model + tshark adapter use stdlib only.
+# This keeps offline/air-gapped deployment simple (ADR-0011). Heavier deps (FastAPI, sklearn)
+# arrive in their own phases behind optional extras.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
