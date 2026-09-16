@@ -16,6 +16,10 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, Iterable, Iterator, List, Optional, Tuple
 
+#: Cap on decoded cleartext payload retained per frame. Untrusted input: we bound it
+#: to avoid unbounded memory and never treat it as anything but data.
+PAYLOAD_TEXT_LIMIT = 4096
+
 _TZ_Z = re.compile(r"Z$")
 #: keep at most 6 fractional digits (microseconds), drop the rest
 _FRACTION = re.compile(r"(\.\d{6})\d+")
@@ -44,6 +48,44 @@ def pick(flat: dict, names: Tuple[str, ...]) -> Optional[str]:
                 return str(value[0]) if value else None
             return str(value)
     return None
+
+
+def pick_all(flat: dict, names: Tuple[str, ...]) -> Tuple[str, ...]:
+    """ALL values of the first present field. tshark emits multi-line protocol
+    responses as a list -- e.g. the SMTP 250 capability reply is
+    ['mail.example.org', 'PIPELINING', 'STARTTLS', ...]. Taking only the first
+    element would silently lose the capability lines, so callers that care about
+    capabilities must use this rather than pick()."""
+    for name in names:
+        if name in flat:
+            value = flat[name]
+            if isinstance(value, list):
+                return tuple(str(v) for v in value)
+            return (str(value),)
+    return ()
+
+
+def decode_payload(raw: Optional[str], limit: int = PAYLOAD_TEXT_LIMIT) -> Optional[str]:
+    """Decode tshark's colon-separated hex tcp.payload to text, bounded.
+
+    Needed because some dissectors expose structure but not content -- notably the POP3
+    CAPA body, which tshark reports as empty strings while the capability lines (incl.
+    STLS) exist only in the raw payload. We are consuming bytes tshark already
+    reassembled, not rebuilding TCP.
+
+    SECURITY: the result is attacker-controlled DATA. It is only ever pattern-matched
+    for protocol tokens, never executed, rendered unescaped, or used as instructions.
+    """
+    if not raw:
+        return None
+    hexdigits = raw.replace(":", "").strip()
+    if not hexdigits:
+        return None
+    try:
+        data = bytes.fromhex(hexdigits[: limit * 2])
+    except ValueError:
+        return None
+    return data.decode("utf-8", errors="replace")
 
 
 def _to_int(value: Optional[str]) -> Optional[int]:
@@ -105,15 +147,25 @@ class TlsEvidence:
 @dataclass(frozen=True)
 class MailEvidence:
     """Raw cleartext mail-protocol observations. No interpretation."""
-    smtp_command: Optional[str] = None
+    smtp_command: Optional[str] = None          # NOTE: tshark truncates to 4 chars ("STAR")
+    smtp_command_line: Optional[str] = None     # full line -- prefer this for matching
     smtp_response_code: Optional[str] = None
-    smtp_response_param: Optional[str] = None
+    smtp_response_params: Tuple[str, ...] = ()  # multi-line 250 reply, all elements
     imap_command: Optional[str] = None
     imap_response_status: Optional[str] = None
-    imap_line: Optional[str] = None
+    imap_lines: Tuple[str, ...] = ()
     pop_command: Optional[str] = None
     pop_response_indicator: Optional[str] = None
     pop_response_description: Optional[str] = None
+
+    @property
+    def smtp_response_param(self) -> Optional[str]:
+        """First parameter, for display. Use smtp_response_params for capabilities."""
+        return self.smtp_response_params[0] if self.smtp_response_params else None
+
+    @property
+    def imap_line(self) -> Optional[str]:
+        return self.imap_lines[0] if self.imap_lines else None
 
 
 @dataclass(frozen=True)
@@ -148,6 +200,10 @@ class FrameEvidence:
     # layered evidence
     tls: TlsEvidence = field(default_factory=TlsEvidence)
     mail: MailEvidence = field(default_factory=MailEvidence)
+
+    #: Decoded cleartext payload, retained ONLY for frames carrying a cleartext mail
+    #: dialogue (bounded). None elsewhere, so encrypted/bulk frames cost nothing.
+    payload_text: Optional[str] = None
 
     # fields the dissector did not provide for this frame (explicit, not fabricated)
     missing: Tuple[str, ...] = field(default_factory=tuple)
@@ -191,11 +247,12 @@ def _tls(flat: dict) -> TlsEvidence:
 def _mail(flat: dict) -> MailEvidence:
     return MailEvidence(
         smtp_command=pick(flat, F.SMTP_REQ_COMMAND),
+        smtp_command_line=pick(flat, F.SMTP_COMMAND_LINE),
         smtp_response_code=pick(flat, F.SMTP_RSP_CODE),
-        smtp_response_param=pick(flat, F.SMTP_RSP_PARAM),
+        smtp_response_params=pick_all(flat, F.SMTP_RSP_PARAM),
         imap_command=pick(flat, F.IMAP_REQ_COMMAND),
         imap_response_status=pick(flat, F.IMAP_RSP_STATUS),
-        imap_line=pick(flat, F.IMAP_LINE),
+        imap_lines=pick_all(flat, F.IMAP_LINE),
         pop_command=pick(flat, F.POP_REQ_COMMAND),
         pop_response_indicator=pick(flat, F.POP_RSP_INDICATOR),
         pop_response_description=pick(flat, F.POP_RSP_DESCRIPTION),
@@ -228,6 +285,11 @@ def normalize_packet(record: dict, capture_id: str) -> FrameEvidence:
 
     missing = tuple(name for name, keys in _TRACKED.items() if pick(flat, keys) is None)
 
+    app_proto = _app_protocol(stack)
+    # Retain decoded payload only for cleartext mail dialogue frames (bounded).
+    payload_text = (decode_payload(pick(flat, F.TCP_PAYLOAD))
+                    if app_proto is not None else None)
+
     return FrameEvidence(
         capture_id=capture_id,
         frame_number=_to_int(pick(flat, F.FRAME_NUMBER)),
@@ -244,7 +306,8 @@ def normalize_packet(record: dict, capture_id: str) -> FrameEvidence:
         tcp_flags=pick(flat, F.TCP_FLAGS),
         has_payload=pick(flat, F.TCP_PAYLOAD) is not None,
         protocol_stack=stack,
-        app_protocol=_app_protocol(stack),
+        app_protocol=app_proto,
+        payload_text=payload_text,
         implicit_tls_port=implicit,
         tls=_tls(flat),
         mail=_mail(flat),

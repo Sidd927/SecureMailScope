@@ -5,7 +5,7 @@ everything. Update when context grows large or a phase completes.
 
 ---
 
-**Current phase:** Implementation **Phase 2 (Ingest & Dissection) — COMPLETE** on branch `phase/02-ingest-dissection`. Stopped for review before merge/Phase 3.
+**Current phase:** Implementation **Phase 3 (Session Reconstruction) — COMPLETE** on branch `phase/03-session-reconstruction`. Stopped for review before merge/Phase 4.
 
 **Objective:** design system + engineering operating system; then stop for approval before any product code.
 
@@ -60,5 +60,21 @@ undrained stderr pipe was a real deadlock risk in the streaming path (fixed).
 
 **Git:** Phase-1 checkpoint = `8e8a288`, tagged `v0.1.0-phase1`, pushed to origin/main.
 
-**Next action:** review Phase 2, approve merge to `main`, then Phase 3 (session reconstruction +
-STARTTLS state machine). **Do not auto-continue.**
+**Phase 3 done:** `reconstruct_sessions(frames, capture_id) -> [SessionEvidence]`. Per-protocol
+state machines (SMTP/IMAP/POP3) behind one contract (ADR-0012); declarative transition table;
+endpoint roles from observed greeting, not port order; TLS completion requires hellos + app data;
+implicit TLS modelled separately as `IMPLICIT_TLS` with STARTTLS fields `NOT_OBSERVABLE`;
+retransmission dedupe on tcp_seq; truncation preserves progressive states without inventing
+teardown. **76 tests passing**, 17 golden captures (now incl. SMTPS/IMAPS/POP3S).
+
+**Phase 3 notable finds:** tshark truncates SMTP commands to 4 chars (`STARTTLS`→`STAR`); the SMTP
+250 reply is multi-valued so `pick()[0]` silently loses the capability; the POP3 CAPA body is
+reported as empty strings so STLS is only in the raw payload (bounded decoder added). Security
+review found and fixed one real defect: contradictory accept+reject responses silently preferred
+acceptance — now `AMBIGUOUS`.
+
+**Key semantic preserved:** `B_strip_advert` (attack) and `I_no_support` (legitimate) yield
+identical state (`AMBIGUOUS/False`) — no manufactured differentiation.
+
+**Next action:** review Phase 3, approve merge to `main`, then Phase 4 (deterministic security
+engine). **Do not auto-continue.**

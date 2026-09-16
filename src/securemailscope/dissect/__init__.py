@@ -4,12 +4,12 @@ from securemailscope.dissect.tshark import (
 )
 from securemailscope.dissect.normalize import (
     FrameEvidence, TlsEvidence, MailEvidence,
-    normalize, normalize_packet, normalize_stream, summarize,
+    normalize, normalize_packet, normalize_stream, summarize, pick, pick_all,
 )
 
 __all__ = [
     "TsharkAdapter", "DissectResult", "DissectStatus",
     "TsharkNotFound", "TsharkVersionError",
     "FrameEvidence", "TlsEvidence", "MailEvidence",
-    "normalize", "normalize_packet", "normalize_stream", "summarize",
+    "normalize", "normalize_packet", "normalize_stream", "summarize", "pick", "pick_all",
 ]

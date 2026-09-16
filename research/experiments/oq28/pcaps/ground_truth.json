@@ -794,5 +794,137 @@
         "ground_truth": "ATTACK_STRIP_ADVERT"
       }
     ]
+  },
+  {
+    "case": "T_SMTPS_implicit",
+    "pcap": "T_SMTPS_implicit.pcap",
+    "packets": 54,
+    "sha256_16": "cec72088cd492638",
+    "streams": [
+      {
+        "stream": "10.0.0.5:46000->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46001->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46002->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46003->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46004->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46005->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "T_IMAPS_implicit",
+    "pcap": "T_IMAPS_implicit.pcap",
+    "packets": 54,
+    "sha256_16": "bc61a27741da29d4",
+    "streams": [
+      {
+        "stream": "10.0.0.5:46010->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46011->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46012->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46013->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46014->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46015->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "T_POP3S_implicit",
+    "pcap": "T_POP3S_implicit.pcap",
+    "packets": 54,
+    "sha256_16": "56f780e0d4a6bd75",
+    "streams": [
+      {
+        "stream": "10.0.0.5:46020->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46021->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46022->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46023->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46024->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:46025->10.0.0.80",
+        "kind": "implicit_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_IMPLICIT_TLS"
+      }
+    ]
   }
 ]

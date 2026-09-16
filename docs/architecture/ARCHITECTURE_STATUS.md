@@ -19,7 +19,8 @@
 | [07-test-architecture](07-test-architecture.md) | 🟢 Draft |
 | [08-demo-architecture](08-demo-architecture.md) | 🟢 Draft for demo-reviewer |
 | [requirements-traceability](requirements-traceability.md) | 🟢 Live — all confirmed reqs mapped |
-| ADR 0001–0011 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
+| [11-session-reconstruction](11-session-reconstruction.md) | 🟢 Implemented (Phase 3) |
+| ADR 0001–0012 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
 
 ## 2. Locked decisions
 

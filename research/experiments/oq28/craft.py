@@ -183,6 +183,14 @@ def build(kind, proto="smtp", cip="10.0.0.5", sip="10.0.0.80", cport=40001,
         s.c2s(client_hello()); s.s2c(alert_handshake_failure()); s.fin()
         return s.pkts, "FAILED_UPGRADE"
 
+    if kind == "implicit_tls":
+        # Implicit TLS (SMTPS/IMAPS/POP3S): the connection opens directly into TLS.
+        # There is NO cleartext banner and NO STARTTLS dialogue -- a different
+        # protocol behaviour from an explicit upgrade, not a "successful STARTTLS".
+        s2 = Stream(cip, sip, cport, sport, t0).handshake()
+        s2.c2s(client_hello()); s2.s2c(server_hello()); s2.s2c(app_data()); s2.fin()
+        return s2.pkts, "LEGIT_IMPLICIT_TLS"
+
     # ---- truncation variants -------------------------------------------
     if kind == "trunc_before_caps":
         return s.pkts, "INCOMPLETE_CAPTURE"
@@ -261,6 +269,24 @@ def write_corpus(outdir: str):
         add(f"P_{pr}_decline", [("legit_decline",pr,C,S)]*6)
         add(f"P_{pr}_tls",     [("normal_tls",pr,C,S)]*6)
         add(f"P_{pr}_strip",   [("strip_advert",pr,C,S)]*6)
+
+    IMPLICIT_PORTS = {"smtp": 465, "imap": 993, "pop3": 995}
+    for pr, port in IMPLICIT_PORTS.items():
+        nm = {"smtp": "SMTPS", "imap": "IMAPS", "pop3": "POP3S"}[pr]
+        pkts, truth = [], []
+        for _ in range(6):
+            port_c = 46000 + len(truth) + {"smtp": 0, "imap": 10, "pop3": 20}[pr]
+            p, gt = build("implicit_tls", proto=pr, cip=C, sip=S, cport=port_c,
+                          sport=port, t0=len(pkts) * 0.5)
+            pkts += p
+            truth.append({"stream": f"{C}:{port_c}->{S}", "kind": "implicit_tls",
+                          "protocol": pr, "ground_truth": gt})
+        path = os.path.join(outdir, f"T_{nm}_implicit.pcap")
+        wrpcap(path, pkts)
+        h = hashlib.sha256(open(path, "rb").read()).hexdigest()[:16]
+        manifest.append({"case": f"T_{nm}_implicit", "pcap": os.path.basename(path),
+                         "packets": len(pkts), "sha256_16": h, "streams": truth})
+
 
     with open(os.path.join(outdir,"ground_truth.json"),"w") as f:
         json.dump(manifest, f, indent=2)

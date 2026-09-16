@@ -12,6 +12,7 @@
 | **Integration** | full pipeline | `PCAP → dissection → normalization → sessions → analysis → cross-session → ML → findings → report` on a fixed capture |
 | **Regression** | never re-break validated results | **every OQ-25 / OQ-28 / OQ-33 scenario** (A_legit_decline, B_strip_advert, C_normal_tls, D_failed_upgrade, E_incomplete, F_shared_identity, G_control_endpoint, H_no_control, I_no_support, J_strip_command, K_network_cond, P_{imap,pop3}_*, S_striptls_real, X_prompt_injection) |
 | **Adversarial** | try to break it | malformed/truncated/reordered/retransmit/missing-packet; ambiguous & contradictory evidence; injection text; oversized capture |
+| **Invariant** | properties that must always hold | TLS_ESTABLISHED requires sufficient evidence; absent packets cannot create OBSERVED events; implicit TLS never yields a STARTTLS transition; retransmission never duplicates an event; truncation never manufactures teardown; no Phase-4 vocabulary in Phase-3 output |
 | **ML** | methodology guards | leakage (generator-held-out), seed reproducibility (≥5 seeds identical), feature stability, model persistence round-trip, inference reproducibility |
 
 ## 2. Invariants asserted by tests (the correctness contract)
