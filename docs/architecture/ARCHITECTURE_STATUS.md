@@ -1,0 +1,60 @@
+# ARCHITECTURE_STATUS
+
+**Phase:** 11 (Architecture) — **complete, awaiting approval before implementation.**
+**Date:** 2026-09-16 · Navigation/state doc — read this first, then the one relevant architecture doc.
+
+---
+
+## 1. Document map
+
+| Doc | Status |
+|---|---|
+| [00-requirements-baseline](00-requirements-baseline.md) | 🟢 Locked |
+| [01-system-architecture](01-system-architecture.md) | 🟢 Draft for approval |
+| [02-architecture-options](02-architecture-options.md) | 🟢 Decided (tshark) |
+| [03-data-model](03-data-model.md) | 🟢 Draft for approval |
+| [04-evidence-provenance](04-evidence-provenance.md) | 🟢 Locked (contract) |
+| [05-ai-anomaly-design](05-ai-anomaly-design.md) | 🟡 Design + experiment plan (model unselected) |
+| [06-threat-model](06-threat-model.md) | 🟢 Draft for security-reviewer |
+| [07-test-architecture](07-test-architecture.md) | 🟢 Draft |
+| [08-demo-architecture](08-demo-architecture.md) | 🟢 Draft for demo-reviewer |
+| [requirements-traceability](requirements-traceability.md) | 🟢 Live — all confirmed reqs mapped |
+| ADR 0001–0011 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
+
+## 2. Locked decisions
+
+Dissection = tshark (ADR-0001) · EvidenceField wrapper + 6 states (ADR-0002/04) · session+STARTTLS
+state machine in our engine (ADR-0003) · versioned standards-bound rules (ADR-0004) · cross-session as
+first-class layer (ADR-0005) · SQLite per-run + FS artifacts (ADR-0007) · one canonical report → 3
+renderers (ADR-0009) · modular monolith Python/FastAPI (ADR-0011) · AI optional/read-only/grounded,
+`--no-ai` identical findings (ADR-0008).
+
+## 3. Two-lane invariant
+
+Security lane (deterministic: rules + cross-session + risk) produces all facts/verdicts. Anomaly lane
+(ML) produces only scores. They meet only at prioritisation via an explicit policy (ADR-0007-risk).
+ML/AI never writes a finding or changes a fact.
+
+## 4. Open (non-blocking) questions
+
+OQ-26 local-LLM packaging · OQ-29 NAT identity · OQ-30 contrast-rule default · OQ-31/32 evidence
+inferences · OQ-33r real-server corpus · OQ-36/37 ML model selection & value · OQ-38 tshark output mode
+· OQ-40 offline PDF renderer · OQ-41 SPA framework. All deferred to their implementation phase.
+
+## 5. Stop conditions status (Phase-11 §36)
+
+None triggered: every confirmed PS requirement maps (traceability); AI/ML has a defensible, empirical
+plan (05); no decision recorded without comparison (ADRs); no security claim unevidenced. The one item
+that *would* trigger — "implementation about to begin before approval" — is why this phase **stops here**.
+
+## 6. Decisions requiring human approval
+
+1. **tshark as the hard dependency** (ADR-0001) — acceptable for offline SIH deployment? (bundling plan exists.)
+2. **ML fallback stance** (ADR-0006 / 05 §5) — if the bake-off shows ML only qualifies as a secondary
+   prioritisation signal, is that acceptable as the A-02 answer, with the limitation stated? (Recommended: yes.)
+3. **Contrast-rule default OFF** (ADR-0005 / OQ-30) — precision/recall policy: default off, on when a
+   control endpoint exists. Confirm.
+4. **Optional LLM included at all** (ADR-0008) — build the analyst NL layer, or ship deterministic-only
+   for the SIH prototype and keep LLM as documented future work? (Recommended: deterministic core first,
+   LLM only if time permits.)
+5. **SPOC internal deadline** (non-architecture, but gating) — confirm it is not before 30 Sep.
