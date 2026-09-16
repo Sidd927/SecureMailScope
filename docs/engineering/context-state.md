@@ -5,7 +5,7 @@ everything. Update when context grows large or a phase completes.
 
 ---
 
-**Current phase:** Implementation **Phase 1 (Foundation + Evidence Schema) — COMPLETE.** Stopped for review before Phase 2.
+**Current phase:** Implementation **Phase 2 (Ingest & Dissection) — COMPLETE** on branch `phase/02-ingest-dissection`. Stopped for review before merge/Phase 3.
 
 **Objective:** design system + engineering operating system; then stop for approval before any product code.
 
@@ -45,4 +45,20 @@ conversions structurally blocked), `Capture` metadata (streamed SHA-256), safe `
 (arg-array, exit-code map incl. empty=EMPTY, timeout/size guards), `normalize` boundary, golden
 manifest (4 captures), **27 tests passing** (tshark 4.6.8). Pre-code review PASS (docs/architecture/10).
 
-**Next action:** review Phase 1, then Phase 2 (ingest & dissection wiring). **Do not auto-continue.**
+**Phase 2 done:** `analyze_capture(path) -> (AnalysisRun, [FrameEvidence])` single entry point;
+capture validation boundary (NOT_FOUND / NOT_A_FILE / UNREADABLE / EMPTY_FILE / TOO_LARGE, with
+EMPTY_FILE distinct from parsed-EMPTY); `AnalysisRun` contract with 8 statuses + all four versions;
+streaming dissection (`-T ek` via Popen, stderr to temp file to avoid pipe deadlock); `fields.py`
+isolating every tshark field name; enriched `FrameEvidence` with TLS/mail evidence, protocol stack,
+implicit-TLS port evidence, and full provenance (capture_id + frame + stream + ISO timestamp);
+stream identity = `capture_id:tcp_stream`. Golden manifest now 7 captures covering SMTP/IMAP/POP3/
+TLS/truncation with structural expectations. **51 tests passing.**
+
+**Phase 2 notable finds:** tshark `-T ek` renders `frame.time_epoch` as an ISO-8601 string, not a
+float (parser handles both, refuses to fabricate); tshark names the POP3 layer `pop`, not `pop3`;
+undrained stderr pipe was a real deadlock risk in the streaming path (fixed).
+
+**Git:** Phase-1 checkpoint = `8e8a288`, tagged `v0.1.0-phase1`, pushed to origin/main.
+
+**Next action:** review Phase 2, approve merge to `main`, then Phase 3 (session reconstruction +
+STARTTLS state machine). **Do not auto-continue.**

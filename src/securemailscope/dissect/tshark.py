@@ -17,6 +17,8 @@ import json
 import os
 import re
 import subprocess
+import tempfile
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, Iterator, List, Optional
@@ -32,6 +34,8 @@ class DissectStatus(str, Enum):
     MISSING = "MISSING"        # file does not exist
     TIMEOUT = "TIMEOUT"        # subprocess exceeded timeout
     TOO_LARGE = "TOO_LARGE"    # exceeds configured size ceiling
+    UNREADABLE = "UNREADABLE"  # exists but not readable
+    LIMIT_EXCEEDED = "LIMIT_EXCEEDED"  # normalized-evidence ceiling hit (not discarded silently)
     ERROR = "ERROR"            # any other non-zero exit
 
 
@@ -93,14 +97,9 @@ class TsharkAdapter:
     # ---- dissection ---------------------------------------------------------
     def dissect(self, pcap_path: str) -> DissectResult:
         """Run tshark over an untrusted PCAP and return a typed result."""
-        if not os.path.exists(pcap_path):
-            return DissectResult(DissectStatus.MISSING, stderr="file does not exist")
-        if not os.path.isfile(pcap_path):
-            return DissectResult(DissectStatus.MISSING, stderr="not a regular file")
-        size = os.path.getsize(pcap_path)
-        if self.cfg.max_capture_bytes and size > self.cfg.max_capture_bytes:
-            return DissectResult(DissectStatus.TOO_LARGE,
-                                 stderr=f"{size} bytes exceeds ceiling {self.cfg.max_capture_bytes}")
+        problem = self._precheck(pcap_path)
+        if problem is not None:
+            return DissectResult(problem, stderr=f"precheck: {problem.value}")
 
         ver = self.version()  # raises TsharkNotFound / TsharkVersionError if unusable
 
@@ -118,15 +117,91 @@ class TsharkAdapter:
         count = len(packets)
         stderr = (proc.stderr or "").strip()
 
-        if proc.returncode == 0:
-            status = DissectStatus.OK if count > 0 else DissectStatus.EMPTY
-        elif proc.returncode == 14:
-            status = DissectStatus.TRUNCATED
-        elif proc.returncode == 3:
-            status = DissectStatus.MALFORMED
-        else:
-            status = DissectStatus.ERROR
+        status = self._status_for(proc.returncode, count)
         return DissectResult(status, packets, count, stderr, ver)
+
+    # ---- streaming dissection (Phase-2 §16) --------------------------------
+    @contextmanager
+    def dissect_streaming(self, pcap_path: str):
+        """Yield (status_getter, record_iterator) without buffering the whole capture.
+
+        tshark writes one JSON object per line with -T ek, so we can consume it
+        incrementally and keep memory bounded regardless of capture size. The final
+        status is only known after the process exits, hence the getter.
+        """
+        problem = self._precheck(pcap_path)
+        if problem is not None:
+            yield (lambda: problem), iter(())
+            return
+
+        ver = self.version()
+        cmd = [self.cfg.tshark_path, "-r", pcap_path, "-T", "ek"]
+        # stderr goes to a temp file, NOT a pipe: an undrained stderr pipe can fill its
+        # buffer and deadlock the child on captures that emit many warnings.
+        err_file = tempfile.TemporaryFile(mode="w+")
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=err_file,
+                                text=True, bufsize=1)
+        state = {"count": 0, "status": None}
+
+        def records() -> Iterator[dict]:
+            assert proc.stdout is not None
+            for line in proc.stdout:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(obj, dict) and "layers" in obj:
+                    state["count"] += 1
+                    if self.cfg.max_frames and state["count"] > self.cfg.max_frames:
+                        # Do not silently discard: surface as a hard limit.
+                        state["status"] = DissectStatus.LIMIT_EXCEEDED
+                        return
+                    yield obj
+
+        def status() -> DissectStatus:
+            if state["status"] is not None:
+                return state["status"]
+            return self._status_for(proc.returncode, state["count"])
+
+        try:
+            yield status, records()
+        finally:
+            try:
+                if proc.stdout:
+                    proc.stdout.close()
+                proc.wait(timeout=self.cfg.tshark_timeout_s)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=10)
+                state["status"] = DissectStatus.TIMEOUT
+            finally:
+                err_file.close()
+
+    def _precheck(self, pcap_path: str):
+        """Shared validation used by both dissect paths. Returns a status or None."""
+        if not os.path.exists(pcap_path):
+            return DissectStatus.MISSING
+        if not os.path.isfile(pcap_path):
+            return DissectStatus.MISSING
+        if not os.access(pcap_path, os.R_OK):
+            return DissectStatus.UNREADABLE
+        size = os.path.getsize(pcap_path)
+        if self.cfg.max_capture_bytes and size > self.cfg.max_capture_bytes:
+            return DissectStatus.TOO_LARGE
+        return None
+
+    @staticmethod
+    def _status_for(returncode: Optional[int], count: int) -> DissectStatus:
+        if returncode == 0:
+            return DissectStatus.OK if count > 0 else DissectStatus.EMPTY
+        if returncode == 14:
+            return DissectStatus.TRUNCATED
+        if returncode == 3:
+            return DissectStatus.MALFORMED
+        return DissectStatus.ERROR
 
     @staticmethod
     def _parse_ek(stdout: str) -> Iterator[dict]:

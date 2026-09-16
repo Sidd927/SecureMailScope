@@ -1,79 +1,288 @@
 """
-Normalize tshark -T ek records into typed NormalizedFrame objects.
+Normalize tshark records into canonical FrameEvidence.
 
-This is the boundary that isolates the rest of the system from tshark's field naming
-(ADR-0001): if tshark output changes, only this module changes. Phase 1 extracts the
-minimal frame-level facts the session layer (Phase 3) will build on; it deliberately
-does NOT reconstruct sessions or make security judgements yet.
+This is the boundary isolating the rest of the system from tshark's schema
+(ADR-0001 / Phase-2 §17). Downstream code never sees a tshark field name.
+
+SCOPE: observations only. This layer records *what was seen* (protocol present,
+TLS handshake type, cipher suite bytes, ...). It makes NO security judgement --
+"SMTP observed" is evidence; "SMTP is insecure" is not produced here (Phase-2 §18).
+Missing fields are represented explicitly, never fabricated.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Iterable, List, Optional
+import re
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Dict, Iterable, Iterator, List, Optional, Tuple
+
+_TZ_Z = re.compile(r"Z$")
+#: keep at most 6 fractional digits (microseconds), drop the rest
+_FRACTION = re.compile(r"(\.\d{6})\d+")
+
+from securemailscope.dissect import fields as F
 
 
-@dataclass(frozen=True)
-class NormalizedFrame:
-    frame_number: Optional[int]
-    src_ip: Optional[str]
-    dst_ip: Optional[str]
-    src_port: Optional[int]
-    dst_port: Optional[int]
-    transport: Optional[str]       # "tcp" | "udp" | None
-    tcp_seq: Optional[int]
-    tcp_flags: Optional[str]
-    has_payload: bool
-
-
-def _flatten(layers: dict) -> dict:
-    """tshark -T ek nests fields one level under each protocol (layers.tcp.tcp_tcp_srcport).
-    Flatten to a single field->value map so lookups are uniform and version-tolerant."""
+# --------------------------------------------------------------------------- helpers
+def flatten_layers(layers: dict) -> dict:
+    """tshark -T ek nests fields under each protocol layer; flatten for uniform lookup.
+    Tolerates both nested (4.6.x) and flat layouts."""
     flat: dict = {}
-    for v in layers.values():
-        if isinstance(v, dict):
-            flat.update(v)
-    # also keep any already-top-level scalar fields (older tshark layouts)
+    for value in layers.values():
+        if isinstance(value, dict):
+            flat.update(value)
     flat.update({k: v for k, v in layers.items() if not isinstance(v, dict)})
     return flat
 
 
-def _first(layers: dict, *keys: str) -> Optional[str]:
-    """Look up the first present field. Values may be scalars or single-element lists."""
-    for k in keys:
-        if k in layers:
-            v = layers[k]
-            if isinstance(v, list):
-                return str(v[0]) if v else None
-            return str(v)
+def pick(flat: dict, names: Tuple[str, ...]) -> Optional[str]:
+    """First present field from `names`. Values may be scalars or single-element lists."""
+    for name in names:
+        if name in flat:
+            value = flat[name]
+            if isinstance(value, list):
+                return str(value[0]) if value else None
+            return str(value)
     return None
 
 
-def _int(val: Optional[str]) -> Optional[int]:
-    if val is None:
+def _to_int(value: Optional[str]) -> Optional[int]:
+    if value is None:
         return None
     try:
-        return int(val, 0) if val.lower().startswith("0x") else int(val)
+        text = value.strip()
+        return int(text, 16) if text.lower().startswith("0x") else int(text)
     except (ValueError, AttributeError):
         return None
 
 
-def normalize_packet(record: dict) -> NormalizedFrame:
-    raw = record.get("layers", {}) or {}
-    layers = _flatten(raw)
-    transport = "tcp" if any(k.startswith("tcp_") for k in layers) else (
-        "udp" if any(k.startswith("udp_") for k in layers) else None)
-    return NormalizedFrame(
-        frame_number=_int(_first(layers, "frame_frame_number")),
-        src_ip=_first(layers, "ip_ip_src"),
-        dst_ip=_first(layers, "ip_ip_dst"),
-        src_port=_int(_first(layers, "tcp_tcp_srcport", "udp_udp_srcport")),
-        dst_port=_int(_first(layers, "tcp_tcp_dstport", "udp_udp_dstport")),
-        transport=transport,
-        tcp_seq=_int(_first(layers, "tcp_tcp_seq")),
-        tcp_flags=_first(layers, "tcp_tcp_flags"),
-        has_payload=any(k in layers for k in ("tcp_tcp_payload", "data_data_data")),
+def _to_float(value: Optional[str]) -> Optional[float]:
+    try:
+        return float(value) if value is not None else None
+    except (ValueError, TypeError):
+        return None
+
+
+def _to_epoch(value: Optional[str]) -> Optional[float]:
+    """tshark -T ek renders frame.time_epoch as ISO-8601
+    ("1970-01-01T00:00:00.000000000Z"), not a float -- an EK-specific formatting quirk.
+    Accept both forms. Return None rather than fabricate a timestamp if neither parses.
+    """
+    if value is None:
+        return None
+    numeric = _to_float(value)
+    if numeric is not None:
+        return numeric
+    text = value.strip()
+    text = _TZ_Z.sub("+00:00", text)
+    # datetime.fromisoformat (py3.9) rejects nanosecond precision; trim to microseconds.
+    text = _FRACTION.sub(lambda m: m.group(1), text)
+    try:
+        return datetime.fromisoformat(text).timestamp()
+    except ValueError:
+        return None
+
+
+# --------------------------------------------------------------------------- model
+@dataclass(frozen=True)
+class TlsEvidence:
+    """Raw TLS observations. No interpretation (Phase-2 §20)."""
+    record_version: Optional[str] = None
+    handshake_type: Optional[int] = None
+    handshake_version: Optional[str] = None
+    cipher_suite: Optional[str] = None
+    sni: Optional[str] = None
+    supported_version: Optional[str] = None
+    session_id: Optional[str] = None
+    has_app_data: bool = False
+
+    @property
+    def present(self) -> bool:
+        return any((self.record_version, self.handshake_type is not None,
+                    self.cipher_suite, self.sni, self.has_app_data))
+
+
+@dataclass(frozen=True)
+class MailEvidence:
+    """Raw cleartext mail-protocol observations. No interpretation."""
+    smtp_command: Optional[str] = None
+    smtp_response_code: Optional[str] = None
+    smtp_response_param: Optional[str] = None
+    imap_command: Optional[str] = None
+    imap_response_status: Optional[str] = None
+    imap_line: Optional[str] = None
+    pop_command: Optional[str] = None
+    pop_response_indicator: Optional[str] = None
+    pop_response_description: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class FrameEvidence:
+    """One packet's normalized observations, fully provenanced (Phase-2 §24).
+
+    Every instance answers: which capture, which frame, which stream, when.
+    """
+    # provenance
+    capture_id: str
+    frame_number: Optional[int]
+    tcp_stream_id: Optional[int]
+    timestamp_epoch: Optional[float]
+    timestamp_iso: Optional[str] = None
+
+    # network
+    src_ip: Optional[str] = None
+    dst_ip: Optional[str] = None
+    src_port: Optional[int] = None
+    dst_port: Optional[int] = None
+    transport: Optional[str] = None
+    frame_length: Optional[int] = None
+    tcp_seq: Optional[int] = None
+    tcp_flags: Optional[str] = None
+    has_payload: bool = False
+
+    # protocol identification (observation, not verdict)
+    protocol_stack: Tuple[str, ...] = field(default_factory=tuple)
+    app_protocol: Optional[str] = None      # smtp | imap | pop3 | None (from dissector)
+    implicit_tls_port: bool = False         # corroborating evidence only
+
+    # layered evidence
+    tls: TlsEvidence = field(default_factory=TlsEvidence)
+    mail: MailEvidence = field(default_factory=MailEvidence)
+
+    # fields the dissector did not provide for this frame (explicit, not fabricated)
+    missing: Tuple[str, ...] = field(default_factory=tuple)
+
+    @property
+    def stream_key(self) -> Optional[str]:
+        """Stable stream identity: capture_id + tcp stream index (Phase-2 §23).
+        Deliberately not the 4-tuple, which can repeat within one capture."""
+        if self.tcp_stream_id is None:
+            return None
+        return f"{self.capture_id}:{self.tcp_stream_id}"
+
+
+# --------------------------------------------------------------------------- normalize
+def _protocol_stack(flat: dict) -> Tuple[str, ...]:
+    raw = pick(flat, F.FRAME_PROTOCOLS)
+    return tuple(raw.split(":")) if raw else ()
+
+
+def _app_protocol(stack: Tuple[str, ...]) -> Optional[str]:
+    """Canonical mail protocol from the dissector's own protocol stack."""
+    for token in reversed(stack):
+        if token in F.PROTOCOL_TOKENS and F.PROTOCOL_TOKENS[token] != "tls":
+            return F.PROTOCOL_TOKENS[token]
+    return None
+
+
+def _tls(flat: dict) -> TlsEvidence:
+    return TlsEvidence(
+        record_version=pick(flat, F.TLS_RECORD_VERSION),
+        handshake_type=_to_int(pick(flat, F.TLS_HANDSHAKE_TYPE)),
+        handshake_version=pick(flat, F.TLS_HANDSHAKE_VERSION),
+        cipher_suite=pick(flat, F.TLS_CIPHERSUITE),
+        sni=pick(flat, F.TLS_SNI),
+        supported_version=pick(flat, F.TLS_SUPPORTED_VERSION),
+        session_id=pick(flat, F.TLS_SESSION_ID),
+        has_app_data=pick(flat, F.TLS_APP_DATA) is not None,
     )
 
 
-def normalize(records: Iterable[dict]) -> List[NormalizedFrame]:
-    return [normalize_packet(r) for r in records]
+def _mail(flat: dict) -> MailEvidence:
+    return MailEvidence(
+        smtp_command=pick(flat, F.SMTP_REQ_COMMAND),
+        smtp_response_code=pick(flat, F.SMTP_RSP_CODE),
+        smtp_response_param=pick(flat, F.SMTP_RSP_PARAM),
+        imap_command=pick(flat, F.IMAP_REQ_COMMAND),
+        imap_response_status=pick(flat, F.IMAP_RSP_STATUS),
+        imap_line=pick(flat, F.IMAP_LINE),
+        pop_command=pick(flat, F.POP_REQ_COMMAND),
+        pop_response_indicator=pick(flat, F.POP_RSP_INDICATOR),
+        pop_response_description=pick(flat, F.POP_RSP_DESCRIPTION),
+    )
+
+
+#: Fields whose absence we record explicitly so downstream can distinguish
+#: "not present in this frame" from "never looked".
+_TRACKED = {
+    "frame_number": F.FRAME_NUMBER,
+    "tcp_stream": F.TCP_STREAM,
+    "timestamp": F.FRAME_TIME_EPOCH,
+}
+
+
+def normalize_packet(record: dict, capture_id: str) -> FrameEvidence:
+    flat = flatten_layers(record.get("layers", {}) or {})
+
+    transport = ("tcp" if any(k.startswith("tcp_") for k in flat)
+                 else "udp" if any(k.startswith("udp_") for k in flat) else None)
+    stack = _protocol_stack(flat)
+    src_port = _to_int(pick(flat, F.SRC_PORT))
+    dst_port = _to_int(pick(flat, F.DST_PORT))
+
+    implicit = False
+    for port in (dst_port, src_port):
+        if port in F.MAIL_PORTS and F.MAIL_PORTS[port][1]:
+            implicit = True
+            break
+
+    missing = tuple(name for name, keys in _TRACKED.items() if pick(flat, keys) is None)
+
+    return FrameEvidence(
+        capture_id=capture_id,
+        frame_number=_to_int(pick(flat, F.FRAME_NUMBER)),
+        tcp_stream_id=_to_int(pick(flat, F.TCP_STREAM)),
+        timestamp_epoch=_to_epoch(pick(flat, F.FRAME_TIME_EPOCH)),
+        timestamp_iso=pick(flat, F.FRAME_TIME_EPOCH),
+        src_ip=pick(flat, F.IP_SRC),
+        dst_ip=pick(flat, F.IP_DST),
+        src_port=src_port,
+        dst_port=dst_port,
+        transport=transport,
+        frame_length=_to_int(pick(flat, F.FRAME_LEN)),
+        tcp_seq=_to_int(pick(flat, F.TCP_SEQ)),
+        tcp_flags=pick(flat, F.TCP_FLAGS),
+        has_payload=pick(flat, F.TCP_PAYLOAD) is not None,
+        protocol_stack=stack,
+        app_protocol=_app_protocol(stack),
+        implicit_tls_port=implicit,
+        tls=_tls(flat),
+        mail=_mail(flat),
+        missing=missing,
+    )
+
+
+def normalize(records: Iterable[dict], capture_id: str = "") -> List[FrameEvidence]:
+    return [normalize_packet(r, capture_id) for r in records]
+
+
+def normalize_stream(records: Iterable[dict], capture_id: str = "") -> Iterator[FrameEvidence]:
+    """Streaming variant: never materialises the whole capture (Phase-2 §16)."""
+    for record in records:
+        yield normalize_packet(record, capture_id)
+
+
+def summarize(frames: Iterable[FrameEvidence]) -> Dict[str, object]:
+    """Structural summary for the AnalysisRun. Counts only -- no verdicts."""
+    frames = list(frames)
+    protocols: Dict[str, int] = {}
+    streams = set()
+    tls_frames = 0
+    handshake_types: Dict[int, int] = {}
+    for f in frames:
+        if f.app_protocol:
+            protocols[f.app_protocol] = protocols.get(f.app_protocol, 0) + 1
+        if f.stream_key:
+            streams.add(f.stream_key)
+        if f.tls.present:
+            tls_frames += 1
+        if f.tls.handshake_type is not None:
+            handshake_types[f.tls.handshake_type] = handshake_types.get(f.tls.handshake_type, 0) + 1
+    return {
+        "frames": len(frames),
+        "tcp_streams": len(streams),
+        "app_protocols": dict(sorted(protocols.items())),
+        "tls_frames": tls_frames,
+        "tls_handshake_types": dict(sorted(handshake_types.items())),
+        "implicit_tls_frames": sum(1 for f in frames if f.implicit_tls_port),
+    }

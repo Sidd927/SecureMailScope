@@ -1,33 +1,118 @@
 {
-  "note": "Phase-1 golden evidence contract. References existing OQ-28 captures; never modify a golden pcap silently (new hash+version+reason).",
+  "note": "Phase-2 golden evidence contract. References existing OQ-28 captures (not duplicated). Never modify a golden pcap silently: new hash + version + documented reason.",
+  "schema_version": "1.0",
   "captures": [
     {
       "pcap": "research/experiments/oq28/pcaps/C_normal_tls.pcap",
       "sha256": "0095d7d66336e45d03b11cde1936210385ccafd5267c92acd083721adcd9c53b",
+      "scenario_id": "C_normal_tls",
       "protocol": "smtp",
-      "purpose": "normal STARTTLS\u2192TLS baseline",
-      "expected_packet_count": 84
+      "purpose": "SMTP STARTTLS -> TLS baseline",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 84,
+        "tcp_streams": 6,
+        "app_protocols": {
+          "smtp": 30
+        },
+        "tls_frames": 18
+      }
     },
     {
       "pcap": "research/experiments/oq28/pcaps/A_legit_decline.pcap",
       "sha256": "5997a2879ea2973d561b57b2d157c42657a9b9a233654fdab4313976d8823a34",
+      "scenario_id": "A_legit_decline",
       "protocol": "smtp",
-      "purpose": "STARTTLS advertised, client declines (benign)",
-      "expected_packet_count": 60
+      "purpose": "SMTP: STARTTLS advertised, client declines (benign)",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 60,
+        "tcp_streams": 6,
+        "app_protocols": {
+          "smtp": 24
+        },
+        "tls_frames": 0
+      }
     },
     {
       "pcap": "research/experiments/oq28/pcaps/B_strip_advert.pcap",
       "sha256": "e8540632d503fb270ee1ce0a45767818cdfad8f7593a3752f7a633992dbefc22",
+      "scenario_id": "B_strip_advert",
       "protocol": "smtp",
-      "purpose": "capability stripped (attack; byte-identical to no_support)",
-      "expected_packet_count": 60
+      "purpose": "SMTP: capability stripped (byte-identical to unsupported)",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 60,
+        "tcp_streams": 6,
+        "app_protocols": {
+          "smtp": 24
+        },
+        "tls_frames": 0
+      }
     },
     {
       "pcap": "research/experiments/oq28/pcaps/E_incomplete.pcap",
       "sha256": "e97d50cbbb39cef97e4eb22692797c936929e8c50f41c20a6f7ef414075b9402",
+      "scenario_id": "E_incomplete",
       "protocol": "smtp",
-      "purpose": "truncation variants \u2014 must not become findings",
-      "expected_packet_count": 37
+      "purpose": "truncation variants - must not become findings",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 37,
+        "tcp_streams": 5,
+        "app_protocols": {
+          "smtp": 19
+        },
+        "tls_frames": 3
+      }
+    },
+    {
+      "pcap": "research/experiments/oq28/pcaps/P_imap_tls.pcap",
+      "sha256": "3cf4a4cfeead728decc07b5c141232bba2adad47caa8067faa65fbb913df3bbb",
+      "scenario_id": "P_imap_tls",
+      "protocol": "imap",
+      "purpose": "IMAP STARTTLS -> TLS",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 84,
+        "tcp_streams": 6,
+        "app_protocols": {
+          "imap": 30
+        },
+        "tls_frames": 18
+      }
+    },
+    {
+      "pcap": "research/experiments/oq28/pcaps/P_pop3_tls.pcap",
+      "sha256": "daf826818894e11c5bba322ee6ff7a5e4440589413312e18d1c4668498b3572c",
+      "scenario_id": "P_pop3_tls",
+      "protocol": "pop3",
+      "purpose": "POP3 STLS -> TLS",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 84,
+        "tcp_streams": 6,
+        "app_protocols": {
+          "pop3": 30
+        },
+        "tls_frames": 18
+      }
+    },
+    {
+      "pcap": "research/experiments/oq28/pcaps/S_striptls_real.pcap",
+      "sha256": "b69cd2970231bb4faba4bd02e788a0106aa66028a88ad67c9a168def69d2cdab",
+      "scenario_id": "S_striptls_real",
+      "protocol": "smtp",
+      "purpose": "payload produced by real striptls mangler",
+      "expected": {
+        "run_status": "COMPLETED",
+        "packet_count": 10,
+        "tcp_streams": 1,
+        "app_protocols": {
+          "smtp": 4
+        },
+        "tls_frames": 0
+      }
     }
   ]
 }

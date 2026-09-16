@@ -45,14 +45,35 @@ def test_full_chain_capture_metadata():
         r = adapter.dissect(c["pcap"])
         truncated = r.status == DissectStatus.TRUNCATED
         cap = cap.with_dissection(packet_count=r.packet_count, truncated=truncated)
-        assert cap.packet_count == c["expected_packet_count"], c["pcap"]
+        assert cap.packet_count == c["expected"]["packet_count"], c["pcap"]
+
+
+@needs_tshark
+def test_golden_structural_observations():
+    """Full pipeline must reproduce the recorded structural observations exactly."""
+    from securemailscope.ingest import analyze_capture
+    for c in _golden():
+        run, _ = analyze_capture(c["pcap"])
+        exp = c["expected"]
+        assert run.status.value == exp["run_status"], c["scenario_id"]
+        assert run.packet_count == exp["packet_count"], c["scenario_id"]
+        assert run.evidence_summary["tcp_streams"] == exp["tcp_streams"], c["scenario_id"]
+        assert run.evidence_summary["app_protocols"] == exp["app_protocols"], c["scenario_id"]
+        assert run.evidence_summary["tls_frames"] == exp["tls_frames"], c["scenario_id"]
+
+
+@needs_tshark
+def test_golden_covers_all_mail_protocols():
+    """Phase-2 §26 coverage requirement."""
+    protos = {c["protocol"] for c in _golden()}
+    assert {"smtp", "imap", "pop3"} <= protos
 
 
 @needs_tshark
 def test_normalize_recovers_frames_and_ports():
     adapter = TsharkAdapter()
     r = adapter.dissect("research/experiments/oq28/pcaps/C_normal_tls.pcap")
-    frames = normalize(r.packets)
+    frames = normalize(r.packets, capture_id="t")
     assert len(frames) == 84
     # SMTP submission port 587 must appear as a server port somewhere (proves normalization works).
     ports = {f.dst_port for f in frames} | {f.src_port for f in frames}

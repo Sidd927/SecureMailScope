@@ -15,6 +15,10 @@ class Config:
     max_capture_bytes: int = int(os.environ.get("SMS_MAX_CAPTURE_BYTES", str(2 * 1024**3)))
     # tshark subprocess timeout (seconds).
     tshark_timeout_s: int = int(os.environ.get("SMS_TSHARK_TIMEOUT_S", "300"))
+    # Ceiling on normalized frames per capture. PROVISIONAL: chosen to bound memory on an
+    # analyst workstation, not derived from a benchmark (see Phase-2 §15). Exceeding it
+    # yields LIMIT_EXCEEDED -- evidence is never silently discarded.
+    max_frames: int = int(os.environ.get("SMS_MAX_FRAMES", "2000000"))
 
     @staticmethod
     def load() -> "Config":
