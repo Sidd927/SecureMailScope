@@ -1,0 +1,798 @@
+[
+  {
+    "case": "A_legit_decline",
+    "pcap": "A_legit_decline.pcap",
+    "packets": 60,
+    "sha256_16": "5997a2879ea2973d",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40001->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40002->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40003->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40004->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40005->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40006->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      }
+    ]
+  },
+  {
+    "case": "B_strip_advert",
+    "pcap": "B_strip_advert.pcap",
+    "packets": 60,
+    "sha256_16": "e8540632d503fb27",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40007->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40008->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40009->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40010->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40011->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40012->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      }
+    ]
+  },
+  {
+    "case": "C_normal_tls",
+    "pcap": "C_normal_tls.pcap",
+    "packets": 84,
+    "sha256_16": "0095d7d66336e45d",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40013->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40014->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40015->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40016->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40017->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40018->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "D_failed_upgrade",
+    "pcap": "D_failed_upgrade.pcap",
+    "packets": 96,
+    "sha256_16": "380c68e7e589d60e",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40019->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40020->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40021->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40022->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40023->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40024->10.0.0.80",
+        "kind": "failed_upgrade",
+        "protocol": "smtp",
+        "ground_truth": "FAILED_UPGRADE"
+      },
+      {
+        "stream": "10.0.0.5:40025->10.0.0.80",
+        "kind": "failed_upgrade",
+        "protocol": "smtp",
+        "ground_truth": "FAILED_UPGRADE"
+      }
+    ]
+  },
+  {
+    "case": "E_incomplete",
+    "pcap": "E_incomplete.pcap",
+    "packets": 37,
+    "sha256_16": "e97d50cbbb39cef9",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40026->10.0.0.80",
+        "kind": "trunc_before_caps",
+        "protocol": "smtp",
+        "ground_truth": "INCOMPLETE_CAPTURE"
+      },
+      {
+        "stream": "10.0.0.5:40027->10.0.0.80",
+        "kind": "trunc_after_caps",
+        "protocol": "smtp",
+        "ground_truth": "INCOMPLETE_CAPTURE"
+      },
+      {
+        "stream": "10.0.0.5:40028->10.0.0.80",
+        "kind": "trunc_after_cmd",
+        "protocol": "smtp",
+        "ground_truth": "INCOMPLETE_CAPTURE"
+      },
+      {
+        "stream": "10.0.0.5:40029->10.0.0.80",
+        "kind": "trunc_mid_handshake",
+        "protocol": "smtp",
+        "ground_truth": "INCOMPLETE_CAPTURE"
+      },
+      {
+        "stream": "10.0.0.5:40030->10.0.0.80",
+        "kind": "trunc_after_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "F_shared_identity",
+    "pcap": "F_shared_identity.pcap",
+    "packets": 120,
+    "sha256_16": "c665bff7af3da7d4",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40031->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40032->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40033->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40034->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40035->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40036->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40037->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40038->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40039->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40040->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_DECLINE"
+      }
+    ]
+  },
+  {
+    "case": "G_control_endpoint",
+    "pcap": "G_control_endpoint.pcap",
+    "packets": 144,
+    "sha256_16": "ce6d4f01c6f5cc09",
+    "streams": [
+      {
+        "stream": "10.0.0.6:40041->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40042->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40043->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40044->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40045->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40046->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.7:40047->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.7:40048->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.7:40049->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.7:40050->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.7:40051->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.7:40052->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "H_no_control",
+    "pcap": "H_no_control.pcap",
+    "packets": 60,
+    "sha256_16": "9c6e7a1b584857c2",
+    "streams": [
+      {
+        "stream": "10.0.0.6:40053->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40054->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40055->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40056->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40057->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.6:40058->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      }
+    ]
+  },
+  {
+    "case": "I_no_support",
+    "pcap": "I_no_support.pcap",
+    "packets": 60,
+    "sha256_16": "6124d8f4e51219b1",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40059->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      },
+      {
+        "stream": "10.0.0.5:40060->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      },
+      {
+        "stream": "10.0.0.5:40061->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      },
+      {
+        "stream": "10.0.0.5:40062->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      },
+      {
+        "stream": "10.0.0.5:40063->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      },
+      {
+        "stream": "10.0.0.5:40064->10.0.0.81",
+        "kind": "no_support",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_PLAINTEXT_CFG"
+      }
+    ]
+  },
+  {
+    "case": "J_strip_command",
+    "pcap": "J_strip_command.pcap",
+    "packets": 94,
+    "sha256_16": "182a7a6dc498f168",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40065->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40066->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40067->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40068->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40069->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40070->10.0.0.80",
+        "kind": "strip_command",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_COMMAND"
+      },
+      {
+        "stream": "10.0.0.5:40071->10.0.0.80",
+        "kind": "strip_command",
+        "protocol": "smtp",
+        "ground_truth": "ATTACK_STRIP_COMMAND"
+      }
+    ]
+  },
+  {
+    "case": "K_network_cond",
+    "pcap": "K_network_cond.pcap",
+    "packets": 40,
+    "sha256_16": "1518c99da11f5573",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40072->10.0.0.80",
+        "kind": "retransmit",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40073->10.0.0.80",
+        "kind": "out_of_order",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40074->10.0.0.80",
+        "kind": "loss_caps",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "P_imap_decline",
+    "pcap": "P_imap_decline.pcap",
+    "packets": 60,
+    "sha256_16": "182f5e3f0d03ffdf",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40075->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40076->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40077->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40078->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40079->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40080->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_DECLINE"
+      }
+    ]
+  },
+  {
+    "case": "P_imap_tls",
+    "pcap": "P_imap_tls.pcap",
+    "packets": 84,
+    "sha256_16": "3cf4a4cfeead728d",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40081->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40082->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40083->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40084->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40085->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40086->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "imap",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "P_imap_strip",
+    "pcap": "P_imap_strip.pcap",
+    "packets": 60,
+    "sha256_16": "9458cafd1a095922",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40087->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40088->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40089->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40090->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40091->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40092->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "imap",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      }
+    ]
+  },
+  {
+    "case": "P_pop3_decline",
+    "pcap": "P_pop3_decline.pcap",
+    "packets": 60,
+    "sha256_16": "966f6e8bc837737e",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40093->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40094->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40095->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40096->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40097->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      },
+      {
+        "stream": "10.0.0.5:40098->10.0.0.80",
+        "kind": "legit_decline",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_DECLINE"
+      }
+    ]
+  },
+  {
+    "case": "P_pop3_tls",
+    "pcap": "P_pop3_tls.pcap",
+    "packets": 84,
+    "sha256_16": "daf826818894e11c",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40099->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40100->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40101->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40102->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40103->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      },
+      {
+        "stream": "10.0.0.5:40104->10.0.0.80",
+        "kind": "normal_tls",
+        "protocol": "pop3",
+        "ground_truth": "LEGIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "P_pop3_strip",
+    "pcap": "P_pop3_strip.pcap",
+    "packets": 60,
+    "sha256_16": "d3e4bc8259bf1615",
+    "streams": [
+      {
+        "stream": "10.0.0.5:40105->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40106->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40107->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40108->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40109->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      },
+      {
+        "stream": "10.0.0.5:40110->10.0.0.80",
+        "kind": "strip_advert",
+        "protocol": "pop3",
+        "ground_truth": "ATTACK_STRIP_ADVERT"
+      }
+    ]
+  }
+]
