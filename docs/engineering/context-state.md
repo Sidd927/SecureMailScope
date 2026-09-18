@@ -5,7 +5,7 @@ everything. Update when context grows large or a phase completes.
 
 ---
 
-**Current phase:** Implementation **Phase 4 (Deterministic Security Engine) — COMPLETE** on branch `phase/04-deterministic-security-engine`. Stopped for review before merge/Phase 5.
+**Current phase:** Implementation **Phase 5 (Cross-Session Reasoning) — COMPLETE** on branch `phase/05-cross-session-reasoning`. Stopped for review before merge/Phase 6.
 
 **Objective:** design system + engineering operating system; then stop for approval before any product code.
 
@@ -96,5 +96,20 @@ ESTABLISHED but the transition evidence disagreed — now fails closed as AMBIGU
 **Deliberately not implemented:** certificate validation (NOT_OBSERVABLE), EMS/RFC 7627,
 renegotiation/RFC 5746, cipher-strength grading, any stripping conclusion.
 
-**Next action:** review Phase 4, approve merge to `main`, then Phase 5 (cross-session reasoning).
+**Phase 5 done:** `CrossSessionEngine` over `SessionEvidence[]` → `CrossSessionFinding[]`.
+Client-scoped prior-history baselines + cross-client contrast (ADR-0014), 3 rules
+(CS-STARTTLS-001/002, CS-TLS-001). Reproduces OQ-25 on real captures: control present →
+SUSPICIOUS_DEVIATION; no control → abstains. **159 tests passing.**
+
+**Phase-5 notable finds:** first design pooled victim+control into one server-scoped baseline,
+suppressing the decisive contrast — fixed to client-scoped baseline + cross-client contrast per
+02A §4. Profiling (not guessing — two earlier guesses were wrong) showed 27M `stream_key` property
+calls; a `PopulationIndex`, window-before-filter slicing and a single-client early exit made
+analysis **linear: ~0.115 ms/session flat from n=2000 to 16000** (99.2s → 1.9s at 16k). Scaling
+regression test added.
+
+**Preserved limitation:** consistently-stripped vs consistently-legitimate plaintext is
+indistinguishable without an unaffected control — attached verbatim to every relevant finding.
+
+**Next action:** review Phase 5, approve merge, then Phase 6 (ML anomaly lane).
 **Do not auto-continue.**

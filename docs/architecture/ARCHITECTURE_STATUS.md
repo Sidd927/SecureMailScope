@@ -22,7 +22,9 @@
 | [11-session-reconstruction](11-session-reconstruction.md) | 🟢 Implemented (Phase 3) |
 | [12-security-analysis](12-security-analysis.md) | 🟢 Implemented (Phase 4) |
 | [13-rule-catalog](13-rule-catalog.md) | 🟢 Live (rules v1.0) |
-| ADR 0001–0013 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
+| [14-cross-session-reasoning](14-cross-session-reasoning.md) | 🟢 Implemented (Phase 5) |
+| [15-cross-session-rule-catalog](15-cross-session-rule-catalog.md) | 🟢 Live (cross rules v1.0) |
+| ADR 0001–0014 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
 
 ## 2. Locked decisions
 

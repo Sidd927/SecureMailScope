@@ -23,7 +23,7 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-17 forward secrecy | derive from suite/version | evidence/rules | 4 | unit | findings |
 | D-18 feature extraction | evidence→features (obs-aware) | evidence/mlanomaly | 6 | feature-stability | anomaly |
 | A-01 risk classification | ✅ deterministic, standards-bound (8 rules) | `analysis/` | 4 ✅ | 38 Phase-4 tests | findings |
-| A-02 anomaly detection | **unsupervised ML, deviation features** | mlanomaly | 6–7 | ML suite (leakage/seed/held-out) | anomaly scene |
+| A-02 anomaly detection | 🟡 deterministic cross-session deviation (Phase 5 ✅); unsupervised ML still to come | `crosssession/` → `mlanomaly` | 5 ✅ / 6–7 | 44 Phase-5 tests | anomaly scene |
 | A-03 posture scoring | coverage-aware deterministic | risk | 8 | unit | honesty (coverage) |
 | A-04 prioritisation | severity×exposure×prevalence; ML via policy | risk | 8 | policy unit | findings |
 | A-05 remediation | standards-cited templates | rules/report | 4,9 | unit | remediation |
