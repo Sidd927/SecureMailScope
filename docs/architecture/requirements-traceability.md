@@ -12,17 +12,17 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-02 protocol ID | SMTP/IMAP/POP3 + implicit-TLS ID | evidence/sessions | 2–3 | P_* regression; non-standard port (adv) | all scenes |
 | D-03 TCP reassembly | consume tshark reassembly | evidence | 2 | K_network_cond regression | — |
 | D-04 STARTTLS detection | state machine, 3 protocols | sessions | 3 | A/B/J regression | inversion |
-| D-05 STARTTLS validation | deviation classification | sessions/rules | 4 | B/G/H/J regression | inversion |
+| D-05 STARTTLS validation | ✅ SEC-STLS-001/002 (ambiguity preserved) | `analysis/rules/starttls_rules` | 4 ✅ | B/I/J regression | inversion |
 | D-06 handshake | TlsHandshake object | evidence | 2 | C regression | honesty |
 | D-07 version | `supported_versions` read | evidence | 2 | TLS1.3 golden | honesty |
 | D-08 cipher | cipher class map | evidence | 2 | unit | — |
 | D-09 key exchange | KEX/named-group | evidence | 2 | unit | — |
-| D-10–14 X.509 | extract/chain/expiry/key/sig; NOT_OBSERVABLE for 1.3/resumed | evidence/rules | 4 | TLS1.3 + resumed golden | honesty |
-| D-15 weak/deprecated | rules bound to RFC 8996/NIST | rules | 4 | weak-crypto golden | findings |
+| D-10–14 X.509 | ⚠️ **NOT implemented**; SEC-TLS-003 reports NOT_OBSERVABLE with the boundary stated | `analysis/rules/tls_rules` | 4 ⚠️ | cert-boundary test | honesty |
+| D-15 weak/deprecated | ✅ SEC-TLS-001 bound to RFC 8996 + NIST SP 800-52r2 | `analysis/rules/tls_rules` | 4 ✅ | T_TLS10/11/12 golden | findings |
 | D-16 insecure config | bounded versioned checklist | rules | 4 | unit per rule | findings |
 | D-17 forward secrecy | derive from suite/version | evidence/rules | 4 | unit | findings |
 | D-18 feature extraction | evidence→features (obs-aware) | evidence/mlanomaly | 6 | feature-stability | anomaly |
-| A-01 risk classification | deterministic, standards-bound | rules/risk | 4,8 | rule unit | findings |
+| A-01 risk classification | ✅ deterministic, standards-bound (8 rules) | `analysis/` | 4 ✅ | 38 Phase-4 tests | findings |
 | A-02 anomaly detection | **unsupervised ML, deviation features** | mlanomaly | 6–7 | ML suite (leakage/seed/held-out) | anomaly scene |
 | A-03 posture scoring | coverage-aware deterministic | risk | 8 | unit | honesty (coverage) |
 | A-04 prioritisation | severity×exposure×prevalence; ML via policy | risk | 8 | policy unit | findings |

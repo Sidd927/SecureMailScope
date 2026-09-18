@@ -161,6 +161,13 @@ class SessionEvidence:
         default_factory=lambda: EvidenceField.unknown("no server response observed"))
     tls_transition: EvidenceField = field(
         default_factory=lambda: EvidenceField.unknown("no TLS evidence in this stream"))
+    #: Negotiated TLS version, taken from the ServerHello. For TLS 1.3 the authoritative
+    #: value is the supported_versions extension -- legacy_version/record_version are
+    #: pinned to 0x0303 and would misreport TLS 1.3 as TLS 1.2 (RFC 8446 4.1.3, doc 01A).
+    tls_negotiated_version: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    tls_cipher_suite: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
     plaintext_continuation: EvidenceField = field(
         default_factory=lambda: EvidenceField.unknown("insufficient dialogue observed"))
     auth_activity: EvidenceField = field(
@@ -205,6 +212,8 @@ class SessionEvidence:
                 "starttls_requested": self.starttls_requested.to_dict(),
                 "starttls_accepted": self.starttls_accepted.to_dict(),
                 "tls_transition": self.tls_transition.to_dict(),
+                "tls_negotiated_version": self.tls_negotiated_version.to_dict(),
+                "tls_cipher_suite": self.tls_cipher_suite.to_dict(),
                 "plaintext_continuation": self.plaintext_continuation.to_dict(),
                 "auth_activity": self.auth_activity.to_dict(),
             },

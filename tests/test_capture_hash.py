@@ -16,9 +16,13 @@ def test_changed_bytes_change_hash(tmp_path):
     assert sha256_file(str(a)) != sha256_file(str(b))
 
 
-def test_hash_matches_known_corpus_value():
-    # From craft.py / capinfos: C_normal_tls sha256 begins 0095d7d66336e45d
-    assert sha256_file(GOLDEN).startswith("0095d7d66336e45d")
+def test_hash_matches_golden_manifest():
+    """The manifest is the single source of truth for corpus hashes; a literal here
+    would go stale whenever the corpus is legitimately re-baselined."""
+    import json
+    manifest = json.load(open("tests/golden/manifest.json"))
+    entry = next(c for c in manifest["captures"] if c["pcap"] == GOLDEN)
+    assert sha256_file(GOLDEN) == entry["sha256"]
 
 
 def test_capture_from_file_is_content_addressed():

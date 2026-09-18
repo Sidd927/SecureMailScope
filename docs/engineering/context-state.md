@@ -5,7 +5,7 @@ everything. Update when context grows large or a phase completes.
 
 ---
 
-**Current phase:** Implementation **Phase 3 (Session Reconstruction) — COMPLETE** on branch `phase/03-session-reconstruction`. Stopped for review before merge/Phase 4.
+**Current phase:** Implementation **Phase 4 (Deterministic Security Engine) — COMPLETE** on branch `phase/04-deterministic-security-engine`. Stopped for review before merge/Phase 5.
 
 **Objective:** design system + engineering operating system; then stop for approval before any product code.
 
@@ -76,5 +76,25 @@ acceptance — now `AMBIGUOUS`.
 **Key semantic preserved:** `B_strip_advert` (attack) and `I_no_support` (legitimate) yield
 identical state (`AMBIGUOUS/False`) — no manufactured differentiation.
 
-**Next action:** review Phase 3, approve merge to `main`, then Phase 4 (deterministic security
-engine). **Do not auto-continue.**
+**Phase 4 done:** `SecurityAnalysisEngine` over `SessionEvidence` → `SecurityFinding[]`. 8 rules in
+3 families (TLS posture, STARTTLS/STLS, cleartext exposure), registry with stable ordering and
+content-derived finding ids. Three orthogonal axes — severity / evidence state / finding status —
+with invariants enforced at construction (only OBSERVED_ISSUE may exceed INFO; it must cite a
+standard). **114 tests passing.**
+
+**Phase-4 evidence extension (justified, minimal):** `SessionEvidence` gained
+`tls_negotiated_version` + `tls_cipher_suite`, derived in Phase 3. Version comes from the
+ServerHello `supported_versions` extension first — reading legacy_version would report every TLS
+1.3 session as TLS 1.2 (corpus confirms: supported=772 vs handshake=771).
+
+**Phase-4 notable finds:** the golden-hash guard exposed that `craft.py` used a bare `Ether()`,
+taking the source MAC from the host NIC — captures were never reproducible off this machine. MACs
+are now pinned and generation is verified deterministic; manifest re-baselined to **v2.0** with the
+reason recorded. Adversarial review found SEC-TLS-002 claiming COMPLIANT when `tls_state` said
+ESTABLISHED but the transition evidence disagreed — now fails closed as AMBIGUOUS.
+
+**Deliberately not implemented:** certificate validation (NOT_OBSERVABLE), EMS/RFC 7627,
+renegotiation/RFC 5746, cipher-strength grading, any stripping conclusion.
+
+**Next action:** review Phase 4, approve merge to `main`, then Phase 5 (cross-session reasoning).
+**Do not auto-continue.**

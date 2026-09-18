@@ -117,6 +117,8 @@ class ProtocolSessionReconstructor(ABC):
                    explicit_upgrade: bool) -> None:
         tls_state, frames_seen = classify_tls(group)
         session.tls_state = tls_state
+        session.tls_negotiated_version = negotiated_version(group)
+        session.tls_cipher_suite = negotiated_cipher(group)
 
         if tls_state is TlsState.NONE:
             session.tls_transition = EvidenceField.observed(
@@ -150,6 +152,8 @@ class ProtocolSessionReconstructor(ABC):
     def _apply_implicit_tls(self, session: SessionEvidence, group: StreamGroup) -> None:
         tls_state, frames_seen = classify_tls(group)
         session.tls_state = tls_state
+        session.tls_negotiated_version = negotiated_version(group)
+        session.tls_cipher_suite = negotiated_cipher(group)
         session.app_state = AppState.IMPLICIT_TLS
         na = "not applicable: implicit TLS carries no cleartext STARTTLS dialogue"
         session.starttls_advertised = EvidenceField.not_observable(na)
@@ -251,6 +255,69 @@ def dedupe(events: Sequence[ProtocolEvent]) -> List[ProtocolEvent]:
         seen.add(key)
         result.append(event)
     return result
+
+
+#: TLS version wire values -> canonical names (RFC 8446 / RFC 5246 etc.).
+TLS_VERSIONS = {
+    0x0200: "SSL2.0", 0x0300: "SSL3.0",
+    0x0301: "TLS1.0", 0x0302: "TLS1.1", 0x0303: "TLS1.2", 0x0304: "TLS1.3",
+}
+
+
+def _version_name(raw) -> Optional[str]:
+    try:
+        value = int(raw)
+    except (TypeError, ValueError):
+        return None
+    return TLS_VERSIONS.get(value)
+
+
+def negotiated_version(group: StreamGroup) -> EvidenceField:
+    """Resolve the negotiated TLS version from the ServerHello ONLY.
+
+    Order matters: supported_versions is authoritative when present because TLS 1.3
+    pins legacy_version to 0x0303. Reading handshake/record version first would
+    misreport every TLS 1.3 session as TLS 1.2 (doc 01A; RFC 8446 4.1.3/4.2.1).
+    """
+    for frame in group.frames:
+        tls = frame.tls
+        if tls.handshake_type != 2:      # ServerHello only; ClientHello is an offer
+            continue
+        frames = [frame.frame_number] if frame.frame_number else []
+        name = _version_name(tls.supported_version)
+        if name:
+            return EvidenceField.observed(
+                name, "ServerHello supported_versions extension (authoritative for TLS 1.3)",
+                frames=frames)
+        name = _version_name(tls.handshake_version)
+        if name:
+            return EvidenceField.observed(
+                name, "ServerHello handshake version (no supported_versions extension)",
+                frames=frames)
+        return EvidenceField.ambiguous(
+            None, f"ServerHello observed but version value unrecognised "
+                  f"(supported={tls.supported_version!r}, handshake={tls.handshake_version!r})",
+            frames=frames)
+    return EvidenceField.unknown(
+        "no ServerHello observed; the negotiated version cannot be established")
+
+
+def negotiated_cipher(group: StreamGroup) -> EvidenceField:
+    """Cipher suite selected by the server, from the ServerHello."""
+    for frame in group.frames:
+        if frame.tls.handshake_type != 2:
+            continue
+        frames = [frame.frame_number] if frame.frame_number else []
+        raw = frame.tls.cipher_suite
+        if raw is None:
+            return EvidenceField.unknown("ServerHello observed without a cipher suite value")
+        try:
+            return EvidenceField.observed(
+                f"0x{int(raw):04x}", "cipher suite selected in ServerHello", frames=frames)
+        except (TypeError, ValueError):
+            return EvidenceField.ambiguous(
+                None, f"unrecognised cipher suite value {raw!r}", frames=frames)
+    return EvidenceField.unknown("no ServerHello observed")
 
 
 def classify_tls(group: StreamGroup) -> Tuple[TlsState, List[int]]:
