@@ -52,6 +52,13 @@ SEVERITY_WEIGHT: Dict[Severity, float] = {
 #: an eight-hour capture of one misconfigured server is still one misconfigured server.
 MAX_RECURRENCE_MULTIPLIER = 2.0
 
+#: Below this share of assessable sessions the engine refuses to certify a band, while
+#: still reporting the numeric score. This is NOT lowering the score for incomplete
+#: evidence -- the arithmetic is untouched. It prevents the opposite error: presenting
+#: "no issue found" over a mostly unreadable capture as though it were a clean bill of
+#: health. The number is a policy choice, documented in ADR-0016.
+MIN_ASSESSED_FRACTION = 0.5
+
 #: Band cut points, applied to the final score.
 BAND_THRESHOLDS: Tuple[Tuple[float, PostureBand], ...] = (
     (90.0, PostureBand.STRONG),
@@ -183,6 +190,29 @@ def compute_score(groups: Sequence[IssueGroup],
     penalty, components = formula(groups)
     value = max(0.0, STARTING_VALUE - penalty)
     band = band_for(value)
+
+    if coverage is None and not components:
+        # Without coverage there is no way to tell a clean capture from a blind one, and
+        # defaulting to STRONG would make blindness indistinguishable from security.
+        return PostureScore(
+            value=value, band=PostureBand.INSUFFICIENT_EVIDENCE, formula_id=formula_id,
+            starting_value=STARTING_VALUE, total_penalty=penalty, components=(),
+            basis=("no established issue and no evidence coverage supplied; the engine "
+                   "cannot distinguish a clean capture from an unobserved one and "
+                   "declines to certify a band"))
+
+    if coverage is not None and coverage.assessed_fraction < MIN_ASSESSED_FRACTION:
+        # The score stands; the certification does not. Reporting STRONG over a capture
+        # in which most sessions yielded no conclusion would be the misleading part.
+        return PostureScore(
+            value=value, band=PostureBand.INSUFFICIENT_EVIDENCE, formula_id=formula_id,
+            starting_value=STARTING_VALUE, total_penalty=penalty,
+            components=tuple(components),
+            basis=(f"score {value:.2f} computed, but only "
+                   f"{coverage.assessed_fraction:.0%} of sessions yielded any "
+                   f"conclusion (floor {MIN_ASSESSED_FRACTION:.0%}); a band is not "
+                   "certified over a capture this sparsely assessed"))
+
     if not components:
         basis = (f"{STARTING_VALUE:g} with no established security issue to penalise; "
                  "see evidence coverage for how much of the traffic this conclusion "

@@ -23,12 +23,14 @@ from securemailscope.posture.model import (
 )
 from securemailscope.posture.prioritise import MAX_ML_ADJUSTMENT, PriorityRanker
 from securemailscope.posture.scoring import (
-    FORMULAS, SELECTED_FORMULA, SEVERITY_WEIGHT, band_for, compute_score,
+    FORMULAS, MIN_ASSESSED_FRACTION, SELECTED_FORMULA, SEVERITY_WEIGHT, band_for,
+    compute_score,
 )
 
 __all__ = [
     "BASE_LIMITATIONS", "ML_LIMITATIONS", "FORMULAS", "ISSUE_DIMENSION",
-    "MAX_ML_ADJUSTMENT", "POSTURE_ENGINE_VERSION", "POSTURE_SCHEMA_VERSION",
+    "MAX_ML_ADJUSTMENT", "MIN_ASSESSED_FRACTION", "POSTURE_ENGINE_VERSION",
+    "POSTURE_SCHEMA_VERSION",
     "RULE_ISSUE_CLASS", "SELECTED_FORMULA", "SEVERITY_WEIGHT",
     "Abstention", "AbstentionReason", "EvidenceCertainty", "EvidenceCoverage",
     "FactKind", "FusedFinding", "FusionEngine", "FusionResult", "IssueClass",
