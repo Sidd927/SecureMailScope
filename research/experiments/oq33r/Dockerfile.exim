@@ -1,0 +1,4 @@
+# Exim (SMTP) -- a third, independently written MTA.
+FROM alpine:3.20
+RUN apk add --no-cache exim tcpdump openssl python3
+WORKDIR /corpus

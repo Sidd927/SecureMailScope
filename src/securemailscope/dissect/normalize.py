@@ -286,9 +286,20 @@ def normalize_packet(record: dict, capture_id: str) -> FrameEvidence:
     missing = tuple(name for name, keys in _TRACKED.items() if pick(flat, keys) is None)
 
     app_proto = _app_protocol(stack)
-    # Retain decoded payload only for cleartext mail dialogue frames (bounded).
+    # Retain decoded payload for cleartext mail dialogue frames (bounded).
+    #
+    # The port fallback matters and was added for OQ-47: when TCP segmentation splits a
+    # line, or a segment arrives out of order, tshark cannot attribute that frame to
+    # SMTP and its protocol stack degrades to plain tcp -- yet the frame still carries
+    # `tcp.payload`, and it may hold the only copy of a capability line. Keying retention
+    # solely on the dissector's protocol verdict therefore threw away exactly the bytes
+    # needed to reconstruct a segmented reply. Frames already carrying TLS records are
+    # excluded: their payload is ciphertext and decoding it yields nothing but noise.
+    on_mail_port = (src_port in F.MAIL_PORTS or dst_port in F.MAIL_PORTS)
+    encrypted = "tls" in stack or "ssl" in stack
+    keep_payload = app_proto is not None or (on_mail_port and not encrypted)
     payload_text = (decode_payload(pick(flat, F.TCP_PAYLOAD))
-                    if app_proto is not None else None)
+                    if keep_payload else None)
 
     return FrameEvidence(
         capture_id=capture_id,

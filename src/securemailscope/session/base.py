@@ -195,13 +195,49 @@ class ProtocolSessionReconstructor(ABC):
                     evidence_state=EvidenceState.OBSERVED,
                     basis="FIN/RST observed"))
         else:
-            session.completeness = Completeness.INCOMPLETE
+            session.completeness = _open_session_completeness(group, closed)
+            reason = ("the capture stops while this session is still open"
+                      if session.completeness is Completeness.TRUNCATED
+                      else "the capture continued after this session's last frame, so "
+                           "the missing boundary is not capture truncation")
             session.notes.append(
                 "session boundaries incomplete: "
-                f"setup={'yes' if setup else 'no'} teardown={'yes' if closed else 'no'}")
+                f"setup={'yes' if setup else 'no'} teardown={'yes' if closed else 'no'}; "
+                f"{reason}")
 
 
 # --------------------------------------------------------------------------- helpers
+def _open_session_completeness(group: StreamGroup,
+                               closed: Optional[bool] = None) -> Completeness:
+    """Classify a session with a missing boundary (OQ-46).
+
+    TRUNCATED means one specific thing: **the recording stopped while this session was
+    still open**. Three conditions must hold, and all three matter:
+
+      1. No teardown was observed. A session that closed is not truncated at its end --
+         if its SETUP is what is missing, the capture began late, which is a different
+         defect in the evidence and stays INCOMPLETE.
+      2. Either tshark reported the capture FILE as cut mid-packet (so every still-open
+         session was ended by the recording), or
+      3. nothing in the capture follows this stream's last frame.
+
+    A stream that simply went quiet while the capture kept running is NOT truncated:
+    other traffic was still being recorded, so the recording did not stop here. Keeping
+    these apart is the whole point. Phase 5 excludes truncated sessions from baselines
+    because their behaviour is an artefact of the capture, and over-applying that
+    exclusion would silently shrink history for no reason.
+    """
+    if closed is None:
+        flags = group.transport_flags()
+        closed = (TransportRole.TEARDOWN_OBSERVED in flags
+                  or TransportRole.RESET_OBSERVED in flags)
+    if closed:
+        return Completeness.INCOMPLETE
+    if group.capture_truncated or group.ends_at_capture_end:
+        return Completeness.TRUNCATED
+    return Completeness.INCOMPLETE
+
+
 #: Valid transitions per event kind, expressed as from-state -> to-state.
 #: Returning None means "not valid here" and the event is ignored with a note.
 def _t(mapping):

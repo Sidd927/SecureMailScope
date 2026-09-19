@@ -1,0 +1,210 @@
+{
+ "oq46": [
+  {
+   "case": "A_clean_teardown",
+   "expected_completeness": "COMPLETE",
+   "note": "setup and FIN both observed; the ordinary case",
+   "packets": 16,
+   "pcap": "A_clean_teardown.pcap",
+   "sha256_16": "746c2976d6caa1ba"
+  },
+  {
+   "case": "B_reset_teardown",
+   "expected_completeness": "COMPLETE",
+   "note": "RST is a teardown; the session closed even if abruptly",
+   "packets": 14,
+   "pcap": "B_reset_teardown.pcap",
+   "sha256_16": "1aaae5140dc4af6c"
+  },
+  {
+   "case": "C_cut_mid_dialogue",
+   "expected_completeness": "TRUNCATED",
+   "note": "capture stops after the capability response, session still open",
+   "packets": 6,
+   "pcap": "C_cut_mid_dialogue.pcap",
+   "sha256_16": "58c21faf4a29799f"
+  },
+  {
+   "case": "D_cut_during_starttls",
+   "expected_completeness": "TRUNCATED",
+   "note": "capture stops between the STARTTLS command and the server's answer",
+   "packets": 7,
+   "pcap": "D_cut_during_starttls.pcap",
+   "sha256_16": "1f74e25c34c5803f"
+  },
+  {
+   "case": "E_cut_during_handshake",
+   "expected_completeness": "TRUNCATED",
+   "note": "capture stops after the ClientHello; completion is unproven",
+   "packets": 9,
+   "pcap": "E_cut_during_handshake.pcap",
+   "sha256_16": "7a4a82bb1ab7615f"
+  },
+  {
+   "case": "F_missing_setup",
+   "expected_completeness": "INCOMPLETE",
+   "note": "capture began mid-session: no SYN/SYN-ACK, but the session did close",
+   "packets": 8,
+   "pcap": "F_missing_setup.pcap",
+   "sha256_16": "cdd0c529bce77249"
+  },
+  {
+   "case": "G_incomplete_exchange",
+   "expected_completeness": "TRUNCATED",
+   "note": "capture stops before the server answers EHLO",
+   "packets": 5,
+   "pcap": "G_incomplete_exchange.pcap",
+   "sha256_16": "f1a36692b9927286"
+  },
+  {
+   "case": "H_quiet_stream_then_more_traffic",
+   "expected_completeness": "INCOMPLETE",
+   "note": "stream 0 goes quiet while the capture continues; only stream 1 ends the file",
+   "packets": 22,
+   "pcap": "H_quiet_stream_then_more_traffic.pcap",
+   "sha256_16": "94ae93ec60df311e"
+  }
+ ],
+ "oq47": [
+  {
+   "case": "A_whole_in_one_segment",
+   "equivalent_to": null,
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "reference case: the reply arrives in one segment",
+   "packets": 14,
+   "pcap": "A_whole_in_one_segment.pcap",
+   "sha256_16": "d4c932e6605cd226"
+  },
+  {
+   "case": "B_split_before_capability",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "split on a line boundary just before the capability",
+   "packets": 15,
+   "pcap": "B_split_before_capability.pcap",
+   "sha256_16": "fe5680aac0fb4d79"
+  },
+  {
+   "case": "C_split_inside_token",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "split INSIDE the STARTTLS token (OQ-47 mode A)",
+   "packets": 15,
+   "pcap": "C_split_inside_token.pcap",
+   "sha256_16": "3f42e469b6f17d87"
+  },
+  {
+   "case": "D_split_before_final_letter",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "split one byte before the token ends; tshark drops the trailing S",
+   "packets": 15,
+   "pcap": "D_split_before_final_letter.pcap",
+   "sha256_16": "56f8d00e8c4bdb1f"
+  },
+  {
+   "case": "E_split_between_cr_and_lf",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "split between CR and LF of the capability line",
+   "packets": 15,
+   "pcap": "E_split_between_cr_and_lf.pcap",
+   "sha256_16": "c362bf07ff521bcd"
+  },
+  {
+   "case": "F_split_many_segments",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "reply shredded into many small segments",
+   "packets": 28,
+   "pcap": "F_split_many_segments.pcap",
+   "sha256_16": "53a3de853b9c0293"
+  },
+  {
+   "case": "G_split_mid_numeric",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "split inside a numeric parameter; tshark invents a bogus code (mode B)",
+   "packets": 15,
+   "pcap": "G_split_mid_numeric.pcap",
+   "sha256_16": "615247d3c82bbef9"
+  },
+  {
+   "case": "H_retransmitted_segment",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "the whole reply retransmitted at the same sequence number",
+   "packets": 15,
+   "pcap": "H_retransmitted_segment.pcap",
+   "sha256_16": "484c415d1d931dd1"
+  },
+  {
+   "case": "I_reordered_segments",
+   "equivalent_to": "A_whole_in_one_segment",
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "second segment on the wire before the first",
+   "packets": 15,
+   "pcap": "I_reordered_segments.pcap",
+   "sha256_16": "f61bf131036c610e"
+  },
+  {
+   "case": "J_absent_whole",
+   "equivalent_to": null,
+   "expected_advertised": false,
+   "expected_state": "AMBIGUOUS",
+   "note": "no capability advertised; absence stays ambiguous",
+   "packets": 14,
+   "pcap": "J_absent_whole.pcap",
+   "sha256_16": "f1dbeb4d5b459913"
+  },
+  {
+   "case": "K_absent_split",
+   "equivalent_to": "J_absent_whole",
+   "expected_advertised": false,
+   "expected_state": "AMBIGUOUS",
+   "note": "no capability advertised, reply segmented; must not invent one",
+   "packets": 17,
+   "pcap": "K_absent_split.pcap",
+   "sha256_16": "4d84049789f96303"
+  },
+  {
+   "case": "L_advertised_never_used",
+   "equivalent_to": null,
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "segmented advertisement, client declines; advertisement is still observed",
+   "packets": 14,
+   "pcap": "L_advertised_never_used.pcap",
+   "sha256_16": "1ba092f3a34f7bee"
+  },
+  {
+   "case": "M_server_refuses",
+   "equivalent_to": null,
+   "expected_advertised": true,
+   "expected_state": "OBSERVED",
+   "note": "segmented advertisement then a 454 refusal",
+   "packets": 14,
+   "pcap": "M_server_refuses.pcap",
+   "sha256_16": "f25050c6c0684f50"
+  },
+  {
+   "case": "N_forged_capability_in_message_body",
+   "equivalent_to": null,
+   "expected_advertised": false,
+   "expected_state": "AMBIGUOUS",
+   "note": "attacker writes 250-STARTTLS into the message body; it must not be read as an advertisement",
+   "packets": 19,
+   "pcap": "N_forged_capability_in_message_body.pcap",
+   "sha256_16": "2382fcd12d155946"
+  }
+ ]
+}

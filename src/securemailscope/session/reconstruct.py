@@ -13,6 +13,7 @@ from typing import List, Optional, Sequence
 
 from securemailscope.dissect import fields as F
 from securemailscope.dissect.normalize import FrameEvidence
+from securemailscope.session.base import _open_session_completeness
 from securemailscope.session.grouping import StreamGroup, group_streams
 from securemailscope.session.model import (
     AppState, Completeness, SessionEvidence, TlsState,
@@ -50,17 +51,26 @@ def _transport_only_session(group: StreamGroup, protocol: Optional[str]) -> Sess
         transport_flags=group.transport_flags(),
         app_state=AppState.CONNECTED,
         tls_state=TlsState.NONE,
-        completeness=Completeness.INCOMPLETE,
+        # An uninterpretable stream still gets an honest completeness verdict; a
+        # transport-only session cut short by the recording is truncated just as a
+        # dissected one is (OQ-46).
+        completeness=_open_session_completeness(group),
     )
     session.notes.append("no mail-protocol dialogue identified in this stream")
     return session
 
 
-def reconstruct_sessions(frames: Sequence[FrameEvidence],
-                         capture_id: str) -> List[SessionEvidence]:
-    """Reconstruct every TCP stream in a capture into SessionEvidence."""
+def reconstruct_sessions(frames: Sequence[FrameEvidence], capture_id: str,
+                         capture_truncated: bool = False) -> List[SessionEvidence]:
+    """Reconstruct every TCP stream in a capture into SessionEvidence.
+
+    `capture_truncated` carries tshark's own report that the file was cut mid-packet
+    (`DissectStatus.TRUNCATED`). Pass it from the run when available: without it a
+    truncated file is only detectable for the single stream that happens to own the last
+    frame. Defaulted so every existing caller keeps working unchanged.
+    """
     sessions: List[SessionEvidence] = []
-    for group in group_streams(list(frames), capture_id):
+    for group in group_streams(list(frames), capture_id, capture_truncated):
         protocol = _protocol_for(group)
         reconstructor_cls = RECONSTRUCTORS.get(protocol) if protocol else None
         if reconstructor_cls is None:
