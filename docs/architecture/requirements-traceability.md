@@ -75,5 +75,18 @@ demonstrated, not because a data structure exists:
 consumes the ML signal as bounded prioritisation metadata only, and attaches the ADR-0015 limitation
 to every AI-enabled assessment.
 
+**Phase-7 hardening (2026-09-20)** did not change any requirement status. It fixed two
+Phase-3 correctness defects (OQ-46, OQ-47) and added the first real-vendor validation
+(OQ-33r, PASS WITH LIMITATIONS). Two requirements gained real-traffic evidence rather
+than a new status:
+
+| Req | New evidence |
+|---|---|
+| D-04/D-05 STARTTLS detection and validation | now exercised against real Postfix and Dovecot STARTTLS/STLS, including a server that genuinely does not advertise (correctly `AMBIGUOUS`) |
+| D-07 TLS version | `supported_versions` handling validated against real OpenSSL TLS 1.3 handshakes for the first time |
+
+**A-02 is unchanged.** The real-vendor corpus is far too small to revisit ML
+generalisation, and no ML claim rests on it.
+
 **Still incomplete:** D-09 (key exchange, no dedicated rule), D-10-14 (X.509, not implemented),
 D-16 (bounded subset), D-17 (forward secrecy, derivable but no rule), R-03 and R-04 (Phase 9-10).

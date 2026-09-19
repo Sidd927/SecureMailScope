@@ -12,6 +12,8 @@ begins, this directory stays where it is.
 | `oq28/` | Does the OQ-25 result replicate on real packets? | [02B](../../docs/research/02B-packet-level-validation.md) |
 | `oq36/` | Does any ML model add value beyond the deterministic lanes? | [17](../../docs/architecture/17-ml-model-evaluation.md) |
 | `oq48/` | Which posture scoring formulation is defensible? | [19](../../docs/architecture/19-evidence-fusion-and-posture.md) |
+| `oq46_47/` | Are truncated sessions classified, and does segmentation change semantics? | [22](../../docs/research/22-oq46-oq47-validation.md) |
+| `oq33r/` | Does the pipeline behave correctly on real Postfix/Dovecot traffic? | [23](../../docs/research/23-oq33r-real-world-validation.md) |
 
 ## Reproducing OQ-25
 
@@ -66,3 +68,22 @@ verdict is ADR-0016.
 
 Needs `tshark`; no ML dependency (the review scores deterministic and cross-session
 findings only, since the ML lane cannot penalise a posture score by design).
+
+
+## Reproducing OQ-46 / OQ-47 (Phase-7 hardening)
+
+```bash
+python3 research/experiments/oq46_47/craft_hardening.py
+PYTHONPATH=src python3 -m pytest tests/test_hardening_oq46_oq47.py -q
+```
+
+22 crafted captures with real TCP sequencing, hash-pinned in `manifest.json` and
+byte-reproducible from a fixed clock and fixed MACs. Needs `scapy` to build and `tshark`
+to analyse.
+
+## Reproducing OQ-33r (real-vendor validation)
+
+Needs Docker. See `docs/research/23` §8 for the full command sequence. The captures are
+committed (64 KB); the per-run test certificate and key are git-ignored, and the pcaps
+are deliberately NOT byte-reproducible because packet timings and TLS randoms differ
+between runs.

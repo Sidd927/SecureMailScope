@@ -258,3 +258,75 @@ def test_every_penalising_finding_traces_back_to_frames_and_a_rule():
         assert fused.all_frames
         assert fused.citations
         assert fused.remediation is not None
+
+
+# ================================================== OQ-33r real vendor traffic
+REAL = "research/experiments/oq33r/out"
+needs_real = pytest.mark.skipif(
+    not os.path.isdir(REAL) or not os.path.exists(f"{REAL}/scenarios.json"),
+    reason="real-vendor corpus absent; see research/experiments/oq33r/README.md")
+
+
+@needs_tshark
+@needs_real
+@pytest.mark.parametrize("name", [
+    "postfix_smtp_starttls_upgrade", "postfix_smtp_client_declines",
+    "postfix_smtp_plaintext_session", "postfix_smtp_no_starttls_offered",
+    "dovecot_imap_starttls_upgrade", "dovecot_imap_plaintext_login",
+    "dovecot_pop3_stls_upgrade", "dovecot_pop3_plaintext_login",
+    "dovecot_imap_imaps_implicit_tls", "dovecot_pop3_pop3s_implicit_tls",
+])
+def test_real_vendor_capture_produces_a_coherent_assessment(name):
+    """Bytes emitted by Postfix and Dovecot, not by our generators."""
+    sessions, _, _, assessment = pipeline(f"{REAL}/{name}.pcap")
+    assert [s for s in sessions if s.protocol], "no mail session reconstructed"
+    json.dumps(assessment.to_dict())
+    assert assessment.band.value in {b.value for b in PostureBand}
+
+
+@needs_tshark
+@needs_real
+def test_real_postfix_without_starttls_is_ambiguous_not_false():
+    """The project's central discipline, asserted on genuine vendor traffic: a server
+    that really did not advertise yields AMBIGUOUS, never a confident negative."""
+    sessions, _, _, _ = pipeline(f"{REAL}/postfix_smtp_no_starttls_offered.pcap")
+    smtp = [s for s in sessions if s.protocol == "smtp" and s.starttls_advertised.value
+            is not None]
+    assert smtp
+    for session in smtp:
+        assert session.starttls_advertised.value is False
+        assert session.starttls_advertised.state.value == "AMBIGUOUS"
+
+
+@needs_tshark
+@needs_real
+def test_real_implicit_tls_reports_capability_as_not_observable():
+    for name in ("dovecot_imap_imaps_implicit_tls", "dovecot_pop3_pop3s_implicit_tls"):
+        sessions, _, _, _ = pipeline(f"{REAL}/{name}.pcap")
+        mail = [s for s in sessions if s.protocol]
+        assert mail
+        assert all(s.implicit_tls for s in mail)
+        assert all(s.starttls_advertised.state.value == "NOT_OBSERVABLE" for s in mail)
+
+
+@needs_tshark
+@needs_real
+def test_real_cleartext_login_is_detected_as_plaintext_authentication():
+    """A genuine security detection on real server traffic, not a crafted fixture."""
+    for name in ("dovecot_imap_plaintext_login", "dovecot_pop3_plaintext_login"):
+        _, findings, _, assessment = pipeline(f"{REAL}/{name}.pcap")
+        rules = {f.rule_id for f in findings
+                 if f.status is FindingStatus.OBSERVED_ISSUE}
+        assert "SEC-PLAIN-001" in rules, name
+        assert assessment.band is PostureBand.WEAK
+
+
+@needs_tshark
+@needs_real
+def test_real_starttls_upgrade_negotiates_a_recorded_tls_version():
+    """Validates the supported_versions handling against a real OpenSSL handshake."""
+    for name in ("dovecot_pop3_stls_upgrade", "postfix_smtp_starttls_upgrade"):
+        sessions, _, _, _ = pipeline(f"{REAL}/{name}.pcap")
+        versions = {str(s.tls_negotiated_version.value) for s in sessions
+                    if s.tls_negotiated_version.value}
+        assert versions and versions <= {"TLS1.2", "TLS1.3"}, (name, versions)

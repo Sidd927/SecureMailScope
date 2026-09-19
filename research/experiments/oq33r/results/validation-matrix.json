@@ -1,0 +1,528 @@
+{
+ "matrix": [
+  {
+   "classification": "agreed",
+   "expected": "STARTTLS advertised and upgrade completes",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "postfix_smtp_starttls_upgrade.pcap",
+   "pcap_sha256_16": "c2a84bf4ed973fcd",
+   "protocol": "smtp",
+   "result": "PASS",
+   "scenario": "starttls_upgrade",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 5,
+     "NOT_OBSERVABLE": 1
+    },
+    "advertised": [
+     "None/UNKNOWN",
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE",
+     "INCOMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 2,
+    "observed_issues": [
+     "SEC-PLAIN-002"
+    ],
+    "packets": 22,
+    "posture_band": "ADEQUATE",
+    "posture_score": 88.0,
+    "protocols": [
+     "smtp"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 2,
+    "tls_state": [
+     "ESTABLISHED",
+     "NONE"
+    ],
+    "tls_versions": [
+     "TLS1.3"
+    ]
+   },
+   "status": "captured",
+   "tls_mode": "starttls",
+   "tshark": {
+    "server_hellos": 1,
+    "starttls_capability_frames": 1,
+    "streams": 2,
+    "tls_versions_raw": [
+     "0x0304\t0x0303"
+    ]
+   },
+   "vendor": "postfix"
+  },
+  {
+   "classification": "agreed",
+   "expected": "STARTTLS advertised, client never upgrades",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "postfix_smtp_client_declines.pcap",
+   "pcap_sha256_16": "1f9863aef21f602c",
+   "protocol": "smtp",
+   "result": "PASS",
+   "scenario": "client_declines",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 2
+    },
+    "advertised": [
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 1,
+    "observed_issues": [
+     "SEC-PLAIN-002"
+    ],
+    "packets": 13,
+    "posture_band": "ADEQUATE",
+    "posture_score": 88.0,
+    "protocols": [
+     "smtp"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "NONE"
+    ],
+    "tls_versions": []
+   },
+   "status": "captured",
+   "tls_mode": "starttls",
+   "tshark": {
+    "server_hellos": 0,
+    "starttls_capability_frames": 1,
+    "streams": 1,
+    "tls_versions_raw": []
+   },
+   "vendor": "postfix"
+  },
+  {
+   "classification": "agreed",
+   "expected": "cleartext dialogue, advertisement present",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "postfix_smtp_plaintext_session.pcap",
+   "pcap_sha256_16": "5223798d5c5bcad8",
+   "protocol": "smtp",
+   "result": "PASS",
+   "scenario": "plaintext_session",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 2
+    },
+    "advertised": [
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 1,
+    "observed_issues": [
+     "SEC-PLAIN-002"
+    ],
+    "packets": 17,
+    "posture_band": "ADEQUATE",
+    "posture_score": 88.0,
+    "protocols": [
+     "smtp"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "NONE"
+    ],
+    "tls_versions": []
+   },
+   "status": "captured",
+   "tls_mode": "cleartext",
+   "tshark": {
+    "server_hellos": 0,
+    "starttls_capability_frames": 1,
+    "streams": 1,
+    "tls_versions_raw": []
+   },
+   "vendor": "postfix"
+  },
+  {
+   "classification": "agreed",
+   "expected": "no STARTTLS advertised; absence must stay AMBIGUOUS",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "postfix_smtp_no_starttls_offered.pcap",
+   "pcap_sha256_16": "eacbc065c3427acf",
+   "protocol": "smtp",
+   "result": "PASS",
+   "scenario": "no_starttls_offered",
+   "securemailscope": {
+    "abstention_reasons": {
+     "AMBIGUOUS_EVIDENCE": 1,
+     "INSUFFICIENT_CAPTURE": 5
+    },
+    "advertised": [
+     "False/AMBIGUOUS",
+     "None/UNKNOWN"
+    ],
+    "completeness": [
+     "COMPLETE",
+     "INCOMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 2,
+    "observed_issues": [
+     "SEC-PLAIN-002"
+    ],
+    "packets": 19,
+    "posture_band": "ADEQUATE",
+    "posture_score": 85.0,
+    "protocols": [
+     "smtp"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 2,
+    "tls_state": [
+     "NONE"
+    ],
+    "tls_versions": []
+   },
+   "status": "captured",
+   "tls_mode": "none",
+   "tshark": {
+    "server_hellos": 0,
+    "starttls_capability_frames": 0,
+    "streams": 2,
+    "tls_versions_raw": []
+   },
+   "vendor": "postfix"
+  },
+  {
+   "classification": "agreed",
+   "expected": "STARTTLS advertised and upgrade completes",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_imap_starttls_upgrade.pcap",
+   "pcap_sha256_16": "40ea40241d28c683",
+   "protocol": "imap",
+   "result": "PASS",
+   "scenario": "starttls_upgrade",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 5,
+     "NOT_OBSERVABLE": 1
+    },
+    "advertised": [
+     "None/UNKNOWN",
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE",
+     "INCOMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 2,
+    "observed_issues": [
+     "SEC-PLAIN-002"
+    ],
+    "packets": 34,
+    "posture_band": "ADEQUATE",
+    "posture_score": 88.0,
+    "protocols": [
+     "imap"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 2,
+    "tls_state": [
+     "ESTABLISHED",
+     "NONE"
+    ],
+    "tls_versions": [
+     "TLS1.3"
+    ]
+   },
+   "status": "captured",
+   "tls_mode": "starttls",
+   "tshark": {
+    "server_hellos": 1,
+    "starttls_capability_frames": 2,
+    "streams": 2,
+    "tls_versions_raw": [
+     "0x0304\t0x0303"
+    ]
+   },
+   "vendor": "dovecot"
+  },
+  {
+   "classification": "agreed",
+   "expected": "cleartext LOGIN",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_imap_plaintext_login.pcap",
+   "pcap_sha256_16": "98a6d6dd94471bb4",
+   "protocol": "imap",
+   "result": "PASS",
+   "scenario": "plaintext_login",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 2
+    },
+    "advertised": [
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 1,
+    "observed_issues": [
+     "SEC-PLAIN-001",
+     "SEC-PLAIN-002"
+    ],
+    "packets": 17,
+    "posture_band": "WEAK",
+    "posture_score": 60.0,
+    "protocols": [
+     "imap"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "NONE"
+    ],
+    "tls_versions": []
+   },
+   "status": "captured",
+   "tls_mode": "cleartext",
+   "tshark": {
+    "server_hellos": 0,
+    "starttls_capability_frames": 2,
+    "streams": 1,
+    "tls_versions_raw": []
+   },
+   "vendor": "dovecot"
+  },
+  {
+   "classification": "agreed",
+   "expected": "STLS advertised and upgrade completes",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_pop3_stls_upgrade.pcap",
+   "pcap_sha256_16": "0de89766cc83d399",
+   "protocol": "pop3",
+   "result": "PASS",
+   "scenario": "stls_upgrade",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 2,
+     "NOT_OBSERVABLE": 1
+    },
+    "advertised": [
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 1,
+    "observed_issues": [],
+    "packets": 34,
+    "posture_band": "STRONG",
+    "posture_score": 100.0,
+    "protocols": [
+     "pop3"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "ESTABLISHED"
+    ],
+    "tls_versions": [
+     "TLS1.3"
+    ]
+   },
+   "status": "captured",
+   "tls_mode": "starttls",
+   "tshark": {
+    "server_hellos": 1,
+    "starttls_capability_frames": 2,
+    "streams": 1,
+    "tls_versions_raw": [
+     "0x0304\t0x0303"
+    ]
+   },
+   "vendor": "dovecot"
+  },
+  {
+   "classification": "agreed",
+   "expected": "cleartext USER/PASS",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_pop3_plaintext_login.pcap",
+   "pcap_sha256_16": "2fef26f8bf34a0c2",
+   "protocol": "pop3",
+   "result": "PASS",
+   "scenario": "plaintext_login",
+   "securemailscope": {
+    "abstention_reasons": {
+     "INSUFFICIENT_CAPTURE": 2
+    },
+    "advertised": [
+     "True/OBSERVED"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 0,
+    "mail_sessions": 1,
+    "observed_issues": [
+     "SEC-PLAIN-001",
+     "SEC-PLAIN-002"
+    ],
+    "packets": 18,
+    "posture_band": "WEAK",
+    "posture_score": 60.0,
+    "protocols": [
+     "pop3"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "NONE"
+    ],
+    "tls_versions": []
+   },
+   "status": "captured",
+   "tls_mode": "cleartext",
+   "tshark": {
+    "server_hellos": 0,
+    "starttls_capability_frames": 1,
+    "streams": 1,
+    "tls_versions_raw": []
+   },
+   "vendor": "dovecot"
+  },
+  {
+   "classification": "agreed",
+   "expected": "implicit TLS; no cleartext capability exchange at all",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_imap_imaps_implicit_tls.pcap",
+   "pcap_sha256_16": "d257ec482cd48643",
+   "protocol": "imap",
+   "result": "PASS",
+   "scenario": "imaps_implicit_tls",
+   "securemailscope": {
+    "abstention_reasons": {
+     "NOT_OBSERVABLE": 1
+    },
+    "advertised": [
+     "None/NOT_OBSERVABLE"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 1,
+    "mail_sessions": 1,
+    "observed_issues": [],
+    "packets": 27,
+    "posture_band": "STRONG",
+    "posture_score": 100.0,
+    "protocols": [
+     "imap"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "ESTABLISHED"
+    ],
+    "tls_versions": [
+     "TLS1.3"
+    ]
+   },
+   "status": "captured",
+   "tls_mode": "implicit",
+   "tshark": {
+    "server_hellos": 1,
+    "starttls_capability_frames": 0,
+    "streams": 1,
+    "tls_versions_raw": [
+     "0x0304\t0x0303"
+    ]
+   },
+   "vendor": "dovecot"
+  },
+  {
+   "classification": "agreed",
+   "expected": "implicit TLS; no cleartext capability exchange at all",
+   "note": "advertisement presence agrees with tshark",
+   "pcap": "dovecot_pop3_pop3s_implicit_tls.pcap",
+   "pcap_sha256_16": "7cc4f7c97ba62666",
+   "protocol": "pop3",
+   "result": "PASS",
+   "scenario": "pop3s_implicit_tls",
+   "securemailscope": {
+    "abstention_reasons": {
+     "NOT_OBSERVABLE": 1
+    },
+    "advertised": [
+     "None/NOT_OBSERVABLE"
+    ],
+    "completeness": [
+     "COMPLETE"
+    ],
+    "implicit_tls": 1,
+    "mail_sessions": 1,
+    "observed_issues": [],
+    "packets": 25,
+    "posture_band": "STRONG",
+    "posture_score": 100.0,
+    "protocols": [
+     "pop3"
+    ],
+    "run_status": "COMPLETED",
+    "sessions": 1,
+    "tls_state": [
+     "ESTABLISHED"
+    ],
+    "tls_versions": [
+     "TLS1.3"
+    ]
+   },
+   "status": "captured",
+   "tls_mode": "implicit",
+   "tshark": {
+    "server_hellos": 1,
+    "starttls_capability_frames": 0,
+    "streams": 1,
+    "tls_versions_raw": [
+     "0x0304\t0x0303"
+    ]
+   },
+   "vendor": "dovecot"
+  }
+ ],
+ "summary": {
+  "captured": 10,
+  "captures": 10,
+  "fail": 0,
+  "not_captured": 0,
+  "pass": 10,
+  "protocols_captured": [
+   "imap",
+   "pop3",
+   "smtp"
+  ],
+  "tls_modes_captured": [
+   "cleartext",
+   "implicit",
+   "none",
+   "starttls"
+  ],
+  "vendors": [
+   "dovecot",
+   "postfix"
+  ],
+  "vendors_captured": [
+   "dovecot",
+   "postfix"
+  ]
+ }
+}

@@ -53,6 +53,14 @@ negative**: zero unique true detections on all three held-out splits.
 **Closed by Phase 7 (ADR-0016, doc 19):** A-01, A-03, A-04, A-05, R-01, R-02 implemented and
 demonstrated end to end; the posture score was selected over two alternatives on 60 captures.
 
+**Phase 7 hardening (2026-09-20):** OQ-46 **FIXED** (truncated sessions are classified and
+excluded from baselines; the Phase-5 guard is live). OQ-47 **FIXED** (segmented capability lines
+recovered from the reassembled EHLO response; three root causes, one of them in our own
+normalizer). OQ-33r **PASS WITH LIMITATIONS** (10/10 real Postfix and Dovecot captures across
+3 protocols and 4 TLS modes agree with an independent tshark read; two vendors, loopback only,
+populations too small to exercise cross-session reasoning). Phase 7 is COMPLETE WITH EXPLICIT
+LIMITATIONS and ready for Phase 8. Details: docs/research/22 and 23.
+
 **Opened by Phase 7:** OQ-48 **closed** (scoring formula selected). OQ-49 — recalibrate severity
 weights against real traffic (blocked on OQ-33r). OQ-50 — should recurrence count distinct
 endpoints rather than sessions, once NAT identity (OQ-29) is resolved?

@@ -327,14 +327,24 @@ value — but it can never become an instruction, a severity or a recommendation
    (OQ-29) will under-count distinct affected systems.
 4. **Certificate posture is observability only.** No chain, expiry or key-strength
    conclusion is drawn, and none is possible passively for TLS 1.3 or resumed sessions.
-5. **The corpora are synthetic.** Every number in §17 is corpus-relative. OQ-33r (real
-   multi-vendor traffic) remains the blocking gap for generalisation claims.
-6. **Two Phase-3 defects remain open** (§18) and are deferred by decision, not oversight.
+5. **The corpora are predominantly synthetic.** OQ-33r now adds 10 captures of real
+   Postfix and Dovecot traffic across 3 protocols and 4 TLS modes (`docs/research/23`),
+   and the pipeline agreed with an independent tshark read on all 10. That is a genuine
+   narrowing of the gap, not a closing of it: two vendors, loopback only, one client
+   stack, default configurations, and populations too small to exercise cross-session
+   reasoning at all.
+6. **Cross-session reasoning has still never run on real traffic.** The real-vendor
+   captures carry one or two sessions each; baselines need at least five comparable
+   sessions.
+7. **`SEC-TLS-001` has never fired on a real server.** No deliberately weak vendor
+   configuration was exercised, so deprecated-version detection remains validated only
+   against crafted captures.
 
 ## 17. Test evidence
 
-**133 Phase-7 tests; 381 total, all passing.** No Phase 2–6 source file changed
-(`git diff 2db283c` over those packages is empty).
+**443 tests total, all passing** — 133 Phase-7 posture tests, 48 hardening regressions
+(OQ-46/OQ-47 and the three previously unasserted invariants), 15 real-vendor corpus
+tests, and the full Phase 2–6 suite.
 
 | Property | Evidence |
 |---|---|
@@ -360,28 +370,37 @@ value — but it can never become an instruction, a severity or a recommendation
 | **F2-group-damped** | 53.2 | 1 | 16 | 4.0 | ✅ **selected** |
 | F3-worst-dominant | 61.3 | 0 | 16 | **76.1** | ❌ under-penalises |
 
-**Performance** — linear, measured on the posture layer alone:
+**Performance** — linear, measured on the posture layer alone, re-measured after the
+Phase-7 hardening fixes:
 
-| Sessions | Time | Per session |
-|---:|---:|---:|
-| 1 000 | 0.021 s | 0.021 ms |
-| 5 000 | 0.098 s | 0.020 ms |
-| 10 000 | 0.205 s | 0.021 ms |
-| 25 000 | 0.533 s | 0.021 ms |
+| Sessions | Fusion | Grouping | Scoring | Priority | Total | Per session |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 000 | 15.4 ms | 0.7 ms | 2.3 ms | 0.21 ms | 0.018 s | 0.018 ms |
+| 5 000 | 66.7 ms | 3.8 ms | 10.9 ms | 1.16 ms | 0.113 s | 0.023 ms |
+| 10 000 | 155.5 ms | 8.3 ms | 22.3 ms | 2.75 ms | 0.214 s | 0.021 ms |
+| 25 000 | 415.2 ms | 21.3 ms | 57.3 ms | 8.06 ms | 0.576 s | 0.023 ms |
 
-Flat from 1k to 25k. A scaling ceiling is asserted by test at 1k and 5k.
+Flat from 1k to 25k, unchanged from the pre-hardening baseline. A scaling ceiling is
+asserted by test at 1k and 5k.
 
-## 18. Pre-existing defects — deferred by decision
+## 18. Pre-existing defects — RESOLVED
 
-Both were found in Phase 6 (`docs/architecture/16` §9) and are **not** fixed here.
-Neither can cause the posture engine to report a weakness as secure, and fixing either
-means changing Phase-3 deterministic semantics — which belongs in its own change with
-its own regression run, not buried inside a posture engine.
+Both were found in Phase 6 and are now **fixed**, with root causes, corpora and
+enumerated behavioural impact in `docs/research/22`.
 
-| # | Defect | Effect on posture | Decision |
-|---|---|---|---|
-| 1 | `Completeness.TRUNCATED` is never assigned by `session/base.py:_finalise`, making the Phase-5 comparability guard dead code | Truncated sessions report `INCOMPLETE` and still enter baselines. Visible: completeness counts appear in `EvidenceCoverage` | **Deferred, OQ-46** |
-| 2 | TCP-segmented multi-line SMTP `250-` replies can lose `STARTTLS` | Fail-safe direction: yields `AMBIGUOUS`, which becomes an abstention, never a compliant or secure state | **Deferred, OQ-47** |
+| # | Defect | Resolution |
+|---|---|---|
+| OQ-46 | `Completeness.TRUNCATED` was never assigned, so the Phase-5 guard excluding truncated sessions from baselines was dead code | **FIXED.** TRUNCATED now requires no teardown plus either a tshark file-truncation report or nothing following the stream's last frame. 8 crafted scenarios; 2 of 60 existing captures changed, posture score and band unchanged on both |
+| OQ-47 | TCP-segmented multi-line SMTP `250-` replies lost `STARTTLS` | **FIXED.** Three layers: tshark drops the cut token's remainder, a mid-line split makes it invent a response code, and our own normalizer discarded the payload of any frame tshark could not attribute. The capability line is re-read from the reassembled EHLO response, bounded to the capability phase. 14 crafted scenarios; 6 of 60 captures changed, all false-positive eliminations |
+
+### Effect on posture
+
+`OQ-46` gave the Phase-5 truncation guard real effect: truncated sessions no longer
+enter baselines. `OQ-47` removed a false-positive class — `B01_all_upgrade`, whose
+ground truth is that every session legitimately upgrades, went from ADEQUATE 88.0 to
+STRONG 100.0 when a spurious behavioural deviation caused solely by two misread sessions
+disappeared. In `B06_strip_command` both genuine attack findings survived unchanged and
+only the segmentation artifact went away.
 
 ## 19. SIH traceability
 

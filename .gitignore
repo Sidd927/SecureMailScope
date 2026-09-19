@@ -14,3 +14,7 @@ dist/
 # GPLv2 third-party source (striptls) — NOT vendored, to avoid imposing copyleft on this
 # repo. Regenerate locally with: python3 research/experiments/oq28/fetch_striptls.py
 research/experiments/oq28/striptls_py3_exceptfix.py
+
+# OQ-33r local test certificate and key: generated per run, never committed.
+research/experiments/oq33r/test.pem
+research/experiments/oq33r/test.key
