@@ -9,6 +9,8 @@ begins, this directory stays where it is.
 | Dir | Experiment | Document |
 |---|---|---|
 | `oq25/` | Does cross-session baselining reduce false positives? | [02A](../../docs/research/02A-cross-session-baseline-experiment.md) |
+| `oq28/` | Does the OQ-25 result replicate on real packets? | [02B](../../docs/research/02B-packet-level-validation.md) |
+| `oq36/` | Does any ML model add value beyond the deterministic lanes? | [17](../../docs/architecture/17-ml-model-evaluation.md) |
 
 ## Reproducing OQ-25
 
@@ -24,3 +26,26 @@ beyond the Python standard library.
 **Design constraint honoured throughout:** ground truth lives in a separate structure
 (`Corpus.truth`) and is never visible to a detector. Detectors receive only
 `Corpus.observations()` — the passively observable feature vector.
+
+
+## Reproducing OQ-36 (Phase-6 ML evaluation)
+
+```bash
+python3 research/experiments/oq36/genb.py      # generator B corpus (Exim dialect)
+python3 research/experiments/oq36/genc.py      # generator C corpus (Zimbra/Dovecot dialect)
+python3 research/experiments/oq36/dataset.py   # inventory + split integrity
+python3 research/experiments/oq36/bakeoff.py   # 9 candidates, held-out evaluation
+python3 research/experiments/oq36/probes.py    # ablation, generator artifact, circularity
+```
+
+Needs `scapy` (corpus generation) and `scikit-learn` (four of the nine candidates; the
+stdlib candidates run without it). Results land in `oq36/results/*.json`.
+
+Generators B and C are seeded and byte-reproducible — `tests/test_ml_dataset.py` asserts
+regeneration matches the committed captures exactly. The committed corpus is ~3.2 MB;
+it is kept in the repository because the evaluation in doc 17 is not independently
+checkable without it.
+
+**Design constraint honoured throughout:** labels are used for evaluation only. No fit
+receives them, and the threshold is chosen from normal-session scores on a generator that
+never contributed a training row.

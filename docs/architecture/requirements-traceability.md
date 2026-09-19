@@ -21,9 +21,9 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-15 weak/deprecated | ✅ SEC-TLS-001 bound to RFC 8996 + NIST SP 800-52r2 | `analysis/rules/tls_rules` | 4 ✅ | T_TLS10/11/12 golden | findings |
 | D-16 insecure config | bounded versioned checklist | rules | 4 | unit per rule | findings |
 | D-17 forward secrecy | derive from suite/version | evidence/rules | 4 | unit | findings |
-| D-18 feature extraction | evidence→features (obs-aware) | evidence/mlanomaly | 6 | feature-stability | anomaly |
+| D-18 feature extraction | ✅ 44 governed, evidence-aware features → 164 columns (schema v1.0) | `ml/features`, `ml/encoding` | 6 ✅ | 23 feature tests | anomaly |
 | A-01 risk classification | ✅ deterministic, standards-bound (8 rules) | `analysis/` | 4 ✅ | 38 Phase-4 tests | findings |
-| A-02 anomaly detection | 🟡 deterministic cross-session deviation (Phase 5 ✅); unsupervised ML still to come | `crosssession/` → `mlanomaly` | 5 ✅ / 6–7 | 44 Phase-5 tests | anomaly scene |
+| A-02 anomaly detection | 🟡 **capability ✅ / detection value ❌.** Real unsupervised model shipped, evaluated on generator-held-out data, reproducible and explainable — but **0 unique true detections on every held-out split**, so it ships as a *prioritisation signal only* (ADR-0015, doc 17) | `crosssession/` + `ml/` | 5 ✅ / 6 ✅ | 44 Phase-5 + 89 Phase-6 tests | anomaly scene (limitation stated) |
 | A-03 posture scoring | coverage-aware deterministic | risk | 8 | unit | honesty (coverage) |
 | A-04 prioritisation | severity×exposure×prevalence; ML via policy | risk | 8 | policy unit | findings |
 | A-05 remediation | standards-cited templates | rules/report | 4,9 | unit | remediation |
@@ -36,5 +36,23 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | I-03 forensic integrity | hash, versions, frame refs | ingest/report | 1,9 | reproducibility (04 §4) | load (hash shown) |
 
 **Coverage:** every confirmed D/A/R requirement has a component, phase, and test. AMB-04/05/06 resolve
-in `rules` (Phase 4) via versioned standards binding. OQ-35 addressed by shipping a real A-02 component
-+ the `--no-ai` fallback. No confirmed requirement is unmapped → Phase-11 §36 stop condition not triggered.
+in `rules` (Phase 4) via versioned standards binding. No confirmed requirement is unmapped → Phase-11
+§36 stop condition not triggered.
+
+### A-02 after Phase 6 — read this before quoting the status
+
+OQ-35 asked whether deterministic cross-session deviation could satisfy a requirement whose text says
+*"Application of AI/ML techniques"*. Phase 6 answers it by building the real thing rather than arguing
+the interpretation. The distinction the brief demands (§38) is therefore:
+
+| Claim | Status |
+|---|---|
+| **AI/ML capability exists** | ✅ unsupervised anomaly model, fitted, thresholded on held-out validation data, integrated, explainable, reproducible, 89 tests |
+| **AI/ML is empirically validated as a detector** | ❌ **no.** Zero unique true detections on SELECT, TEST_C and TEST_A |
+| **AI/ML adds a usable prioritisation signal** | 🟡 ranks better than every gated alternative, but changes no verdict on the current corpus |
+
+The blocker is the corpus, not the model: the feature space is 98.6 % separable by generator
+(doc 17 §10), so the question cannot be settled on synthetic data at all. See OQ-45 / OQ-33r.
+
+**Do not report A-02 as complete.** An ML library being installed, or a model producing scores, is
+not the bar.

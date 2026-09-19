@@ -1,0 +1,6819 @@
+{
+ "captures": [
+  {
+   "generator": "C",
+   "packets": 1040,
+   "pcap": "C01_upgrade_smtp.pcap",
+   "scenario": "C01_upgrade_smtp",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1120,
+   "pcap": "C02_decline_smtp.pcap",
+   "scenario": "C02_decline_smtp",
+   "streams": [
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1120,
+   "pcap": "C03_no_support_smtp.pcap",
+   "scenario": "C03_no_support_smtp",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1060,
+   "pcap": "C04_strip_control.pcap",
+   "scenario": "C04_strip_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1120,
+   "pcap": "C05_strip_blind.pcap",
+   "scenario": "C05_strip_blind",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1060,
+   "pcap": "C06_strip_command.pcap",
+   "scenario": "C06_strip_command",
+   "streams": [
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 720,
+   "pcap": "C07_reject_upgrade.pcap",
+   "scenario": "C07_reject_upgrade",
+   "streams": [
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "reject_upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_SERVER_REJECT",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 760,
+   "pcap": "C08_failed_upgrade.pcap",
+   "scenario": "C08_failed_upgrade",
+   "streams": [
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 1080,
+   "pcap": "C09_mixed_legit.pcap",
+   "scenario": "C09_mixed_legit",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 972,
+   "pcap": "C10_config_change.pcap",
+   "scenario": "C10_config_change",
+   "streams": [
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "decline",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 950,
+   "pcap": "C11_imap_strip_control.pcap",
+   "scenario": "C11_imap_strip_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 750,
+   "pcap": "C12_imap_upgrade.pcap",
+   "scenario": "C12_imap_upgrade",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "172.16.8.11",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 990,
+   "pcap": "C13_pop3_strip_control.pcap",
+   "scenario": "C13_pop3_strip_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.43",
+     "client_port": 55009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 720,
+   "pcap": "C14_pop3_no_support.pcap",
+   "scenario": "C14_pop3_no_support",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "pop3",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 450,
+   "pcap": "C15_implicit_smtps.pcap",
+   "scenario": "C15_implicit_smtps",
+   "streams": [
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 450,
+   "pcap": "C16_implicit_pop3s.pcap",
+   "scenario": "C16_implicit_pop3s",
+   "streams": [
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "pop3s",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 780,
+   "pcap": "C17_legacy_tls.pcap",
+   "scenario": "C17_legacy_tls",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "fin",
+     "tls_version": "TLS1.0"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 720,
+   "pcap": "C18_reset_teardown.pcap",
+   "scenario": "C18_reset_teardown",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "rst",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  },
+  {
+   "generator": "C",
+   "packets": 309,
+   "pcap": "C19_truncated.pcap",
+   "scenario": "C19_truncated",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52000,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52001,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52002,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52003,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52004,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52005,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52006,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52007,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52008,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.40",
+     "client_port": 52009,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53000,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53001,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53002,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53003,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53004,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53005,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53006,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53007,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53008,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.41",
+     "client_port": 53009,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54000,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54001,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54002,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54003,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54004,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54005,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54006,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54007,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54008,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "172.16.4.42",
+     "client_port": 54009,
+     "ground_truth": "BENIGN_TRUNCATED",
+     "protocol": "smtp",
+     "server": "172.16.8.10",
+     "teardown": "cut",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  }
+ ],
+ "dialect": "zimbra/dovecot",
+ "generator": "C",
+ "seed": 20260920
+}

@@ -1,0 +1,258 @@
+{
+ "abstained_total": 35,
+ "attack_labels": [
+  "ATTACK_STRIP_ADVERT",
+  "ATTACK_STRIP_COMMAND"
+ ],
+ "blind_scenarios": [
+  "B05_strip_blind",
+  "C05_strip_blind",
+  "H_no_control"
+ ],
+ "encoded_columns": 164,
+ "feature_schema_version": "1.0",
+ "integrity": {
+  "capture_overlap": {},
+  "distinct_rows": {
+   "TEST_A": 114,
+   "TEST_B": 150,
+   "TEST_C": 426,
+   "TRAIN": 396,
+   "VAL": 240
+  },
+  "rows_also_present_in_train": {
+   "TEST_A": 0,
+   "TEST_B": 0,
+   "TEST_C": 0,
+   "VAL": 0
+  },
+  "scenario_overlap": {},
+  "total_rows": {
+   "TEST_A": 142,
+   "TEST_B": 150,
+   "TEST_C": 426,
+   "TRAIN": 396,
+   "VAL": 240
+  }
+ },
+ "layout_signature": "8521f61fe615b9aa",
+ "logical_features": 44,
+ "per_generator": {
+  "A": {
+   "attacks": 32,
+   "benign": 110,
+   "captures": 25,
+   "clients": 5,
+   "implicit_tls": 18,
+   "labels": {
+    "ATTACK_STRIP_ADVERT": 30,
+    "ATTACK_STRIP_COMMAND": 2,
+    "FAILED_UPGRADE": 2,
+    "INCOMPLETE_CAPTURE": 4,
+    "LEGIT_DECLINE": 23,
+    "LEGIT_IMPLICIT_TLS": 18,
+    "LEGIT_PLAINTEXT_CFG": 6,
+    "LEGIT_TLS": 43,
+    "LEGIT_TLS10": 4,
+    "LEGIT_TLS11": 4,
+    "LEGIT_TLS12": 4,
+    "UNLABELLED": 2
+   },
+   "protocols": {
+    "imap": 24,
+    "pop3": 24,
+    "smtp": 94
+   },
+   "scenarios": 25,
+   "servers": 2,
+   "sessions": 142,
+   "tls_versions": {
+    "TLS1.0": 4,
+    "TLS1.1": 4,
+    "TLS1.2": 4,
+    "TLS1.3": 61,
+    "UNKNOWN": 69
+   }
+  },
+  "B": {
+   "attacks": 80,
+   "benign": 496,
+   "captures": 16,
+   "clients": 4,
+   "implicit_tls": 60,
+   "labels": {
+    "ATTACK_STRIP_ADVERT": 70,
+    "ATTACK_STRIP_COMMAND": 10,
+    "BENIGN_CONFIG_CHANGE": 18,
+    "BENIGN_DECLINE": 90,
+    "BENIGN_FAILED_UPGRADE": 10,
+    "BENIGN_IMPLICIT": 60,
+    "BENIGN_LEGACY_TLS": 30,
+    "BENIGN_NO_SUPPORT": 40,
+    "BENIGN_TLS": 248
+   },
+   "protocols": {
+    "imap": 100,
+    "pop3": 70,
+    "smtp": 406
+   },
+   "scenarios": 16,
+   "servers": 2,
+   "sessions": 576,
+   "tls_versions": {
+    "TLS1.0": 10,
+    "TLS1.1": 10,
+    "TLS1.2": 10,
+    "TLS1.3": 308,
+    "UNKNOWN": 238
+   }
+  },
+  "C": {
+   "attacks": 80,
+   "benign": 586,
+   "captures": 19,
+   "clients": 4,
+   "implicit_tls": 60,
+   "labels": {
+    "ATTACK_STRIP_ADVERT": 70,
+    "ATTACK_STRIP_COMMAND": 10,
+    "BENIGN_CONFIG_CHANGE": 18,
+    "BENIGN_DECLINE": 78,
+    "BENIGN_FAILED_UPGRADE": 10,
+    "BENIGN_IMPLICIT": 60,
+    "BENIGN_LEGACY_TLS": 30,
+    "BENIGN_NO_SUPPORT": 70,
+    "BENIGN_SERVER_REJECT": 30,
+    "BENIGN_TLS": 260,
+    "BENIGN_TRUNCATED": 30
+   },
+   "protocols": {
+    "imap": 70,
+    "pop3": 100,
+    "smtp": 496
+   },
+   "scenarios": 19,
+   "servers": 2,
+   "sessions": 666,
+   "tls_versions": {
+    "TLS1.0": 12,
+    "TLS1.1": 9,
+    "TLS1.2": 245,
+    "TLS1.3": 102,
+    "UNKNOWN": 298
+   }
+  }
+ },
+ "splits": {
+  "TEST_A": {
+   "attacks": 32,
+   "blind_attacks": 6,
+   "generators": [
+    "A"
+   ],
+   "scenarios": [
+    "A_legit_decline",
+    "B_strip_advert",
+    "C_normal_tls",
+    "D_failed_upgrade",
+    "E_incomplete",
+    "F_shared_identity",
+    "G_control_endpoint",
+    "H_no_control",
+    "I_no_support",
+    "J_strip_command",
+    "K_network_cond",
+    "P_imap_decline",
+    "P_imap_strip",
+    "P_imap_tls",
+    "P_pop3_decline",
+    "P_pop3_strip",
+    "P_pop3_tls",
+    "S_striptls_real",
+    "T_IMAPS_implicit",
+    "T_POP3S_implicit",
+    "T_SMTPS_implicit",
+    "T_TLS10",
+    "T_TLS11",
+    "T_TLS12",
+    "X_prompt_injection"
+   ],
+   "sessions": 142
+  },
+  "TEST_B": {
+   "attacks": 50,
+   "blind_attacks": 40,
+   "generators": [
+    "B"
+   ],
+   "scenarios": [
+    "B05_strip_blind",
+    "B06_strip_command",
+    "B09_mixed_legit",
+    "B16_legacy_tls"
+   ],
+   "sessions": 150
+  },
+  "TEST_C": {
+   "attacks": 80,
+   "blind_attacks": 40,
+   "generators": [
+    "C"
+   ],
+   "scenarios": [
+    "C04_strip_control",
+    "C05_strip_blind",
+    "C06_strip_command",
+    "C07_reject_upgrade",
+    "C08_failed_upgrade",
+    "C09_mixed_legit",
+    "C10_config_change",
+    "C11_imap_strip_control",
+    "C13_pop3_strip_control",
+    "C17_legacy_tls",
+    "C18_reset_teardown",
+    "C19_truncated"
+   ],
+   "sessions": 426
+  },
+  "TRAIN": {
+   "attacks": 0,
+   "blind_attacks": 0,
+   "generators": [
+    "B"
+   ],
+   "scenarios": [
+    "B01_all_upgrade",
+    "B02_legit_decline",
+    "B03_no_support",
+    "B04_strip_with_control",
+    "B07_failed_upgrade",
+    "B08_config_change",
+    "B10_imap_strip_control",
+    "B11_imap_legit",
+    "B12_pop3_strip_control",
+    "B13_pop3_legit",
+    "B14_implicit",
+    "B15_implicit_imaps"
+   ],
+   "sessions": 396
+  },
+  "VAL": {
+   "attacks": 0,
+   "blind_attacks": 0,
+   "generators": [
+    "C"
+   ],
+   "scenarios": [
+    "C01_upgrade_smtp",
+    "C02_decline_smtp",
+    "C03_no_support_smtp",
+    "C12_imap_upgrade",
+    "C14_pop3_no_support",
+    "C15_implicit_smtps",
+    "C16_implicit_pop3s"
+   ],
+   "sessions": 240
+  }
+ }
+}

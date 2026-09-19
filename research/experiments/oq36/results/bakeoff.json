@@ -1,0 +1,3780 @@
+{
+ "independent_value": {
+  "SELECT": {
+   "A_deterministic": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 40,
+     "tn": 60,
+     "tp": 10
+    },
+    "f1": 0.7143,
+    "fn": 0,
+    "fp": 40,
+    "fpr": 0.4,
+    "precision": 0.5556,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 60,
+    "tp": 50
+   },
+   "B_cross_session": {
+    "confusion_excl_blind": {
+     "fn": 9,
+     "fp": 0,
+     "tn": 100,
+     "tp": 1
+    },
+    "f1": 0.0392,
+    "fn": 49,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.02,
+    "recall_excl_blind": 0.1,
+    "tn": 100,
+    "tp": 1
+   },
+   "C_ml_only": {
+    "confusion_excl_blind": {
+     "fn": 10,
+     "fp": 0,
+     "tn": 100,
+     "tp": 0
+    },
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "recall_excl_blind": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "D_deterministic_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 40,
+     "tn": 60,
+     "tp": 10
+    },
+    "f1": 0.7143,
+    "fn": 0,
+    "fp": 40,
+    "fpr": 0.4,
+    "precision": 0.5556,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 60,
+    "tp": 50
+   },
+   "E_cross_session_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 9,
+     "fp": 0,
+     "tn": 100,
+     "tp": 1
+    },
+    "f1": 0.0392,
+    "fn": 49,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.02,
+    "recall_excl_blind": 0.1,
+    "tn": 100,
+    "tp": 1
+   },
+   "abstained": 0,
+   "overlap": {
+    "attacks_missed_by_both": 0,
+    "deterministic_only_that_are_attacks": 50,
+    "flagged_by_both": 0,
+    "flagged_by_deterministic_only": 90,
+    "flagged_by_ml_only": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0,
+    "sighted_attacks_missed_by_both": 0
+   },
+   "overlap_vs_cross_session_only": {
+    "flagged_by_both": 0,
+    "flagged_by_cross_session_only": 1,
+    "flagged_by_ml_only": 0,
+    "ml_only_sighted_attacks": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0
+   },
+   "scored_sessions": 150
+  },
+  "TEST_A": {
+   "A_deterministic": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 39,
+     "tn": 66,
+     "tp": 26
+    },
+    "f1": 0.6214,
+    "fn": 0,
+    "fp": 39,
+    "fpr": 0.3714,
+    "precision": 0.4507,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 66,
+    "tp": 32
+   },
+   "B_cross_session": {
+    "confusion_excl_blind": {
+     "fn": 25,
+     "fp": 0,
+     "tn": 105,
+     "tp": 1
+    },
+    "f1": 0.0606,
+    "fn": 31,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.0312,
+    "recall_excl_blind": 0.0385,
+    "tn": 105,
+    "tp": 1
+   },
+   "C_ml_only": {
+    "confusion_excl_blind": {
+     "fn": 26,
+     "fp": 0,
+     "tn": 105,
+     "tp": 0
+    },
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "recall_excl_blind": 0.0,
+    "tn": 105,
+    "tp": 0
+   },
+   "D_deterministic_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 39,
+     "tn": 66,
+     "tp": 26
+    },
+    "f1": 0.6214,
+    "fn": 0,
+    "fp": 39,
+    "fpr": 0.3714,
+    "precision": 0.4507,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 66,
+    "tp": 32
+   },
+   "E_cross_session_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 25,
+     "fp": 0,
+     "tn": 105,
+     "tp": 1
+    },
+    "f1": 0.0606,
+    "fn": 31,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.0312,
+    "recall_excl_blind": 0.0385,
+    "tn": 105,
+    "tp": 1
+   },
+   "abstained": 5,
+   "overlap": {
+    "attacks_missed_by_both": 0,
+    "deterministic_only_that_are_attacks": 32,
+    "flagged_by_both": 0,
+    "flagged_by_deterministic_only": 71,
+    "flagged_by_ml_only": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0,
+    "sighted_attacks_missed_by_both": 0
+   },
+   "overlap_vs_cross_session_only": {
+    "flagged_by_both": 0,
+    "flagged_by_cross_session_only": 1,
+    "flagged_by_ml_only": 0,
+    "ml_only_sighted_attacks": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0
+   },
+   "scored_sessions": 137
+  },
+  "TEST_C": {
+   "A_deterministic": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 89,
+     "tn": 227,
+     "tp": 40
+    },
+    "f1": 0.6426,
+    "fn": 0,
+    "fp": 89,
+    "fpr": 0.2816,
+    "precision": 0.4734,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 227,
+    "tp": 80
+   },
+   "B_cross_session": {
+    "confusion_excl_blind": {
+     "fn": 25,
+     "fp": 0,
+     "tn": 316,
+     "tp": 15
+    },
+    "f1": 0.3158,
+    "fn": 65,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.1875,
+    "recall_excl_blind": 0.375,
+    "tn": 316,
+    "tp": 15
+   },
+   "C_ml_only": {
+    "confusion_excl_blind": {
+     "fn": 40,
+     "fp": 0,
+     "tn": 316,
+     "tp": 0
+    },
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "recall_excl_blind": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "D_deterministic_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 0,
+     "fp": 89,
+     "tn": 227,
+     "tp": 40
+    },
+    "f1": 0.6426,
+    "fn": 0,
+    "fp": 89,
+    "fpr": 0.2816,
+    "precision": 0.4734,
+    "recall": 1.0,
+    "recall_excl_blind": 1.0,
+    "tn": 227,
+    "tp": 80
+   },
+   "E_cross_session_plus_ml": {
+    "confusion_excl_blind": {
+     "fn": 25,
+     "fp": 0,
+     "tn": 316,
+     "tp": 15
+    },
+    "f1": 0.3158,
+    "fn": 65,
+    "fp": 0,
+    "fpr": 0.0,
+    "precision": 1.0,
+    "recall": 0.1875,
+    "recall_excl_blind": 0.375,
+    "tn": 316,
+    "tp": 15
+   },
+   "abstained": 30,
+   "overlap": {
+    "attacks_missed_by_both": 0,
+    "deterministic_only_that_are_attacks": 80,
+    "flagged_by_both": 0,
+    "flagged_by_deterministic_only": 169,
+    "flagged_by_ml_only": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0,
+    "sighted_attacks_missed_by_both": 0
+   },
+   "overlap_vs_cross_session_only": {
+    "flagged_by_both": 0,
+    "flagged_by_cross_session_only": 15,
+    "flagged_by_ml_only": 0,
+    "ml_only_sighted_attacks": 0,
+    "ml_only_that_are_attacks": 0,
+    "ml_only_that_are_benign": 0
+   },
+   "scored_sessions": 396
+  }
+ },
+ "independent_value_by_model": {
+  "shipped_default": {
+   "model": "robust-z-sum",
+   "results": {
+    "SELECT": {
+     "A_deterministic": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 40,
+       "tn": 60,
+       "tp": 10
+      },
+      "f1": 0.7143,
+      "fn": 0,
+      "fp": 40,
+      "fpr": 0.4,
+      "precision": 0.5556,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 60,
+      "tp": 50
+     },
+     "B_cross_session": {
+      "confusion_excl_blind": {
+       "fn": 9,
+       "fp": 0,
+       "tn": 100,
+       "tp": 1
+      },
+      "f1": 0.0392,
+      "fn": 49,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.02,
+      "recall_excl_blind": 0.1,
+      "tn": 100,
+      "tp": 1
+     },
+     "C_ml_only": {
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "fn": 50,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "tn": 100,
+      "tp": 0
+     },
+     "D_deterministic_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 40,
+       "tn": 60,
+       "tp": 10
+      },
+      "f1": 0.7143,
+      "fn": 0,
+      "fp": 40,
+      "fpr": 0.4,
+      "precision": 0.5556,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 60,
+      "tp": 50
+     },
+     "E_cross_session_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 9,
+       "fp": 0,
+       "tn": 100,
+       "tp": 1
+      },
+      "f1": 0.0392,
+      "fn": 49,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.02,
+      "recall_excl_blind": 0.1,
+      "tn": 100,
+      "tp": 1
+     },
+     "abstained": 0,
+     "overlap": {
+      "attacks_missed_by_both": 0,
+      "deterministic_only_that_are_attacks": 50,
+      "flagged_by_both": 0,
+      "flagged_by_deterministic_only": 90,
+      "flagged_by_ml_only": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0,
+      "sighted_attacks_missed_by_both": 0
+     },
+     "overlap_vs_cross_session_only": {
+      "flagged_by_both": 0,
+      "flagged_by_cross_session_only": 1,
+      "flagged_by_ml_only": 0,
+      "ml_only_sighted_attacks": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0
+     },
+     "scored_sessions": 150
+    },
+    "TEST_A": {
+     "A_deterministic": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 39,
+       "tn": 66,
+       "tp": 26
+      },
+      "f1": 0.6214,
+      "fn": 0,
+      "fp": 39,
+      "fpr": 0.3714,
+      "precision": 0.4507,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 66,
+      "tp": 32
+     },
+     "B_cross_session": {
+      "confusion_excl_blind": {
+       "fn": 25,
+       "fp": 0,
+       "tn": 105,
+       "tp": 1
+      },
+      "f1": 0.0606,
+      "fn": 31,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.0312,
+      "recall_excl_blind": 0.0385,
+      "tn": 105,
+      "tp": 1
+     },
+     "C_ml_only": {
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "fn": 32,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "tn": 105,
+      "tp": 0
+     },
+     "D_deterministic_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 39,
+       "tn": 66,
+       "tp": 26
+      },
+      "f1": 0.6214,
+      "fn": 0,
+      "fp": 39,
+      "fpr": 0.3714,
+      "precision": 0.4507,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 66,
+      "tp": 32
+     },
+     "E_cross_session_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 25,
+       "fp": 0,
+       "tn": 105,
+       "tp": 1
+      },
+      "f1": 0.0606,
+      "fn": 31,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.0312,
+      "recall_excl_blind": 0.0385,
+      "tn": 105,
+      "tp": 1
+     },
+     "abstained": 5,
+     "overlap": {
+      "attacks_missed_by_both": 0,
+      "deterministic_only_that_are_attacks": 32,
+      "flagged_by_both": 0,
+      "flagged_by_deterministic_only": 71,
+      "flagged_by_ml_only": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0,
+      "sighted_attacks_missed_by_both": 0
+     },
+     "overlap_vs_cross_session_only": {
+      "flagged_by_both": 0,
+      "flagged_by_cross_session_only": 1,
+      "flagged_by_ml_only": 0,
+      "ml_only_sighted_attacks": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0
+     },
+     "scored_sessions": 137
+    },
+    "TEST_C": {
+     "A_deterministic": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 89,
+       "tn": 227,
+       "tp": 40
+      },
+      "f1": 0.6426,
+      "fn": 0,
+      "fp": 89,
+      "fpr": 0.2816,
+      "precision": 0.4734,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 227,
+      "tp": 80
+     },
+     "B_cross_session": {
+      "confusion_excl_blind": {
+       "fn": 25,
+       "fp": 0,
+       "tn": 316,
+       "tp": 15
+      },
+      "f1": 0.3158,
+      "fn": 65,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.375,
+      "tn": 316,
+      "tp": 15
+     },
+     "C_ml_only": {
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "fn": 80,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "tn": 316,
+      "tp": 0
+     },
+     "D_deterministic_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 89,
+       "tn": 227,
+       "tp": 40
+      },
+      "f1": 0.6426,
+      "fn": 0,
+      "fp": 89,
+      "fpr": 0.2816,
+      "precision": 0.4734,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "tn": 227,
+      "tp": 80
+     },
+     "E_cross_session_plus_ml": {
+      "confusion_excl_blind": {
+       "fn": 25,
+       "fp": 0,
+       "tn": 316,
+       "tp": 15
+      },
+      "f1": 0.3158,
+      "fn": 65,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.375,
+      "tn": 316,
+      "tp": 15
+     },
+     "abstained": 30,
+     "overlap": {
+      "attacks_missed_by_both": 0,
+      "deterministic_only_that_are_attacks": 80,
+      "flagged_by_both": 0,
+      "flagged_by_deterministic_only": 169,
+      "flagged_by_ml_only": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0,
+      "sighted_attacks_missed_by_both": 0
+     },
+     "overlap_vs_cross_session_only": {
+      "flagged_by_both": 0,
+      "flagged_by_cross_session_only": 15,
+      "flagged_by_ml_only": 0,
+      "ml_only_sighted_attacks": 0,
+      "ml_only_that_are_attacks": 0,
+      "ml_only_that_are_benign": 0
+     },
+     "scored_sessions": 396
+    }
+   },
+   "seed_stability": {
+    "fpr": {
+     "max": 0.0,
+     "mean": 0.0,
+     "min": 0.0,
+     "range": 0.0
+    },
+    "pr_auc": {
+     "max": 0.6608,
+     "mean": 0.6608,
+     "min": 0.6608,
+     "range": 0.0
+    },
+    "recall_excl_blind": {
+     "max": 0.0,
+     "mean": 0.0,
+     "min": 0.0,
+     "range": 0.0
+    },
+    "seeds": [
+     11,
+     23,
+     42,
+     101,
+     2026
+    ]
+   },
+   "threshold": 145.54726
+  }
+ },
+ "operating_quantile": 0.98,
+ "quantiles": [
+  0.9,
+  0.95,
+  0.98,
+  0.99
+ ],
+ "results": [
+  {
+   "config": {
+    "aggregate": "topk_mean",
+    "constant_novelty": 3.0,
+    "mad_to_sigma": 1.4826,
+    "min_scale": 1e-06,
+    "top_k": 3
+   },
+   "fit_seconds": 0.005,
+   "model": "robust-z-k3",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0213,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.3333,
+     "pr_auc_excl_blind": 0.0909,
+     "roc_auc": 0.5
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0216,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.3551,
+     "pr_auc_excl_blind": 0.3067,
+     "roc_auc": 0.6878
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0218,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.4511,
+     "pr_auc_excl_blind": 0.1903,
+     "roc_auc": 0.6636
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 60,
+       "fp": 17,
+       "tn": 299,
+       "tp": 20
+      },
+      "confusion_excl_blind": {
+       "fn": 34,
+       "fp": 17,
+       "tn": 299,
+       "tp": 6
+      },
+      "f1": 0.3419,
+      "f1_excl_blind": 0.1905,
+      "fpr": 0.0538,
+      "precision": 0.5405,
+      "recall": 0.25,
+      "recall_excl_blind": 0.15,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 14.475643,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 74,
+       "fp": 3,
+       "tn": 313,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 3,
+       "tn": 313,
+       "tp": 2
+      },
+      "f1": 0.1348,
+      "f1_excl_blind": 0.0889,
+      "fpr": 0.0095,
+      "precision": 0.6667,
+      "recall": 0.075,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 15.227216,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 75,
+       "fp": 2,
+       "tn": 314,
+       "tp": 5
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 2,
+       "tn": 314,
+       "tp": 2
+      },
+      "f1": 0.1149,
+      "f1_excl_blind": 0.0909,
+      "fpr": 0.0063,
+      "precision": 0.7143,
+      "recall": 0.0625,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 15.564512,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 76,
+       "fp": 1,
+       "tn": 315,
+       "tp": 4
+      },
+      "confusion_excl_blind": {
+       "fn": 39,
+       "fp": 1,
+       "tn": 315,
+       "tp": 1
+      },
+      "f1": 0.0941,
+      "f1_excl_blind": 0.0476,
+      "fpr": 0.0032,
+      "precision": 0.8,
+      "recall": 0.05,
+      "recall_excl_blind": 0.025,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 15.816948,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "aggregate": "topk_mean",
+    "constant_novelty": 3.0,
+    "mad_to_sigma": 1.4826,
+    "min_scale": 1e-06,
+    "top_k": 5
+   },
+   "fit_seconds": 0.006,
+   "model": "robust-z-k5",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0208,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.3333,
+     "pr_auc_excl_blind": 0.0909,
+     "roc_auc": 0.5
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.021,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.3434,
+     "pr_auc_excl_blind": 0.2961,
+     "roc_auc": 0.661
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0207,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.4511,
+     "pr_auc_excl_blind": 0.1903,
+     "roc_auc": 0.6636
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 60,
+       "fp": 17,
+       "tn": 299,
+       "tp": 20
+      },
+      "confusion_excl_blind": {
+       "fn": 34,
+       "fp": 17,
+       "tn": 299,
+       "tp": 6
+      },
+      "f1": 0.3419,
+      "f1_excl_blind": 0.1905,
+      "fpr": 0.0538,
+      "precision": 0.5405,
+      "recall": 0.25,
+      "recall_excl_blind": 0.15,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 9.885386,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 74,
+       "fp": 3,
+       "tn": 313,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 3,
+       "tn": 313,
+       "tp": 2
+      },
+      "f1": 0.1348,
+      "f1_excl_blind": 0.0889,
+      "fpr": 0.0095,
+      "precision": 0.6667,
+      "recall": 0.075,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 10.33633,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 75,
+       "fp": 2,
+       "tn": 314,
+       "tp": 5
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 2,
+       "tn": 314,
+       "tp": 2
+      },
+      "f1": 0.1149,
+      "f1_excl_blind": 0.0909,
+      "fpr": 0.0063,
+      "precision": 0.7143,
+      "recall": 0.0625,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 10.538707,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 76,
+       "fp": 1,
+       "tn": 315,
+       "tp": 4
+      },
+      "confusion_excl_blind": {
+       "fn": 39,
+       "fp": 1,
+       "tn": 315,
+       "tp": 1
+      },
+      "f1": 0.0941,
+      "f1_excl_blind": 0.0476,
+      "fpr": 0.0032,
+      "precision": 0.8,
+      "recall": 0.05,
+      "recall_excl_blind": 0.025,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 10.690169,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "aggregate": "topk_mean",
+    "constant_novelty": 3.0,
+    "mad_to_sigma": 1.4826,
+    "min_scale": 1e-06,
+    "top_k": 10
+   },
+   "fit_seconds": 0.005,
+   "model": "robust-z-k10",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0205,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.4,
+     "pr_auc_excl_blind": 0.1176,
+     "roc_auc": 0.625
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0209,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.3434,
+     "pr_auc_excl_blind": 0.2961,
+     "roc_auc": 0.661
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0208,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.4511,
+     "pr_auc_excl_blind": 0.1903,
+     "roc_auc": 0.6636
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 60,
+       "fp": 17,
+       "tn": 299,
+       "tp": 20
+      },
+      "confusion_excl_blind": {
+       "fn": 34,
+       "fp": 17,
+       "tn": 299,
+       "tp": 6
+      },
+      "f1": 0.3419,
+      "f1_excl_blind": 0.1905,
+      "fpr": 0.0538,
+      "precision": 0.5405,
+      "recall": 0.25,
+      "recall_excl_blind": 0.15,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 6.442693,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 74,
+       "fp": 3,
+       "tn": 313,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 3,
+       "tn": 313,
+       "tp": 2
+      },
+      "f1": 0.1348,
+      "f1_excl_blind": 0.0889,
+      "fpr": 0.0095,
+      "precision": 0.6667,
+      "recall": 0.075,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 6.668165,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 75,
+       "fp": 2,
+       "tn": 314,
+       "tp": 5
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 2,
+       "tn": 314,
+       "tp": 2
+      },
+      "f1": 0.1149,
+      "f1_excl_blind": 0.0909,
+      "fpr": 0.0063,
+      "precision": 0.7143,
+      "recall": 0.0625,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 6.769354,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 76,
+       "fp": 1,
+       "tn": 315,
+       "tp": 4
+      },
+      "confusion_excl_blind": {
+       "fn": 39,
+       "fp": 1,
+       "tn": 315,
+       "tp": 1
+      },
+      "f1": 0.0941,
+      "f1_excl_blind": 0.0476,
+      "fpr": 0.0032,
+      "precision": 0.8,
+      "recall": 0.05,
+      "recall_excl_blind": 0.025,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 6.845084,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "aggregate": "sum",
+    "constant_novelty": 3.0,
+    "mad_to_sigma": 1.4826,
+    "min_scale": 1e-06,
+    "top_k": 5
+   },
+   "fit_seconds": 0.006,
+   "model": "robust-z-sum",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0203,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.859,
+     "pr_auc_excl_blind": 0.445,
+     "roc_auc": 0.9376
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0205,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.3307,
+     "pr_auc_excl_blind": 0.2982,
+     "roc_auc": 0.7119
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0205,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.6608,
+     "pr_auc_excl_blind": 0.4361,
+     "roc_auc": 0.9106
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 77,
+       "fp": 0,
+       "tn": 316,
+       "tp": 3
+      },
+      "confusion_excl_blind": {
+       "fn": 39,
+       "fp": 0,
+       "tn": 316,
+       "tp": 1
+      },
+      "f1": 0.0723,
+      "f1_excl_blind": 0.0488,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.0375,
+      "recall_excl_blind": 0.025,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 137.060553,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 141.838159,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 145.54726,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 146.33884,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {},
+   "fit_seconds": 0.002,
+   "model": "mean-distance",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.012,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.6261,
+     "pr_auc_excl_blind": 0.2403,
+     "roc_auc": 0.8184
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0118,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.2642,
+     "pr_auc_excl_blind": 0.2165,
+     "roc_auc": 0.5765
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0121,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.6299,
+     "pr_auc_excl_blind": 0.3683,
+     "roc_auc": 0.8116
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.1714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 25.482599,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.1714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 25.592082,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.1714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 25.718091,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 18,
+       "tn": 87,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.1714,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 0,
+       "tn": 316,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 25.739735,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "contamination": "auto",
+    "max_samples": "auto",
+    "n_estimators": 200,
+    "seed": 42
+   },
+   "fit_seconds": 0.238,
+   "model": "isolation-forest",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0315,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.3934,
+     "pr_auc_excl_blind": 0.253,
+     "roc_auc": 0.6368
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.032,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.2621,
+     "pr_auc_excl_blind": 0.2422,
+     "roc_auc": 0.5839
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0135,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.1935,
+     "pr_auc_excl_blind": 0.1691,
+     "roc_auc": 0.4495
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 2,
+       "tn": 103,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 2,
+       "tn": 103,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.019,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 5,
+       "tn": 311,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 5,
+       "tn": 311,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0158,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 0.640095,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 2,
+       "tn": 103,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 2,
+       "tn": 103,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.019,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 5,
+       "tn": 311,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 5,
+       "tn": 311,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0158,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 0.641987,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 1,
+       "tn": 104,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 1,
+       "tn": 104,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0095,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 4,
+       "tn": 312,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 4,
+       "tn": 312,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0127,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 0.646854,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 1,
+       "tn": 104,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 1,
+       "tn": 104,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0095,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 80,
+       "fp": 2,
+       "tn": 314,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 40,
+       "fp": 2,
+       "tn": 314,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0063,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 0.649284,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "n_neighbors": 20,
+    "seed": 42
+   },
+   "fit_seconds": 0.026,
+   "model": "lof",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.3175,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.3538,
+     "pr_auc_excl_blind": 0.5151,
+     "roc_auc": 0.4278
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.014,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.227,
+     "pr_auc_excl_blind": 0.2173,
+     "roc_auc": 0.317
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0312,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.5043,
+     "pr_auc_excl_blind": 0.2456,
+     "roc_auc": 0.7666
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 32
+      },
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 26
+      },
+      "f1": 0.4238,
+      "f1_excl_blind": 0.3741,
+      "fpr": 0.8286,
+      "precision": 0.2689,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 54,
+       "fp": 15,
+       "tn": 301,
+       "tp": 26
+      },
+      "confusion_excl_blind": {
+       "fn": 30,
+       "fp": 15,
+       "tn": 301,
+       "tp": 10
+      },
+      "f1": 0.4298,
+      "f1_excl_blind": 0.3077,
+      "fpr": 0.0475,
+      "precision": 0.6341,
+      "recall": 0.325,
+      "recall_excl_blind": 0.25,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 2.792184,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 32
+      },
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 26
+      },
+      "f1": 0.4238,
+      "f1_excl_blind": 0.3741,
+      "fpr": 0.8286,
+      "precision": 0.2689,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 68,
+       "fp": 10,
+       "tn": 306,
+       "tp": 12
+      },
+      "confusion_excl_blind": {
+       "fn": 36,
+       "fp": 10,
+       "tn": 306,
+       "tp": 4
+      },
+      "f1": 0.2353,
+      "f1_excl_blind": 0.1481,
+      "fpr": 0.0316,
+      "precision": 0.5455,
+      "recall": 0.15,
+      "recall_excl_blind": 0.1,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 2.864456,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 32
+      },
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 26
+      },
+      "f1": 0.4238,
+      "f1_excl_blind": 0.3741,
+      "fpr": 0.8286,
+      "precision": 0.2689,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 74,
+       "fp": 8,
+       "tn": 308,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 38,
+       "fp": 8,
+       "tn": 308,
+       "tp": 2
+      },
+      "f1": 0.1277,
+      "f1_excl_blind": 0.08,
+      "fpr": 0.0253,
+      "precision": 0.4286,
+      "recall": 0.075,
+      "recall_excl_blind": 0.05,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 2.931106,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 32
+      },
+      "confusion_excl_blind": {
+       "fn": 0,
+       "fp": 87,
+       "tn": 18,
+       "tp": 26
+      },
+      "f1": 0.4238,
+      "f1_excl_blind": 0.3741,
+      "fpr": 0.8286,
+      "precision": 0.2689,
+      "recall": 1.0,
+      "recall_excl_blind": 1.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 76,
+       "fp": 6,
+       "tn": 310,
+       "tp": 4
+      },
+      "confusion_excl_blind": {
+       "fn": 39,
+       "fp": 6,
+       "tn": 310,
+       "tp": 1
+      },
+      "f1": 0.0889,
+      "f1_excl_blind": 0.0426,
+      "fpr": 0.019,
+      "precision": 0.4,
+      "recall": 0.05,
+      "recall_excl_blind": 0.025,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 2.970145,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "gamma": "scale",
+    "nu": 0.05,
+    "seed": 42
+   },
+   "fit_seconds": 0.004,
+   "model": "ocsvm",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0036,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.6206,
+     "pr_auc_excl_blind": 0.2234,
+     "roc_auc": 0.819
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0036,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.232,
+     "pr_auc_excl_blind": 0.2169,
+     "roc_auc": 0.3435
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0033,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.6303,
+     "pr_auc_excl_blind": 0.3886,
+     "roc_auc": 0.8356
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 63,
+       "fp": 8,
+       "tn": 308,
+       "tp": 17
+      },
+      "confusion_excl_blind": {
+       "fn": 32,
+       "fp": 8,
+       "tn": 308,
+       "tp": 8
+      },
+      "f1": 0.3238,
+      "f1_excl_blind": 0.2857,
+      "fpr": 0.0253,
+      "precision": 0.68,
+      "recall": 0.2125,
+      "recall_excl_blind": 0.2,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": -11.23023,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 72,
+       "fp": 4,
+       "tn": 312,
+       "tp": 8
+      },
+      "confusion_excl_blind": {
+       "fn": 36,
+       "fp": 4,
+       "tn": 312,
+       "tp": 4
+      },
+      "f1": 0.1739,
+      "f1_excl_blind": 0.1667,
+      "fpr": 0.0127,
+      "precision": 0.6667,
+      "recall": 0.1,
+      "recall_excl_blind": 0.1,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": -11.153705,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 74,
+       "fp": 4,
+       "tn": 312,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 36,
+       "fp": 4,
+       "tn": 312,
+       "tp": 4
+      },
+      "f1": 0.1333,
+      "f1_excl_blind": 0.1667,
+      "fpr": 0.0127,
+      "precision": 0.6,
+      "recall": 0.075,
+      "recall_excl_blind": 0.1,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": -11.147647,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 32,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 76,
+       "fp": 4,
+       "tn": 312,
+       "tp": 4
+      },
+      "confusion_excl_blind": {
+       "fn": 36,
+       "fp": 4,
+       "tn": 312,
+       "tp": 4
+      },
+      "f1": 0.0909,
+      "f1_excl_blind": 0.1667,
+      "fpr": 0.0127,
+      "precision": 0.5,
+      "recall": 0.05,
+      "recall_excl_blind": 0.1,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": -11.141476,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  },
+  {
+   "config": {
+    "contamination": 0.05,
+    "seed": 42,
+    "support_fraction": null
+   },
+   "fit_seconds": 0.095,
+   "model": "robust-covariance",
+   "ranking": {
+    "SELECT": {
+     "inference_ms_per_session": 0.0163,
+     "non_finite_scores": 0,
+     "positive_rate": 0.3333,
+     "pr_auc": 0.2291,
+     "pr_auc_excl_blind": 0.2055,
+     "roc_auc": 0.2024
+    },
+    "TEST_A": {
+     "inference_ms_per_session": 0.0301,
+     "non_finite_scores": 0,
+     "positive_rate": 0.2336,
+     "pr_auc": 0.4884,
+     "pr_auc_excl_blind": 0.4788,
+     "roc_auc": 0.7568
+    },
+    "TEST_C": {
+     "inference_ms_per_session": 0.0225,
+     "non_finite_scores": 0,
+     "positive_rate": 0.202,
+     "pr_auc": 0.4209,
+     "pr_auc_excl_blind": 0.3665,
+     "roc_auc": 0.8283
+    }
+   },
+   "sweep": {
+    "0.9": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 20,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "f1": 0.3158,
+      "f1_excl_blind": 0.375,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.2308,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 32,
+       "fp": 54,
+       "tn": 262,
+       "tp": 48
+      },
+      "confusion_excl_blind": {
+       "fn": 6,
+       "fp": 54,
+       "tn": 262,
+       "tp": 34
+      },
+      "f1": 0.5275,
+      "f1_excl_blind": 0.5312,
+      "fpr": 0.1709,
+      "precision": 0.4706,
+      "recall": 0.6,
+      "recall_excl_blind": 0.85,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 3356.062603,
+     "threshold_method": "nearest-rank q=0.9 on 240 generator-C normal validation sessions"
+    },
+    "0.95": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 20,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "f1": 0.3158,
+      "f1_excl_blind": 0.375,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.2308,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 42,
+       "fp": 51,
+       "tn": 265,
+       "tp": 38
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 51,
+       "tn": 265,
+       "tp": 30
+      },
+      "f1": 0.4497,
+      "f1_excl_blind": 0.4959,
+      "fpr": 0.1614,
+      "precision": 0.427,
+      "recall": 0.475,
+      "recall_excl_blind": 0.75,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 3664.598439,
+     "threshold_method": "nearest-rank q=0.95 on 240 generator-C normal validation sessions"
+    },
+    "0.98": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 20,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "f1": 0.3158,
+      "f1_excl_blind": 0.375,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.2308,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 51,
+       "fp": 44,
+       "tn": 272,
+       "tp": 29
+      },
+      "confusion_excl_blind": {
+       "fn": 14,
+       "fp": 44,
+       "tn": 272,
+       "tp": 26
+      },
+      "f1": 0.3791,
+      "f1_excl_blind": 0.4727,
+      "fpr": 0.1392,
+      "precision": 0.3973,
+      "recall": 0.3625,
+      "recall_excl_blind": 0.65,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 3866.069406,
+     "threshold_method": "nearest-rank q=0.98 on 240 generator-C normal validation sessions"
+    },
+    "0.99": {
+     "SELECT": {
+      "abstained": 0,
+      "confusion": {
+       "fn": 50,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "confusion_excl_blind": {
+       "fn": 10,
+       "fp": 0,
+       "tn": 100,
+       "tp": 0
+      },
+      "f1": 0.0,
+      "f1_excl_blind": 0.0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_excl_blind": 0.0,
+      "scored": 150,
+      "sessions": 150
+     },
+     "TEST_A": {
+      "abstained": 5,
+      "confusion": {
+       "fn": 26,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "confusion_excl_blind": {
+       "fn": 20,
+       "fp": 0,
+       "tn": 105,
+       "tp": 6
+      },
+      "f1": 0.3158,
+      "f1_excl_blind": 0.375,
+      "fpr": 0.0,
+      "precision": 1.0,
+      "recall": 0.1875,
+      "recall_excl_blind": 0.2308,
+      "scored": 137,
+      "sessions": 142
+     },
+     "TEST_C": {
+      "abstained": 30,
+      "confusion": {
+       "fn": 55,
+       "fp": 43,
+       "tn": 273,
+       "tp": 25
+      },
+      "confusion_excl_blind": {
+       "fn": 18,
+       "fp": 43,
+       "tn": 273,
+       "tp": 22
+      },
+      "f1": 0.3378,
+      "f1_excl_blind": 0.419,
+      "fpr": 0.1361,
+      "precision": 0.3676,
+      "recall": 0.3125,
+      "recall_excl_blind": 0.55,
+      "scored": 396,
+      "sessions": 426
+     },
+     "threshold": 4121.253678,
+     "threshold_method": "nearest-rank q=0.99 on 240 generator-C normal validation sessions"
+    }
+   },
+   "train_rows": 396,
+   "val_rows": 240
+  }
+ ],
+ "seed_stability": {
+  "fpr": {
+   "max": 0.0,
+   "mean": 0.0,
+   "min": 0.0,
+   "range": 0.0
+  },
+  "pr_auc": {
+   "max": 0.6608,
+   "mean": 0.6608,
+   "min": 0.6608,
+   "range": 0.0
+  },
+  "recall_excl_blind": {
+   "max": 0.0,
+   "mean": 0.0,
+   "min": 0.0,
+   "range": 0.0
+  },
+  "seeds": [
+   11,
+   23,
+   42,
+   101,
+   2026
+  ]
+ },
+ "seeds": [
+  11,
+  23,
+  42,
+  101,
+  2026
+ ],
+ "selection": {
+  "chosen": "robust-z-sum",
+  "criterion": "label-free usability gate (flag rate <= 0.1 on every held-out split), then PR-AUC excluding blind-stripping attacks on the SELECT split (generator B, scenarios withheld from training). Held-out LABELS on TEST_C and TEST_A were not consulted for any choice.",
+  "gate_max_flag_rate": 0.1,
+  "ranking": [
+   [
+    "lof",
+    0.5151
+   ],
+   [
+    "robust-z-sum",
+    0.445
+   ],
+   [
+    "isolation-forest",
+    0.253
+   ],
+   [
+    "mean-distance",
+    0.2403
+   ],
+   [
+    "ocsvm",
+    0.2234
+   ],
+   [
+    "robust-covariance",
+    0.2055
+   ],
+   [
+    "robust-z-k10",
+    0.1176
+   ],
+   [
+    "robust-z-k3",
+    0.0909
+   ],
+   [
+    "robust-z-k5",
+    0.0909
+   ]
+  ],
+  "rejected_by_gate": [
+   [
+    "lof",
+    {
+     "SELECT": 0.0,
+     "TEST_A": 0.8686,
+     "TEST_C": 0.0354
+    }
+   ],
+   [
+    "mean-distance",
+    {
+     "SELECT": 0.0,
+     "TEST_A": 0.1314,
+     "TEST_C": 0.0
+    }
+   ],
+   [
+    "robust-covariance",
+    {
+     "SELECT": 0.0,
+     "TEST_A": 0.0438,
+     "TEST_C": 0.1843
+    }
+   ]
+  ]
+ },
+ "shipped": {
+  "model": "robust-z-sum",
+  "rationale": "Selected by the declared criterion (chosen=robust-z-sum) and independently satisfies the \u00a715 operational criteria: stdlib only (no runtime dependency), native per-feature explanation, seed-independent output. NOTE this is a PRIORITISATION signal: it produced no unique true detection on any held-out split."
+ }
+}

@@ -1,0 +1,518 @@
+{
+ "ablation": {
+  "A_protocol_only": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.3476,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 12,
+    "fpr": 0.1143,
+    "pr_auc_excl_blind": 0.349,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 93,
+    "tp": 0
+   },
+   "TEST_C": {
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.6031,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "columns": 67,
+   "threshold": 62.4663
+  },
+  "B_tls_only": {
+   "SELECT": {
+    "f1": 0.8333,
+    "fn": 0,
+    "fp": 20,
+    "fpr": 0.2,
+    "pr_auc_excl_blind": 0.3333,
+    "precision": 0.7143,
+    "recall": 1.0,
+    "tn": 80,
+    "tp": 50
+   },
+   "TEST_A": {
+    "f1": 0.6737,
+    "fn": 0,
+    "fp": 31,
+    "fpr": 0.2952,
+    "pr_auc_excl_blind": 0.4561,
+    "precision": 0.5079,
+    "recall": 1.0,
+    "tn": 74,
+    "tp": 32
+   },
+   "TEST_C": {
+    "f1": 0.7018,
+    "fn": 0,
+    "fp": 68,
+    "fpr": 0.2152,
+    "pr_auc_excl_blind": 0.3704,
+    "precision": 0.5405,
+    "recall": 1.0,
+    "tn": 248,
+    "tp": 80
+   },
+   "columns": 39,
+   "threshold": 33.0
+  },
+  "C_context_only": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.1326,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.1455,
+    "fn": 28,
+    "fp": 19,
+    "fpr": 0.181,
+    "pr_auc_excl_blind": 0.1617,
+    "precision": 0.1739,
+    "recall": 0.125,
+    "tn": 86,
+    "tp": 4
+   },
+   "TEST_C": {
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.1133,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "columns": 30,
+   "threshold": 31.7986
+  },
+  "D_all": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.445,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.2982,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 105,
+    "tp": 0
+   },
+   "TEST_C": {
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.4361,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "columns": 164,
+   "threshold": 145.5473
+  },
+  "E_all_minus_context": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.4955,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.3395,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 105,
+    "tp": 0
+   },
+   "TEST_C": {
+    "f1": 0.1176,
+    "fn": 75,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.6434,
+    "precision": 1.0,
+    "recall": 0.0625,
+    "tn": 316,
+    "tp": 5
+   },
+   "columns": 134,
+   "threshold": 115.0282
+  },
+  "F_all_minus_structure": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.2954,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.3437,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 105,
+    "tp": 0
+   },
+   "TEST_C": {
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.6093,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "columns": 146,
+   "threshold": 115.0402
+  },
+  "G_no_cipher": {
+   "SELECT": {
+    "f1": 0.0,
+    "fn": 50,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.445,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 100,
+    "tp": 0
+   },
+   "TEST_A": {
+    "f1": 0.0,
+    "fn": 32,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.2982,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 105,
+    "tp": 0
+   },
+   "TEST_C": {
+    "f1": 0.0,
+    "fn": 80,
+    "fp": 0,
+    "fpr": 0.0,
+    "pr_auc_excl_blind": 0.4361,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tn": 316,
+    "tp": 0
+   },
+   "columns": 152,
+   "threshold": 139.5473
+  }
+ },
+ "anti_circularity": {
+  "interpretation": "A high Jaccard with the rules engine and zero unique detections would mean the model re-derived the rules. A low Jaccard with zero unique TRUE detections means it is looking somewhere else and finding nothing useful there.",
+  "with_context": {
+   "TEST_A": {
+    "jaccard_with_rules": 0.0,
+    "ml_flagged": 0,
+    "ml_only": 0,
+    "ml_only_attacks": 0,
+    "rules_flagged": 71
+   },
+   "TEST_C": {
+    "jaccard_with_rules": 0.0,
+    "ml_flagged": 0,
+    "ml_only": 0,
+    "ml_only_attacks": 0,
+    "rules_flagged": 169
+   }
+  },
+  "without_context": {
+   "TEST_A": {
+    "jaccard_with_rules": 0.0,
+    "ml_flagged": 0,
+    "ml_only": 0,
+    "ml_only_attacks": 0,
+    "rules_flagged": 71
+   },
+   "TEST_C": {
+    "jaccard_with_rules": 0.0296,
+    "ml_flagged": 5,
+    "ml_only": 0,
+    "ml_only_attacks": 0,
+    "rules_flagged": 169
+   }
+  }
+ },
+ "benign_variation": {
+  "overall": {
+   "false_positive_rate": 0.0181,
+   "flagged": 6,
+   "sessions": 332
+  },
+  "per_scenario": {
+   "B08_config_change": {
+    "description": "server legitimately stops advertising mid-capture",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 60.7606,
+    "sessions": 36,
+    "threshold": 145.5473
+   },
+   "B09_mixed_legit": {
+    "description": "heterogeneous but legitimate client population",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 50.8593,
+    "sessions": 40,
+    "threshold": 145.5473
+   },
+   "B16_legacy_tls": {
+    "description": "obsolete TLS versions, legitimately negotiated",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 48.5074,
+    "sessions": 30,
+    "threshold": 145.5473
+   },
+   "C07_reject_upgrade": {
+    "description": "server refuses an upgrade the client did request",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 112.0004,
+    "sessions": 30,
+    "threshold": 145.5473
+   },
+   "C09_mixed_legit": {
+    "description": "heterogeneous but legitimate client population",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 105.7281,
+    "sessions": 40,
+    "threshold": 145.5473
+   },
+   "C10_config_change": {
+    "description": "server legitimately starts advertising mid-capture",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 109.1954,
+    "sessions": 36,
+    "threshold": 145.5473
+   },
+   "C15_implicit_smtps": {
+    "description": "implicit TLS, no upgrade behaviour at all",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 131.3409,
+    "sessions": 30,
+    "threshold": 145.5473
+   },
+   "C16_implicit_pop3s": {
+    "description": "implicit TLS, no upgrade behaviour at all",
+    "false_positive_rate": 0.2,
+    "flagged": 6,
+    "median_score": 135.7702,
+    "sessions": 30,
+    "threshold": 145.5473
+   },
+   "C17_legacy_tls": {
+    "description": "obsolete TLS versions, legitimately negotiated",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 95.0294,
+    "sessions": 30,
+    "threshold": 145.5473
+   },
+   "C18_reset_teardown": {
+    "description": "abrupt RST teardown of otherwise normal traffic",
+    "false_positive_rate": 0.0,
+    "flagged": 0,
+    "median_score": 90.6716,
+    "sessions": 30,
+    "threshold": 145.5473
+   }
+  },
+  "threshold": 145.5473
+ },
+ "generator_artifact": {
+  "cv_accuracy_mean": 0.986,
+  "cv_accuracy_std": 0.0224,
+  "majority_class_rate": 0.5248,
+  "question": "can generator identity be recovered from the feature vector?",
+  "top_columns": [
+   {
+    "column": "duration_s",
+    "importance": 0.18104
+   },
+   {
+    "column": "frame_span",
+    "importance": 0.17094
+   },
+   {
+    "column": "packet_count_log",
+    "importance": 0.14474
+   },
+   {
+    "column": "port_class=smtp",
+    "importance": 0.07837
+   },
+   {
+    "column": "events_per_packet",
+    "importance": 0.06636
+   },
+   {
+    "column": "tls_cipher=0x1302",
+    "importance": 0.05893
+   },
+   {
+    "column": "port_class=submission",
+    "importance": 0.05619
+   },
+   {
+    "column": "tls_cipher=0xc02f",
+    "importance": 0.02364
+   },
+   {
+    "column": "starttls_accepted=UNKNOWN",
+    "importance": 0.02193
+   },
+   {
+    "column": "tls_version=TLS1.2",
+    "importance": 0.01686
+   },
+   {
+    "column": "tls_version_ordinal",
+    "importance": 0.01469
+   },
+   {
+    "column": "tls_version=TLS1.3",
+    "importance": 0.01357
+   },
+   {
+    "column": "tls_cipher=0x1301",
+    "importance": 0.00905
+   },
+   {
+    "column": "n_event_kinds",
+    "importance": 0.00875
+   },
+   {
+    "column": "n_transitions",
+    "importance": 0.00712
+   }
+  ],
+  "verdict": "SEPARABLE: features carry generator identity"
+ },
+ "generator_artifact_reduced": {
+  "columns": 126,
+  "cv_accuracy_mean": 0.7468,
+  "majority_class_rate": 0.5248,
+  "removed": [
+   "STRUCTURE group",
+   "port_class",
+   "tls_cipher"
+  ],
+  "top_columns": [
+   {
+    "column": "tls_version=TLS1.2",
+    "importance": 0.07824
+   },
+   {
+    "column": "starttls_accepted=UNKNOWN",
+    "importance": 0.07365
+   },
+   {
+    "column": "baseline_size",
+    "importance": 0.07355
+   },
+   {
+    "column": "tls_version_ordinal",
+    "importance": 0.0728
+   },
+   {
+    "column": "n_events",
+    "importance": 0.06952
+   },
+   {
+    "column": "n_event_kinds",
+    "importance": 0.06016
+   },
+   {
+    "column": "n_transitions",
+    "importance": 0.05755
+   },
+   {
+    "column": "tls_version=TLS1.3",
+    "importance": 0.05334
+   },
+   {
+    "column": "deviating_features",
+    "importance": 0.05064
+   },
+   {
+    "column": "baseline_consistency",
+    "importance": 0.04992
+   }
+  ],
+  "verdict": "STILL SEPARABLE"
+ },
+ "performance": {
+  "end_to_end_ms_per_session": 0.1862,
+  "feature_extraction_ms_per_session": 0.1851,
+  "fit_rows": 396,
+  "fit_seconds": 0.005,
+  "note": "end-to-end includes Phase-5 context rebuild and per-session explanation",
+  "scoring_ms_per_session": 0.022
+ }
+}

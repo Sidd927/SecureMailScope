@@ -43,8 +43,17 @@ ML/AI never writes a finding or changes a fact.
 ## 4. Open (non-blocking) questions
 
 OQ-26 local-LLM packaging · OQ-29 NAT identity · OQ-30 contrast-rule default · OQ-31/32 evidence
-inferences · OQ-33r real-server corpus · OQ-36/37 ML model selection & value · OQ-38 tshark output mode
-· OQ-40 offline PDF renderer · OQ-41 SPA framework. All deferred to their implementation phase.
+inferences · OQ-33r real-server corpus · OQ-38 tshark output mode · OQ-40 offline PDF renderer ·
+OQ-41 SPA framework. All deferred to their implementation phase.
+
+**Closed by Phase 6 (ADR-0015, docs 16–18):** OQ-36 (model selection) — no candidate wins on
+detection; `robust-z-sum` ships as a prioritisation signal. OQ-37 (complementary value) — **closed
+negative**: zero unique true detections on all three held-out splits.
+
+**Opened by Phase 6:** OQ-45 — does real multi-vendor traffic change the ML answer? Unanswerable on
+synthetic corpora: the feature space is 98.6 % separable by generator (17 §10). Blocked on OQ-33r.
+OQ-46 — `Completeness.TRUNCATED` is never assigned by the pipeline, making the Phase-5 comparability
+guard dead code (16 §9.1). OQ-47 — TCP-segmented multi-line SMTP replies can lose `STARTTLS` (16 §9.2).
 
 ## 5. Stop conditions status (Phase-11 §36)
 
@@ -55,8 +64,11 @@ that *would* trigger — "implementation about to begin before approval" — is 
 ## 6. Decisions requiring human approval
 
 1. **tshark as the hard dependency** (ADR-0001) — acceptable for offline SIH deployment? (bundling plan exists.)
-2. **ML fallback stance** (ADR-0006 / 05 §5) — if the bake-off shows ML only qualifies as a secondary
-   prioritisation signal, is that acceptable as the A-02 answer, with the limitation stated? (Recommended: yes.)
+2. ~~**ML fallback stance** (ADR-0006 / 05 §5)~~ — **resolved by evidence, Phase 6.** The bake-off
+   showed exactly the fallback case: ML qualifies only as a secondary prioritisation signal. Shipped
+   on that basis with the limitation stated (ADR-0015). Remaining question for the owner: is that
+   acceptable to present as the A-02 answer at SIH? (Recommended: yes — the honest negative result
+   is stronger than an unsupported detection claim, and the evaluation rigour is itself the story.)
 3. **Contrast-rule default OFF** (ADR-0005 / OQ-30) — precision/recall policy: default off, on when a
    control endpoint exists. Confirm.
 4. **Optional LLM included at all** (ADR-0008) — build the analyst NL layer, or ship deterministic-only

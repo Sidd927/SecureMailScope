@@ -1,0 +1,5319 @@
+{
+ "captures": [
+  {
+   "generator": "B",
+   "packets": 764,
+   "pcap": "B01_all_upgrade.pcap",
+   "scenario": "B01_all_upgrade",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 751,
+   "pcap": "B02_legit_decline.pcap",
+   "scenario": "B02_legit_decline",
+   "streams": [
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 750,
+   "pcap": "B03_no_support.pcap",
+   "scenario": "B03_no_support",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_NO_SUPPORT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 757,
+   "pcap": "B04_strip_with_control.pcap",
+   "scenario": "B04_strip_with_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 762,
+   "pcap": "B05_strip_blind.pcap",
+   "scenario": "B05_strip_blind",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 748,
+   "pcap": "B06_strip_command.pcap",
+   "scenario": "B06_strip_command",
+   "streams": [
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "strip_command",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "ATTACK_STRIP_COMMAND",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 543,
+   "pcap": "B07_failed_upgrade.pcap",
+   "scenario": "B07_failed_upgrade",
+   "streams": [
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "failed_upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_FAILED_UPGRADE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 679,
+   "pcap": "B08_config_change.pcap",
+   "scenario": "B08_config_change",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.21",
+     "client_port": 41011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42010,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.22",
+     "client_port": 42011,
+     "ground_truth": "BENIGN_CONFIG_CHANGE",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 742,
+   "pcap": "B09_mixed_legit.pcap",
+   "scenario": "B09_mixed_legit",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "smtp",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 677,
+   "pcap": "B10_imap_strip_control.pcap",
+   "scenario": "B10_imap_strip_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 534,
+   "pcap": "B11_imap_legit.pcap",
+   "scenario": "B11_imap_legit",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "imap",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 687,
+   "pcap": "B12_pop3_strip_control.pcap",
+   "scenario": "B12_pop3_strip_control",
+   "streams": [
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "no_advert",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "ATTACK_STRIP_ADVERT",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43000,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43001,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43002,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43003,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43004,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43005,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43006,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43007,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43008,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.23",
+     "client_port": 43009,
+     "ground_truth": "BENIGN_TLS",
+     "protocol": "pop3",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 474,
+   "pcap": "B13_pop3_legit.pcap",
+   "scenario": "B13_pop3_legit",
+   "streams": [
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "decline",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_DECLINE",
+     "protocol": "pop3",
+     "server": "192.168.20.26",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 338,
+   "pcap": "B14_implicit.pcap",
+   "scenario": "B14_implicit",
+   "streams": [
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "smtps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 326,
+   "pcap": "B15_implicit_imaps.pcap",
+   "scenario": "B15_implicit_imaps",
+   "streams": [
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    },
+    {
+     "behaviour": "implicit",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_IMPLICIT",
+     "protocol": "imaps",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.3"
+    }
+   ]
+  },
+  {
+   "generator": "B",
+   "packets": 571,
+   "pcap": "B16_legacy_tls.pcap",
+   "scenario": "B16_legacy_tls",
+   "streams": [
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.20",
+     "client_port": 40009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.21",
+     "client_port": 41009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42000,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42001,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42002,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42003,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42004,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42005,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42006,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42007,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.0"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42008,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.1"
+    },
+    {
+     "behaviour": "upgrade",
+     "client": "192.168.10.22",
+     "client_port": 42009,
+     "ground_truth": "BENIGN_LEGACY_TLS",
+     "protocol": "smtp",
+     "server": "192.168.20.25",
+     "tls_version": "TLS1.2"
+    }
+   ]
+  }
+ ],
+ "dialect": "exim/sendmail",
+ "generator": "B",
+ "seed": 20260919
+}
