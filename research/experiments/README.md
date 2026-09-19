@@ -11,6 +11,7 @@ begins, this directory stays where it is.
 | `oq25/` | Does cross-session baselining reduce false positives? | [02A](../../docs/research/02A-cross-session-baseline-experiment.md) |
 | `oq28/` | Does the OQ-25 result replicate on real packets? | [02B](../../docs/research/02B-packet-level-validation.md) |
 | `oq36/` | Does any ML model add value beyond the deterministic lanes? | [17](../../docs/architecture/17-ml-model-evaluation.md) |
+| `oq48/` | Which posture scoring formulation is defensible? | [19](../../docs/architecture/19-evidence-fusion-and-posture.md) |
 
 ## Reproducing OQ-25
 
@@ -49,3 +50,19 @@ checkable without it.
 **Design constraint honoured throughout:** labels are used for evaluation only. No fit
 receives them, and the threshold is chosen from normal-session scores on a generator that
 never contributed a training row.
+
+
+## Reproducing OQ-48 (Phase-7 posture scoring review)
+
+```bash
+python3 research/experiments/oq48/score_review.py
+```
+
+Scores all 60 captures (OQ-28 generator A, Phase-6 generators B and C) under all three
+candidate formulations and runs the property probes -- monotonicity, duplicate
+resistance, recurrence behaviour, severe-finding sensitivity, long-tail behaviour and
+the missing-evidence case. Results land in `oq48/results/score-review.json` and the
+verdict is ADR-0016.
+
+Needs `tshark`; no ML dependency (the review scores deterministic and cross-session
+findings only, since the ML lane cannot penalise a posture score by design).

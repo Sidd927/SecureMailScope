@@ -22,16 +22,16 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-16 insecure config | bounded versioned checklist | rules | 4 | unit per rule | findings |
 | D-17 forward secrecy | derive from suite/version | evidence/rules | 4 | unit | findings |
 | D-18 feature extraction | ✅ 44 governed, evidence-aware features → 164 columns (schema v1.0) | `ml/features`, `ml/encoding` | 6 ✅ | 23 feature tests | anomaly |
-| A-01 risk classification | ✅ deterministic, standards-bound (8 rules) | `analysis/` | 4 ✅ | 38 Phase-4 tests | findings |
+| A-01 risk classification | ✅ **COMPLETE.** 11 standards-bound rules + Phase-7 classification into 6 evidence-supported dimensions, with scope, recurrence and certainty | `analysis/`, `posture/risk` | 4 ✅ / 7 ✅ | 38 Phase-4 + 133 Phase-7 tests | findings |
 | A-02 anomaly detection | 🟡 **capability ✅ / detection value ❌.** Real unsupervised model shipped, evaluated on generator-held-out data, reproducible and explainable — but **0 unique true detections on every held-out split**, so it ships as a *prioritisation signal only* (ADR-0015, doc 17) | `crosssession/` + `ml/` | 5 ✅ / 6 ✅ | 44 Phase-5 + 89 Phase-6 tests | anomaly scene (limitation stated) |
-| A-03 posture scoring | coverage-aware deterministic | risk | 8 | unit | honesty (coverage) |
-| A-04 prioritisation | severity×exposure×prevalence; ML via policy | risk | 8 | policy unit | findings |
-| A-05 remediation | standards-cited templates | rules/report | 4,9 | unit | remediation |
-| R-01 prioritised findings | Finding objects ordered | risk/report | 8–9 | integration | findings |
-| R-02 posture assessment | PostureAssessment object | risk | 8 | unit | honesty |
-| R-03 JSON/PDF/HTML | one canonical report, 3 renderers | report | 9 | render round-trip; XSS (adv) | export |
+| A-03 posture scoring | ✅ **COMPLETE.** F2-group-damped, selected over two alternatives on 60 captures (ADR-0016); decomposable, duplicate-resistant, never rewards missing evidence | `posture/scoring` | 7 ✅ | score review + monotonicity/duplicate/coverage tests | honesty (coverage) |
+| A-04 prioritisation | ✅ **COMPLETE.** Six deterministic factors per issue group; ML nudge bounded at 4.0 vs a 30-point tier gap so it cannot cross a severity tier | `posture/prioritise` | 7 ✅ | tier-integrity + monotonicity tests | findings |
+| A-05 remediation | ✅ **COMPLETE** for implemented issue classes. Six rule-bound templates: observed, why, action, scope, verification, citations, limitations. No generic fallback; non-actionable classes listed explicitly | `posture/remediation` | 7 ✅ | remediation-mapping + hostile-text tests | remediation |
+| R-01 prioritised findings | ✅ **COMPLETE.** `PostureAssessment.prioritised`, one ranked entry per issue group with affected-session scope | `posture/engine` | 7 ✅ | ordering tests | findings |
+| R-02 posture assessment | ✅ **COMPLETE.** Canonical `PostureAssessment` with score, coverage, groups, abstentions, protocol posture, standards, remediation, provenance, limitations | `posture/model` | 7 ✅ | corpus + serialisation tests | honesty |
+| R-03 JSON/PDF/HTML | 🟡 **PARTIAL.** JSON complete via `to_dict()` on the canonical object; PDF and HTML renderers are Phase 9 | `posture/model` → report | 7 🟡 / 9 | serialisation tests incl. malformed Unicode | export |
 | R-04 dashboard | analyst views | dashboard | 10 | e2e smoke | all scenes |
-| R-05 forensic reports | provenance + frames + versions | report | 9 | reproducibility | export |
+| R-05 forensic reports | 🟡 **PARTIAL.** Provenance, frames, rule ids, standards and all versions carried end to end on the assessment; no rendered artefact yet | `posture/engine` → report | 7 🟡 / 9 | provenance traceability test | export |
 | I-02 passive | no active/keys in core | (arch invariant) | all | scope test | — |
 | I-03 forensic integrity | hash, versions, frame refs | ingest/report | 1,9 | reproducibility (04 §4) | load (hash shown) |
 
@@ -56,3 +56,24 @@ The blocker is the corpus, not the model: the feature space is 98.6 % separable 
 
 **Do not report A-02 as complete.** An ML library being installed, or a model producing scores, is
 not the bar.
+
+### Phase 7 status (2026-09-20)
+
+A-01, A-03, A-04, A-05, R-01 and R-02 are **COMPLETE** — each has an implementation, an end-to-end
+test over real captures, and documented limitations. They are marked complete because behaviour was
+demonstrated, not because a data structure exists:
+
+| Req | Demonstrated by |
+|---|---|
+| A-01 | 11 rules classified into 6 dimensions; risk summary asserted on OQ-28 and both Phase-6 generators |
+| A-03 | score decomposability, monotonicity, duplicate resistance (delta 0.0) and the missing-evidence guard, all asserted; formula selected over two alternatives on 60 captures |
+| A-04 | tier integrity asserted arithmetically (ML ceiling 4.0 < tier gap 30); priority monotonic in recurrence |
+| A-05 | remediation traced to a citation on a real capture; hostile packet text proven unable to reach an action |
+| R-01/R-02 | canonical assessment serialised and asserted over 19 real captures |
+
+**A-02 is unchanged by Phase 7** and remains capability-yes / detection-value-no. The posture layer
+consumes the ML signal as bounded prioritisation metadata only, and attaches the ADR-0015 limitation
+to every AI-enabled assessment.
+
+**Still incomplete:** D-09 (key exchange, no dedicated rule), D-10-14 (X.509, not implemented),
+D-16 (bounded subset), D-17 (forward secrecy, derivable but no rule), R-03 and R-04 (Phase 9-10).

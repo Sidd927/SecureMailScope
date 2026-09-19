@@ -113,7 +113,7 @@ class PostureEngine:
         limitations = BASE_LIMITATIONS + (ML_LIMITATIONS if ml_in else ())
 
         return PostureAssessment(
-            assessment_id=self._assessment_id(capture, run_id, groups),
+            assessment_id=self._assessment_id(capture, groups),
             capture_id=capture,
             run_id=run_id,
             generated_at=generated_at or datetime.now(timezone.utc).strftime(
@@ -149,14 +149,16 @@ class PostureEngine:
                 return finding.capture_id
         return ""
 
-    def _assessment_id(self, capture_id, run_id, groups) -> str:
+    def _assessment_id(self, capture_id, groups) -> str:
         """Content-addressed: the same evidence always yields the same id.
 
-        A uuid would make two identical assessments look different, which would defeat
-        the reproducibility property the whole pipeline is built around.
+        Deliberately excludes `run_id`. A run id is a fresh uuid per invocation, so
+        folding it in would make two analyses of the same capture produce different
+        assessment ids and defeat the reproducibility property the pipeline is built
+        around. The run id stays on the assessment as its own field for traceability.
         """
         digest = hashlib.sha256()
-        digest.update(f"{capture_id}|{run_id}|{POSTURE_SCHEMA_VERSION}".encode())
+        digest.update(f"{capture_id}|{POSTURE_SCHEMA_VERSION}".encode())
         for group in groups:
             digest.update(f"|{group.issue_class.value}:{group.fact_kind.value}"
                           f":{group.severity.value}:{group.recurrence}".encode())

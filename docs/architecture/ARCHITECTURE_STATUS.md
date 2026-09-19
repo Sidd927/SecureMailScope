@@ -50,6 +50,13 @@ OQ-41 SPA framework. All deferred to their implementation phase.
 detection; `robust-z-sum` ships as a prioritisation signal. OQ-37 (complementary value) — **closed
 negative**: zero unique true detections on all three held-out splits.
 
+**Closed by Phase 7 (ADR-0016, doc 19):** A-01, A-03, A-04, A-05, R-01, R-02 implemented and
+demonstrated end to end; the posture score was selected over two alternatives on 60 captures.
+
+**Opened by Phase 7:** OQ-48 **closed** (scoring formula selected). OQ-49 — recalibrate severity
+weights against real traffic (blocked on OQ-33r). OQ-50 — should recurrence count distinct
+endpoints rather than sessions, once NAT identity (OQ-29) is resolved?
+
 **Opened by Phase 6:** OQ-45 — does real multi-vendor traffic change the ML answer? Unanswerable on
 synthetic corpora: the feature space is 98.6 % separable by generator (17 §10). Blocked on OQ-33r.
 OQ-46 — `Completeness.TRUNCATED` is never assigned by the pipeline, making the Phase-5 comparability
