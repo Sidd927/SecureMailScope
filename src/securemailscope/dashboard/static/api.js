@@ -91,6 +91,15 @@ export function getAssessment(runId) {
   return request(`${BASE}/analyses/${requireRunId(runId)}/assessment`);
 }
 
+/**
+ * The analyst-console view model (doc 23 §6). Derived from the canonical assessment
+ * on every request by the single Python projection (ADR-0022 Decision 2); it is not a
+ * second authority and is never stored.
+ */
+export function getDashboard(runId) {
+  return request(`${BASE}/analyses/${requireRunId(runId)}/dashboard`);
+}
+
 export function listReports(runId) {
   return request(`${BASE}/analyses/${requireRunId(runId)}/reports`);
 }

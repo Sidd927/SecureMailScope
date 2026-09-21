@@ -171,10 +171,27 @@ keeps its name, type and meaning, so the Phase-8/9 baseline tests stay valid unc
 ADR-0017's constraint still binds — these are a listing projection, **never an
 authority**; the detail screens ignore them and read the document.
 
-**Not planned:** no `/dashboard` endpoint, no packet endpoint, no aggregate-statistics
-endpoint, no search endpoint, no auth endpoints. The dashboard needs no data the API
-lacks, and a convenience endpoint would become a second place where "what the dashboard
-shows" is decided.
+**One view-model endpoint — corrected at Milestone 4.**
+`GET /api/v1/analyses/{run_id}/dashboard` returns `DashboardViewModel.to_dict()`.
+
+This section originally said "no `/dashboard` endpoint". That was **wrong, and it
+contradicted ADR-0022 Decision 2**, which fixes the data path as
+`to_dict() → projection.py → DashboardViewModel → JSON → ES modules`. A projection
+written in Python cannot reach a browser without a transport, so either the endpoint
+exists or the projection moves into JavaScript — and moving it would put it beyond the
+AST tests that stop a presentation layer growing a severity table, which is the whole
+reason Decision 2 chose Python. The ADR is the binding decision; this paragraph was the
+error and is corrected rather than quietly satisfied.
+
+The concern behind the original wording still stands and is met: the endpoint is **not**
+a second place where "what the dashboard shows" is decided. It serves the output of the
+one projection, which is tested to be semantically lossless against the canonical
+document. It introduces no field the assessment does not already contain, and
+`GET /api/v1/analyses/{run_id}/assessment` remains the canonical authority — the view
+model is derived from it on every request and is never stored.
+
+**Still not planned:** no packet endpoint, no aggregate-statistics endpoint, no search
+endpoint, no auth endpoints.
 
 **Static serving:** the shell is mounted read-only from a fixed package directory. No
 path is built from user input; no repository source, database or artifact directory is

@@ -39,6 +39,7 @@ from securemailscope.backend.schemas import (
 from securemailscope.backend.service import AnalysisService
 from securemailscope.dissect import TsharkAdapter
 from securemailscope.posture import POSTURE_ENGINE_VERSION, POSTURE_SCHEMA_VERSION
+from securemailscope.dashboard.errors import DashboardError
 from securemailscope.reporting.errors import ReportError
 from securemailscope.reporting.service import SUPPORTED_FORMATS
 
@@ -83,6 +84,12 @@ def create_app(service: Optional[AnalysisService] = None,
 
     @app.exception_handler(BackendError)
     async def _backend_error(_request: Request, exc: BackendError) -> JSONResponse:
+        return JSONResponse(status_code=exc.http_status, content=exc.to_dict())
+
+    @app.exception_handler(DashboardError)
+    async def _dashboard_error(_request: Request,
+                               exc: DashboardError) -> JSONResponse:
+        # A projection failure leaves the assessment intact and the API usable.
         return JSONResponse(status_code=exc.http_status, content=exc.to_dict())
 
     @app.exception_handler(ReportError)
@@ -216,6 +223,20 @@ def create_app(service: Optional[AnalysisService] = None,
         rid = _validate_run_id(run_id)
         return ArtifactListResponse(
             run_id=rid, items=svc.list_artifacts(rid, verify=verify))
+
+    # ---------------------------------------------------------- dashboard
+    @router.get("/analyses/{run_id}/dashboard")
+    def get_dashboard(run_id: str) -> Dict[str, Any]:
+        """The analyst-console view model for one run (doc 23 §6).
+
+        Serves the output of the single Python projection (ADR-0022 Decision 2). It is
+        derived from the canonical assessment on every request and never stored, adds
+        no field the assessment does not contain, and is not an authority:
+        `.../assessment` remains canonical.
+        """
+        from securemailscope.dashboard.projection import project
+        rid = _validate_run_id(run_id)
+        return project(svc.get_assessment(rid)).to_dict()
 
     # ------------------------------------------------------------ reports
     @router.get("/analyses/{run_id}/reports", response_model=ReportListResponse)
