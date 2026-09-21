@@ -23,9 +23,37 @@ def _modules(package_dir):
                 yield name, ast.parse(fh.read(), filename=path)
 
 
-def _imported_modules(tree):
+def _is_type_checking_guard(node) -> bool:
+    """True for `if TYPE_CHECKING:` / `if typing.TYPE_CHECKING:`."""
+    if not isinstance(node, ast.If):
+        return False
+    test = node.test
+    if isinstance(test, ast.Name) and test.id == "TYPE_CHECKING":
+        return True
+    return isinstance(test, ast.Attribute) and test.attr == "TYPE_CHECKING"
+
+
+def _imported_modules(tree, runtime_only: bool = True):
+    """Modules a file imports.
+
+    `runtime_only` skips `if TYPE_CHECKING:` blocks, which exist purely for annotations
+    and create no runtime dependency. The distinction matters: `reporting/service.py`
+    references backend types for typing while importing nothing from backend at import
+    time, and a walker that could not tell the two apart would report a dependency
+    that does not exist. The runtime claim is proved directly by a subprocess test
+    that inspects `sys.modules`.
+    """
+    skip = set()
+    if runtime_only:
+        for node in ast.walk(tree):
+            if _is_type_checking_guard(node):
+                for child in ast.walk(node):
+                    if isinstance(child, (ast.Import, ast.ImportFrom)):
+                        skip.add(id(child))
     out = set()
     for node in ast.walk(tree):
+        if id(node) in skip:
+            continue
         if isinstance(node, ast.Import):
             for alias in node.names:
                 out.add(alias.name)
@@ -35,11 +63,16 @@ def _imported_modules(tree):
 
 
 def test_backend_is_a_leaf_package():
-    """No earlier package may import the backend. Phase 8 is a leaf (doc 21 §3)."""
+    """No earlier package may import the backend at runtime (doc 21 §3).
+
+    `reporting/` is excluded because it is a LATER phase: Phase 9 composes over the
+    backend, and doc 22 §3 states that direction. It still imports nothing from
+    backend at runtime — asserted separately.
+    """
     offenders = []
     for package in sorted(os.listdir(SRC)):
         pkg_dir = os.path.join(SRC, package)
-        if package == "backend" or not os.path.isdir(pkg_dir):
+        if package in ("backend", "reporting") or not os.path.isdir(pkg_dir):
             continue
         for name, tree in _modules(pkg_dir):
             for module in _imported_modules(tree):
@@ -180,3 +213,114 @@ def test_phase_seven_source_is_untouched():
                  "src/securemailscope/dissect/", "src/securemailscope/ingest/")
     violations = [f for f in changed if f.startswith(protected)]
     assert violations == [], violations
+
+
+# ------------------------------------------------- Phase 9: reporting boundary
+REPORTING = "src/securemailscope/reporting"
+
+
+def test_security_engine_never_imports_reporting():
+    """doc 22 §3: the security engine must not depend on its presentation layer."""
+    offenders = []
+    for package in ("posture", "analysis", "crosssession", "ml", "session",
+                    "evidence", "dissect", "ingest"):
+        pkg_dir = os.path.join(SRC, package)
+        if not os.path.isdir(pkg_dir):
+            continue
+        for name, tree in _modules(pkg_dir):
+            for module in _imported_modules(tree):
+                if "securemailscope.reporting" in module:
+                    offenders.append("%s/%s" % (package, name))
+    assert offenders == [], offenders
+
+
+def test_reporting_does_not_import_backend_at_runtime():
+    """The dependency runs one way: backend composes reporting, never the reverse.
+
+    Backend types are referenced under TYPE_CHECKING only, so there is no import cycle
+    and no lazy import hiding one.
+    """
+    import subprocess
+    import sys
+    code = ("import sys; import securemailscope.reporting.service;"
+            "bad=[m for m in sys.modules if m.startswith('securemailscope.backend')];"
+            "assert not bad, bad; print('clean')")
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                         env=dict(os.environ, PYTHONPATH="src"))
+    assert out.returncode == 0, out.stderr.decode()
+
+
+def test_reporting_html_and_projection_need_no_third_party_package():
+    """JSON and HTML must work on a zero-dependency core install."""
+    import subprocess
+    import sys
+    code = (
+        "import sys;"
+        "from securemailscope.reporting.projection import project;"
+        "from securemailscope.reporting.html import render_html;"
+        "third=[m for m in sys.modules if m.split('.')[0] in "
+        "{'reportlab','fastapi','pydantic','jinja2','markupsafe','pypdf'}];"
+        "assert not third, third; print('clean')")
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                         env=dict(os.environ, PYTHONPATH="src"))
+    assert out.returncode == 0, out.stderr.decode()
+
+
+def test_reporting_never_computes_a_security_value():
+    """doc 22 §5: no arithmetic or comparison on severity, score or band."""
+    forbidden_names = {"compute_score", "band_for", "severity_weight", "SEVERITY_WEIGHT",
+                       "MIN_ASSESSED_FRACTION", "MAX_ML_ADJUSTMENT", "FORMULAS"}
+    offenders = []
+    for name, tree in _modules(REPORTING):
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Name) and node.id in forbidden_names:
+                offenders.append("%s: %s" % (name, node.id))
+            if isinstance(node, ast.Attribute) and node.attr in forbidden_names:
+                offenders.append("%s: .%s" % (name, node.attr))
+    assert offenders == [], offenders
+
+
+def test_reporting_does_not_import_the_posture_engine_or_ml():
+    """Reporting consumes the canonical dict, not the engines that produced it."""
+    banned_prefixes = ("securemailscope.posture.engine",
+                       "securemailscope.posture.scoring",
+                       "securemailscope.posture.fusion",
+                       "securemailscope.posture.risk",
+                       "securemailscope.posture.prioritise",
+                       "securemailscope.posture.remediation",
+                       "securemailscope.ml",
+                       "securemailscope.analysis",
+                       "securemailscope.crosssession")
+    offenders = []
+    for name, tree in _modules(REPORTING):
+        for module in _imported_modules(tree):
+            if module.startswith(banned_prefixes):
+                offenders.append("%s -> %s" % (name, module))
+    assert offenders == [], offenders
+
+
+def test_reporting_defines_no_severity_ordering_used_for_ranking():
+    """`severity_rank` exists for display ordering only and must not reach ranking."""
+    import securemailscope.reporting.projection as projection
+    source = open(os.path.join(REPORTING, "projection.py")).read()
+    # It may be used to pick the worst severity for a summary sentence, but the
+    # prioritised list must never be sorted.
+    assert ".sort(" not in source
+    assert "sorted(a.get(\"prioritised\")" not in source
+    assert "sorted(assessment" not in source
+    assert projection is not None
+
+
+def test_phase_eight_source_is_untouched_except_api_wiring():
+    """Phase 8 is frozen; Phase 9 may only extend the API surface."""
+    import subprocess
+    diff = subprocess.run(["git", "diff", "--name-only", "v0.3.0-phase8", "HEAD"],
+                          capture_output=True, text=True)
+    if diff.returncode != 0:                      # pragma: no cover - no git
+        pytest.skip("git unavailable")
+    changed = [f for f in diff.stdout.splitlines()
+               if f.startswith("src/securemailscope/backend/")]
+    # Only the API surface and its schemas gain report endpoints; persistence,
+    # lifecycle, artifacts, pipeline and service logic are untouched.
+    assert set(changed) <= {"src/securemailscope/backend/api.py",
+                            "src/securemailscope/backend/schemas.py"}, changed

@@ -21,7 +21,7 @@ import re
 from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, FastAPI, Query, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 # `request.form()` yields Starlette's UploadFile. `fastapi.UploadFile` *subclasses* it,
 # so testing against the FastAPI type would be the wrong direction and always fail.
 from starlette.datastructures import UploadFile
@@ -33,12 +33,14 @@ from securemailscope.backend.errors import (
 )
 from securemailscope.backend.lifecycle import JobState
 from securemailscope.backend.schemas import (
-    ArtifactListResponse, AssessmentResponse, HealthResponse, RunListResponse,
-    RunResponse, run_to_response,
+    ArtifactListResponse, AssessmentResponse, HealthResponse, ReportListResponse,
+    RunListResponse, RunResponse, run_to_response,
 )
 from securemailscope.backend.service import AnalysisService
 from securemailscope.dissect import TsharkAdapter
 from securemailscope.posture import POSTURE_ENGINE_VERSION, POSTURE_SCHEMA_VERSION
+from securemailscope.reporting.errors import ReportError
+from securemailscope.reporting.service import SUPPORTED_FORMATS
 
 log = logging.getLogger("securemailscope.backend.api")
 
@@ -81,6 +83,12 @@ def create_app(service: Optional[AnalysisService] = None,
 
     @app.exception_handler(BackendError)
     async def _backend_error(_request: Request, exc: BackendError) -> JSONResponse:
+        return JSONResponse(status_code=exc.http_status, content=exc.to_dict())
+
+    @app.exception_handler(ReportError)
+    async def _report_error(_request: Request, exc: ReportError) -> JSONResponse:
+        # A report failure is reported as itself and leaves the assessment untouched
+        # (ADR-0019 Decision 4). It never changes the run's state.
         return JSONResponse(status_code=exc.http_status, content=exc.to_dict())
 
     @app.exception_handler(Exception)
@@ -209,8 +217,66 @@ def create_app(service: Optional[AnalysisService] = None,
         return ArtifactListResponse(
             run_id=rid, items=svc.list_artifacts(rid, verify=verify))
 
+    # ------------------------------------------------------------ reports
+    @router.get("/analyses/{run_id}/reports", response_model=ReportListResponse)
+    def list_reports(run_id: str) -> ReportListResponse:
+        """Available report formats with integrity metadata (doc 22 §14)."""
+        rid = _validate_run_id(run_id)
+        reports = _report_service(svc)
+        try:
+            assessment = svc.get_assessment(rid)
+        except NotFound:
+            svc.get_run(rid)             # 404 for an unknown run, not an empty list
+            assessment = None
+        return ReportListResponse(run_id=rid,
+                                  items=reports.list_reports(rid, assessment))
+
+    @router.get("/analyses/{run_id}/reports/{fmt}")
+    def get_report(run_id: str, fmt: str,
+                   download: bool = Query(False)) -> Response:
+        """Render (or serve a stored) report.
+
+        A report is a rendering of the canonical assessment. This endpoint reconstructs
+        no security conclusion: it fetches the same document `.../assessment` returns
+        and hands it to a renderer.
+        """
+        rid = _validate_run_id(run_id)
+        if fmt not in SUPPORTED_FORMATS:
+            raise InvalidRequest("unsupported report format",
+                                 detail={"format": fmt,
+                                         "supported": list(SUPPORTED_FORMATS)})
+        assessment = svc.get_assessment(rid)
+        payload, meta = _report_service(svc).get_or_create(rid, assessment, fmt)
+
+        headers = {
+            "X-Assessment-Id": meta["assessment_id"],
+            "X-Report-Schema-Version": meta["report_schema_version"],
+            "X-Renderer-Version": meta["renderer_version"],
+            "Content-Length": str(len(payload)),
+            # A report is a pure function of its assessment, and an assessment is
+            # immutable once stored, so this is safe to cache indefinitely.
+            "Cache-Control": "private, max-age=86400",
+        }
+        if meta.get("report_sha256"):
+            headers["X-Report-Sha256"] = meta["report_sha256"]
+        # PDFs download by default; HTML and JSON render in place unless asked.
+        if download or fmt == "pdf":
+            headers["Content-Disposition"] = 'attachment; filename="%s"' % meta["filename"]
+        return Response(content=payload, media_type=meta["media_type"],
+                        headers=headers)
+
     app.include_router(router)
     return app
+
+
+def _report_service(svc: AnalysisService):
+    """Build the report service over the backend's existing repository and store.
+
+    Reuses the Phase-8 artifact store rather than creating a second one (ADR-0021
+    Decision 3).
+    """
+    from securemailscope.reporting.service import ReportService
+    return ReportService(svc.repo, svc.artifacts)
 
 
 # ------------------------------------------------------------------ helpers

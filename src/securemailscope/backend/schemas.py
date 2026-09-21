@@ -108,6 +108,30 @@ class ArtifactListResponse(BaseModel):
     items: List[ArtifactResponse]
 
 
+class ReportSummary(BaseModel):
+    """One available report format. Backend-owned metadata, not security content."""
+    format: str
+    media_type: str
+    filename: str
+    renderer_available: bool
+    report_schema_version: str
+    renderer_version: str
+    generated: bool = False
+    artifact_id: Optional[str] = None
+    #: SHA-256 of the rendered bytes. The report's content identity (ADR-0021).
+    report_sha256: Optional[str] = None
+    size_bytes: Optional[int] = None
+    created_at: Optional[str] = None
+    #: Whether the stored artefact came from the current report schema and renderer.
+    current: Optional[bool] = None
+    integrity: Optional[str] = None
+
+
+class ReportListResponse(BaseModel):
+    run_id: str
+    items: List[ReportSummary]
+
+
 def run_to_response(run: Any, *, replayed: bool = False,
                     stages: Optional[List[Dict[str, Any]]] = None) -> RunResponse:
     return RunResponse(
