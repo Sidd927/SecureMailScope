@@ -240,6 +240,40 @@ def test_identical_content_is_idempotent(tmp_path):
         assert cur.execute("SELECT COUNT(*) AS n FROM assessments").fetchone()["n"] == 1
 
 
+def test_runtime_fields_do_not_count_as_content():
+    """`run_id` and `generated_at` vary per invocation and are excluded from
+    `assessment_id` by Phase 7; the integrity guard must agree, or a legitimate
+    re-run of one capture would look like a conflict."""
+    a = _doc()
+    b = _doc()
+    b["run_id"] = "different-run"
+    b["generated_at"] = "2030-12-31T23:59:59Z"
+    assert content_hash(a) == content_hash(b)
+    assert canonical_json(a) != canonical_json(b)
+
+
+def test_rerun_of_same_capture_is_idempotent_despite_new_run_id(tmp_path):
+    repo = _repo(tmp_path)
+    repo.store_assessment(_doc())
+    second = _doc()
+    second["run_id"] = "r2"
+    second["generated_at"] = "2027-05-05T05:05:05Z"
+    assert repo.store_assessment(second) == "aaa111"
+    # the first document is retained verbatim, including its originating run_id
+    assert repo.get_assessment("aaa111")["run_id"] == "r1"
+
+
+def test_differing_model_summary_still_conflicts(tmp_path):
+    """The guard must remain sensitive to genuine divergence, which is what it is for:
+    `assessment_id` excludes `model_summary` and `limitations`."""
+    repo = _repo(tmp_path)
+    repo.store_assessment(_doc())
+    diverged = _doc()
+    diverged["model_summary"] = {"role": "secondary prioritisation signal only"}
+    with pytest.raises(AssessmentIdentityConflict):
+        repo.store_assessment(diverged)
+
+
 def test_same_id_different_content_fails_closed(tmp_path):
     """ADR-0017 Decision 4. A stored conclusion is never silently overwritten."""
     repo = _repo(tmp_path)

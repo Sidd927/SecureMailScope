@@ -44,8 +44,23 @@ def canonical_json(document: Dict[str, Any]) -> str:
     return json.dumps(document, sort_keys=True, separators=(",", ":"))
 
 
+#: Fields the posture contract generates fresh on every invocation. `assessment_id`
+#: deliberately excludes them (posture/engine.py `_assessment_id`) so that re-analysing
+#: one capture reproduces one id; the integrity guard must use the same notion of
+#: "content", or a legitimate re-run would look like a conflict.
+RUNTIME_FIELDS = ("run_id", "generated_at")
+
+
+def security_content(document: Dict[str, Any]) -> Dict[str, Any]:
+    """The document minus its runtime-generated fields."""
+    return {k: v for k, v in document.items() if k not in RUNTIME_FIELDS}
+
+
 def content_hash(document: Dict[str, Any]) -> str:
-    return hashlib.sha256(canonical_json(document).encode("utf-8")).hexdigest()
+    """Hash of the security content. Two runs of one capture agree; a genuine
+    divergence (a different `model_summary`, different `limitations`) does not."""
+    return hashlib.sha256(
+        canonical_json(security_content(document)).encode("utf-8")).hexdigest()
 
 
 @dataclass
@@ -257,8 +272,10 @@ class Repository:
         assessment_id = document.get("assessment_id")
         if not assessment_id:
             raise PersistenceFailed("assessment document has no assessment_id")
+        # The document is stored whole and verbatim; only the integrity digest is
+        # computed over the run-independent subset.
         payload = canonical_json(document)
-        digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        digest = content_hash(document)
         coverage = document.get("coverage") or {}
         score = document.get("score") or {}
         versions = document.get("versions") or {}

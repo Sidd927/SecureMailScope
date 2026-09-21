@@ -199,6 +199,20 @@ Measured at `0eeb6f1` on `postfix_smtp_plaintext_session.pcap` rather than infer
 `(issue_class, fact_kind, severity, recurrence)`. It excludes `run_id` and timestamps
 **by design**, which is what makes it reproducible.
 
+`content_sha256` is therefore computed over the document **minus `run_id` and
+`generated_at`** (`repository.RUNTIME_FIELDS`). Hashing the whole document would make a
+legitimate re-run of one capture — which produces the same conclusion with a new run id
+and a new timestamp — indistinguishable from a genuine divergence. The guard uses the
+same notion of "content" the canonical id uses, so it stays silent on run-varying
+metadata and sensitive to a differing `model_summary` or `limitations`. Both directions
+are asserted by test.
+
+**Consequence:** when a second run reproduces an existing assessment, the **first**
+document is retained and its embedded `run_id` names the run that produced it. That is
+correct — the assessment is content-addressed and run-independent — but a client
+fetching run B's assessment sees run A inside the document. The response envelope
+carries the requested `run_id`, so the association is never ambiguous. Recorded in §19.
+
 The AI-enabled run differed only because the ML lane emitted an extra `ANOMALY` group.
 That is an observed consequence, not a contract guarantee: a model flagging nothing would
 collide. Storage therefore keeps `content_sha256` and **fails closed** on divergence
@@ -384,6 +398,10 @@ updated only for what is verified.
 6. Assessment retention and pruning are unimplemented; the catalog grows unbounded.
 7. `assessment_id` collision across differing ai-modes is handled by failing closed, not
    by a richer identity — deliberately, because Phase 7 is frozen.
+8. A stored assessment keeps the `run_id` of the run that **first** produced it. A later
+   run reproducing the same conclusion references it rather than storing a second copy
+   (§7). The envelope carries the requested run id, so nothing is ambiguous, but the two
+   values inside and outside the document can differ.
 
 ## 20. What Phase 8 can and cannot claim
 
