@@ -166,6 +166,15 @@ async function route() {
          (t) => t.name === match.r.name).label }])]
     : [{ label: 'Analyses' }]);
 
+  // Leaving a view must not leave a timer behind. History polls while runs are in
+  // flight; every other route stops it.
+  try {
+    const history = await import('./views/history.js');
+    history.stopPolling();
+  } catch (error) {
+    /* history module unavailable; nothing to stop */
+  }
+
   mount(main, [spinner('Loading analysis…')]);
   try {
     const module = await match.r.view();

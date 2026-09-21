@@ -98,7 +98,22 @@ dl.facts dd .note {
 }
 
 /* ---------- tables ---------- */
-.table-wrap { margin: 1rem 0; overflow-x: auto; }
+/* Wide forensic tables scroll rather than truncate. Visual QA found the rightmost
+   column clipped with no affordance — macOS hides scrollbars — so a shadow appears
+   on whichever edge has more content, using background-attachment rather than JS. */
+.table-wrap {
+  margin: 1rem 0; overflow-x: auto; scrollbar-width: thin;
+  background:
+    linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) left center,
+    linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(21, 25, 30, .16), transparent)
+      left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(21, 25, 30, .16), transparent)
+      right center;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
 table { width: 100%; border-collapse: collapse; font-size: .83rem; }
 caption {
   text-align: left; font-size: .78rem; color: var(--muted); padding-bottom: .4rem;
@@ -238,6 +253,11 @@ fieldset.facet legend {
   padding: .35rem .7rem;
 }
 .clear-filters:hover { background: var(--accent); color: #fff; }
+.state-cell { display: flex; flex-direction: column; gap: .15rem; align-items: flex-start; }
+.state-cell .note { font-size: .7rem; color: var(--muted); }
+.fail-cell { display: flex; flex-direction: column; gap: .12rem; }
+.fail-cell .note { font-size: .72rem; color: var(--muted); }
+
 .result-count {
   font-size: .82rem; color: var(--muted); margin: .5rem 0 .9rem;
   border-bottom: 1px solid var(--rule); padding-bottom: .5rem;
