@@ -24,13 +24,20 @@
 | [13-rule-catalog](13-rule-catalog.md) | 🟢 Live (rules v1.0) |
 | [14-cross-session-reasoning](14-cross-session-reasoning.md) | 🟢 Implemented (Phase 5) |
 | [15-cross-session-rule-catalog](15-cross-session-rule-catalog.md) | 🟢 Live (cross rules v1.0) |
-| ADR 0001–0014 | 0001–0005,0007–0009,0011 Accepted · 0006,0010 Proposed |
+| [16-ml-anomaly-architecture](16-ml-anomaly-architecture.md) | 🟢 Implemented (Phase 6) |
+| [17-ml-model-evaluation](17-ml-model-evaluation.md) | 🟢 Live (outcome D, ADR-0015) |
+| [18-ml-model-catalog](18-ml-model-catalog.md) | 🟢 Live (robust-z-sum retained) |
+| [19-evidence-fusion-and-posture](19-evidence-fusion-and-posture.md) | 🟢 Implemented (Phase 7) |
+| [21-backend-persistence-api](21-backend-persistence-api.md) | 🟡 Design (Phase 8, in implementation) |
+| ADR 0001–0018 | 0001–0005,0007–0009,0011–0018 Accepted · 0006,0010 Proposed · **0007 superseded by 0017** |
 
 ## 2. Locked decisions
 
 Dissection = tshark (ADR-0001) · EvidenceField wrapper + 6 states (ADR-0002/04) · session+STARTTLS
 state machine in our engine (ADR-0003) · versioned standards-bound rules (ADR-0004) · cross-session as
-first-class layer (ADR-0005) · SQLite per-run + FS artifacts (ADR-0007) · one canonical report → 3
+first-class layer (ADR-0005) · ~~SQLite per-run + FS artifacts (ADR-0007)~~ → **one SQLite catalog +
+canonical assessment stored as a document + FS artifacts (ADR-0017, supersedes 0007)** · backend job
+lifecycle distinct from `RunStatus`, pass-through API (ADR-0018) · one canonical report → 3
 renderers (ADR-0009) · modular monolith Python/FastAPI (ADR-0011) · AI optional/read-only/grounded,
 `--no-ai` identical findings (ADR-0008).
 
@@ -60,6 +67,18 @@ normalizer). OQ-33r **PASS WITH LIMITATIONS** (10/10 real Postfix and Dovecot ca
 3 protocols and 4 TLS modes agree with an independent tshark read; two vendors, loopback only,
 populations too small to exercise cross-session reasoning). Phase 7 is COMPLETE WITH EXPLICIT
 LIMITATIONS and ready for Phase 8. Details: docs/research/22 and 23.
+
+**Phase 8 (2026-09-21, in implementation):** backend, persistence and API on branch
+`phase/08-backend-persistence-api`, branched from `v0.2.0-phase7`. Adds no security capability:
+it orchestrates the existing engines and serves the canonical `PostureAssessment` unaltered.
+ADR-0007 superseded by ADR-0017; lifecycle and API fixed by ADR-0018. Design: doc 21.
+Audit finding — **no production callable went PCAP → `PostureAssessment`** before Phase 8; the only
+end-to-end composition was a helper inside `tests/test_posture_corpora.py`.
+
+**Opened by Phase 8:** OQ-51 — do cross-capture trend queries justify a derived read-model
+(rebuilt from documents, never written independently)? OQ-52 — is synchronous in-request analysis
+acceptable for large captures, or must the ADR-0011 background-job path be exercised before the
+demo? OQ-53 — should `force=true` retain both assessments when engine versions differ?
 
 **Opened by Phase 7:** OQ-48 **closed** (scoring formula selected). OQ-49 — recalibrate severity
 weights against real traffic (blocked on OQ-33r). OQ-50 — should recurrence count distinct
