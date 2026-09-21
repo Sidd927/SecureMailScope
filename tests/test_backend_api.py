@@ -58,7 +58,11 @@ def test_health(tmp_path):
     assert body["database"] == "ok"
     assert body["backend_schema_version"] == "1.0"
     assert body["posture_schema_version"] == "1.0"
-    assert body["posture_engine_version"] == "0.7.0"
+    # Asserted against the canonical constant rather than a literal: the risk this
+    # guards is the endpoint reporting a STALE version, which a literal cannot catch
+    # once the constant moves (Phase 11 bumped it 0.7.0 -> 0.8.0).
+    from securemailscope.posture.model import POSTURE_ENGINE_VERSION
+    assert body["posture_engine_version"] == POSTURE_ENGINE_VERSION
     assert body["limits"]["max_concurrent_analyses"] == 1
 
 

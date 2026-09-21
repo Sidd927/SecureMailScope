@@ -180,39 +180,61 @@ class TlsHandshakeCompletionRule(SecurityRule):
 
 
 class CertificateObservabilityRule(SecurityRule):
-    """SEC-TLS-003 -- certificate observability boundary.
+    """SEC-TLS-003 -- certificate TRUST and REVOCATION boundary.
 
-    The problem statement asks for X.509 extraction and validation. This rule states
-    honestly what the passive contract currently supports. We do NOT perform chain
-    validation, and we do not pretend to: under TLS 1.3 the Certificate message is
-    encrypted, and every resumed session omits it at any version (doc 01A).
+    NARROWED IN PHASE 11 (ADR-0023). This rule previously covered two things: whether a
+    certificate was visible at all, and whether trust could be evaluated. Phase 11
+    implements extraction (D-10..D-14), which makes the first half of that answer --
+    and the limitation "certificate extraction is not implemented in this phase" --
+    false. Leaving it would have put a lie in the output.
+
+    Presence and absence now belong to SEC-CERT-001, which can name the specific reason
+    (encrypted under TLS 1.3, not sent on resumption, or truncated capture). What
+    remains here is the part that no amount of implementation will change: trust and
+    revocation are not passively observable, at any TLS version, with or without a
+    visible certificate.
+
+    The rule id and IssueClass are unchanged, so assessments recorded before Phase 11
+    stay interpretable.
     """
 
     rule_id = "SEC-TLS-003"
-    title = "Certificate observability"
-    description = "Reports whether certificate evidence is available for validation."
-    standards = ("RFC 8446 SS2 (Certificate is encrypted in TLS 1.3)",
-                 "RFC 5280 (PKIX validation -- not performed at this layer)")
+    title = "Certificate trust and revocation boundary"
+    description = ("States what certificate validation is structurally impossible from a "
+                   "passive capture, independently of whether a certificate was visible.")
+    standards = ("RFC 5280 SS6 (path validation requires trust anchors, which a packet "
+                 "capture does not contain)",
+                 "RFC 6960 (OCSP status is a separate network transaction)",
+                 "RFC 8446 SS2 (Certificate is encrypted in TLS 1.3)")
 
     def applies_to(self, session: SessionEvidence) -> bool:
         return session.tls_state is not TlsState.NONE
 
     def evaluate(self, session: SessionEvidence) -> List[SecurityFinding]:
         version = session.tls_negotiated_version
-        refs = [ref("tls_negotiated_version", version)]
-        reason = ("the negotiated version encrypts the Certificate message"
-                  if version.value == "TLS1.3"
-                  else "no certificate evidence is carried in the current evidence contract")
+        refs = [ref("tls_negotiated_version", version),
+                ref("tls_certificate_chain", session.tls_certificate_chain)]
+        extracted = bool(session.certificates)
+        state = ("A certificate was extracted and its structure analysed (SEC-CERT-001 "
+                 "and SEC-CERT-005), but trust was still not evaluated"
+                 if extracted else
+                 "No certificate was observable in this session (SEC-CERT-001 records why)")
         return [self.finding(
             session,
             status=FindingStatus.NOT_OBSERVABLE, severity=Severity.INFO,
-            conclusion="Certificate validation was not performed for this session.",
-            explanation=(f"No certificate chain is available to validate because {reason}. "
-                         "Absence of certificate evidence is not treated as an invalid or "
-                         "untrusted certificate."),
+            conclusion="Certificate trust and revocation were not evaluated.",
+            explanation=(f"{state}. Trust cannot be established from a packet capture: "
+                         "RFC 5280 SS6 defines path validation over a set of trust anchors, "
+                         "and a capture contains none. Revocation cannot be established "
+                         "either: OCSP and CRL retrieval are separate network transactions. "
+                         "Neither limitation is a finding against the certificate."),
             evidence_refs=refs,
             limitations=(
-                "Certificate extraction is not implemented in this phase.",
+                "Trust validation would require a trust store chosen by the analyst; "
+                "which store, and how enterprise-internal CAs are handled, is an open "
+                "question (OQ-04).",
+                "Revocation status would require live OCSP or CRL access, which would "
+                "breach the passive, offline operating model.",
                 "Under TLS 1.3 the Certificate message is encrypted and is not passively "
                 "recoverable without key material.",
                 "Resumed sessions omit the Certificate message at any TLS version.",

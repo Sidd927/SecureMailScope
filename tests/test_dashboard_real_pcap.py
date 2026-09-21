@@ -278,8 +278,19 @@ def test_scene_b_honesty_states_what_cannot_be_observed(tmp_path):
     # and the engine's own non-observability statement is present
     whys = " ".join(a["why"] for a in view["abstentions"]).lower()
     resolutions = " ".join(a["resolved_by"] for a in view["abstentions"]).lower()
-    assert "not performed" in whys or "not observable" in whys
+    # Phase 11 narrowed SEC-TLS-003 and moved presence to SEC-CERT-001, so the exact
+    # sentence changed. What must hold is the SEMANTIC property this scene exists to
+    # demonstrate: the abstention states non-observability explicitly, and never
+    # converts it into a verdict about the certificate. Asserted as a property rather
+    # than a phrase so a future rewording cannot silently pass a dishonest one.
+    assert any(marker in whys for marker in
+               ("was observable", "not observable", "not performed", "not evaluated")), whys
     assert "not resolvable by passive capture" in resolutions
+    # the forbidden direction: unobservable must never be reported as a defect
+    for forbidden in ("certificate is invalid", "invalid certificate",
+                      "untrusted certificate", "certificate expired",
+                      "certificate was revoked"):
+        assert forbidden not in whys, forbidden
 
 
 def test_scene_b_no_findings_is_not_rendered_as_secure(tmp_path):

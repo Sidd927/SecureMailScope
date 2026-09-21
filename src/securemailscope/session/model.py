@@ -191,6 +191,13 @@ class SessionEvidence:
     certificates: Tuple[Any, ...] = ()
     #: Chain-level facts that could not be attributed to a specific certificate.
     certificate_notes: Tuple[str, ...] = ()
+    #: For each adjacent pair, whether cert[i].AKI == cert[i+1].SKI (RFC 5280 SS4.2.1.1).
+    #: Linkage is a STRUCTURAL property; it says nothing about trust.
+    chain_links: Tuple[bool, ...] = ()
+    #: Signature-algorithm OIDs seen anywhere in the chain. Chain-level, not
+    #: per-certificate: each certificate contributes several, so the cardinality does
+    #: not track the certificate count.
+    chain_signature_oids: Tuple[str, ...] = ()
     plaintext_continuation: EvidenceField = field(
         default_factory=lambda: EvidenceField.unknown("insufficient dialogue observed"))
     auth_activity: EvidenceField = field(

@@ -130,11 +130,26 @@ def test_handshake_completion_not_manufactured():
 # ============================================================ certificate boundary
 @needs_tshark
 def test_certificate_validation_not_faked():
+    """SEC-TLS-003 was NARROWED in Phase 11 to trust and revocation only.
+
+    Extraction is now implemented (SEC-CERT-001..005), so the old conclusion wording
+    "validation was not performed" no longer describes this rule. What it must still
+    do -- and what this test now pins -- is refuse to claim trust or revocation, which
+    no implementation can ever establish from a passive capture.
+    """
     report, _ = analyse("C_normal_tls")
     f = rule_findings(report, "SEC-TLS-003")[0]
     assert f.status is FindingStatus.NOT_OBSERVABLE
     assert f.severity is Severity.INFO
-    assert "not performed" in f.conclusion
+    assert "not evaluated" in f.conclusion
+    blob = json.dumps(f.to_dict()).lower()
+    # the boundary is named, with the reason it is structural rather than unfinished
+    assert "trust" in blob and "revocation" in blob
+    assert "trust anchor" in blob
+    # and no trust verdict is ever asserted
+    for forbidden in ("certificate is trusted", "certificate is untrusted",
+                      "chain is valid", "certificate is valid", "revoked"):
+        assert forbidden not in blob, forbidden
     assert f.limitations  # boundary must be stated explicitly
 
 

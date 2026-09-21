@@ -22,8 +22,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from securemailscope.evidence.states import EvidenceState
 
 #: Bumped when rule semantics change, so stored findings stay interpretable.
-RULES_VERSION = "1.0"
-ENGINE_VERSION = "0.4.0"
+RULES_VERSION = "1.1"      # Phase 11: +8 rules, SEC-TLS-003 narrowed
+ENGINE_VERSION = "0.5.0"
 
 
 class Severity(str, Enum):

@@ -170,6 +170,8 @@ class ProtocolSessionReconstructor(ABC):
         session.certificate_notes = tuple(chain.notes) + tuple(
             f"{label} could not be attributed to a specific certificate"
             for label in chain.unattributed)
+        session.chain_links = chain.links
+        session.chain_signature_oids = chain.signature_algorithm_oids
 
     def _apply_implicit_tls(self, session: SessionEvidence, group: StreamGroup) -> None:
         tls_state, frames_seen = classify_tls(group)
