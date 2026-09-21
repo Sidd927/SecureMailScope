@@ -36,14 +36,52 @@ TLS_SNI = ("tls_tls_handshake_extensions_server_name",)
 TLS_SUPPORTED_VERSION = ("tls_tls_handshake_extensions_supported_version",)
 TLS_SESSION_ID = ("tls_tls_handshake_session_id",)
 TLS_APP_DATA = ("tls_tls_app_data",)
+#: TLS 1.3 negotiates the key exchange here, not in the cipher suite (RFC 8446 SS4.2.8).
+TLS_KEY_SHARE_GROUP = ("tls_tls_handshake_extensions_key_share_group",)
 
 # ---- X.509 (often absent: TLS 1.3 encrypts the Certificate message) -------
-# Untested against a capture containing a real chain; absence is represented
-# explicitly as NOT_OBSERVABLE rather than assumed invalid (docs/architecture/04).
-X509_SUBJECT_CN = ("x509sat_x509sat_uTF8String", "x509sat_x509sat_printableString")
-X509_NOT_BEFORE = ("x509af_x509af_utcTime", "x509af_x509af_notBefore")
-X509_NOT_AFTER = ("x509af_x509af_utcTime_1", "x509af_x509af_notAfter")
-X509_SIG_ALGO = ("x509af_x509af_algorithm_id",)
+# Verified against real captures in Phase 11 (research/experiments/p11cert), including
+# a two-certificate chain. Absence is represented explicitly as NOT_OBSERVABLE rather
+# than assumed invalid (docs/architecture/04).
+#
+# CORRECTED IN PHASE 11. The previous mapping read
+#     X509_NOT_BEFORE = ("x509af_x509af_utcTime",   "x509af_x509af_notBefore")
+#     X509_NOT_AFTER  = ("x509af_x509af_utcTime_1", "x509af_x509af_notAfter")
+# Both lines were wrong, and wrong in a way that only a real certificate would expose:
+#   * tshark 4.6.8 emits no `_1`-suffixed keys at all, so NOT_AFTER fell through to
+#     `x509af_x509af_notAfter`, which is the ASN.1 CHOICE selector ("0" = utcTime),
+#     not a date. Expiry would have been computed from the string "0".
+#   * The dates live in `x509af_x509af_utcTime` as an ORDERED LIST, two entries per
+#     certificate: [leaf.notBefore, leaf.notAfter, issuer.notBefore, issuer.notAfter].
+# The validity dates are therefore read positionally from one field, and the pairing
+# rule lives in crypto/certificates.py where it can be guarded and tested.
+X509_VALIDITY_UTC = ("x509af_x509af_utcTime",)
+X509_VALIDITY_GENERALIZED = ("x509af_x509af_generalizedTime",)
+#: Certificate count anchor: one entry per certificate in the chain.
+X509_CERT_ELEMENT = ("x509af_x509af_signedCertificate_element",)
+X509_SERIAL = ("x509af_x509af_serialNumber",)
+X509_VERSION = ("x509af_x509af_version",)
+X509_ALGORITHM_ID = ("x509af_x509af_algorithm_id",)
+X509_RSA_MODULUS = ("pkixalgs_pkixalgs_modulus",)
+X509_RSA_EXPONENT = ("pkixalgs_pkixalgs_publicExponent",)
+#: RFC 5280 SS4.2.1.1/4.2.1.2 -- the index-safe way to establish chain linkage and
+#: self-signing, used in preference to distinguished-name text (which is NOT
+#: index-attributable in a multi-certificate chain; see docs/phase11/02 SS7.2).
+X509_SUBJECT_KEY_ID = ("x509ce_x509ce_SubjectKeyIdentifier",)
+X509_AUTHORITY_KEY_ID = ("x509ce_x509ce_keyIdentifier",)
+X509_BASIC_CONSTRAINTS = ("x509ce_x509ce_BasicConstraintsSyntax_element",)
+#: NOTE: tshark emits `cA` ONLY when true, so its cardinality does not track the
+#: certificate count and it must never be index-paired.
+X509_CA_FLAG = ("x509ce_x509ce_cA",)
+X509_SAN_DNS = ("x509ce_x509ce_dNSName",)
+X509_EXTENSION_ID = ("x509af_x509af_extension_id",)
+#: Distinguished-name text. Cardinality varies with the number of RDN components, so
+#: this is attributable to a specific certificate only when the chain holds exactly one.
+X509_DN_TEXT = ("x509sat_x509sat_uTF8String", "x509sat_x509sat_printableString")
+
+# Retained for backwards compatibility with any external reader of this module.
+X509_SUBJECT_CN = X509_DN_TEXT
+X509_SIG_ALGO = X509_ALGORITHM_ID
 
 # ---- mail protocols -------------------------------------------------------
 SMTP_REQ_COMMAND = ("smtp_smtp_req_command",)

@@ -143,12 +143,59 @@ data — only field mapping and an evidence carrier.
 | `cryptography` / `pyOpenSSL` on extracted DER | Rejected for now: adds a runtime dependency to a zero-dependency core for data tshark already decodes. Would only be justified if DER-level parsing proved necessary (e.g. full chain reconstruction across segments). |
 | `openssl` CLI | Rejected: a runtime subprocess dependency beyond tshark, for no additional field. |
 
-**CORRECTION (measured 2026-09-22, after the first draft of this document).** An earlier draft
-recorded a limitation that `notBefore` and `notAfter` could only be told apart by ordering.
-That was wrong: tshark emits them as **distinct keys**, `x509af_x509af_notBefore` and
-`x509af_x509af_notAfter`, alongside the raw `x509af_x509af_utcTime` values. No ordering
-heuristic is needed. The erroneous claim is recorded here rather than deleted, because it was
-briefly load-bearing for the D-12 design.
+### 7.1 Two corrections, both recorded rather than deleted
+
+**Correction 1 was itself wrong.** The first draft said `notBefore`/`notAfter` could only be
+separated by ordering. I then "corrected" that to say tshark emits them as distinct keys —
+which is true, but they are **not the dates**:
+
+```
+x509af_x509af_notBefore = "0"      <- CHOICE selector: 0 = utcTime, 1 = generalizedTime
+x509af_x509af_notAfter  = "0"      <- CHOICE selector, NOT a date
+x509af_x509af_utcTime   = ["2026-09-21 23:37:39 (UTC)",    <- leaf notBefore
+                           "2027-09-21 23:37:39 (UTC)",    <- leaf notAfter
+                           "2026-09-21 23:37:39 (UTC)",    <- CA   notBefore
+                           "2036-09-18 23:37:39 (UTC)"]    <- CA   notAfter
+```
+
+So the **original** reading was right: the dates are the ordered `utcTime` values, two per
+certificate. Reading `notAfter` as a date would have parsed the string `"0"`. Both wrong turns
+are left on the record because each was briefly load-bearing for the D-12 design, and the
+second was a confident correction of a correct statement.
+
+**Correction 2 — `-T json` is not an escape hatch.** Measured: tshark 4.6.8 emits **no X.509
+fields at all** under `-T json` for the same capture that yields 40 of them under `-T ek`. The
+EK flattening must therefore be worked with, not routed around.
+
+### 7.2 Per-certificate attribution in a chain — measured
+
+A two-certificate chain capture was generated specifically to measure this
+(`out/tls12_chain_rsa2048.pcap`). With certificate count *n* = 2:
+
+| Cardinality | Fields | Per-certificate attribution |
+|---|---|---|
+| exactly *n* | `serialNumber`, `version`, `modulus`, `publicExponent`, `issuer`, `subject`, `SubjectKeyIdentifier`, `keyIdentifier` (AKI), `dNSName`, `BasicConstraintsSyntax_element` | **safe by index** |
+| exactly 2*n* | `utcTime` | **safe by index**, pairs per certificate |
+| variable | `algorithm_id` (6), `uTF8String` (8), `extension_id` (8), `cA` (1) | **NOT attributable** |
+
+`cA` appearing once for two certificates is the clearest trap: tshark emits it only when
+**true**, so a leaf with `CA:FALSE` contributes no value at all. Index-pairing it would assign
+the CA's `true` to the leaf.
+
+**DESIGN DECISION.** A field is attributed to a specific certificate **only** when its
+cardinality is exactly *n* or 2*n*. Everything else is recorded at chain level and marked
+unattributed. Distinguished-name *text* falls in the unattributable group whenever *n* > 1.
+
+**Chain linkage does not need DN text.** RFC 5280 §4.2.1.1 provides the Authority Key
+Identifier precisely for chain building, and it *is* index-safe. Measured on the fixture:
+
+```
+cert[0] AKI != SKI            -> leaf is not self-signed
+cert[1] AKI == SKI            -> root is self-signed
+cert[0].AKI == cert[1].SKI    -> the chain link is established
+```
+
+This is both more robust than DN string comparison and available where DN text is not.
 
 **Counting note.** "38" throughout this document means **38 distinct X.509 field names**. The
 same capture yields **64 field occurrences** (one field can appear in several records). Both
