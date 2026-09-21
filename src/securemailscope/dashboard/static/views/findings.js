@@ -80,15 +80,15 @@ function findingDetail(row) {
   ]));
 
   if (row.conclusion) {
-    body.appendChild(el('h4', { text: 'Conclusion' }));
+    body.appendChild(el('h3', { text: 'Conclusion' }));
     body.appendChild(el('p', { text: row.conclusion }));
   }
   if (row.explanation) {
-    body.appendChild(el('h4', { text: 'Explanation' }));
+    body.appendChild(el('h3', { text: 'Explanation' }));
     body.appendChild(el('p', { text: row.explanation }));
   }
   if (row.explanation_priority) {
-    body.appendChild(el('h4', { text: 'Why this priority' }));
+    body.appendChild(el('h3', { text: 'Why this priority' }));
     body.appendChild(el('p', { text: row.explanation_priority }));
   }
 
@@ -97,7 +97,7 @@ function findingDetail(row) {
   }
 
   if (row.citations && row.citations.length) {
-    body.appendChild(el('h4', { text: 'Standards basis' }));
+    body.appendChild(el('h3', { text: 'Standards basis' }));
     body.appendChild(table('Standards cited by the rule that produced this finding',
       ['Standard', 'Section', 'Why it applies'],
       row.citations.map((c) => [c.standard, c.section || '—', c.reason || '—']),
@@ -106,7 +106,7 @@ function findingDetail(row) {
 
   if (row.remediation) {
     const r = row.remediation;
-    body.appendChild(el('h4', { text: 'Remediation' }));
+    body.appendChild(el('h3', { text: 'Remediation' }));
     body.appendChild(facts([
       ['Observed', r.observed],
       ['Why it matters', r.why_it_matters],
@@ -227,7 +227,7 @@ export async function render(root, { runId }) {
 
     if (!vm.findings.length) {
       mount(resultsHost, [el('div', { className: 'state-panel' }, [
-        el('h2', { text: 'No findings' }),
+        el('h3', { text: 'No findings' }),
         el('p', {
           text: 'The assessment produced no prioritised findings for this capture. '
             + 'That is not a statement that the infrastructure is secure — review the '
@@ -239,7 +239,7 @@ export async function render(root, { runId }) {
     }
     if (!visible.length) {
       mount(resultsHost, [el('div', { className: 'state-panel' }, [
-        el('h2', { text: 'No findings match these filters' }),
+        el('h3', { text: 'No findings match these filters' }),
         el('p', {
           text: `This assessment has ${vm.findings.length} findings. None of them `
             + 'matches the current selection. Clearing the filters restores the full '

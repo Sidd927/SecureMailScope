@@ -283,7 +283,7 @@ fieldset.facet legend {
 .sum-meta { font-size: .76rem; color: var(--muted); }
 .sum-meta.warn { color: var(--medium); font-style: italic; }
 .finding-body { padding: .8rem .9rem 1rem; }
-.finding-body h4 {
+.finding-body h3 {
   font-size: .8rem; margin: 1rem 0 .25rem; letter-spacing: .02em;
   text-transform: uppercase; color: var(--muted);
 }
@@ -301,7 +301,9 @@ fieldset.facet legend {
   border: 1px solid var(--rule); background: var(--panel); padding: 1.5rem;
   margin: 1.25rem 0;
 }
-.state-panel h2 { border: 0; margin-top: 0; padding: 0; }
+.state-panel h2, .state-panel h3 {
+  border: 0; margin-top: 0; padding: 0; font-size: 1.05rem;
+}
 .state-panel.error { border-left: 4px solid var(--critical); }
 .state-panel .code { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
 .snippet {

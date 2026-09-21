@@ -209,7 +209,7 @@ function findingsPanel(vm, runId) {
   if (!vm.findings.length) {
     return section('top-findings', 'Prioritised findings', [
       el('div', { className: 'state-panel' }, [
-        el('h2', { text: 'No prioritised findings' }),
+        el('h3', { text: 'No prioritised findings' }),
         el('p', {
           text: 'The assessment produced no prioritised findings for this capture. '
             + 'That is not a statement that the infrastructure is secure — review the '

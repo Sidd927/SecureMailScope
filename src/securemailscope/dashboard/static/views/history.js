@@ -146,7 +146,7 @@ function rowsFor(items) {
 
 function emptyPanel() {
   return el('div', { className: 'state-panel' }, [
-    el('h2', { text: 'No analyses yet' }),
+    el('h3', { text: 'No analyses yet' }),
     el('p', {
       text: 'Submit a packet capture to the API to produce an assessment, then it '
         + 'will appear here.',
