@@ -29,9 +29,9 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | A-05 remediation | ✅ **COMPLETE** for implemented issue classes. Six rule-bound templates: observed, why, action, scope, verification, citations, limitations. No generic fallback; non-actionable classes listed explicitly | `posture/remediation` | 7 ✅ | remediation-mapping + hostile-text tests | remediation |
 | R-01 prioritised findings | ✅ **COMPLETE.** `PostureAssessment.prioritised`, one ranked entry per issue group with affected-session scope | `posture/engine` | 7 ✅ | ordering tests | findings |
 | R-02 posture assessment | ✅ **COMPLETE.** Canonical `PostureAssessment` with score, coverage, groups, abstentions, protocol posture, standards, remediation, provenance, limitations | `posture/model` | 7 ✅ | corpus + serialisation tests | honesty |
-| R-03 JSON/PDF/HTML | 🟡 **PARTIAL.** JSON complete via `to_dict()`, persisted and served over HTTP (Phase 8); PDF and HTML renderers are Phase 9 | `posture/model` → backend/api | 7 🟡 / 8 🟡 / 9 | serialisation tests incl. malformed Unicode | export |
+| R-03 JSON/PDF/HTML | ✅ **COMPLETE.** All three formats retrievable over HTTP. JSON byte-equal to the assessment endpoint; HTML standalone and offline; PDF real, paginated, text-extractable. Semantic equivalence across formats asserted | `posture/model` → `reporting/` → backend/api | 7 / 8 / 9 ✅ | cross-format equivalence + XSS + PDF-validity tests | export |
 | R-04 dashboard | analyst views | dashboard | 10 | e2e smoke | all scenes |
-| R-05 forensic reports | 🟡 **PARTIAL.** Provenance, frames, rule ids, standards and all versions carried end to end and now durably stored with artifact integrity re-verification (Phase 8); no rendered artefact yet | `posture/engine` → backend/repository | 7 🟡 / 8 🟡 / 9 | provenance traceability test | export |
+| R-05 forensic reports | ✅ **COMPLETE.** Rendered artefact carries capture SHA-256, assessment/run ids, analysis timestamp, engine and schema versions, frame references, standards basis, coverage, abstentions with resolution paths, limitations and ML role. Content-addressed by `report_sha256`, integrity-verified on access | `posture/engine` → `reporting/service` | 7 / 8 / 9 ✅ | integrity, tamper-detection and provenance tests | export |
 | I-02 passive | no active/keys in core | (arch invariant) | all | scope test | — |
 | I-03 forensic integrity | hash, versions, frame refs | ingest/report | 1,9 | reproducibility (04 §4) | load (hash shown) |
 
@@ -90,6 +90,7 @@ generalisation, and no ML claim rests on it.
 
 **Still incomplete:** D-09 (key exchange, no dedicated rule), D-10-14 (X.509, not implemented),
 D-16 (bounded subset), D-17 (forward secrecy, derivable but no rule), R-03 and R-04 (Phase 9-10).
+*(Superseded below: R-03 completed by Phase 9; R-04 remains Phase 10.)*
 
 ---
 
@@ -113,3 +114,23 @@ through to the client.
 engine invocation across every canonical field; `--no-ai` equivalence holds through the
 backend and no model is constructed when AI is disabled; an interrupted run is never
 reported `COMPLETED`; and no Phase 1-7 source file differs from `v0.2.0-phase7`.
+
+---
+
+## Phase 9 (2026-09-21) — forensic reporting
+
+Phase 9 renders the canonical assessment. It adds no rule and no detection, so **no A-
+or D- requirement changes status**. Two R-requirements move to COMPLETE, each on
+demonstrated behaviour rather than on the existence of a module:
+
+| Req | Change | Evidence |
+|---|---|---|
+| R-03 JSON/PDF/HTML | 🟡 PARTIAL → ✅ **COMPLETE** | `test_semantic_equivalence_across_formats` (4 fixtures × 3 formats), `test_json_endpoint_equals_the_assessment_endpoint`, `test_output_is_a_real_pdf`, `test_pages_are_not_blank`, `test_no_external_resources_and_no_script` |
+| R-05 forensic reports | 🟡 PARTIAL → ✅ **COMPLETE** | `test_report_sha256_is_the_report_identity`, `test_corrupted_report_is_regenerated_not_served`, `test_required_forensic_content_is_present`, `test_provenance_carries_the_forensic_chain` |
+
+**A-02 is unchanged.** The report displays `model_summary.role` and the ADR-0015
+limitations verbatim and makes no claim about ML detection value;
+`test_ml_section_never_claims_detection` asserts the report cannot say otherwise.
+
+**Still incomplete after Phase 9:** D-09, D-10–14 (X.509), D-16, D-17, and R-04
+(dashboard, Phase 10).

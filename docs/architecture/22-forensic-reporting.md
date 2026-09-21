@@ -1,6 +1,6 @@
 # 22 — Forensic Reporting (Phase 9)
 
-**Status:** Design · **Date:** 2026-09-21 · **Decisions:** ADR-0019, ADR-0020, ADR-0021
+**Status:** Implemented · **Date:** 2026-09-21 · **Decisions:** ADR-0019, ADR-0020, ADR-0021
 **Implements:** ADR-0009 (one canonical object, three renderers) · **Closes:** OQ-40
 **Consumes:** `PostureAssessment` (ADR-0016) via the Phase-8 API (doc 21)
 **Baseline:** `v0.3.0-phase8` = `a46781a`, 549 tests passing
@@ -72,10 +72,17 @@ Package `src/securemailscope/reporting/`:
 | `service.py` | render, hash, persist, verify, regenerate |
 | `errors.py` | report-specific error codes |
 
-**Dependency rule.** `reporting/` imports from `posture/` and `backend/` contracts.
-**No earlier package imports `reporting/`.** `posture ↛ reporting`, `analysis ↛
-reporting`, `ml ↛ reporting`. The security engine never depends on its presentation
-layer. Asserted by test, extending the Phase-8 AST tests.
+**Dependency rule.** The security engine never depends on its presentation layer:
+`posture ↛ reporting`, `analysis ↛ reporting`, `ml ↛ reporting`, and likewise for
+`session`, `evidence`, `dissect` and `ingest`.
+
+`reporting/` imports **nothing from `backend/` at runtime** either. The artifact store
+and repository are injected and their types referenced only under `TYPE_CHECKING`, so
+the dependency runs one way — `backend/api.py` composes `reporting/`, not the reverse.
+An import cycle between the two would otherwise be real, and a lazy import hiding it
+would be worse than not having one. Both claims are asserted by test: structurally by
+the AST walker (which skips `TYPE_CHECKING` blocks, because it must distinguish an
+annotation from a dependency) and directly by a subprocess that inspects `sys.modules`.
 
 ## 4. The projection — IMPLEMENTED
 
@@ -244,19 +251,138 @@ template, HTML, shell or SQL fragment. Phase 7 already guarantees every analyst-
 string originates in a rule, a standards entry or a remediation template; Phase 9 escapes
 regardless, because defence in depth is cheaper than the assumption.
 
-## 17. Test evidence — PENDING
+## 17. Test evidence — VERIFIED
 
-## 18. Visual QA — PENDING
+**697 passed, 0 failed, 0 skipped, 0 xfail.** Phase 1–8 baseline of 549 preserved
+intact; Phase 9 adds 148.
 
-## 19. Performance — PENDING
+| File | Count | Covers |
+|---|---:|---|
+| `test_reporting_projection.py` | 38 | projection, vocabulary, always-present sections, limits |
+| `test_reporting_html.py` | 36 | structure, offline standalone, escaping/XSS, semantics, determinism |
+| `test_reporting_pdf.py` | 32 | PDF validity, content, determinism, escaping, layout regressions |
+| `test_reporting_api.py` | 35 | artifacts, integrity, endpoints, failure isolation, cross-format equivalence |
+| `test_backend_architecture.py` | +7 | reporting boundaries |
 
-## 20. Requirements
+**Load-bearing results:**
 
-R-03 and R-05 may move to COMPLETE **only** when JSON, HTML and PDF all exist, are
-retrievable, are integrity-verified, and carry the canonical evidence and provenance.
-Architecture alone does not qualify. Assessed honestly in §20 once §17–§19 are filled.
+- `test_semantic_equivalence_across_formats` — four fixtures, each rendered three ways;
+  assessment id, capture id, posture word, score, coverage percentage, issue identity
+  and severity, standards, limitations, ML role and abstentions agree across HTML text,
+  extracted PDF text and canonical JSON. **§46 satisfied**, and this is the mitigation
+  ADR-0020 promised for composing the PDF from the model rather than from the HTML.
+- `test_json_endpoint_equals_the_assessment_endpoint` — `.../reports/json` is
+  byte-equal to `.../assessment`. The report layer reconstructs nothing.
+- `test_hostile_payloads_are_escaped` — eight XSS payloads through issue titles,
+  conclusions and limitations; asserted against the **parsed tree** (no `script`/`img`/
+  `svg` element, no attribute beginning `on`), each surviving as readable text.
+- `test_no_attribute_carries_assessment_text` — every attribute in the hostile document
+  is checked for `<`, `>` and `alert`.
+- `test_pdf_failure_leaves_assessment_and_html_intact` — with `render_pdf` raising, the
+  PDF endpoint is 503, the run stays `COMPLETED` with null `error_code`, HTML and the
+  assessment still return 200, and no `pdf` artefact was fabricated.
+- `test_corrupted_report_is_regenerated_not_served` — a stored report overwritten with
+  `TAMPERED` is regenerated; the served bytes equal the original.
+- `test_pdf_rendering_is_byte_deterministic` / `test_rendering_is_byte_deterministic` —
+  identical bytes across a 1.1 s gap a wall-clock timestamp would not survive.
+- `test_insufficient_evidence_is_never_softened_in_pdf` / `..._never_reads_as_a_pass` —
+  the withheld band reaches both formats as `INSUFFICIENT EVIDENCE` with `Not scored`.
+- `test_security_engine_never_imports_reporting` — `posture`, `analysis`,
+  `crosssession`, `ml`, `session`, `evidence`, `dissect`, `ingest` import no reporting
+  module.
+- `test_reporting_html_and_projection_need_no_third_party_package` — subprocess asserts
+  `reportlab`, `fastapi`, `pydantic`, `jinja2`, `markupsafe`, `pypdf` are all absent
+  from `sys.modules` after importing the projection and HTML renderer.
 
-## 21. Limitations — PENDING
+**End-to-end on a real capture:** a Postfix PCAP submitted to a live uvicorn server with
+`ai=true` produced all three formats with correct content types, a `%PDF-` magic, and
+`pcap`, `html` and `pdf` artefacts all verifying `OK`.
+
+**Not verified / not attempted:** rendering fidelity in browsers other than the one used
+for QA, printed output on physical paper, assessments larger than ~300 issue groups,
+screen-reader behaviour with an actual assistive technology, and any locale or
+right-to-left rendering.
+
+## 18. Visual QA — VERIFIED
+
+Rasterised with PyMuPDF at 105–110 dpi and inspected page by page; HTML inspected in a
+browser. Fixtures covered: clean/no-findings, typical, high-severity with
+contradictions, low-coverage/withheld-band, many-findings, abstention-heavy,
+AI-enabled, and a real Postfix capture.
+
+**Two defects were found by looking and are fixed:**
+
+1. **Table headers broke mid-word.** `PROTOCOL` rendered as "PROTO COL", `ADEQUATE` as
+   "ADEQU ATE", `ABSTENTIONS` as "ABSTEN TIONS" — a purely proportional column split
+   squeezed short columns below the width of a single word. Columns now claim their
+   longest word first and only the surplus is distributed by weight. Two regression
+   tests lock it in.
+2. **Bar-chart counts drifted to the page edge**, detached from the bars they labelled.
+   Meter column narrowed so the number sits beside its bar.
+
+Checked and found clean after the fixes: page breaks, repeated table headers across
+pages, no blank pages, no clipping or overflow on the 10-column findings table, footer
+and page numbers on every page, long evidence strings wrapping rather than widening a
+column, and the withheld-band treatment rendering in its own hue with its notice.
+
+**Limitation stated honestly:** this was rasterised inspection by the author, not a
+review by a print professional or an accessibility audit with assistive technology.
+
+## 19. Performance — MEASURED
+
+Median of repeated runs, Python 3.9.6, macOS. Measured, not estimated.
+
+| Stage | Typical (2 groups, 1 abstention) | Large (120 groups, 80 abstentions) |
+|---|---:|---:|
+| Projection | 0.1 ms | 1.0 ms |
+| HTML render | 0.1 ms | 1.4 ms |
+| PDF render | 26.0 ms | 305.4 ms |
+| HTML size | 19.9 KB | 156 KB |
+| PDF size | 17.4 KB | 77.6 KB |
+| PDF pages | 7 | 33 |
+
+Projection and HTML are effectively free. PDF composition dominates and scales roughly
+linearly with content, which is why PDF is generated on request and cached by content
+hash while HTML is cheap enough to render any time. These are measurements on two
+assessments, **not** a benchmark, and say nothing about pathological inputs beyond the
+§15 limits.
+
+## 20. Requirements — assessed
+
+**R-03 (JSON / PDF / HTML): COMPLETE.** All three formats exist, are retrievable over
+HTTP, and carry the canonical content. JSON is byte-equal to the assessment endpoint;
+HTML is a standalone offline document; PDF is a real, parseable, paginated document with
+extractable text. Semantic equivalence across the three is asserted.
+
+**R-05 (forensic reports): COMPLETE.** A rendered artefact exists and carries capture
+SHA-256, assessment id, run id, analysis timestamp, engine and schema versions, frame
+references, standards basis, evidence coverage, abstentions with their resolution paths,
+limitations and ML role. Artefacts are content-addressed by `report_sha256`, stored
+through the Phase-8 store, and integrity-verified on access.
+
+**No A- or D- requirement changes.** Phase 9 adds no detection. **A-02 is unchanged:**
+the report displays `model_summary.role` and the ADR-0015 limitations and makes no
+claim about ML detection value.
+
+## 21. Limitations
+
+1. The report shows the **analysis** time, not a print time (ADR-0021 Decision 1). Stated
+   in the report itself.
+2. A stored assessment keeps the `run_id` of the run that first produced it (doc 21
+   §19), so a report for a replayed run shows the originating run id inside the
+   document.
+3. HTML and PDF are styled twice from shared design tokens; ReportLab's layout
+   vocabulary is not CSS. Divergence is guarded by semantic equivalence, not by identical
+   styling.
+4. Visual QA was rasterised inspection by the author — not a print-professional review
+   and not an accessibility audit with assistive technology.
+5. PDF requires the optional `reporting-pdf` extra. Without it the endpoint returns a
+   structured 503; JSON and HTML are unaffected.
+6. Report artefacts are never pruned; like the Phase-8 catalog, storage grows unbounded.
+7. Truncation limits (§15) are engineering choices bounding page count and render time,
+   not measurements. Truncation is always disclosed.
+8. Charts are limited to severity distribution and coverage, both rendered with their
+   numbers as text. No derived metric is computed for display.
 
 ## 22. What Phase 9 can and cannot claim
 

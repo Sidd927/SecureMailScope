@@ -64,12 +64,34 @@ curl -s -F file=@capture.pcap http://127.0.0.1:8000/api/v1/analyses
 | GET | `/api/v1/analyses/{run_id}` |
 | GET | `/api/v1/analyses/{run_id}/assessment` |
 | GET | `/api/v1/analyses/{run_id}/artifacts` — `?verify=true` re-hashes |
+| GET | `/api/v1/analyses/{run_id}/reports` — available formats + integrity |
+| GET | `/api/v1/analyses/{run_id}/reports/{html\|pdf\|json}` |
 
 The assessment endpoint returns the canonical document unaltered. Read `coverage`
 alongside `overall_posture`: a band without its evidence coverage is a misleading claim,
 which is why the band is withheld below 50 % assessed coverage.
 
 Interactive API docs at `/docs` once running.
+
+## Forensic reports (Phase 9)
+
+JSON and HTML need **no dependency**. PDF needs one extra:
+
+```bash
+python3 -m pip install 'reportlab>=4'
+```
+
+```bash
+curl -s http://127.0.0.1:8000/api/v1/analyses/<run_id>/reports/html -o report.html
+```
+
+The HTML is a single standalone file — no CDN, no webfont, no script — so it opens from
+disk and prints cleanly. The PDF is composed from the same report model, not from the
+HTML, and both are byte-deterministic: the report is a pure function of its assessment,
+so the same assessment always renders to the same bytes and can be cited by
+`report_sha256`.
+
+The timestamp shown in a report is the **analysis** time, not a print time.
 
 ## Where to look
 
@@ -80,11 +102,12 @@ Interactive API docs at `/docs` once running.
 | `docs/architecture/requirements-traceability.md` | requirement status with evidence |
 | `docs/architecture/19-evidence-fusion-and-posture.md` | the canonical output |
 | `docs/architecture/21-backend-persistence-api.md` | backend, storage and API |
-| `docs/architecture/adr/` | 19 ADRs; every significant decision with its alternatives |
+| `docs/architecture/22-forensic-reporting.md` | reporting, HTML/PDF, report identity |
+| `docs/architecture/adr/` | 21 ADRs; every significant decision with its alternatives |
 
 ## Status
 
-Phases 1–8 implemented on their own branches; `main` deliberately still points at
-Phase 3. Reporting (PDF/HTML) and the dashboard are Phase 9–10 and **not** implemented.
+Phases 1–9 implemented on their own branches; `main` deliberately still points at
+Phase 3. The dashboard is Phase 10 and **not** implemented.
 Known limitations are recorded per phase rather than summarised away — start with
 `ARCHITECTURE_STATUS.md`.

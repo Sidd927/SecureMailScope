@@ -29,7 +29,7 @@
 | [18-ml-model-catalog](18-ml-model-catalog.md) | 🟢 Live (robust-z-sum retained) |
 | [19-evidence-fusion-and-posture](19-evidence-fusion-and-posture.md) | 🟢 Implemented (Phase 7) |
 | [21-backend-persistence-api](21-backend-persistence-api.md) | 🟢 Implemented (Phase 8) |
-| [22-forensic-reporting](22-forensic-reporting.md) | 🟡 Design (Phase 9, in implementation) |
+| [22-forensic-reporting](22-forensic-reporting.md) | 🟢 Implemented (Phase 9) |
 | ADR 0001–0021 | 0001–0005,0007–0009,0011–0021 Accepted · 0006,0010 Proposed · **0007 superseded by 0017** · **0009 renderer amended by 0020** |
 
 ## 2. Locked decisions
@@ -78,11 +78,15 @@ ADR-0007 superseded by ADR-0017; lifecycle and API fixed by ADR-0018. Design: do
 Audit finding — **no production callable went PCAP → `PostureAssessment`** before Phase 8; the only
 end-to-end composition was a helper inside `tests/test_posture_corpora.py`.
 
-**Phase 9 (2026-09-21, in implementation):** forensic reporting on branch `phase/09-reporting`,
+**Phase 9 (2026-09-21):** forensic reporting on branch `phase/09-reporting`,
 branched from `v0.3.0-phase8`. Renders the canonical assessment as HTML and PDF; adds no security
 capability. **OQ-40 closed** by ADR-0020: WeasyPrint, wkhtmltopdf, Chromium, Playwright and every
 other candidate were measured absent; ReportLab 5.0.1 + pypdf 6.19.0 verified working on Python
 3.9.6 with byte-deterministic output under `invariant=1`. Design: doc 22.
+**R-03 and R-05 move to COMPLETE** — the first requirement completions since Phase 7 —
+on demonstrated behaviour: three formats served, semantic equivalence asserted across
+them, artefacts content-addressed and integrity-verified. Visual QA found and fixed two
+real layout defects. No A- or D- requirement changed; Phase 9 adds no detection.
 
 **Opened by Phase 9:** OQ-54 — should the projection expose a stable section-id vocabulary for
 Phase-10 deep-linking? OQ-55 — revisit HTML→PDF for visual fidelity if a browser engine ever
