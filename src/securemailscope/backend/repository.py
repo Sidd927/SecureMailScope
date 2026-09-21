@@ -83,6 +83,14 @@ class RunRecord:
     duration_ms: Optional[int] = None
     backend_version: str = SMS_VERSION
 
+    # --- listing projections (Phase 10, doc 23 section 6) --------------------
+    # Read from `assessments` via a LEFT JOIN, never computed here. ADR-0017
+    # Decision 3 created those columns "for listing and filtering only", and that
+    # constraint still binds: these are for a history row, never an authority.
+    # Anything that reasons about an assessment reads the stored document.
+    overall_posture: Optional[str] = None
+    score_value: Optional[float] = None
+
     @classmethod
     def new(cls, ai_enabled: bool = False, formula_id: Optional[str] = None,
             source_filename: Optional[str] = None) -> "RunRecord":
@@ -103,6 +111,8 @@ class RunRecord:
             "source_filename": self.source_filename,
             "duration_ms": self.duration_ms,
             "backend_version": self.backend_version,
+            "overall_posture": self.overall_posture,
+            "score_value": self.score_value,
         }
 
 
@@ -128,6 +138,14 @@ class ArtifactRecord:
         }
 
 
+def _optional(row: sqlite3.Row, column: str) -> Any:
+    """Read a column that is only present when the assessments join was applied."""
+    try:
+        return row[column]
+    except (IndexError, KeyError):
+        return None
+
+
 def _row_to_run(row: sqlite3.Row) -> RunRecord:
     return RunRecord(
         run_id=row["run_id"], capture_id=row["capture_id"],
@@ -138,7 +156,9 @@ def _row_to_run(row: sqlite3.Row) -> RunRecord:
         formula_id=row["formula_id"], assessment_id=row["assessment_id"],
         ingest_status=row["ingest_status"], error_code=row["error_code"],
         error_message=row["error_message"], source_filename=row["source_filename"],
-        duration_ms=row["duration_ms"], backend_version=row["backend_version"])
+        duration_ms=row["duration_ms"], backend_version=row["backend_version"],
+        overall_posture=_optional(row, "overall_posture"),
+        score_value=_optional(row, "score_value"))
 
 
 class Repository:
@@ -164,9 +184,17 @@ class Repository:
             self._event(cur, run.run_id, None, run.state, "run created")
         return run
 
+    #: Runs plus the assessment's stored listing projections. The projections are
+    #: written from the document inside the assessment's own transaction, so this
+    #: returns values that already exist rather than deriving any.
+    _RUN_SELECT = ("SELECT r.*, a.overall_posture AS overall_posture, "
+                   "a.score_value AS score_value FROM runs r "
+                   "LEFT JOIN assessments a ON a.assessment_id = r.assessment_id")
+
     def get_run(self, run_id: str) -> RunRecord:
         with self.db.read() as cur:
-            row = cur.execute("SELECT * FROM runs WHERE run_id=?", (run_id,)).fetchone()
+            row = cur.execute(self._RUN_SELECT + " WHERE r.run_id=?",
+                              (run_id,)).fetchone()
         if row is None:
             raise NotFound("no such analysis run", detail={"run_id": run_id})
         return _row_to_run(row)
@@ -182,18 +210,20 @@ class Repository:
                   capture_id: Optional[str] = None) -> Tuple[List[RunRecord], int]:
         where, params = [], []  # type: (List[str], List[Any])
         if state is not None:
-            where.append("state=?")
+            where.append("r.state=?")
             params.append(state.value)
         if capture_id:
-            where.append("capture_id=?")
+            where.append("r.capture_id=?")
             params.append(capture_id)
         clause = (" WHERE " + " AND ".join(where)) if where else ""
+        count_clause = clause.replace("r.", "")
         with self.db.read() as cur:
             total = cur.execute(
-                "SELECT COUNT(*) AS n FROM runs" + clause, tuple(params)).fetchone()["n"]
+                "SELECT COUNT(*) AS n FROM runs" + count_clause,
+                tuple(params)).fetchone()["n"]
             rows = cur.execute(
-                "SELECT * FROM runs" + clause +
-                " ORDER BY created_at DESC, rowid DESC LIMIT ? OFFSET ?",
+                self._RUN_SELECT + clause +
+                " ORDER BY r.created_at DESC, r.rowid DESC LIMIT ? OFFSET ?",
                 tuple(params) + (limit, offset)).fetchall()
         return [_row_to_run(r) for r in rows], int(total)
 
@@ -257,7 +287,7 @@ class Repository:
         placeholders = ",".join("?" for _ in INTERRUPTIBLE)
         with self.db.read() as cur:
             rows = cur.execute(
-                "SELECT * FROM runs WHERE state IN (%s)" % placeholders,
+                self._RUN_SELECT + " WHERE r.state IN (%s)" % placeholders,
                 tuple(s.value for s in INTERRUPTIBLE)).fetchall()
         return [_row_to_run(r) for r in rows]
 
@@ -337,9 +367,11 @@ class Repository:
         """Idempotency lookup (ADR-0018 Decision 4). Keys on content, never filename."""
         with self.db.read() as cur:
             row = cur.execute(
-                "SELECT * FROM runs WHERE capture_id=? AND state=? AND ai_enabled=? "
-                "AND (formula_id IS ? OR formula_id=?) AND assessment_id IS NOT NULL "
-                "ORDER BY created_at ASC LIMIT 1",
+                self._RUN_SELECT +
+                " WHERE r.capture_id=? AND r.state=? AND r.ai_enabled=? "
+                "AND (r.formula_id IS ? OR r.formula_id=?) "
+                "AND r.assessment_id IS NOT NULL "
+                "ORDER BY r.created_at ASC LIMIT 1",
                 (capture_id, JobState.COMPLETED.value, int(ai_enabled),
                  formula_id, formula_id)).fetchone()
         return _row_to_run(row) if row else None

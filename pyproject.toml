@@ -32,5 +32,11 @@ test-reporting = ["pypdf>=4"]    # verifies rendered PDFs actually parse
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# The dashboard is static assets, not Python. They must ship with the package or the
+# console cannot be served (doc 23 section 6). No build step produces them.
+[tool.setuptools.package-data]
+"securemailscope.dashboard" = ["static/*.html", "static/*.js", "static/*.css",
+                               "static/views/*.js"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

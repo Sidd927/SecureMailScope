@@ -1,0 +1,204 @@
+/*
+ * Analyst console styling (doc 23 §12, §13).
+ *
+ * Forensic console, not a consumer dashboard: high information density, restrained
+ * colour, readable tables, strong hierarchy. Colour is always redundant with text —
+ * every severity and posture also carries a word and, where relevant, an ASCII marker
+ * (doc 23 §10). Tokens mirror reporting/styles.py so the console and the report speak
+ * the same visual language about the same assessment.
+ */
+
+:root {
+  --ink: #15191e;
+  --muted: #5c6672;
+  --rule: #d4d9de;
+  --panel: #f6f7f9;
+  --panel-2: #fbfcfd;
+  --accent: #1f3a5f;
+  --critical: #8d1f1f;
+  --high: #a8480f;
+  --medium: #8a6510;
+  --low: #3d5a2b;
+  --info: #41526b;
+  --withheld: #4a3a6b;
+  --neutral: #5c6672;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: #fff;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.wrap { max-width: 78rem; margin: 0 auto; padding: 0 1.5rem; }
+
+/* Keyboard users must be able to reach content without traversing the nav. */
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 10;
+  background: var(--accent); color: #fff; padding: .6rem 1rem;
+}
+.skip:focus { left: 0; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+#main:focus { outline: none; }
+
+a { color: var(--accent); }
+a:hover { text-decoration: underline; }
+
+/* ---------- masthead ---------- */
+.masthead { border-bottom: 3px solid var(--accent); background: var(--panel); }
+.masthead-inner {
+  display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;
+  justify-content: space-between; padding-top: 1.1rem; padding-bottom: .9rem;
+}
+.masthead h1 { margin: 0; font-size: 1.25rem; letter-spacing: .03em; }
+.brand { color: var(--ink); text-decoration: none; }
+.tagline { margin: .15rem 0 0; color: var(--muted); font-size: .82rem; }
+
+.crumbs ol { list-style: none; display: flex; gap: .4rem; margin: 0; padding: 0;
+  font-size: .8rem; color: var(--muted); flex-wrap: wrap; }
+.crumbs li + li::before { content: "/"; margin-right: .4rem; color: var(--rule); }
+
+/* ---------- tabs ---------- */
+.tabs { border-bottom: 1px solid var(--rule); background: #fff; }
+.tabs ul { list-style: none; display: flex; gap: .25rem; margin: 0; padding: 0; }
+.tabs a {
+  display: block; padding: .65rem .95rem; font-size: .86rem; text-decoration: none;
+  color: var(--muted); border-bottom: 3px solid transparent;
+}
+.tabs a:hover { color: var(--ink); }
+.tabs a.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent); }
+
+/* ---------- sections ---------- */
+main { padding: 1.75rem 1.5rem 4rem; }
+section { margin: 0 0 2.25rem; }
+h2 {
+  font-size: 1.05rem; margin: 0 0 .35rem; padding-bottom: .4rem;
+  border-bottom: 2px solid var(--rule); letter-spacing: .01em;
+}
+.lead { color: var(--muted); margin: .45rem 0 1rem; font-size: .9rem; }
+
+/* ---------- facts ---------- */
+dl.facts {
+  display: grid; grid-template-columns: minmax(9rem, 15rem) 1fr;
+  gap: .35rem 1.25rem; margin: 1rem 0;
+}
+dl.facts dt { color: var(--muted); font-size: .82rem; }
+dl.facts dd { margin: 0; font-weight: 600; word-break: break-word; }
+dl.facts dd .note {
+  display: block; font-weight: 400; font-size: .78rem; color: var(--muted);
+}
+
+/* ---------- tables ---------- */
+.table-wrap { margin: 1rem 0; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+caption {
+  text-align: left; font-size: .78rem; color: var(--muted); padding-bottom: .4rem;
+}
+th, td {
+  border: 1px solid var(--rule); padding: .42rem .55rem; text-align: left;
+  vertical-align: top; word-break: break-word;
+}
+th {
+  background: var(--panel); font-size: .72rem; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--muted); font-weight: 700;
+  position: sticky; top: 0;
+}
+td.wide { min-width: 14rem; }
+tbody tr:nth-child(even) td { background: var(--panel-2); }
+.mono { font-family: var(--mono); font-size: .78rem; }
+.muted { color: var(--muted); font-style: italic; }
+.empty { color: var(--muted); font-style: italic; padding: .6rem 0; }
+
+/* ---------- chips: colour is ALWAYS redundant with the label ---------- */
+.chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .74rem; font-weight: 700; letter-spacing: .03em;
+  padding: .12rem .45rem; border: 1px solid currentColor; border-radius: 2px;
+  white-space: nowrap;
+}
+.chip .marker { font-family: var(--mono); font-weight: 400; font-size: .7rem; }
+.chip-critical { color: var(--critical); }
+.chip-high { color: var(--high); }
+.chip-medium { color: var(--medium); }
+.chip-low { color: var(--low); }
+.chip-info { color: var(--info); }
+.chip-strong { color: var(--low); }
+.chip-adequate { color: var(--info); }
+.chip-weak { color: var(--medium); }
+/* A withheld verdict is not a severity and is not coloured like one. */
+.chip-insufficient_evidence { color: var(--withheld); }
+.chip-completed { color: var(--info); }
+.chip-failed { color: var(--critical); }
+.chip-cancelled { color: var(--muted); }
+.chip-neutral, .chip-unknown { color: var(--muted); }
+
+/* ---------- bars: the number is always printed ---------- */
+.bar {
+  display: grid; grid-template-columns: 11rem 1fr 3.5rem; align-items: center;
+  gap: .6rem; margin: .28rem 0; font-size: .8rem;
+}
+.bar-track {
+  background: var(--panel); border: 1px solid var(--rule); height: .8rem;
+  position: relative; overflow: hidden;
+}
+.bar-fill { position: absolute; inset: 0 auto 0 0; background: var(--neutral); }
+.bar-fill.tone-critical { background: var(--critical); }
+.bar-fill.tone-high { background: var(--high); }
+.bar-fill.tone-medium { background: var(--medium); }
+.bar-fill.tone-low { background: var(--low); }
+.bar-fill.tone-info { background: var(--info); }
+.bar-value { text-align: right; font-family: var(--mono); }
+
+/* ---------- notices and states ---------- */
+.notice {
+  border-left: 4px solid var(--accent); background: var(--panel);
+  padding: .7rem .9rem; margin: .7rem 0; font-size: .86rem;
+}
+.notice.withheld { border-left-color: var(--withheld); }
+
+.state-panel {
+  border: 1px solid var(--rule); background: var(--panel); padding: 1.5rem;
+  margin: 1.25rem 0;
+}
+.state-panel h2 { border: 0; margin-top: 0; padding: 0; }
+.state-panel.error { border-left: 4px solid var(--critical); }
+.state-panel .code { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+.snippet {
+  font-family: var(--mono); font-size: .78rem; background: #fff;
+  border: 1px solid var(--rule); padding: .6rem .7rem; overflow-x: auto;
+}
+
+.loading { display: flex; align-items: center; gap: .6rem; color: var(--muted);
+  padding: 2rem 0; }
+.spinner {
+  width: 1rem; height: 1rem; border: 2px solid var(--rule);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; }
+}
+
+/* ---------- footer ---------- */
+.foot {
+  border-top: 1px solid var(--rule); margin-top: 3rem; padding: 1rem 0 2rem;
+  font-size: .78rem; color: var(--muted);
+}
+
+/* ---------- narrower viewports: desktop-first, but must not break ---------- */
+@media (max-width: 860px) {
+  dl.facts { grid-template-columns: 1fr; gap: .1rem .5rem; }
+  dl.facts dd { margin-bottom: .5rem; }
+  .bar { grid-template-columns: 8rem 1fr 3rem; }
+  .masthead-inner { align-items: flex-start; }
+}

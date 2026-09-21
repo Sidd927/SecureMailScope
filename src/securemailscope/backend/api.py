@@ -266,7 +266,30 @@ def create_app(service: Optional[AnalysisService] = None,
                         headers=headers)
 
     app.include_router(router)
+    _mount_dashboard(app)
     return app
+
+
+def _mount_dashboard(app: FastAPI) -> None:
+    """Serve the analyst console from a fixed package directory (doc 23 §6, §11).
+
+    The path is resolved from this package, never from user input, and the mount is
+    read-only. It is added AFTER the API router so it can never shadow an endpoint.
+    Absence of the directory is not fatal: the API is fully usable without the console.
+    """
+    try:
+        from fastapi.staticfiles import StaticFiles
+    except ImportError:                       # pragma: no cover - fastapi guarantees it
+        return
+    from securemailscope import dashboard as dashboard_pkg
+
+    static_dir = os.path.join(os.path.dirname(os.path.abspath(
+        dashboard_pkg.__file__)), "static")
+    if not os.path.isdir(static_dir):         # pragma: no cover - packaging guard
+        log.warning("dashboard static directory missing; console not served")
+        return
+    app.mount("/dashboard", StaticFiles(directory=static_dir, html=True),
+              name="dashboard")
 
 
 def _report_service(svc: AnalysisService):

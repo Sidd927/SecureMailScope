@@ -311,16 +311,58 @@ def test_reporting_defines_no_severity_ordering_used_for_ranking():
     assert projection is not None
 
 
-def test_phase_eight_source_is_untouched_except_api_wiring():
-    """Phase 8 is frozen; Phase 9 may only extend the API surface."""
+#: Phase-8 backend files later phases are permitted to modify, and why. Every other
+#: backend module — db, lifecycle, artifacts, pipeline, service, errors, limits — is
+#: frozen, and this test is what keeps it that way.
+#:
+#: `repository.py` was added to this set in Phase 10 for one approved, documented
+#: change (ADR-0022 Decision 3, doc 23 §6): a LEFT JOIN that returns the
+#: `overall_posture` and `score_value` columns the assessment already stores, so a
+#: history list costs one request instead of one per row. Nothing is recomputed and no
+#: existing field changed name, type or meaning — asserted by
+#: tests/test_dashboard_api_contract.py.
+PHASE8_MUTABLE = {
+    "src/securemailscope/backend/api.py",        # endpoint wiring (Phase 9, Phase 10)
+    "src/securemailscope/backend/schemas.py",    # additive response fields
+    "src/securemailscope/backend/repository.py",  # additive listing join (Phase 10)
+}
+
+
+def test_phase_eight_core_is_untouched():
+    """Phase 8 is frozen apart from an explicit, justified allowlist."""
     import subprocess
     diff = subprocess.run(["git", "diff", "--name-only", "v0.3.0-phase8", "HEAD"],
                           capture_output=True, text=True)
     if diff.returncode != 0:                      # pragma: no cover - no git
         pytest.skip("git unavailable")
-    changed = [f for f in diff.stdout.splitlines()
-               if f.startswith("src/securemailscope/backend/")]
-    # Only the API surface and its schemas gain report endpoints; persistence,
-    # lifecycle, artifacts, pipeline and service logic are untouched.
-    assert set(changed) <= {"src/securemailscope/backend/api.py",
-                            "src/securemailscope/backend/schemas.py"}, changed
+    changed = {f for f in diff.stdout.splitlines()
+               if f.startswith("src/securemailscope/backend/")}
+    assert changed <= PHASE8_MUTABLE, changed - PHASE8_MUTABLE
+
+
+def test_frozen_backend_modules_really_are_frozen():
+    """Names the modules no later phase may touch, so the allowlist cannot drift."""
+    import subprocess
+    diff = subprocess.run(["git", "diff", "--name-only", "v0.3.0-phase8", "HEAD"],
+                          capture_output=True, text=True)
+    if diff.returncode != 0:                      # pragma: no cover - no git
+        pytest.skip("git unavailable")
+    frozen = {"db.py", "lifecycle.py", "artifacts.py", "pipeline.py", "service.py",
+              "errors.py", "limits.py", "__main__.py"}
+    touched = {os.path.basename(f) for f in diff.stdout.splitlines()
+               if f.startswith("src/securemailscope/backend/")}
+    assert not (touched & frozen), touched & frozen
+
+
+def test_repository_change_is_read_only_and_additive():
+    """The Phase-10 exception must stay an exception: a read-side join, nothing more."""
+    from securemailscope.backend.repository import RunRecord
+    # the two new fields exist, default to None, and are optional
+    record = RunRecord.new()
+    assert record.overall_posture is None
+    assert record.score_value is None
+    # and the join is a SELECT, never a write
+    source = open("src/securemailscope/backend/repository.py").read()
+    assert "LEFT JOIN assessments" in source
+    assert "UPDATE assessments" not in source
+    assert "INSERT INTO assessments(overall_posture" not in source

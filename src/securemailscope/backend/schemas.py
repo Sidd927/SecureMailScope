@@ -66,6 +66,15 @@ class RunResponse(BaseModel):
     replayed: bool = False
     stages: Optional[List[Dict[str, Any]]] = None
 
+    # --- listing projections (Phase 10, doc 23 section 6) --------------------
+    # Read from the assessment's stored columns, never recomputed. Present so a
+    # history list costs one request instead of one per row. ADR-0017 Decision 3
+    # created these columns "for listing and filtering only" and that still binds:
+    # they are NOT an authority. Anything reasoning about an assessment reads
+    # GET /api/v1/analyses/{run_id}/assessment, which remains canonical.
+    overall_posture: Optional[str] = None
+    score_value: Optional[float] = None
+
 
 class RunListResponse(BaseModel):
     total: int
@@ -142,4 +151,6 @@ def run_to_response(run: Any, *, replayed: bool = False,
         duration_ms=run.duration_ms, ingest_status=run.ingest_status,
         error_code=run.error_code, error_message=run.error_message,
         source_filename=run.source_filename, backend_version=run.backend_version,
-        replayed=replayed, stages=stages)
+        replayed=replayed, stages=stages,
+        overall_posture=getattr(run, "overall_posture", None),
+        score_value=getattr(run, "score_value", None))
