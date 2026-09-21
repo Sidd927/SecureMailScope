@@ -28,8 +28,9 @@
 | [17-ml-model-evaluation](17-ml-model-evaluation.md) | 🟢 Live (outcome D, ADR-0015) |
 | [18-ml-model-catalog](18-ml-model-catalog.md) | 🟢 Live (robust-z-sum retained) |
 | [19-evidence-fusion-and-posture](19-evidence-fusion-and-posture.md) | 🟢 Implemented (Phase 7) |
-| [21-backend-persistence-api](21-backend-persistence-api.md) | 🟡 Design (Phase 8, in implementation) |
-| ADR 0001–0018 | 0001–0005,0007–0009,0011–0018 Accepted · 0006,0010 Proposed · **0007 superseded by 0017** |
+| [21-backend-persistence-api](21-backend-persistence-api.md) | 🟢 Implemented (Phase 8) |
+| [22-forensic-reporting](22-forensic-reporting.md) | 🟡 Design (Phase 9, in implementation) |
+| ADR 0001–0021 | 0001–0005,0007–0009,0011–0021 Accepted · 0006,0010 Proposed · **0007 superseded by 0017** · **0009 renderer amended by 0020** |
 
 ## 2. Locked decisions
 
@@ -37,7 +38,9 @@ Dissection = tshark (ADR-0001) · EvidenceField wrapper + 6 states (ADR-0002/04)
 state machine in our engine (ADR-0003) · versioned standards-bound rules (ADR-0004) · cross-session as
 first-class layer (ADR-0005) · ~~SQLite per-run + FS artifacts (ADR-0007)~~ → **one SQLite catalog +
 canonical assessment stored as a document + FS artifacts (ADR-0017, supersedes 0007)** · backend job
-lifecycle distinct from `RunStatus`, pass-through API (ADR-0018) · one canonical report → 3
+lifecycle distinct from `RunStatus`, pass-through API (ADR-0018) · report is a projection, not an
+engine (ADR-0019) · PDF composed from the report model with ReportLab (ADR-0020, closes OQ-40) ·
+report is a pure function of its assessment, `report_sha256` identity (ADR-0021) · one canonical report → 3
 renderers (ADR-0009) · modular monolith Python/FastAPI (ADR-0011) · AI optional/read-only/grounded,
 `--no-ai` identical findings (ADR-0008).
 
@@ -50,7 +53,7 @@ ML/AI never writes a finding or changes a fact.
 ## 4. Open (non-blocking) questions
 
 OQ-26 local-LLM packaging · OQ-29 NAT identity · OQ-30 contrast-rule default · OQ-31/32 evidence
-inferences · OQ-33r real-server corpus · OQ-38 tshark output mode · OQ-40 offline PDF renderer ·
+inferences · OQ-33r real-server corpus · OQ-38 tshark output mode · ~~OQ-40 offline PDF renderer~~ **(closed, ADR-0020)** ·
 OQ-41 SPA framework. All deferred to their implementation phase.
 
 **Closed by Phase 6 (ADR-0015, docs 16–18):** OQ-36 (model selection) — no candidate wins on
@@ -74,6 +77,17 @@ it orchestrates the existing engines and serves the canonical `PostureAssessment
 ADR-0007 superseded by ADR-0017; lifecycle and API fixed by ADR-0018. Design: doc 21.
 Audit finding — **no production callable went PCAP → `PostureAssessment`** before Phase 8; the only
 end-to-end composition was a helper inside `tests/test_posture_corpora.py`.
+
+**Phase 9 (2026-09-21, in implementation):** forensic reporting on branch `phase/09-reporting`,
+branched from `v0.3.0-phase8`. Renders the canonical assessment as HTML and PDF; adds no security
+capability. **OQ-40 closed** by ADR-0020: WeasyPrint, wkhtmltopdf, Chromium, Playwright and every
+other candidate were measured absent; ReportLab 5.0.1 + pypdf 6.19.0 verified working on Python
+3.9.6 with byte-deterministic output under `invariant=1`. Design: doc 22.
+
+**Opened by Phase 9:** OQ-54 — should the projection expose a stable section-id vocabulary for
+Phase-10 deep-linking? OQ-55 — revisit HTML→PDF for visual fidelity if a browser engine ever
+becomes a supported dependency, accepting the loss of byte determinism? OQ-56 — detached-signing
+reports once a key-management story exists.
 
 **Opened by Phase 8:** OQ-51 — do cross-capture trend queries justify a derived read-model
 (rebuilt from documents, never written independently)? OQ-52 — is synchronous in-request analysis
