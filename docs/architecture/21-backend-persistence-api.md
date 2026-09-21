@@ -1,12 +1,12 @@
 # 21 — Backend, Persistence and API (Phase 8)
 
-**Status:** Design · **Date:** 2026-09-21 · **Decisions:** ADR-0017, ADR-0018
+**Status:** Implemented · **Date:** 2026-09-21 · **Decisions:** ADR-0017, ADR-0018
 **Builds on:** ADR-0011 (modular monolith) · **Consumes:** `PostureAssessment` (ADR-0016)
 **Baseline:** `v0.2.0-phase7` = `9b3e6e4`, 443 tests passing
 
-> Status discipline: this document is written before implementation and each section is
-> labelled `DESIGN`, `IMPLEMENTED`, `VERIFIED` or `NOT IN SCOPE`. §17 carries the test
-> evidence and is the only place a claim of verification is made.
+> Status discipline: sections are labelled `IMPLEMENTED`, `VERIFIED` or `MEASURED`.
+> §17 carries the test evidence and §17a the measurements; they are the only places a
+> claim of verification rests on something other than reading the code.
 
 ---
 
@@ -34,7 +34,7 @@ models, new detections, certificate-analysis expansion, SPF/DKIM/DMARC/DNS, atta
 attribution, active scanning, live monitoring, cloud/Kubernetes, authentication beyond
 what a local single-analyst prototype needs. Phases 9+ own these.
 
-## 3. Architecture — DESIGN
+## 3. Architecture — IMPLEMENTED
 
 ```
                  HTTP client
@@ -79,7 +79,7 @@ Package `src/securemailscope/backend/`:
 package may import `backend/`.** Phase 8 is a leaf. Asserted by test (§17), matching the
 AST tests that already separate `posture/` from `ml/`.
 
-## 4. The orchestration gap this phase closes — DESIGN
+## 4. The orchestration gap this phase closes — IMPLEMENTED
 
 Audited at `0eeb6f1`: **no production callable goes from a PCAP to a `PostureAssessment`.**
 `analyze_capture()` stops at normalized frames and explicitly produces no verdicts. The
@@ -106,7 +106,7 @@ the Phase-8 brief requires the backend and a direct invocation to agree.
 
 `ai_enabled` defaults to **False**, matching `PostureConfig`.
 
-## 5. Persistence model — DESIGN
+## 5. Persistence model — IMPLEMENTED
 
 ADR-0017 supersedes ADR-0007's per-run databases. One catalog:
 
@@ -153,7 +153,7 @@ throughput — this is a forensic store). `schema_meta` carries
 `BACKEND_SCHEMA_VERSION`; a database written by a newer schema is refused rather than
 silently upgraded.
 
-## 6. Job lifecycle — DESIGN
+## 6. Job lifecycle — IMPLEMENTED
 
 ```
 CREATED ──► VALIDATING ──► QUEUED ──► RUNNING ──► FINALIZING ──► COMPLETED
@@ -175,7 +175,7 @@ This enum is **separate from Phase 2's `RunStatus`**, which stays untouched and 
 alongside as `ingest_status`. ADR-0018 Decision 1 records why conflating evidence quality
 with job scheduling is a mistake.
 
-## 7. Identity — DESIGN, empirically grounded
+## 7. Identity — VERIFIED
 
 Three identities, deliberately distinct:
 
@@ -219,7 +219,7 @@ collide. Storage therefore keeps `content_sha256` and **fails closed** on diverg
 (ADR-0017 Decision 4) rather than assuming the id is sufficient. **No Phase-7 change is
 required or made.**
 
-## 8. Artifact store — DESIGN
+## 8. Artifact store — IMPLEMENTED
 
 ```
 <data_dir>/
@@ -237,7 +237,7 @@ reach a path. Every artifact records `artifact_id`, `kind`, `sha256`, `size_byte
 `ArtifactIntegrityError`. An artifact altered after persistence is surfaced, never
 silently accepted. Forensic identity is the hash; the filename is a label.
 
-## 9. API — DESIGN
+## 9. API — IMPLEMENTED
 
 | Method | Path | Purpose |
 |---|---|---|
@@ -261,7 +261,7 @@ Pydantic models exist for requests, errors and list items — things the backend
 assessment schema is **not** re-declared in pydantic; that would create the second
 contract ADR-0018 Decision 3 rejects.
 
-## 10. Error model — DESIGN
+## 10. Error model — IMPLEMENTED
 
 One envelope:
 
@@ -289,7 +289,7 @@ One envelope:
 No stack trace, no filesystem path and no SQL ever reaches a client. Failures are logged,
 persisted onto the run where one exists, and returned through this envelope.
 
-## 11. Resource limits — DESIGN
+## 11. Resource limits — IMPLEMENTED
 
 Existing Phase-2 limits are **reused, not replaced**: `max_capture_bytes` (2 GiB),
 `max_frames` (2 000 000), `tshark_timeout_s` (300). Phase 8 adds only what HTTP
@@ -307,7 +307,7 @@ All are environment-overridable (`SMS_*`) like `Config`. None silently weakens a
 previously established safety limit; `max_upload_bytes` is clamped to `max_capture_bytes`
 so raising one cannot bypass the other.
 
-## 12. Concurrency — DESIGN
+## 12. Concurrency — IMPLEMENTED
 
 One serialized writer, guarded by a process-level lock; SQLite WAL permits concurrent
 readers throughout. Listing and retrieval never block behind an analysis.
@@ -317,7 +317,7 @@ Phase-8 brief requires the distinction between an intentional constraint and an
 accidental one. Submissions beyond the limit queue; beyond `max_queued_jobs` they are
 refused with `RESOURCE_LIMIT_EXCEEDED`.
 
-## 13. Recovery — DESIGN
+## 13. Recovery — VERIFIED
 
 On startup the service sweeps every run in a non-terminal state. Nothing but an
 interrupted process can leave a run there, so each is moved
@@ -332,14 +332,14 @@ in which one exists without the other.
 Interrupted analyses are not resumed. The capture is content-addressed and the pipeline
 deterministic, so re-submission is cheap and produces the same `assessment_id`.
 
-## 14. Idempotency — DESIGN
+## 14. Idempotency — IMPLEMENTED
 
 Default: same `capture_id` + same `(ai_enabled, formula_id)` returns the existing
 completed run, flagged as a replay. `?force=true` runs an independent analysis against the
 same capture. Deduplication keys on `capture_id` — never on the attacker-controlled
 filename. Rationale and rejected alternatives: ADR-0018 Decision 4.
 
-## 15. AI boundary — DESIGN
+## 15. AI boundary — VERIFIED
 
 The backend passes `ai_enabled` into `PostureConfig` and does nothing else with ML. It
 does not read, interpret, threshold, re-band, re-weight or store an ML conclusion
@@ -348,7 +348,7 @@ the ML limitations travel through to the API untouched.
 
 `ai_enabled=False` is the default. §17 records the equivalence check.
 
-## 16. Security considerations — DESIGN
+## 16. Security considerations — IMPLEMENTED
 
 Uploads and every identifier are untrusted input.
 
@@ -369,15 +369,70 @@ Logging records `run_id`, `capture_id`, `assessment_id`, transitions, durations 
 failure classes. It records **no** payloads, credentials, mail contents or filesystem
 paths. Logs must not become a second copy of the sensitive material the tool analyses.
 
-## 17. Test evidence — PENDING
+## 17. Test evidence — VERIFIED
 
-Populated when the suite exists. Phase-7 baseline to preserve: **443 passed, 0 failed,
-0 skipped, 0 xfail**. Planned: lifecycle transitions and rejections, repository CRUD,
-document round-trip preserving abstentions / `NOT_OBSERVABLE` / coverage / provenance /
-limitations, artifact hashing and tamper detection, error mapping, resource limits,
-end-to-end submit→persist→retrieve, backend-vs-direct canonical equivalence,
-`--no-ai` equivalence, recovery after simulated crash, idempotency, and the security
-matrix in §16.
+**549 passed, 0 failed, 0 skipped, 0 xfail.** Phase-7 baseline of 443 preserved intact;
+Phase 8 adds 106. Real Postfix and Dovecot captures from OQ-33r drive the end-to-end
+tests; they skip cleanly when tshark or the captures are absent.
+
+| File | Count | Covers |
+|---|---:|---|
+| `test_backend_persistence.py` | 40 | lifecycle table, transitions and rejections, schema, repository CRUD, identity discipline, limits |
+| `test_backend_pipeline.py` | 25 | artifacts, integrity, service lifecycle, orchestration, recovery, idempotency, equivalence |
+| `test_backend_api.py` | 30 | HTTP surface, error mapping, security matrix |
+| `test_backend_architecture.py` | 11 | structural boundaries |
+
+**Load-bearing results:**
+
+- `test_backend_matches_direct_invocation` — the document served through the backend
+  equals a direct engine invocation across `assessment_id`, `score`, `coverage`,
+  `risk_summary`, `issue_groups`, `prioritised`, `abstentions`, `protocol_posture`,
+  `standards_summary`, `remediation_summary`, `model_summary`, `provenance`,
+  `limitations`, `versions`, `ai_enabled`. **§28 of the Phase-8 brief is satisfied.**
+- `test_no_ai_equivalence_through_backend` — identical score, band, standards,
+  remediation and penalising groups with the ML lane on and off.
+- `test_no_ai_run_never_touches_ml_engine` — spies on `AnomalyEngine.__init__` and
+  asserts zero calls; `--no-ai` is honoured by not taking the branch, not merely by
+  discarding a result.
+- `test_interrupted_run_is_never_reported_completed` — a run is stranded in `RUNNING`,
+  the database is reopened, and the run is `FAILED` with `ANALYSIS_INTERRUPTED`, no
+  assessment, and zero completed runs.
+- `test_completion_and_assessment_commit_atomically` — a crash inside the commit leaves
+  the run `FINALIZING` and no stored assessment.
+- `test_capture_id_is_sha256_of_stored_artifact` — the forensic chain holds end to end.
+- `test_tampered_artifact_is_detected` — a byte-level edit after persistence surfaces.
+- `test_hostile_filename_never_reaches_disk` — uploading as
+  `../../../../tmp/pwned.pcap` creates no such file; the name survives as a label.
+- `test_hostile_pcap_text_is_data_not_instruction` — injected instruction text never
+  appears in a served assessment.
+- `test_phase_seven_source_is_untouched` — `git diff v0.2.0-phase7 HEAD` shows no change
+  under any Phase 1–7 source directory.
+
+**Not verified / not attempted:** behaviour under real concurrent multi-process access,
+databases beyond a few dozen runs, captures near the 256 MiB upload ceiling, recovery
+from a corrupted database file, and any deployment property beyond a local prototype.
+
+## 17a. Performance — MEASURED
+
+Median of repeated runs on `postfix_smtp_plaintext_session.pcap` (1 session, 14 KB
+assessment), macOS, Python 3.9.6, 16 runs in the catalog. Measured, not estimated.
+
+| Operation | Median |
+|---|---:|
+| Direct pipeline, no backend | 115.4 ms |
+| Backend submit (validate + artifact + pipeline + persist) | 119.7 ms |
+| **Backend overhead** | **4.3 ms (3.7 %)** |
+| Assessment persist | 0.3 ms |
+| Assessment retrieve | 39 µs |
+| List 20 runs | 19 µs |
+| Artifact integrity verify | 34 µs |
+
+The Phase-7 analysis cost dominates by roughly 27×; the backend adds single-digit
+milliseconds. `synchronous=FULL` was chosen over throughput and costs well under a
+millisecond per commit at this size, so the durability guarantee is effectively free
+here. These figures are a sanity check on a small capture, **not** a benchmark: they say
+the architecture does not degrade Phase-7 performance, and nothing about behaviour at
+gigabyte scale (OQ-52).
 
 ## 18. Requirements touched
 
@@ -388,7 +443,7 @@ artefact, so it stays PARTIAL. **A-01 through A-05 are unchanged** — Phase 8 a
 detection capability and must not alter their status. `requirements-traceability.md` is
 updated only for what is verified.
 
-## 19. Limitations — DESIGN
+## 19. Limitations
 
 1. One analysis at a time; throughput is not a design goal.
 2. Interrupted analyses fail rather than resume.

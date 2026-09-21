@@ -29,9 +29,9 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | A-05 remediation | ✅ **COMPLETE** for implemented issue classes. Six rule-bound templates: observed, why, action, scope, verification, citations, limitations. No generic fallback; non-actionable classes listed explicitly | `posture/remediation` | 7 ✅ | remediation-mapping + hostile-text tests | remediation |
 | R-01 prioritised findings | ✅ **COMPLETE.** `PostureAssessment.prioritised`, one ranked entry per issue group with affected-session scope | `posture/engine` | 7 ✅ | ordering tests | findings |
 | R-02 posture assessment | ✅ **COMPLETE.** Canonical `PostureAssessment` with score, coverage, groups, abstentions, protocol posture, standards, remediation, provenance, limitations | `posture/model` | 7 ✅ | corpus + serialisation tests | honesty |
-| R-03 JSON/PDF/HTML | 🟡 **PARTIAL.** JSON complete via `to_dict()` on the canonical object; PDF and HTML renderers are Phase 9 | `posture/model` → report | 7 🟡 / 9 | serialisation tests incl. malformed Unicode | export |
+| R-03 JSON/PDF/HTML | 🟡 **PARTIAL.** JSON complete via `to_dict()`, persisted and served over HTTP (Phase 8); PDF and HTML renderers are Phase 9 | `posture/model` → backend/api | 7 🟡 / 8 🟡 / 9 | serialisation tests incl. malformed Unicode | export |
 | R-04 dashboard | analyst views | dashboard | 10 | e2e smoke | all scenes |
-| R-05 forensic reports | 🟡 **PARTIAL.** Provenance, frames, rule ids, standards and all versions carried end to end on the assessment; no rendered artefact yet | `posture/engine` → report | 7 🟡 / 9 | provenance traceability test | export |
+| R-05 forensic reports | 🟡 **PARTIAL.** Provenance, frames, rule ids, standards and all versions carried end to end and now durably stored with artifact integrity re-verification (Phase 8); no rendered artefact yet | `posture/engine` → backend/repository | 7 🟡 / 8 🟡 / 9 | provenance traceability test | export |
 | I-02 passive | no active/keys in core | (arch invariant) | all | scope test | — |
 | I-03 forensic integrity | hash, versions, frame refs | ingest/report | 1,9 | reproducibility (04 §4) | load (hash shown) |
 
@@ -90,3 +90,26 @@ generalisation, and no ML claim rests on it.
 
 **Still incomplete:** D-09 (key exchange, no dedicated rule), D-10-14 (X.509, not implemented),
 D-16 (bounded subset), D-17 (forward secrecy, derivable but no rule), R-03 and R-04 (Phase 9-10).
+
+---
+
+## Phase 8 (2026-09-21) — backend, persistence, API
+
+Phase 8 advances **delivery**, not detection. It adds no rule, no detection and no
+security capability, so **no A- or D- requirement changes status**. Two R-requirements
+gained delivery evidence while remaining PARTIAL:
+
+| Req | Change | Evidence |
+|---|---|---|
+| R-03 JSON/PDF/HTML | **Still PARTIAL.** JSON is now retrievable over HTTP (`GET /api/v1/analyses/{run_id}/assessment`) and durably persisted, not only available in-process via `to_dict()`. PDF and HTML remain unimplemented, so the requirement is **not** satisfied | `test_assessment_is_the_canonical_document_verbatim`, `test_full_cycle` |
+| R-05 forensic reports | **Still PARTIAL.** Provenance now survives storage and retrieval, and the chain PCAP → SHA-256 → `capture_id` → `assessment_id` is verified end to end with integrity re-checking. No rendered artefact exists, so the requirement is **not** satisfied | `test_capture_id_is_sha256_of_stored_artifact`, `test_document_round_trip_preserves_evidence_nuance`, `test_tampered_artifact_is_detected` |
+
+**Explicitly not claimed.** An API endpoint returning a document is not a report.
+R-03 and R-04 stay Phase 9-10 work. A-02 is unchanged: Phase 8 neither exercises nor
+evaluates the ML lane, it only carries `model_summary` and its stated limitations
+through to the client.
+
+**New backend-level evidence** (doc 21 §17): the served assessment equals a direct
+engine invocation across every canonical field; `--no-ai` equivalence holds through the
+backend and no model is constructed when AI is disabled; an interrupted run is never
+reported `COMPLETED`; and no Phase 1-7 source file differs from `v0.2.0-phase7`.
