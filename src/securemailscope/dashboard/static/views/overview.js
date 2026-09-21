@@ -10,7 +10,7 @@
  * single block that cannot be separated. A band shown without the evidence coverage
  * that qualifies it is the misleading claim ADR-0016 §4 exists to prevent.
  */
-import { getDashboard, reportUrl } from '../api.js';
+import { getDashboard, getRun, reportUrl } from '../api.js';
 import {
   bar, chip, el, facts, mount, notice, section, table, text,
 } from '../dom.js';
@@ -341,10 +341,11 @@ function limitationsPanel(vm) {
 
 export async function render(root, { runId }) {
   const vm = await cached(runId, () => getDashboard(runId));
+  // Cached like the view model: navigating between tabs must not refetch it.
+  // Measurement showed this call repeating on every Overview visit.
   let run = null;
   try {
-    const { getRun } = await import('../api.js');
-    run = await getRun(runId);
+    run = await cached(`run:${runId}`, () => getRun(runId));
   } catch (error) {
     run = null;           // identity still renders from the assessment itself
   }

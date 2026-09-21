@@ -30,8 +30,12 @@ export function cached(runId, loader) {
 }
 
 export function invalidate(runId) {
-  if (runId) cache.delete(runId);
-  else cache.clear();
+  if (runId) {
+    cache.delete(runId);
+    cache.delete(`run:${runId}`);
+  } else {
+    cache.clear();
+  }
 }
 
 const ROUTES = [
@@ -186,9 +190,23 @@ async function route() {
 }
 
 window.addEventListener('hashchange', route);
-window.addEventListener('DOMContentLoaded', route);
 
-// Modules may load after DOMContentLoaded has already fired.
-if (document.readyState !== 'loading') route();
+/**
+ * Start exactly once.
+ *
+ * A module may evaluate before or after DOMContentLoaded, so both triggers are
+ * needed — but measurement showed both firing on a single load, rendering the first
+ * screen twice and duplicating its API calls. The guard makes the first render
+ * idempotent; `hashchange` drives every navigation after that.
+ */
+let started = false;
+function start() {
+  if (started) return;
+  started = true;
+  route();
+}
+
+window.addEventListener('DOMContentLoaded', start);
+if (document.readyState !== 'loading') start();
 
 export { renderError };

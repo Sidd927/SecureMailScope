@@ -248,3 +248,45 @@ def test_contrast_tokens_meet_wcag_aa():
                  "info", "withheld"):
         assert name in tokens, name
         assert ratio(tokens[name]) >= 4.5, (name, tokens[name], ratio(tokens[name]))
+
+
+# ------------------------------------------------------- performance guards
+def test_router_starts_exactly_once():
+    """Measured defect: the first screen rendered twice, duplicating its API calls.
+
+    A module may evaluate before or after DOMContentLoaded, so both triggers are
+    needed; the guard makes the first render idempotent.
+    """
+    app = _source(os.path.join(STATIC, "app.js"))
+    assert "let started = false" in app
+    assert "if (started) return;" in app
+    assert "window.addEventListener('DOMContentLoaded', start)" in app
+    assert "if (document.readyState !== 'loading') start();" in app
+    # route() must not be wired directly to a load event any more
+    assert "addEventListener('DOMContentLoaded', route)" not in app
+
+
+def test_run_record_is_cached_like_the_view_model():
+    """Measured defect: the run detail refetched on every Overview visit."""
+    overview = _source(os.path.join(VIEWS, "overview.js"))
+    assert "cached(`run:${runId}`, () => getRun(runId))" in overview
+    app = _source(os.path.join(STATIC, "app.js"))
+    assert "cache.delete(`run:${runId}`)" in app
+
+
+def test_views_fetch_the_view_model_through_the_cache():
+    """No screen may fetch the assessment independently."""
+    for name in ("overview.js", "findings.js", "evidence.js"):
+        source = _source(os.path.join(VIEWS, name))
+        assert "cached(runId, () => getDashboard(runId))" in source, name
+        # and never calls it outside the cache
+        assert source.count("getDashboard(runId)") == 1, name
+
+
+def test_filtering_rebuilds_only_the_results_region():
+    """A filter change must not re-render the whole screen."""
+    findings = _source(os.path.join(VIEWS, "findings.js"))
+    assert "mount(resultsHost," in findings
+    # redraw touches the results host, the status line and the active-filter host only
+    redraw = findings.split("function redraw()", 1)[1].split("\n  }", 1)[0]
+    assert "mount(root," not in redraw
