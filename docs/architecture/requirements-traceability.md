@@ -30,7 +30,7 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | R-01 prioritised findings | ✅ **COMPLETE.** `PostureAssessment.prioritised`, one ranked entry per issue group with affected-session scope | `posture/engine` | 7 ✅ | ordering tests | findings |
 | R-02 posture assessment | ✅ **COMPLETE.** Canonical `PostureAssessment` with score, coverage, groups, abstentions, protocol posture, standards, remediation, provenance, limitations | `posture/model` | 7 ✅ | corpus + serialisation tests | honesty |
 | R-03 JSON/PDF/HTML | ✅ **COMPLETE.** All three formats retrievable over HTTP. JSON byte-equal to the assessment endpoint; HTML standalone and offline; PDF real, paginated, text-extractable. Semantic equivalence across formats asserted | `posture/model` → `reporting/` → backend/api | 7 / 8 / 9 ✅ | cross-format equivalence + XSS + PDF-validity tests | export |
-| R-04 dashboard | analyst views | dashboard | 10 | e2e smoke | all scenes |
+| R-04 dashboard | 🟡 **IN PROGRESS (Phase 10).** Architecture approved (ADR-0022, doc 23): History / Overview / Findings / Evidence over the canonical assessment; zero-dependency ES modules. **Not yet implemented — status unchanged until the screens exist and are validated against a real PCAP** | `dashboard/` → backend API | 10 🟡 | e2e smoke + contract/security tests | all scenes |
 | R-05 forensic reports | ✅ **COMPLETE.** Rendered artefact carries capture SHA-256, assessment/run ids, analysis timestamp, engine and schema versions, frame references, standards basis, coverage, abstentions with resolution paths, limitations and ML role. Content-addressed by `report_sha256`, integrity-verified on access | `posture/engine` → `reporting/service` | 7 / 8 / 9 ✅ | integrity, tamper-detection and provenance tests | export |
 | I-02 passive | no active/keys in core | (arch invariant) | all | scope test | — |
 | I-03 forensic integrity | hash, versions, frame refs | ingest/report | 1,9 | reproducibility (04 §4) | load (hash shown) |
@@ -134,3 +134,14 @@ limitations verbatim and makes no claim about ML detection value;
 
 **Still incomplete after Phase 9:** D-09, D-10–14 (X.509), D-16, D-17, and R-04
 (dashboard, Phase 10).
+
+---
+
+## Phase 10 (2026-09-21) — dashboard architecture checkpoint
+
+**No requirement status has changed.** R-04's architecture is approved and documented
+(ADR-0022, doc 23) and its branch exists, but **no dashboard code has been written**.
+R-04 moves to COMPLETE only when the four screens exist, are driven by a real assessment
+from a real PCAP through the real API, handle the lifecycle and error states, survive
+the hostile-content matrix, and have been visually inspected — doc 23 §19. A documented
+architecture is not a delivered requirement.

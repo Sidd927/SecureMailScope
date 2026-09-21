@@ -30,7 +30,8 @@
 | [19-evidence-fusion-and-posture](19-evidence-fusion-and-posture.md) | 🟢 Implemented (Phase 7) |
 | [21-backend-persistence-api](21-backend-persistence-api.md) | 🟢 Implemented (Phase 8) |
 | [22-forensic-reporting](22-forensic-reporting.md) | 🟢 Implemented (Phase 9) |
-| ADR 0001–0021 | 0001–0005,0007–0009,0011–0021 Accepted · 0006,0010 Proposed · **0007 superseded by 0017** · **0009 renderer amended by 0020** |
+| [23-dashboard-architecture](23-dashboard-architecture.md) | 🟡 Design (Phase 10, architecture approved) |
+| ADR 0001–0022 | 0001–0005,0007–0022 Accepted · 0006 Proposed · **0007 superseded by 0017** · **0009 renderer amended by 0020** · **0010 Accepted at Phase 10, OQ-41 closed by 0022** |
 
 ## 2. Locked decisions
 
@@ -40,7 +41,9 @@ first-class layer (ADR-0005) · ~~SQLite per-run + FS artifacts (ADR-0007)~~ →
 canonical assessment stored as a document + FS artifacts (ADR-0017, supersedes 0007)** · backend job
 lifecycle distinct from `RunStatus`, pass-through API (ADR-0018) · report is a projection, not an
 engine (ADR-0019) · PDF composed from the report model with ReportLab (ADR-0020, closes OQ-40) ·
-report is a pure function of its assessment, `report_sha256` identity (ADR-0021) · one canonical report → 3
+report is a pure function of its assessment, `report_sha256` identity (ADR-0021) · dashboard is a
+zero-dependency ES-module SPA projected in Python (ADR-0022, closes OQ-41; ADR-0010 Accepted) ·
+one canonical report → 3
 renderers (ADR-0009) · modular monolith Python/FastAPI (ADR-0011) · AI optional/read-only/grounded,
 `--no-ai` identical findings (ADR-0008).
 
@@ -54,7 +57,7 @@ ML/AI never writes a finding or changes a fact.
 
 OQ-26 local-LLM packaging · OQ-29 NAT identity · OQ-30 contrast-rule default · OQ-31/32 evidence
 inferences · OQ-33r real-server corpus · OQ-38 tshark output mode · ~~OQ-40 offline PDF renderer~~ **(closed, ADR-0020)** ·
-OQ-41 SPA framework. All deferred to their implementation phase.
+~~OQ-41 SPA framework~~ **(closed, ADR-0022)**. All deferred to their implementation phase.
 
 **Closed by Phase 6 (ADR-0015, docs 16–18):** OQ-36 (model selection) — no candidate wins on
 detection; `robust-z-sum` ships as a prioritisation signal. OQ-37 (complementary value) — **closed
@@ -87,6 +90,20 @@ other candidate were measured absent; ReportLab 5.0.1 + pypdf 6.19.0 verified wo
 on demonstrated behaviour: three formats served, semantic equivalence asserted across
 them, artefacts content-addressed and integrity-verified. Visual QA found and fixed two
 real layout defects. No A- or D- requirement changed; Phase 9 adds no detection.
+
+**Phase 10 (2026-09-21, architecture approved):** analyst dashboard on branch
+`phase/10-dashboard`, branched from `v0.4.0-phase9`. Completes R-04 — *"Interactive
+visualization dashboard"*, confirmed in docs/research/19 §91. **OQ-41 closed** by
+ADR-0022: no framework, vanilla ES modules, zero npm packages, no build step; the
+projection lives in Python so the existing AST tests and pytest suite guard it.
+**ADR-0010 moves Proposed → Accepted**, intent preserved. Audit finding — the history
+list API returns no posture or score although `assessments` already stores both as the
+listing projection ADR-0017 Decision 3 created; Phase 10 joins them additively rather
+than recomputing. Design: doc 23. Implementation not started at this checkpoint.
+
+**Opened by Phase 10:** OQ-57 — per-session/packet drill-down is absent from the
+canonical contract (`fused_findings` is not in `to_dict()`); is that a contract gap to
+close, or should drill-down remain a reporting concern?
 
 **Opened by Phase 9:** OQ-54 — should the projection expose a stable section-id vocabulary for
 Phase-10 deep-linking? OQ-55 — revisit HTML→PDF for visual fidelity if a browser engine ever
