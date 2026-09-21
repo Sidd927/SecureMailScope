@@ -128,8 +128,22 @@ export function sanitiseTone(tone) {
   return /^[a-z_]+$/.test(value) ? value : 'unknown';
 }
 
+/**
+ * A CSS class-name fragment. Anything outside `[a-z0-9_-]` is dropped.
+ *
+ * Every interpolation into a `className` template goes through this or
+ * `sanitiseTone`, asserted by the security matrix. `notice()` previously
+ * interpolated its `variant` unguarded: every caller passed a literal, so nothing
+ * was wrong in practice, but an unguarded path into a class attribute is exactly
+ * the kind of thing a later edit turns into a vulnerability without noticing.
+ */
+export function safeToken(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+}
+
 export function notice(message, variant = '') {
-  return el('div', { className: `notice ${variant}`.trim(), text: message });
+  return el('div', { className: `notice ${safeToken(variant)}`.trim(),
+    text: message });
 }
 
 export function section(id, title, children, opts = {}) {
