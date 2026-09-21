@@ -198,8 +198,34 @@ def test_persistence_layer_imports_without_fastapi():
     assert out.returncode == 0, out.stderr.decode()
 
 
-def test_phase_seven_source_is_untouched():
-    """Invariant 1: no Phase-7 security file changed on this branch."""
+#: Files in the protected security packages that Phase 11 changes DELIBERATELY, under
+#: ADR-0023. Phases 8-10 changed none of them, and the original blanket freeze was the
+#: right guard for those phases. Phase 11 implements PS deliverables D-09..D-17, which
+#: cannot be done without extracting new evidence, so the guard is re-pointed rather
+#: than removed: an UNDECLARED edit to any protected file still fails.
+#:
+#: Adding a path here is a deliberate act that must be justified by an ADR. It is not
+#: a way to make this test pass.
+PHASE_11_DECLARED = {
+    # D-09/D-17: key exchange and forward secrecy need the ServerHello key_share and
+    # an interpretation of the cipher suite beside the existing raw value.
+    "src/securemailscope/dissect/fields.py",
+    "src/securemailscope/dissect/normalize.py",
+    "src/securemailscope/session/base.py",
+    "src/securemailscope/session/model.py",
+    # D-10..D-14/D-16: new certificate and configuration rules.
+    "src/securemailscope/analysis/model.py",
+    "src/securemailscope/analysis/registry.py",
+    "src/securemailscope/analysis/rules/__init__.py",
+    "src/securemailscope/analysis/rules/tls_rules.py",
+    "src/securemailscope/analysis/rules/certificate_rules.py",
+    "src/securemailscope/analysis/rules/configuration_rules.py",
+    "src/securemailscope/posture/model.py",
+    "src/securemailscope/posture/fusion.py",
+}
+
+
+def _protected_changes():
     import subprocess
     diff = subprocess.run(
         ["git", "diff", "--name-only", "v0.2.0-phase7", "HEAD"],
@@ -211,8 +237,38 @@ def test_phase_seven_source_is_untouched():
                  "src/securemailscope/crosssession/", "src/securemailscope/ml/",
                  "src/securemailscope/session/", "src/securemailscope/evidence/",
                  "src/securemailscope/dissect/", "src/securemailscope/ingest/")
-    violations = [f for f in changed if f.startswith(protected)]
-    assert violations == [], violations
+    return [f for f in changed if f.startswith(protected)]
+
+
+def test_phase_seven_source_changes_only_where_declared():
+    """Invariant 1, as it now stands: no UNDECLARED Phase-7 security file changed."""
+    undeclared = [f for f in _protected_changes() if f not in PHASE_11_DECLARED]
+    assert undeclared == [], undeclared
+
+
+def test_ml_lane_is_untouched_by_phase_eleven():
+    """ADR-0024: A-02 stays PARTIAL, so no Phase-11 change may reach the ML lane.
+
+    Measured (research/experiments/p11ai): the new features are constant, absent from
+    45 of 46 captures, or a generator fingerprint. Routing them into `ml/` would
+    worsen the 98.6% generator leak ADR-0015 identified. This asserts that decision
+    structurally rather than trusting it to stay true.
+    """
+    touched = [f for f in _protected_changes()
+               if f.startswith("src/securemailscope/ml/")]
+    assert touched == [], touched
+
+
+def test_evidence_contract_is_untouched():
+    """The six evidence states and the Provenance vocabulary are Phase-2 canon.
+
+    Phase 11 USES `Provenance` (which has existed unused since Phase 2) but must not
+    redefine it: weakening a state's meaning would silently rewrite every prior
+    assessment's semantics.
+    """
+    touched = [f for f in _protected_changes()
+               if f.startswith("src/securemailscope/evidence/")]
+    assert touched == [], touched
 
 
 # ------------------------------------------------- Phase 9: reporting boundary

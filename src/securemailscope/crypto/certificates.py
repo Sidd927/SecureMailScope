@@ -114,8 +114,6 @@ class CertificateEvidence:
     subject_key_id: Optional[str] = None
     authority_key_id: Optional[str] = None
     san_dns_names: Tuple[str, ...] = ()
-    subject_text: Optional[str] = None           # only when the chain holds one cert
-    issuer_text: Optional[str] = None            # only when the chain holds one cert
 
     @property
     def is_self_signed(self) -> Optional[bool]:
@@ -223,11 +221,19 @@ def build_chain(fields: Mapping[str, Sequence[str]]) -> ChainEvidence:
     # Matching cardinality is not evidence of correspondence.
     san_attributable = count == 1
 
+    # Distinguished-name TEXT is never attributed, at any chain length. tshark emits
+    # each RDN component as a separate value with no marker for which DN it belongs to:
+    # a single self-signed certificate yields ["mail.example.test", "SMS Probe",
+    # "mail.example.test", "SMS Probe"] -- CN and O, for issuer and subject, in one
+    # flat list. Reading [0] as the subject and [-1] as the issuer produced
+    # issuer="SMS Probe", which is an Organization component, not an issuer identity.
+    # Identity is reported from subjectAltName, which is unambiguous; subject and
+    # issuer identity are reported as NOT observable rather than guessed.
     unattributed: List[str] = []
-    for label, values in (("distinguished names", dn_text),
-                          ("signature algorithms", algorithm_ids)):
-        if values and len(values) != count:
-            unattributed.append(label)
+    if dn_text:
+        unattributed.append("distinguished names")
+    if algorithm_ids and len(algorithm_ids) != count:
+        unattributed.append("signature algorithms")
     if san_names and not san_attributable:
         unattributed.append("subjectAltName entries")
 
@@ -249,14 +255,6 @@ def build_chain(fields: Mapping[str, Sequence[str]]) -> ChainEvidence:
         if san_attributable:
             sans = tuple(_cap(s) for s in san_names[:MAX_SAN_ENTRIES])
 
-        # DN text is attributable only for a single-certificate chain, and even then
-        # tshark emits every RDN component separately, so only the presence of text is
-        # claimed -- never "this component is the CN".
-        subject_text = issuer_text = None
-        if count == 1 and dn_text:
-            subject_text = _cap(dn_text[0])
-            issuer_text = _cap(dn_text[-1]) if len(dn_text) > 1 else None
-
         certificates.append(CertificateEvidence(
             index=i,
             serial=_cap(_take(serials, count, i)),
@@ -270,8 +268,6 @@ def build_chain(fields: Mapping[str, Sequence[str]]) -> ChainEvidence:
             subject_key_id=_take(skis, count, i),
             authority_key_id=_take(akis, count, i),
             san_dns_names=tuple(s for s in sans if s),
-            subject_text=subject_text,
-            issuer_text=issuer_text,
         ))
 
     return ChainEvidence(

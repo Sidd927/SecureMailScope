@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 
 from securemailscope.evidence.states import EvidenceField, EvidenceState
 
@@ -168,6 +168,29 @@ class SessionEvidence:
         default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
     tls_cipher_suite: EvidenceField = field(
         default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    #: Phase-11 additions (D-09, D-17, D-10..D-14). The raw `tls_cipher_suite` above is
+    #: deliberately left untouched: the interpretation sits BESIDE the observation so
+    #: the original value stays auditable and no existing consumer changes meaning.
+    tls_cipher_suite_name: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    tls_key_exchange: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    tls_named_group: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    #: Forward secrecy. UNKNOWN when no handshake was observed -- never False, because
+    #: "we could not see it" and "it was absent" are different claims (D-17).
+    tls_forward_secrecy: EvidenceField = field(
+        default_factory=lambda: EvidenceField.unknown("no ServerHello observed"))
+    #: Certificate chain observability. NOT_OBSERVABLE is the norm: TLS 1.3 encrypts
+    #: the Certificate message (RFC 8446 SS2) and resumed sessions omit it entirely.
+    tls_certificate_chain: EvidenceField = field(
+        default_factory=lambda: EvidenceField.not_observable(
+            "no cleartext Certificate message observed"))
+    #: The assembled chain. Empty whenever no certificate was visible; emptiness is
+    #: never evidence that no certificate was presented.
+    certificates: Tuple[Any, ...] = ()
+    #: Chain-level facts that could not be attributed to a specific certificate.
+    certificate_notes: Tuple[str, ...] = ()
     plaintext_continuation: EvidenceField = field(
         default_factory=lambda: EvidenceField.unknown("insufficient dialogue observed"))
     auth_activity: EvidenceField = field(
@@ -214,9 +237,26 @@ class SessionEvidence:
                 "tls_transition": self.tls_transition.to_dict(),
                 "tls_negotiated_version": self.tls_negotiated_version.to_dict(),
                 "tls_cipher_suite": self.tls_cipher_suite.to_dict(),
+                "tls_cipher_suite_name": self.tls_cipher_suite_name.to_dict(),
+                "tls_key_exchange": self.tls_key_exchange.to_dict(),
+                "tls_named_group": self.tls_named_group.to_dict(),
+                "tls_forward_secrecy": self.tls_forward_secrecy.to_dict(),
+                "tls_certificate_chain": self.tls_certificate_chain.to_dict(),
                 "plaintext_continuation": self.plaintext_continuation.to_dict(),
                 "auth_activity": self.auth_activity.to_dict(),
             },
+            "certificates": [
+                {"index": c.index, "serial": c.serial, "version": c.version,
+                 "not_before": c.not_before_text, "not_after": c.not_after_text,
+                 "public_key_algorithm": c.public_key_algorithm,
+                 "key_bits": c.key_bits,
+                 "subject_key_id": c.subject_key_id,
+                 "authority_key_id": c.authority_key_id,
+                 "self_signed": c.is_self_signed,
+                 "san_dns_names": list(c.san_dns_names)}
+                for c in self.certificates
+            ],
+            "certificate_notes": list(self.certificate_notes),
             "transitions": [t.to_dict() for t in self.transitions],
             "events": [
                 {"kind": e.kind, "direction": e.direction.value,
