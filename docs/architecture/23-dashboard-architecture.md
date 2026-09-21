@@ -1,13 +1,13 @@
 # 23 — Analyst Dashboard (Phase 10)
 
-**Status:** Design · **Date:** 2026-09-21 · **Decisions:** ADR-0022, ADR-0010 (Accepted)
+**Status:** Implemented · **Date:** 2026-09-22 · **Decisions:** ADR-0022, ADR-0010 (Accepted)
 **Closes:** OQ-41 · **Consumes:** `PostureAssessment` (ADR-0016) via the Phase-8 API
 **Baseline:** `v0.4.0-phase9` = `0019c6f`, 697 tests passing
 **Satisfies:** R-04
 
-> Status discipline: sections are labelled `DESIGN` until implemented, then
-> `IMPLEMENTED`, `VERIFIED` or `MEASURED`. §16–§18 carry test evidence, visual QA and
-> measurements and are the only places a completion claim may rest.
+> Status discipline: sections are labelled `IMPLEMENTED`, `VERIFIED` or `MEASURED`.
+> §16 carries test evidence, §17 visual QA and accessibility, §18 measurements. They
+> are the only places a completion claim rests on something other than reading code.
 
 ---
 
@@ -42,7 +42,7 @@ enrichment, packet-level drill-down (§6 records why), and any new detection.
 (ADR-0011). The dashboard binds to loopback with the API and must not be exposed on a
 network interface. Stated here because an unstated absence reads as an oversight.
 
-## 3. Architecture — DESIGN
+## 3. Architecture — IMPLEMENTED
 
 ```
    PostureAssessment.to_dict()          ← the sole security authority
@@ -85,7 +85,7 @@ it composes `reporting/`. Asserted by extending the existing AST tests.
 never reads the database directly, and never executes the security engine. Its only
 input is HTTP JSON.
 
-## 4. The data contract — DESIGN
+## 4. The data contract — IMPLEMENTED
 
 Three categories, kept explicitly separate because conflating them is how a viewer
 starts inventing facts.
@@ -128,7 +128,7 @@ Each is reversible and changes no meaning.
 Where a screen would naturally want one of these, it states the absence (§9) rather than
 approximating it.
 
-## 5. No recomputation — DESIGN
+## 5. No recomputation — VERIFIED
 
 Forbidden in `dashboard/`: computing or altering a score, band, severity, risk,
 certainty, observability, recurrence, priority order, anomaly conclusion, remediation
@@ -143,7 +143,7 @@ attention" — the assessment already decided, using `penalising`, `severity` an
 Architecture tests assert `dashboard/` defines no score constants, performs no severity
 arithmetic, and imports no posture engine internals.
 
-## 6. API: planned change vs not planned — DESIGN
+## 6. API — IMPLEMENTED
 
 **Canonical detail source, unchanged:**
 `GET /api/v1/analyses/{run_id}/assessment` is and remains the authority for everything
@@ -197,7 +197,7 @@ endpoint, no auth endpoints.
 path is built from user input; no repository source, database or artifact directory is
 reachable through it.
 
-## 7. Information architecture — DESIGN
+## 7. Information architecture — IMPLEMENTED
 
 ### Screen 1 — History (`#/`)
 > *Which analyses exist, and what happened to each?*
@@ -271,7 +271,7 @@ submit PCAP (API/CLI)
    → Reports: HTML / PDF / JSON for the same assessment_id
 ```
 
-## 8. Relationship to the Phase-9 reporting layer — DESIGN
+## 8. Relationship to the Phase-9 reporting layer — VERIFIED
 
 Two presentations of one assessment, deliberately different: the report is a **fixed,
 citable, content-addressed artefact**; the dashboard is a **navigable view**.
@@ -282,7 +282,7 @@ the projection in `reporting/`, and never stores an artefact. `dashboard/` does 
 import `reporting/`. If the two ever disagree, the assessment is the tiebreaker and one
 of them has a defect.
 
-## 9. States — DESIGN
+## 9. States — IMPLEMENTED
 
 | State | Shown as |
 |---|---|
@@ -305,7 +305,7 @@ a forensic tool.
 interval with a bounded attempt count; polling stops the moment a run reaches a terminal
 state. No unbounded loop.
 
-## 10. Forensic honesty in the UI — DESIGN
+## 10. Forensic honesty in the UI — VERIFIED
 
 These must remain visually distinct and are never merged into one red/green chip:
 
@@ -323,7 +323,7 @@ severity, create a finding or change the score. Forbidden phrasings — "AI dete
 attack", "AI found malicious traffic", "AI confirmed an intrusion", "AI detected TLS
 stripping" — are asserted absent by test, as they are in the report.
 
-## 11. Security boundary — DESIGN
+## 11. Security boundary — VERIFIED
 
 Everything the API returns derives from a capture; a capture is hostile input.
 
@@ -344,7 +344,7 @@ Everything the API returns derives from a capture; a capture is hostile input.
 `run_id` is validated client-side against the same 32-hex shape the API enforces, so a
 malformed id never reaches a request URL. This is defence in depth, not the boundary.
 
-## 12. Accessibility — DESIGN
+## 12. Accessibility — VERIFIED
 
 Semantic landmarks and heading order; keyboard reachability for every control with a
 visible focus ring; `<table>` with `<caption>` and `<th scope>`; labelled inputs;
@@ -356,13 +356,13 @@ filter-result counts; contrast checked against WCAG 2.1 AA ratios.
 manual keyboard walkthrough are planned; a full WCAG audit with assistive technology is
 not, and §17 will say so rather than claiming compliance.
 
-## 13. Responsive — DESIGN
+## 13. Responsive — VERIFIED
 
 Desktop/laptop first: this is an analyst workstation tool. Verified down to a narrower
 browser width without breaking tables. Known pressure points to check: long issue
 titles, 64-char capture ids, long remediation text, the wide findings table.
 
-## 14. Dependencies — DESIGN
+## 14. Dependencies — VERIFIED
 
 **Zero npm packages. Zero new Python runtime dependencies.**
 
@@ -376,7 +376,7 @@ titles, 64-char capture ids, long remediation text, the wide findings table.
 
 FastAPI's `StaticFiles` (already a backend dependency) mounts the shell.
 
-## 15. Performance — DESIGN
+## 15. Performance approach
 
 To be measured, not asserted: assessment payload size, projection time, initial render,
 filter latency, and behaviour on a large assessment (many issue groups and prioritised
@@ -385,20 +385,148 @@ entries). Targets are deliberately not stated in advance; §18 will report measu
 Avoided by design: refetching the assessment per screen (fetched once per run and held
 in memory), and re-rendering the whole table on each filter keystroke.
 
-## 16. Test evidence — PENDING
+## 16. Test evidence — VERIFIED
 
-## 17. Visual QA and accessibility verification — PENDING
+**1120 passed, 0 failed, 0 skipped, 0 xfail.** Phase 1–9 baseline of 697 verified
+intact by an isolated run; Phase 10 adds 423.
 
-## 18. Performance — PENDING
+| File | Count | Covers |
+|---|---:|---|
+| `test_dashboard_security_matrix.py` | 125 | 21 payloads × 17 fields, pollution, malformed data, exhaustion, traversal |
+| `test_dashboard_projection.py` | 62 | losslessness, vocabulary, nullable protocol, unknown enums |
+| `test_dashboard_findings.py` | 41 | filter logic executed in Node against the shipped module |
+| `test_dashboard_evidence.py` | 39 | abstentions, standards, provenance, unavailable data |
+| `test_dashboard_security.py` | 31 | structural boundary, static serving |
+| `test_dashboard_overview.py` | 29 | view-model endpoint, posture/coverage, ML honesty |
+| `test_dashboard_accessibility.py` | 29 | heading order, semantics, contrast, perf guards |
+| `test_dashboard_history.py` | 28 | lifecycle vocabulary, polling, safe failure display |
+| `test_dashboard_real_pcap.py` | 21 | 7 real captures, cross-surface agreement, demo scenes |
+| `test_dashboard_api_contract.py` | 16 | additive list fields, Phase-9 compatibility |
+| `test_backend_architecture.py` | +2 | dashboard leaf boundary |
 
-## 19. Requirements
+**Load-bearing results**
 
-R-04 may move to COMPLETE **only** when the four screens exist, are driven by a real
-assessment produced from a real PCAP through the real API, handle the lifecycle and
-error states in §9, survive the hostile-content matrix in §11, and have been visually
-inspected. A page existing does not qualify.
+- `test_all_four_surfaces_agree` — four real captures; canonical JSON, view model,
+  HTML and PDF agree on identity, posture, score, coverage, every finding's severity /
+  status / certainty / observability, issue-group recurrence, standards, limitations,
+  abstentions and ML role.
+- `test_scene_c_no_ai_equivalence_across_the_whole_stack` — identical posture, score,
+  standards, remediation and penalising groups with the ML lane on and off; no surface
+  claims detection.
+- `test_no_filters_returns_canonical_order` / `test_clearing_filters_restores_exact_canonical_order`
+  — the **shipped** filter module run in Node, reporting `input_unchanged` and
+  `returned_new_array`.
+- `test_protocol_facet_partitions_every_finding` — a null `session.protocol` stays
+  reachable, which a naive facet would have hidden.
+- `test_every_class_interpolation_goes_through_a_sanitiser` — closed a real gap where
+  `notice()` interpolated an unsanitised variant into a class name.
+- `test_console_invents_no_state_the_backend_lacks` — the lifecycle vocabulary is
+  compared against the Phase-8 enum, not an assumed list.
 
-## 20. Limitations — PENDING
+**Not verified:** browsers other than the QA browser, assistive-technology testing with
+a real screen reader, printed output, multi-user or authenticated operation.
+
+## 17. Visual QA and accessibility — VERIFIED
+
+Twelve seeded scenarios across all four screens, inspected in a real browser at desktop
+and 768 px: two real captures, critical posture, insufficient evidence, no findings,
+60 findings, 70 abstentions, hostile text, long standards and provenance, a failed run
+and an interrupted run.
+
+**Measured across ten routes:** zero page horizontal overflow, zero clipped elements,
+exactly one `h1`, zero tables without a caption, zero `th` without `scope`, zero inputs
+without a label, zero links or buttons without text. Thirteen interactive elements,
+zero unreachable by keyboard, zero without a focus ring, skip link first in tab order.
+Contrast measured at **5.84:1** for muted text and **17.65:1** for body text, both above
+the WCAG AA 4.5:1 threshold for normal text.
+
+**Defects found by looking, and fixed:**
+
+| # | Defect | Fix |
+|---|---|---|
+| 1 | Table headers broke mid-word (`PROT OCOL`, `OBSERVABI LITY`) | `th { white-space: nowrap }` + horizontal scroll |
+| 2 | Data cells broke ordinary words (`OBSERVAB LE`) | `overflow-wrap` instead of `word-break`; `word-break` kept only for hashes |
+| 3 | Bar counts drifted to the page edge, detached from their bars | meter column narrowed |
+| 4 | 45 issue classes made the filter panel taller than the viewport | options bounded and scrolled; every value still reachable |
+| 5 | Rightmost table column clipped with no affordance (macOS hides scrollbars) | CSS-only scroll shadow on whichever edge has more content |
+| 6 | Findings detail jumped `h2` → `h4` | now `h3` |
+| 7 | Empty/no-match panels used a second `h2` inside a section | now `h3` |
+
+**Accessibility claim is bounded:** semantic structure, keyboard reachability, focus
+visibility, label association, non-colour status encoding and contrast ratios were
+tested. A full WCAG 2.1 audit with assistive technology was **not** performed and is
+not claimed.
+
+**Browser-tooling note:** the pane served stale modules and stylesheets four times,
+making fixes appear ineffective. Each time the server was checked directly — it sends
+ETag and Last-Modified, answers conditional requests with 304, and served bytes hash
+identically to disk. No application code was changed to accommodate the tool.
+
+## 18. Performance — MEASURED
+
+**Projection** (median of 20): 0.067 ms at 2 issue groups → 0.423 ms at 20 → 0.909 ms
+at 45 → 5.774 ms at 300. Time growth tracks payload growth (6.3×/6.8×, 2.1×/2.2×,
+6.4×/6.2×): **linear, no quadratic behaviour**.
+
+**Backend** (median of 10, curl, 44 stored runs):
+
+| Endpoint | Median | Payload |
+|---|---:|---:|
+| `GET /analyses` (44 runs) | 1.18 ms | 24 KB |
+| `GET .../assessment` | 0.89 ms | 23 KB |
+| `GET .../dashboard` (real capture) | 1.51 ms | 24 KB |
+| `GET .../dashboard` (45 groups) | 5.22 ms | 113 KB |
+| `GET .../dashboard` (300 groups) | 30.95 ms | 705 KB |
+| `GET .../reports/{html,pdf,json}` | 0.84–1.00 ms | ≤26 KB |
+| static asset | 0.79 ms | 6 KB |
+| `GET /health` | **57 ms** | 387 B |
+
+`/health` spawns `tshark -v` to report availability. Nothing polls it; the console calls
+it never.
+
+**Frontend** (timed on the shipped modules in the browser): 45 findings render in
+1.4 ms with 0.2 ms filtering and 0.6 ms clearing; 300 findings render in 5.9 ms with
+2.1 ms filtering and 7.5 ms clearing.
+
+**Two defects found by measuring API traffic, both fixed:** the first screen rendered
+twice on load (both `DOMContentLoaded` and the readyState check fired), and the run
+record was refetched on every Overview visit. After the fix a first load makes two
+calls with no duplicate, and four tab navigations cost one call — the Evidence screen's
+artifact verification, which that screen genuinely needs.
+
+## 19. Requirements — R-04 COMPLETE
+
+Every condition set in the design before implementation is met, with evidence:
+
+| Condition | Evidence |
+|---|---|
+| Four screens exist | History, Overview, Findings, Evidence — §7 |
+| Driven by a real assessment from a real PCAP through the real API | `test_dashboard_real_pcap.py`, 7 captures across SMTP/IMAP/POP3 |
+| Interactive | navigation, 8-facet filtering, run selection, report actions, expandable findings |
+| Visualisation | posture, coverage, four distributions, protocol posture, prioritised findings, evidence and provenance |
+| Lifecycle and error states (§9) | all nine `JobState` values plus six distinct failure modes |
+| Hostile-content matrix (§11) | 125 security tests + live-browser verification |
+| Visually inspected | §17, twelve scenarios, seven defects fixed |
+
+**R-04 → COMPLETE.** No other requirement changes: Phase 10 adds no detection.
+
+## 20. Limitations
+
+1. No authentication or authorization — a local single-analyst prototype (ADR-0011).
+   The console must not be exposed on a network interface.
+2. Accessibility is verified for structure, keyboard, focus, labels, non-colour status
+   and contrast. **Not** audited against WCAG 2.1 with assistive technology.
+3. Verified in one browser engine. Other engines are untested.
+4. No packet-level or per-session drill-down: `fused_findings` is absent from the
+   canonical contract (OQ-57). The console states this rather than approximating it.
+5. Facet counts describe the whole assessment, not the current selection; narrowing
+   them would require recomputation the projection deliberately does not do.
+6. Polling is a fixed 4 s interval with a bounded tick budget. There is no server-push
+   channel and no progress fraction, because the API exposes neither.
+7. Assessments far beyond 300 issue groups are untested; at 300 the view model is
+   705 KB and renders in 5.9 ms, so the next order of magnitude would need measuring.
+8. History shows up to 50 runs per page; deeper pagination exists in the API but no UI
+   control drives it.
 
 ## 21. What Phase 10 can and cannot claim
 

@@ -66,6 +66,7 @@ curl -s -F file=@capture.pcap http://127.0.0.1:8000/api/v1/analyses
 | GET | `/api/v1/analyses/{run_id}/artifacts` — `?verify=true` re-hashes |
 | GET | `/api/v1/analyses/{run_id}/reports` — available formats + integrity |
 | GET | `/api/v1/analyses/{run_id}/reports/{html\|pdf\|json}` |
+| GET | `/api/v1/analyses/{run_id}/dashboard` — console view model |
 
 The assessment endpoint returns the canonical document unaltered. Read `coverage`
 alongside `overall_posture`: a band without its evidence coverage is a misleading claim,
@@ -93,6 +94,24 @@ so the same assessment always renders to the same bytes and can be cited by
 
 The timestamp shown in a report is the **analysis** time, not a print time.
 
+## Analyst console (Phase 10)
+
+Open **http://127.0.0.1:8000/dashboard/** once the backend is running. No build step, no
+npm packages — it is static ES modules served by the same FastAPI app.
+
+Four screens: **History** (every run and its lifecycle state), **Overview** (posture and
+coverage together, protocol posture, distributions, top findings, the ML panel, report
+links), **Findings** (prioritised in canonical order, filterable on eight canonical
+facets), and **Evidence & provenance** (abstentions with how to resolve them,
+limitations, standards including unmapped citations, rule ids, artifact integrity).
+
+The console renders the canonical assessment and computes no security conclusion of its
+own. It shows what the assessment could not determine as readily as what it could, and
+states plainly what the contract does not carry — there is no packet-level drill-down,
+because the assessment does not contain one.
+
+There is **no authentication**: bind to loopback only.
+
 ## Where to look
 
 | Document | Why |
@@ -103,11 +122,12 @@ The timestamp shown in a report is the **analysis** time, not a print time.
 | `docs/architecture/19-evidence-fusion-and-posture.md` | the canonical output |
 | `docs/architecture/21-backend-persistence-api.md` | backend, storage and API |
 | `docs/architecture/22-forensic-reporting.md` | reporting, HTML/PDF, report identity |
-| `docs/architecture/adr/` | 21 ADRs; every significant decision with its alternatives |
+| `docs/architecture/23-dashboard-architecture.md` | analyst console, projection, security boundary |
+| `docs/architecture/adr/` | 22 ADRs; every significant decision with its alternatives |
 
 ## Status
 
-Phases 1–9 implemented on their own branches; `main` deliberately still points at
-Phase 3. The dashboard is Phase 10 and **not** implemented.
+Phases 1–10 implemented on their own branches; `main` deliberately still points at
+Phase 3.
 Known limitations are recorded per phase rather than summarised away — start with
 `ARCHITECTURE_STATUS.md`.

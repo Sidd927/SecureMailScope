@@ -30,7 +30,7 @@
 | [19-evidence-fusion-and-posture](19-evidence-fusion-and-posture.md) | 🟢 Implemented (Phase 7) |
 | [21-backend-persistence-api](21-backend-persistence-api.md) | 🟢 Implemented (Phase 8) |
 | [22-forensic-reporting](22-forensic-reporting.md) | 🟢 Implemented (Phase 9) |
-| [23-dashboard-architecture](23-dashboard-architecture.md) | 🟡 Design (Phase 10, architecture approved) |
+| [23-dashboard-architecture](23-dashboard-architecture.md) | 🟢 Implemented (Phase 10) |
 | ADR 0001–0022 | 0001–0005,0007–0022 Accepted · 0006 Proposed · **0007 superseded by 0017** · **0009 renderer amended by 0020** · **0010 Accepted at Phase 10, OQ-41 closed by 0022** |
 
 ## 2. Locked decisions
@@ -91,7 +91,7 @@ on demonstrated behaviour: three formats served, semantic equivalence asserted a
 them, artefacts content-addressed and integrity-verified. Visual QA found and fixed two
 real layout defects. No A- or D- requirement changed; Phase 9 adds no detection.
 
-**Phase 10 (2026-09-21, architecture approved):** analyst dashboard on branch
+**Phase 10 (2026-09-22, COMPLETE):** analyst dashboard on branch
 `phase/10-dashboard`, branched from `v0.4.0-phase9`. Completes R-04 — *"Interactive
 visualization dashboard"*, confirmed in docs/research/19 §91. **OQ-41 closed** by
 ADR-0022: no framework, vanilla ES modules, zero npm packages, no build step; the
@@ -99,7 +99,13 @@ projection lives in Python so the existing AST tests and pytest suite guard it.
 **ADR-0010 moves Proposed → Accepted**, intent preserved. Audit finding — the history
 list API returns no posture or score although `assessments` already stores both as the
 listing projection ADR-0017 Decision 3 created; Phase 10 joins them additively rather
-than recomputing. Design: doc 23. Implementation not started at this checkpoint.
+than recomputing. Design: doc 23. **R-04 → COMPLETE**, the only requirement status change: four screens
+(History, Overview, Findings, Evidence) over the canonical assessment, zero npm
+dependencies, validated against 7 real captures with cross-surface agreement against
+the HTML, PDF and JSON reports. 423 Phase-10 tests; Phase 1–9 baseline of 697 verified
+intact. Visual QA found and fixed seven real defects; performance measurement found and
+fixed two duplicate-fetch defects; the security matrix found and fixed one unsanitised
+class-name path.
 
 **Opened by Phase 10:** OQ-57 — per-session/packet drill-down is absent from the
 canonical contract (`fused_findings` is not in `to_dict()`); is that a contract gap to

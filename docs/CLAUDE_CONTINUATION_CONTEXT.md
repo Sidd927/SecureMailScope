@@ -4,7 +4,7 @@
 Every fact below was read from this repository. Where detail is needed, this file points
 at the authoritative document rather than repeating it.
 
-**Written:** 2026-09-20, at `v0.2.0-phase7`.
+**Written:** 2026-09-20 at `v0.2.0-phase7`. **Updated 2026-09-22** through Phase 10.
 
 ---
 
@@ -31,9 +31,10 @@ authentication features; two audited competitor repos made exactly that mistake.
 | Ref | Commit |
 |---|---|
 | `main` | `2fd5f0939c6773ba110cbe39e10a86bff2deaca3` (= Phase 3) |
-| Phase-7 branch | `phase/07-evidence-fusion-posture` |
-| Phase-7 final commit | `9b3e6e496d81d72076821bfbe5f2596178b9a484` |
-| Phase-7 tag | **`v0.2.0-phase7`** (annotated, → `9b3e6e4`, pushed) |
+| Phase-7 tag | `v0.2.0-phase7` → `9b3e6e4` |
+| Phase-8 tag | `v0.3.0-phase8` → `a46781a` |
+| Phase-9 tag | `v0.4.0-phase9` → `0019c6f` |
+| Phase-10 branch | `phase/10-dashboard` (untagged pending review) |
 
 Remote: `git@github.com:Sidd927/SecureMailScope.git`
 
@@ -196,9 +197,23 @@ cross-session reasoning on real traffic · attack detection. Verdict recorded as
 - Never claim attacker identity or intent, certificate validity when unobservable,
   SPF/DKIM/DMARC posture, successful remediation, or ML-discovered attacks.
 
-## Next phase
+## Phases 8-10 (added 2026-09-22)
 
-**PHASE 8 — Backend + Persistence + API. NOT STARTED.**
+| Phase | Tag | Delivered |
+|---|---|---|
+| 8 — backend | `v0.3.0-phase8` | SQLite catalog, job lifecycle, artifact store, FastAPI `/api/v1` |
+| 9 — reporting | `v0.4.0-phase9` | `ReportDocument`, HTML + PDF renderers, report artifacts. **R-03, R-05 COMPLETE** |
+| 10 — dashboard | untagged | analyst console: History / Overview / Findings / Evidence. **R-04 COMPLETE** |
+
+Docs: `architecture/21`, `22`, `23`; ADR-0017…0022. Tests: **1120 passed**, with the
+Phase 1-9 baseline of 697 verified intact.
+
+**Still incomplete:** D-09, D-10-14 (X.509), D-16, D-17. **A-02 unchanged** —
+capability yes, detection value no.
+
+## Superseded: the Phase-8 plan below (kept for its starting rules)
+
+**PHASE 8 — Backend + Persistence + API. COMPLETE (see above).**
 
 ```
 PCAP → existing pipeline → PostureAssessment
