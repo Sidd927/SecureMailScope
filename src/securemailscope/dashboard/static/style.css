@@ -182,6 +182,8 @@ h3 { font-size: .9rem; margin: 1.25rem 0 .3rem; letter-spacing: .01em; }
 ul.plain { margin: .4rem 0 .8rem 1.1rem; padding: 0; font-size: .86rem;
   color: var(--muted); }
 ul.plain li { margin: .25rem 0; }
+ul.mono-list { font-family: var(--mono); font-size: .78rem; columns: 3; }
+@media (max-width: 860px) { ul.mono-list { columns: 1; } }
 .bars { margin: .5rem 0 1.1rem; }
 
 /* ---------- bars: the number is always printed ---------- */
