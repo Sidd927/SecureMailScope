@@ -219,6 +219,7 @@ PHASE_11_DECLARED = {
     "src/securemailscope/analysis/rules/__init__.py",
     "src/securemailscope/analysis/rules/tls_rules.py",
     "src/securemailscope/analysis/rules/certificate_rules.py",
+    "src/securemailscope/analysis/rules/keyexchange_rules.py",
     "src/securemailscope/analysis/rules/configuration_rules.py",
     "src/securemailscope/posture/model.py",
     "src/securemailscope/posture/fusion.py",
