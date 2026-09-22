@@ -1,0 +1,369 @@
+{
+  "abstentions": [
+    {
+      "frames": [
+        6
+      ],
+      "issue_class": "CERTIFICATE_EXTRACTION",
+      "protocol": "imap",
+      "reason": "NOT_OBSERVABLE",
+      "resolved_by": "not resolvable by passive capture; this fact is structurally hidden from an observer without key material",
+      "rule_id": "SEC-CERT-001",
+      "stream_key": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0",
+      "what_could_not_be_concluded": "Certificate extraction",
+      "why": "No certificate was observable in this session."
+    },
+    {
+      "frames": [
+        6
+      ],
+      "issue_class": "CERTIFICATE_OBSERVABILITY",
+      "protocol": "imap",
+      "reason": "NOT_OBSERVABLE",
+      "resolved_by": "not resolvable by passive capture; this fact is structurally hidden from an observer without key material",
+      "rule_id": "SEC-TLS-003",
+      "stream_key": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0",
+      "what_could_not_be_concluded": "Certificate trust and revocation boundary",
+      "why": "Certificate trust and revocation were not evaluated."
+    }
+  ],
+  "ai_enabled": false,
+  "assessment_id": "7575e6bf983af6ae",
+  "capture_id": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+  "coverage": {
+    "assessed_fraction": 1.0,
+    "completeness_counts": {
+      "COMPLETE": 1
+    },
+    "observation_counts": {
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 4
+    },
+    "observation_fractions": {
+      "NOT_OBSERVABLE": 0.5,
+      "OBSERVED": 0.5
+    },
+    "protocol_counts": {
+      "imap": 1
+    },
+    "sessions_abstained": 0,
+    "sessions_assessed": 1,
+    "sessions_total": 1
+  },
+  "generated_at": "2026-09-22T04:49:51Z",
+  "issue_groups": [
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.1: servers shall use TLS 1.2, should use TLS 1.3, should not use TLS 1.1, shall not use TLS 1.0/SSL 3.0/SSL 2.0"
+        },
+        {
+          "reason": "prohibits negotiating TLS 1.0 and TLS 1.1",
+          "section": "SS4-5",
+          "standard": "RFC 8996 (BCP 195)",
+          "text": "RFC 8996 (BCP 195) SS4-5: TLS 1.0 and TLS 1.1 MUST NOT be used"
+        }
+      ],
+      "dimension": "PROTOCOL_VERSION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "DEPRECATED_TLS_VERSION",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Negotiated TLS version posture"
+    },
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "PROBABLE",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.3.1: servers shall be configured to use ephemeral key establishment"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS1.2 and App. D.5: TLS 1.3 removed static RSA and static Diffie-Hellman key exchange"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "FORWARD_SECRECY",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Forward secrecy"
+    },
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+          "section": "SS3",
+          "standard": "RFC 8314",
+          "text": "RFC 8314 (implicit TLS for email submission and access)"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "IMPLICIT_TLS_SESSION",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Implicit TLS session"
+    },
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "PROBABLE",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2: TLS server configuration guidance"
+        },
+        {
+          "reason": "prohibits negotiating TLS 1.0 and TLS 1.1",
+          "section": "SS4-5",
+          "standard": "RFC 8996 (BCP 195)",
+          "text": "RFC 8996 (BCP 195): TLS 1.0 and TLS 1.1 MUST NOT be used"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "NIST SP 800-57 Part 1 Rev.5: key length guidance"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 9155: SHA-1 must not be used for digital signatures"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "INSECURE_CONFIGURATION",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Insecure protocol configuration"
+    },
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS4.2.8: TLS 1.3 negotiates key exchange in the key_share extension; the cipher suite does not encode it"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "KEY_EXCHANGE_MECHANISM",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Key exchange mechanism"
+    },
+    {
+      "affected_stream_keys": [
+        "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS2 (handshake message flow)"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "TLS_HANDSHAKE_EVIDENCE",
+      "penalising": false,
+      "protocols": [
+        "imap"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "TLS handshake completion evidence"
+    }
+  ],
+  "limitations": [
+    "passive analysis: conclusions describe what the capture shows, not the server's configuration",
+    "no attacker, intent or attribution is or can be established from a packet capture",
+    "certificate chain, expiry and key strength are not observable for TLS 1.3 or resumed sessions (RFC 8446 SS2, SS2.2)",
+    "absence of a STARTTLS advertisement is ambiguous: stripping and genuine non-support are byte-identical at the application layer",
+    "SecureMailScope cannot confirm that any remediation was applied or effective"
+  ],
+  "model_summary": {
+    "ai_enabled": false,
+    "note": "ML lane disabled; posture computed from deterministic and cross-session evidence only"
+  },
+  "overall_posture": "STRONG",
+  "prioritised": [],
+  "protocol_posture": [
+    {
+      "abstentions": 2,
+      "dimensions_assessed": [
+        "CRYPTO_CONFIGURATION",
+        "PROTOCOL_VERSION"
+      ],
+      "dimensions_not_observable": [],
+      "issue_classes": [],
+      "protocol": "imap",
+      "score": {
+        "band": "STRONG",
+        "basis": "100 with no established security issue to penalise; see evidence coverage for how much of the traffic this conclusion rests on",
+        "components": [],
+        "formula_id": "F2-group-damped",
+        "starting_value": 100.0,
+        "total_penalty": 0,
+        "value": 100.0
+      },
+      "sessions": 1
+    }
+  ],
+  "provenance": {
+    "contradictions_recorded": 0,
+    "duplicate_sources_merged": 0,
+    "note": "every severity, status and standard originates in a Phase-4 or Phase-5 rule; the posture engine aggregates and never re-judges",
+    "rule_ids": [
+      "SEC-CERT-001",
+      "SEC-CFG-001",
+      "SEC-FS-001",
+      "SEC-KEX-001",
+      "SEC-STLS-003",
+      "SEC-TLS-001",
+      "SEC-TLS-002",
+      "SEC-TLS-003"
+    ],
+    "source_counts": {
+      "abstentions": 2,
+      "cross_session_findings": 0,
+      "deterministic_findings": 8,
+      "fused_findings": 6,
+      "ml_results": 0
+    },
+    "versions": {
+      "posture_engine": "0.8.0",
+      "posture_schema": "1.0",
+      "scoring_formula": "F2-group-damped"
+    }
+  },
+  "remediation_summary": [],
+  "risk_summary": {
+    "abstentions": {
+      "affected_sessions": 1,
+      "by_issue_class": {
+        "CERTIFICATE_EXTRACTION": 1,
+        "CERTIFICATE_OBSERVABILITY": 1
+      },
+      "by_reason": {
+        "NOT_OBSERVABLE": 2
+      },
+      "how_to_resolve": {
+        "NOT_OBSERVABLE": "not resolvable by passive capture; this fact is structurally hidden from an observer without key material"
+      },
+      "total": 2
+    },
+    "affected_sessions": 0,
+    "anomaly_signals": 0,
+    "behavioural_deviations": 0,
+    "by_dimension": {},
+    "by_fact_kind": {
+      "POSITIVE_EVIDENCE": 6
+    },
+    "by_severity": {},
+    "highest_severity": null,
+    "issue_groups": 0,
+    "note": "a behavioural deviation is a difference from a baseline, not a vulnerability; an anomaly signal is a prioritisation input and neither asserts nor implies an attack",
+    "positive_evidence": 6
+  },
+  "run_id": "3d8f2316df7a43d59cf52231d756d443",
+  "score": {
+    "band": "STRONG",
+    "basis": "100 with no established security issue to penalise; see evidence coverage for how much of the traffic this conclusion rests on",
+    "components": [],
+    "formula_id": "F2-group-damped",
+    "starting_value": 100.0,
+    "total_penalty": 0,
+    "value": 100.0
+  },
+  "standards_summary": {
+    "distinct_standards": 3,
+    "note": "every citation originates from a Phase-4/5 rule; the Phase-7 registry adds structure and introduces no new standard",
+    "standards": {
+      "NIST SP 800-52r2": [
+        "SS3.1"
+      ],
+      "RFC 8314": [
+        "SS3"
+      ],
+      "RFC 8996 (BCP 195)": [
+        "SS4-5"
+      ]
+    },
+    "unmapped_citations": [
+      "NIST SP 800-57 Part 1 Rev.5: key length guidance",
+      "RFC 8446 SS1.2 and App. D.5: TLS 1.3 removed static RSA and static Diffie-Hellman key exchange",
+      "RFC 8446 SS2 (handshake message flow)",
+      "RFC 8446 SS4.2.8: TLS 1.3 negotiates key exchange in the key_share extension; the cipher suite does not encode it",
+      "RFC 9155: SHA-1 must not be used for digital signatures"
+    ]
+  },
+  "versions": {
+    "engine": "0.8.0",
+    "schema": "1.0"
+  }
+}

@@ -1,0 +1,486 @@
+[
+  {
+    "capture_sha256": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_1_benign_decline.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_1_benign_decline.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "scene_a_1_benign_decline.pcap",
+    "purpose": "STARTTLS inversion: benign client decline",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 320.9,
+        "run_id": "5e3ede6c1edf48ff9e9998f8b90ca123",
+        "summary": {
+          "abstention_count": 2,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "INSECURE_CONFIGURATION",
+            "NO_TLS_PROTECTION",
+            "STARTTLS_ADVERTISEMENT"
+          ],
+          "assessment_id": "d2aa0d9898616dfe",
+          "capture_id": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1
+            },
+            "observation_counts": {
+              "OBSERVED": 5,
+              "UNKNOWN": 3
+            },
+            "observation_fractions": {
+              "OBSERVED": 0.625,
+              "UNKNOWN": 0.375
+            },
+            "protocol_counts": {
+              "smtp": 1
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 1,
+            "sessions_total": 1
+          },
+          "issue_group_count": 3,
+          "model_summary_role": null,
+          "overall_posture": "ADEQUATE",
+          "penalising_issue_classes": [
+            "NO_TLS_PROTECTION"
+          ],
+          "score_band": "ADEQUATE",
+          "score_value": 88.0
+        }
+      }
+    },
+    "scene_id": "scene_a_1_benign_decline"
+  },
+  {
+    "capture_sha256": "eacbc065c3427acf406ec8f2059ded8b6e77162a60a3c1497b8fbd805a941e20",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_2_genuine_nonsupport.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_2_genuine_nonsupport.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "scene_a_2_genuine_nonsupport.pcap",
+    "purpose": "STARTTLS inversion: genuine server non-support",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 116.6,
+        "run_id": "ca4e659c9ab7454dabb185aaebb750b0",
+        "summary": {
+          "abstention_count": 6,
+          "abstention_reasons": [
+            "AMBIGUOUS_EVIDENCE",
+            "INSUFFICIENT_CAPTURE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "INSECURE_CONFIGURATION",
+            "NO_TLS_PROTECTION"
+          ],
+          "assessment_id": "0fb7067846c4cd02",
+          "capture_id": "eacbc065c3427acf406ec8f2059ded8b6e77162a60a3c1497b8fbd805a941e20",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1,
+              "INCOMPLETE": 1
+            },
+            "observation_counts": {
+              "AMBIGUOUS": 1,
+              "OBSERVED": 8,
+              "UNKNOWN": 7
+            },
+            "observation_fractions": {
+              "AMBIGUOUS": 0.0625,
+              "OBSERVED": 0.5,
+              "UNKNOWN": 0.4375
+            },
+            "protocol_counts": {
+              "smtp": 2
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 2,
+            "sessions_total": 2
+          },
+          "issue_group_count": 2,
+          "model_summary_role": null,
+          "overall_posture": "ADEQUATE",
+          "penalising_issue_classes": [
+            "NO_TLS_PROTECTION"
+          ],
+          "score_band": "ADEQUATE",
+          "score_value": 85.0
+        }
+      }
+    },
+    "scene_id": "scene_a_2_genuine_nonsupport"
+  },
+  {
+    "capture_sha256": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_b_certificate_honesty.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_b_certificate_honesty.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "scene_b_certificate_honesty.pcap",
+    "purpose": "Evidence honesty: TLS 1.3 certificate NOT_OBSERVABLE",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 119.0,
+        "run_id": "3d8f2316df7a43d59cf52231d756d443",
+        "summary": {
+          "abstention_count": 2,
+          "abstention_reasons": [
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "IMPLICIT_TLS_SESSION",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM",
+            "TLS_HANDSHAKE_EVIDENCE"
+          ],
+          "assessment_id": "7575e6bf983af6ae",
+          "capture_id": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1
+            },
+            "observation_counts": {
+              "NOT_OBSERVABLE": 4,
+              "OBSERVED": 4
+            },
+            "observation_fractions": {
+              "NOT_OBSERVABLE": 0.5,
+              "OBSERVED": 0.5
+            },
+            "protocol_counts": {
+              "imap": 1
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 1,
+            "sessions_total": 1
+          },
+          "issue_group_count": 6,
+          "model_summary_role": null,
+          "overall_posture": "STRONG",
+          "penalising_issue_classes": [],
+          "score_band": "STRONG",
+          "score_value": 100.0
+        }
+      }
+    },
+    "scene_id": "scene_b_certificate_honesty"
+  },
+  {
+    "capture_sha256": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_c_no_ai_equivalence.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_c_no_ai_equivalence.pcap http://127.0.0.1:8000/api/v1/analyses?ai=true)",
+    "exit_status": "success",
+    "input_capture": "scene_c_no_ai_equivalence.pcap",
+    "purpose": "--no-ai equivalence",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 115.1,
+        "run_id": "a6250fc23cb3430d8b3debb6f2edf964",
+        "summary": {
+          "abstention_count": 7,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE",
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM",
+            "NO_TLS_PROTECTION",
+            "STARTTLS_UPGRADE_FAILURE",
+            "TLS_HANDSHAKE_EVIDENCE"
+          ],
+          "assessment_id": "2647f6ab59fca5e9",
+          "capture_id": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1,
+              "INCOMPLETE": 1
+            },
+            "observation_counts": {
+              "OBSERVED": 12,
+              "UNKNOWN": 4
+            },
+            "observation_fractions": {
+              "OBSERVED": 0.75,
+              "UNKNOWN": 0.25
+            },
+            "protocol_counts": {
+              "smtp": 2
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 2,
+            "sessions_total": 2
+          },
+          "issue_group_count": 7,
+          "model_summary_role": null,
+          "overall_posture": "ADEQUATE",
+          "penalising_issue_classes": [
+            "NO_TLS_PROTECTION"
+          ],
+          "score_band": "ADEQUATE",
+          "score_value": 88.0
+        }
+      },
+      "ai_true": {
+        "elapsed_ms": 116.1,
+        "run_id": "c1d9d388b56f4447910c44285d1b7f6f",
+        "summary": {
+          "abstention_count": 7,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE",
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": true,
+          "all_issue_classes": [
+            "ANOMALY",
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM",
+            "NO_TLS_PROTECTION",
+            "STARTTLS_UPGRADE_FAILURE",
+            "TLS_HANDSHAKE_EVIDENCE"
+          ],
+          "assessment_id": "e59f38982ac55d9d",
+          "capture_id": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1,
+              "INCOMPLETE": 1
+            },
+            "observation_counts": {
+              "OBSERVED": 12,
+              "UNKNOWN": 4
+            },
+            "observation_fractions": {
+              "OBSERVED": 0.75,
+              "UNKNOWN": 0.25
+            },
+            "protocol_counts": {
+              "smtp": 2
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 2,
+            "sessions_total": 2
+          },
+          "issue_group_count": 8,
+          "model_summary_role": "secondary prioritisation signal only",
+          "overall_posture": "ADEQUATE",
+          "penalising_issue_classes": [
+            "NO_TLS_PROTECTION"
+          ],
+          "score_band": "ADEQUATE",
+          "score_value": 88.0
+        }
+      }
+    },
+    "scene_id": "scene_c_no_ai_equivalence"
+  },
+  {
+    "capture_sha256": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_weak_certificate.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_weak_certificate.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "backup_weak_certificate.pcap",
+    "purpose": "Backup: generated TLS 1.2, RSA-1024 + SHA-1",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 118.4,
+        "run_id": "2ae118f5d0da40daaaab5cc1d72a8bae",
+        "summary": {
+          "abstention_count": 2,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE",
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "CERTIFICATE_CHAIN_STRUCTURE",
+            "CERTIFICATE_EXTRACTION",
+            "CERTIFICATE_KEY_STRENGTH",
+            "CERTIFICATE_SIGNATURE_ALGORITHM",
+            "CERTIFICATE_VALIDITY",
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "IMPLICIT_TLS_SESSION",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM"
+          ],
+          "assessment_id": "645090e0bc44ba9d",
+          "capture_id": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1
+            },
+            "observation_counts": {
+              "AMBIGUOUS": 1,
+              "NOT_OBSERVABLE": 4,
+              "OBSERVED": 3
+            },
+            "observation_fractions": {
+              "AMBIGUOUS": 0.125,
+              "NOT_OBSERVABLE": 0.5,
+              "OBSERVED": 0.375
+            },
+            "protocol_counts": {
+              "smtp": 1
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 1,
+            "sessions_total": 1
+          },
+          "issue_group_count": 10,
+          "model_summary_role": null,
+          "overall_posture": "CRITICAL",
+          "penalising_issue_classes": [
+            "CERTIFICATE_KEY_STRENGTH",
+            "CERTIFICATE_SIGNATURE_ALGORITHM"
+          ],
+          "score_band": "CRITICAL",
+          "score_value": 44.0
+        }
+      }
+    },
+    "scene_id": "backup_weak_certificate"
+  },
+  {
+    "capture_sha256": "c08508835713a7485fc8456a58b93c226786f7f46b6da483706f586240ac2caa",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_selfsigned_certificate.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_selfsigned_certificate.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "backup_selfsigned_certificate.pcap",
+    "purpose": "Backup: generated TLS 1.2, self-signed leaf",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 116.7,
+        "run_id": "ba9809e950a248d79b7a05f5954c7e8f",
+        "summary": {
+          "abstention_count": 2,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE",
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "CERTIFICATE_CHAIN_STRUCTURE",
+            "CERTIFICATE_EXTRACTION",
+            "CERTIFICATE_KEY_STRENGTH",
+            "CERTIFICATE_SIGNATURE_ALGORITHM",
+            "CERTIFICATE_VALIDITY",
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "IMPLICIT_TLS_SESSION",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM"
+          ],
+          "assessment_id": "2cdc8de7905088ec",
+          "capture_id": "c08508835713a7485fc8456a58b93c226786f7f46b6da483706f586240ac2caa",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1
+            },
+            "observation_counts": {
+              "AMBIGUOUS": 1,
+              "NOT_OBSERVABLE": 4,
+              "OBSERVED": 3
+            },
+            "observation_fractions": {
+              "AMBIGUOUS": 0.125,
+              "NOT_OBSERVABLE": 0.5,
+              "OBSERVED": 0.375
+            },
+            "protocol_counts": {
+              "smtp": 1
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 1,
+            "sessions_total": 1
+          },
+          "issue_group_count": 10,
+          "model_summary_role": null,
+          "overall_posture": "ADEQUATE",
+          "penalising_issue_classes": [
+            "CERTIFICATE_CHAIN_STRUCTURE"
+          ],
+          "score_band": "ADEQUATE",
+          "score_value": 88.0
+        }
+      }
+    },
+    "scene_id": "backup_selfsigned_certificate"
+  },
+  {
+    "capture_sha256": "43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d",
+    "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_healthy_chain.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_healthy_chain.pcap http://127.0.0.1:8000/api/v1/analyses)",
+    "exit_status": "success",
+    "input_capture": "backup_healthy_chain.pcap",
+    "purpose": "Backup: generated TLS 1.2, healthy chain (negative control)",
+    "runs": {
+      "ai_false": {
+        "elapsed_ms": 118.6,
+        "run_id": "9dcfed9ac1a04b9499eb70cb941b14a6",
+        "summary": {
+          "abstention_count": 2,
+          "abstention_reasons": [
+            "INSUFFICIENT_CAPTURE",
+            "NOT_OBSERVABLE"
+          ],
+          "ai_enabled": false,
+          "all_issue_classes": [
+            "CERTIFICATE_CHAIN_STRUCTURE",
+            "CERTIFICATE_EXTRACTION",
+            "CERTIFICATE_KEY_STRENGTH",
+            "CERTIFICATE_SIGNATURE_ALGORITHM",
+            "CERTIFICATE_VALIDITY",
+            "DEPRECATED_TLS_VERSION",
+            "FORWARD_SECRECY",
+            "IMPLICIT_TLS_SESSION",
+            "INSECURE_CONFIGURATION",
+            "KEY_EXCHANGE_MECHANISM"
+          ],
+          "assessment_id": "9290b1d722b89411",
+          "capture_id": "43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d",
+          "coverage": {
+            "assessed_fraction": 1.0,
+            "completeness_counts": {
+              "COMPLETE": 1
+            },
+            "observation_counts": {
+              "AMBIGUOUS": 1,
+              "NOT_OBSERVABLE": 4,
+              "OBSERVED": 3
+            },
+            "observation_fractions": {
+              "AMBIGUOUS": 0.125,
+              "NOT_OBSERVABLE": 0.5,
+              "OBSERVED": 0.375
+            },
+            "protocol_counts": {
+              "smtp": 1
+            },
+            "sessions_abstained": 0,
+            "sessions_assessed": 1,
+            "sessions_total": 1
+          },
+          "issue_group_count": 10,
+          "model_summary_role": null,
+          "overall_posture": "STRONG",
+          "penalising_issue_classes": [],
+          "score_band": "STRONG",
+          "score_value": 100.0
+        }
+      }
+    },
+    "scene_id": "backup_healthy_chain"
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "capture_sha256": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+  "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_b_certificate_honesty.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_b_certificate_honesty.pcap http://127.0.0.1:8000/api/v1/analyses)",
+  "exit_status": "success",
+  "input_capture": "scene_b_certificate_honesty.pcap",
+  "purpose": "Evidence honesty: TLS 1.3 certificate NOT_OBSERVABLE",
+  "runs": {
+    "ai_false": {
+      "elapsed_ms": 119.0,
+      "run_id": "3d8f2316df7a43d59cf52231d756d443",
+      "summary": {
+        "abstention_count": 2,
+        "abstention_reasons": [
+          "NOT_OBSERVABLE"
+        ],
+        "ai_enabled": false,
+        "all_issue_classes": [
+          "DEPRECATED_TLS_VERSION",
+          "FORWARD_SECRECY",
+          "IMPLICIT_TLS_SESSION",
+          "INSECURE_CONFIGURATION",
+          "KEY_EXCHANGE_MECHANISM",
+          "TLS_HANDSHAKE_EVIDENCE"
+        ],
+        "assessment_id": "7575e6bf983af6ae",
+        "capture_id": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+        "coverage": {
+          "assessed_fraction": 1.0,
+          "completeness_counts": {
+            "COMPLETE": 1
+          },
+          "observation_counts": {
+            "NOT_OBSERVABLE": 4,
+            "OBSERVED": 4
+          },
+          "observation_fractions": {
+            "NOT_OBSERVABLE": 0.5,
+            "OBSERVED": 0.5
+          },
+          "protocol_counts": {
+            "imap": 1
+          },
+          "sessions_abstained": 0,
+          "sessions_assessed": 1,
+          "sessions_total": 1
+        },
+        "issue_group_count": 6,
+        "model_summary_role": null,
+        "overall_posture": "STRONG",
+        "penalising_issue_classes": [],
+        "score_band": "STRONG",
+        "score_value": 100.0
+      }
+    }
+  },
+  "scene_id": "scene_b_certificate_honesty"
+}

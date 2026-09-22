@@ -1,7 +1,18 @@
 # ARCHITECTURE_STATUS
 
-**Phase:** 11 (Architecture) — **complete, awaiting approval before implementation.**
-**Date:** 2026-09-16 · Navigation/state doc — read this first, then the one relevant architecture doc.
+**Phase:** 12 finalization (2026-09-22) — **released at `v0.6.0-phase11`.**
+**Date:** 2026-09-16, header updated 2026-09-22 · Navigation/state doc — read this first, then the
+one relevant architecture doc.
+
+> **This document is a historical planning record for Phases 1–10.** It is preserved as written
+> below (including the now-superseded "Phase 11 (Architecture) — complete, awaiting approval"
+> framing in its section headers, which described the *architecture-design* stage that later
+> became the actual Phase 11 implementation). **For the current, authoritative status, read
+> `docs/phase11/06-final-audit.md` and `docs/phase12/01-final-requirements-audit.md` instead.**
+> Phase 11 is fully implemented, tested (1219 tests), and released as `v0.6.0-phase11`. Phase 12
+> performed a documentation-only SIH readiness audit (`docs/phase12/`). §6 item 4 below (LLM
+> inclusion) was resolved by the recommended path: no LLM was built; the shipped AI is a bounded
+> unsupervised anomaly-scoring model only (ADR-0015).
 
 ---
 

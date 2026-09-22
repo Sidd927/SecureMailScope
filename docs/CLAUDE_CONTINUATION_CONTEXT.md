@@ -4,7 +4,11 @@
 Every fact below was read from this repository. Where detail is needed, this file points
 at the authoritative document rather than repeating it.
 
-**Written:** 2026-09-20 at `v0.2.0-phase7`. **Updated 2026-09-22** through Phase 10.
+**Written:** 2026-09-20 at `v0.2.0-phase7`. **Updated 2026-09-22** through Phase 10. The phase map
+below stops at Phase 7 — **for Phases 8–12, read `docs/phase11/06-final-audit.md` and
+`docs/phase12/01-final-requirements-audit.md` first.** Current release: **`v0.6.0-phase11`**
+(`c5352de3`). Phase 12 (`docs/phase12/`) was a documentation-only SIH readiness audit — no
+production source changed. Phase 12/finalization work lives on `phase/finalization`.
 
 ---
 

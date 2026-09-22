@@ -1,0 +1,6 @@
+{
+  "generated_at_note": "timestamps below are wall-clock generation time, NOT part of any deterministic claim -- assessment_id/report_sha256 are",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+  "tshark": "TShark (Wireshark) 4.6.8 (Git commit e677bf052328)."
+}

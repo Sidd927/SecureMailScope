@@ -2,14 +2,30 @@
 
 Passive PCAP cryptographic security posture assessment for email — **SIH26159** (NTRO).
 
-Reads captured SMTP / IMAP / POP3 traffic and reports the **transport** security posture:
-TLS versions, STARTTLS/STLS upgrade integrity, plaintext exposure, and what the capture
-genuinely could not establish. It is passive and offline — it never connects to a mail
-server, needs no keys, and reads no message content.
+> **Checkout the release, not the default branch.** `main` is deliberately frozen at an early
+> phase (see [Status](#status) below). The released system is the tag **`v0.6.0-phase11`**:
+> ```bash
+> git checkout v0.6.0-phase11
+> ```
 
-Out of scope by design: SPF, DKIM, DMARC, DNS, DANE, MTA-STS, S/MIME, PGP, phishing.
-None appears in the authoritative problem statement
-(`docs/research/19-authoritative-ps-verification.md`).
+Reads captured SMTP / IMAP / POP3 traffic — including implicit-TLS SMTPS/IMAPS/POP3S — and
+reports the **transport** security posture: TLS version, cipher suite, key exchange, X.509
+certificate properties where a cleartext handshake exposes them, forward secrecy, STARTTLS/STLS
+upgrade integrity, plaintext exposure, insecure configuration, and what the capture genuinely
+could not establish. It is passive and offline — it never connects to a mail server, needs no
+keys, and reads no message content.
+
+**Certificate visibility is bounded by the protocol, not by this tool.** TLS 1.3 encrypts the
+Certificate message (RFC 8446 §2), so a TLS 1.3 session correctly reports the certificate as
+`NOT_OBSERVABLE` — that is never rendered as "certificate invalid" or "certificate absent."
+Chain **structure** is validated where a certificate is visible; chain **trust** and
+**revocation** are not, because a passive capture carries no trust anchor and no OCSP/CRL
+access — this project does not claim otherwise (see [Status](#status)).
+
+Out of scope by design: SPF, DKIM, DMARC, DNS, DANE, MTA-STS, S/MIME, PGP, phishing, attacker
+attribution. None appears in the authoritative problem statement
+(`docs/research/19-authoritative-ps-verification.md`), and passive packet evidence cannot
+establish attribution regardless.
 
 ## Principles
 
@@ -19,8 +35,13 @@ None appears in the authoritative problem statement
   not a good grade.
 - **`PostureAssessment` is canonical.** The backend, and every later layer, consume it
   and recompute nothing.
-- **ML cannot create security facts.** The anomaly lane is a bounded prioritisation
-  signal; it has no demonstrated detection value (ADR-0015).
+- **ML cannot create security facts.** The anomaly lane is a bounded, unsupervised
+  prioritisation signal — it can re-order findings within one severity tier and can never
+  create, upgrade, or downgrade a finding. Evaluated honestly across every held-out split and
+  every capture this project holds, it currently demonstrates **no independent detection
+  value**, and the tool reports that rather than hiding it (ADR-0015, ADR-0024). Every
+  assessment is identical with the AI lane on or off — `--no-ai` is a proof, not a toggle for
+  looking less capable.
 
 ## Requirements
 
@@ -123,11 +144,34 @@ There is **no authentication**: bind to loopback only.
 | `docs/architecture/21-backend-persistence-api.md` | backend, storage and API |
 | `docs/architecture/22-forensic-reporting.md` | reporting, HTML/PDF, report identity |
 | `docs/architecture/23-dashboard-architecture.md` | analyst console, projection, security boundary |
-| `docs/architecture/adr/` | 22 ADRs; every significant decision with its alternatives |
+| `docs/phase11/05-architecture.md` | key exchange, X.509, forward secrecy, insecure config (`crypto/` package) |
+| `docs/phase11/06-final-audit.md` | why D-11 and A-02 are PARTIAL, with the measured reasons |
+| `docs/phase12/01-final-requirements-audit.md` | the authoritative requirement-by-requirement status table |
+| `docs/phase12/11-judge-question-bank.md` | short/technical answers to the questions this project is most likely to be asked |
+| `docs/architecture/adr/` | 24 ADRs; every significant decision with its alternatives |
 
 ## Status
 
-Phases 1–10 implemented on their own branches; `main` deliberately still points at
-Phase 3.
-Known limitations are recorded per phase rather than summarised away — start with
-`ARCHITECTURE_STATUS.md`.
+**Released: `v0.6.0-phase11`** — the tag to check out, not `main` (below). Nineteen
+standards-bound rules (16 single-session + 3 cross-session) cover TLS version, cipher,
+key exchange, X.509 extraction/expiry/key-strength/signature, forward secrecy, insecure
+configuration, STARTTLS/STLS integrity, and plaintext exposure — each finding cited to an
+RFC or NIST publication, never an invented weight. 1219 tests pass, zero known flakes.
+
+Two requirements are honestly **PARTIAL**, not incomplete-for-lack-of-time:
+
+- **D-11** (certificate chain validation) — chain *structure* is fully validated; chain
+  *trust* and *revocation* are not, because a passive capture contains no trust anchor and
+  no OCSP/CRL access (RFC 5280 §6; RFC 6960). A bundled public root store was evaluated and
+  rejected — it would flag legitimate private-CA enterprise deployments as untrusted.
+- **A-02** (AI-assisted anomaly detection) — a real, evaluated, unsupervised model ships and
+  is proven not to change any security conclusion when disabled; it currently demonstrates
+  zero unique true detections on any held-out split or corpus this project holds.
+
+Full reasoning for both: `docs/phase12/01-final-requirements-audit.md`.
+
+`main` deliberately still points at Phase 3 — every phase from 4 onward lives on its own
+branch, tagged at release. This is a **process choice** (keep `main` as a stable early
+anchor while phases are developed and reviewed on their own branches), not a sign of
+incomplete work; check out `v0.6.0-phase11` for the released system. Known limitations are
+recorded per phase rather than summarised away — start with `ARCHITECTURE_STATUS.md`.

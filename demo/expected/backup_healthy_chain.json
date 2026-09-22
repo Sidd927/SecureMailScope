@@ -1,0 +1,64 @@
+{
+  "capture_sha256": "43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d",
+  "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_healthy_chain.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/backup_healthy_chain.pcap http://127.0.0.1:8000/api/v1/analyses)",
+  "exit_status": "success",
+  "input_capture": "backup_healthy_chain.pcap",
+  "purpose": "Backup: generated TLS 1.2, healthy chain (negative control)",
+  "runs": {
+    "ai_false": {
+      "elapsed_ms": 118.6,
+      "run_id": "9dcfed9ac1a04b9499eb70cb941b14a6",
+      "summary": {
+        "abstention_count": 2,
+        "abstention_reasons": [
+          "INSUFFICIENT_CAPTURE",
+          "NOT_OBSERVABLE"
+        ],
+        "ai_enabled": false,
+        "all_issue_classes": [
+          "CERTIFICATE_CHAIN_STRUCTURE",
+          "CERTIFICATE_EXTRACTION",
+          "CERTIFICATE_KEY_STRENGTH",
+          "CERTIFICATE_SIGNATURE_ALGORITHM",
+          "CERTIFICATE_VALIDITY",
+          "DEPRECATED_TLS_VERSION",
+          "FORWARD_SECRECY",
+          "IMPLICIT_TLS_SESSION",
+          "INSECURE_CONFIGURATION",
+          "KEY_EXCHANGE_MECHANISM"
+        ],
+        "assessment_id": "9290b1d722b89411",
+        "capture_id": "43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d",
+        "coverage": {
+          "assessed_fraction": 1.0,
+          "completeness_counts": {
+            "COMPLETE": 1
+          },
+          "observation_counts": {
+            "AMBIGUOUS": 1,
+            "NOT_OBSERVABLE": 4,
+            "OBSERVED": 3
+          },
+          "observation_fractions": {
+            "AMBIGUOUS": 0.125,
+            "NOT_OBSERVABLE": 0.5,
+            "OBSERVED": 0.375
+          },
+          "protocol_counts": {
+            "smtp": 1
+          },
+          "sessions_abstained": 0,
+          "sessions_assessed": 1,
+          "sessions_total": 1
+        },
+        "issue_group_count": 10,
+        "model_summary_role": null,
+        "overall_posture": "STRONG",
+        "penalising_issue_classes": [],
+        "score_band": "STRONG",
+        "score_value": 100.0
+      }
+    }
+  },
+  "scene_id": "backup_healthy_chain"
+}

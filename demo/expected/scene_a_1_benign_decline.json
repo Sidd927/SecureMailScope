@@ -1,0 +1,56 @@
+{
+  "capture_sha256": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+  "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_1_benign_decline.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_a_1_benign_decline.pcap http://127.0.0.1:8000/api/v1/analyses)",
+  "exit_status": "success",
+  "input_capture": "scene_a_1_benign_decline.pcap",
+  "purpose": "STARTTLS inversion: benign client decline",
+  "runs": {
+    "ai_false": {
+      "elapsed_ms": 320.9,
+      "run_id": "5e3ede6c1edf48ff9e9998f8b90ca123",
+      "summary": {
+        "abstention_count": 2,
+        "abstention_reasons": [
+          "INSUFFICIENT_CAPTURE"
+        ],
+        "ai_enabled": false,
+        "all_issue_classes": [
+          "INSECURE_CONFIGURATION",
+          "NO_TLS_PROTECTION",
+          "STARTTLS_ADVERTISEMENT"
+        ],
+        "assessment_id": "d2aa0d9898616dfe",
+        "capture_id": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+        "coverage": {
+          "assessed_fraction": 1.0,
+          "completeness_counts": {
+            "COMPLETE": 1
+          },
+          "observation_counts": {
+            "OBSERVED": 5,
+            "UNKNOWN": 3
+          },
+          "observation_fractions": {
+            "OBSERVED": 0.625,
+            "UNKNOWN": 0.375
+          },
+          "protocol_counts": {
+            "smtp": 1
+          },
+          "sessions_abstained": 0,
+          "sessions_assessed": 1,
+          "sessions_total": 1
+        },
+        "issue_group_count": 3,
+        "model_summary_role": null,
+        "overall_posture": "ADEQUATE",
+        "penalising_issue_classes": [
+          "NO_TLS_PROTECTION"
+        ],
+        "score_band": "ADEQUATE",
+        "score_value": 88.0
+      }
+    }
+  },
+  "scene_id": "scene_a_1_benign_decline"
+}
