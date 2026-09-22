@@ -59,8 +59,9 @@ corroborates `docs/research/01A-tls-visibility-validation.md` §4–5)
 **Consequences** + five certificate-dependent deliverables become real where evidence
 allows; + D-09 and D-17 close fully at every TLS version; + AMB-06 closes; + the latent
 `X509_NOT_AFTER` ordering defect in `dissect/fields.py` is fixed before it could ever
-mis-date a certificate. − D-11 closes **PARTIAL**, permanently, and the traceability entry
-says so. − the real corpus is 100 % TLS 1.3, so the whole certificate family is validated
+mis-date a certificate. − D-11 closes **PARTIAL** — not fully observable from passive
+PCAP alone — and the traceability entry says so; OQ-04 is the route by which that could
+later widen. − the real corpus is 100 % TLS 1.3, so the whole certificate family is validated
 only against captures synthesised in this phase (OQ-60). − `RULES_VERSION` 1.0 → 1.1 and
 two engine versions move, so assessments across the boundary are not byte-comparable.
 

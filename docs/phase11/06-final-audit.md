@@ -1,7 +1,7 @@
 # Phase 11 — 06. Final audit
 
 **Date:** 2026-09-22 · **Branch:** `phase/11-requirement-closure`
-**Base:** `v0.5.0-phase10` = `2d5594a8` · **Commits:** 12 · **Tests:** 1219 passing
+**Base:** `v0.5.0-phase10` = `2d5594a8` · **Commits:** 13 · **Tests:** 1219 collected
 
 ---
 
@@ -11,7 +11,7 @@
 |---|---|---|---|
 | D-09 | *"Identification of key exchange mechanisms."* | ✗ | **✅ COMPLETE** |
 | D-10 | *"Extraction of X.509 certificates."* | ✗ | **✅ where observable** |
-| D-11 | *"Certificate chain validation."* | ✗ | **🟡 PARTIAL, permanently** |
+| D-11 | *"Certificate chain validation."* | ✗ | **🟡 PARTIAL — not fully observable from passive PCAP alone** |
 | D-12 | *"Certificate expiration analysis."* | ✗ | **✅ where observable** |
 | D-13 | *"Public key algorithm and key length analysis."* | ✗ | **✅ where observable** |
 | D-14 | *"Digital signature algorithm identification."* | ✗ | **✅ where observable** |
@@ -25,9 +25,12 @@
 
 ## 2. The two honest non-closures
 
-### D-11 will not close COMPLETE
+### D-11 closes PARTIAL — not fully observable from passive PCAP alone
 
-RFC 5280 §6 defines path validation over **trust anchors**. A PCAP contains none. The three
+RFC 5280 §6 defines path validation over **trust anchors**. A PCAP contains none, so trust
+cannot be established **from the capture alone**. This is a scope statement about passive
+evidence, not a claim of permanent impossibility: supplying an operator-chosen trust store
+would change the answer, and that option is exactly what **OQ-04** keeps open. The three
 substitutes were considered and rejected (ADR-0023); bundling a public root store would mark
 legitimate private-CA mail infrastructure "untrusted" — a systematic false positive on exactly
 the population the PS targets. **OQ-04 remains open and is the explicit reason.**
@@ -60,7 +63,7 @@ Phase-11 change touches `ml/`.
 | `main` untouched | `2fd5f093…` unchanged |
 | All five historical tags unmoved | verified byte-for-byte |
 | `v0.6.0-phase11` **not** created | confirmed absent |
-| No history rewritten, no force-push | 12 commits appended to the branch only |
+| No history rewritten, no force-push | commits appended to the branch only; base commit is an ancestor of HEAD |
 | Core package zero-runtime-dependency | no third-party module imported by `crypto/`, `analysis/`, `session/`, `posture/` |
 | Python 3.9 compatible | all new modules parse under 3.9 grammar |
 | `PostureAssessment` remains the single truth | no downstream layer recomputes; reporting and dashboard needed **no changes** to surface the new findings |
@@ -154,7 +157,7 @@ new runtime dependency · any change to scoring weights or the ML bound.
 
 | ID | Status |
 |---|---|
-| **OQ-04** trust store / enterprise internal CAs | **open** — now the explicit reason D-11 is PARTIAL |
+| **OQ-04** trust store / enterprise internal CAs | **open** — the explicit reason D-11 is PARTIAL, and the route by which it could later widen |
 | **OQ-45** does real multi-vendor traffic change the ML answer | **open, better characterised** — the corpus is 100 % TLS 1.3 and 100 % forward secret, so it cannot discriminate |
 | **OQ-58** inherited provenance for TLS 1.2 resumption | deferred — no corpus to validate against |
 | **OQ-59** is OCSP stapling visible and usable | **not measured, not claimed** |

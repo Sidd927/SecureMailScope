@@ -215,7 +215,8 @@ are separate network transactions).
 `SEC-TLS-003` currently carries the limitation *"Certificate extraction is not implemented in
 this phase."* Phase 11 makes that sentence false, and leaving it would be a lie in the output.
 
-**DESIGN DECISION.** `SEC-TLS-003` is **narrowed** to what remains permanently true: the
+**DESIGN DECISION.** `SEC-TLS-003` is **narrowed** to what remains true regardless of how
+much extraction is implemented, for as long as the input is a passive capture alone: the
 *trust and revocation* boundary. Certificate presence and absence move to `SEC-CERT-001`,
 which can now state the specific reason — encrypted (TLS 1.3) · not sent (resumption) ·
 truncated capture — instead of one flat "not available".

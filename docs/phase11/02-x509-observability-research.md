@@ -110,12 +110,14 @@ all rejected:
 | Treat the captured chain as self-contained | Circular: it validates the chain against itself and can only ever say "the issuer signed the leaf", which is a structural fact already reported without calling it trust. |
 | Ask the analyst for a trust store | Defensible in principle, but it makes the verdict a function of operator-supplied material, and Phase 11 has no corpus to validate that path. **Recorded as OQ-04, still open.** |
 
-**FACT:** revocation is separately impossible. OCSP (RFC 6960) and CRL fetches are network
+**FACT:** revocation status is separately unavailable from the capture. OCSP (RFC 6960) and CRL fetches are network
 transactions that do not appear in a mail-session PCAP. OCSP *stapling* would be visible in a
 cleartext handshake — **UNRESOLVED:** not measured this phase, and not claimed.
 
 **Consequence:** D-11 can honestly deliver *chain structure analysis*. It cannot deliver
-*chain trust validation*, and the finding must say so in those words.
+*chain trust validation* **from a passive capture alone**, and the finding must say so in
+those words. Operator-supplied trust material (OQ-04) and OCSP stapling (OQ-59) are both
+unresolved, so this is a statement of present scope, not of permanent impossibility.
 
 ---
 

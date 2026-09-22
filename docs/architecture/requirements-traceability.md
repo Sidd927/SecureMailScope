@@ -18,7 +18,7 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-08 cipher | cipher class map | evidence | 2 | unit | — |
 | D-09 key exchange | ✅ **COMPLETE.** SEC-KEX-001. Suite name for TLS ≤1.2; ServerHello `key_share` group for TLS 1.3, which does not encode key exchange in the suite (RFC 8446 §4.2.8). Closed-world table: unknown suite ⇒ AMBIGUOUS, never a guess | `crypto/keyexchange`, `analysis/rules/keyexchange_rules` | 11 ✅ | 43 crypto + rule tests | findings |
 | D-10 X.509 extraction | ✅ **COMPLETE where observable.** SEC-CERT-001 extracts the chain from a cleartext handshake, or names the specific reason none is visible (encrypted / not sent / truncated). Provenance `observed` only | `crypto/certificates`, `analysis/rules/certificate_rules` | 11 ✅ | fixture + attribution tests | findings |
-| D-11 chain validation | 🟡 **PARTIAL, permanently.** SEC-CERT-005 analyses structure — ordering, AKI↔SKI linkage, self-signed detection. **Trust and revocation are NOT_OBSERVABLE**: RFC 5280 §6 path validation needs trust anchors a PCAP does not contain (OQ-04 open), and OCSP/CRL are separate network transactions (RFC 6960). See §Phase 11 | `analysis/rules/certificate_rules` | 11 🟡 | trust/revocation refusal tests | honesty |
+| D-11 chain validation | 🟡 **PARTIAL — not fully observable from passive PCAP alone.** SEC-CERT-005 analyses structure — ordering, AKI↔SKI linkage, self-signed detection. **Trust and revocation are NOT_OBSERVABLE**: RFC 5280 §6 path validation needs trust anchors a PCAP does not contain (OQ-04 open), and OCSP/CRL are separate network transactions (RFC 6960). See §Phase 11 | `analysis/rules/certificate_rules` | 11 🟡 | trust/revocation refusal tests | honesty |
 | D-12 expiry | ✅ **COMPLETE where observable.** SEC-CERT-002, evaluated against the **capture timestamp, never wall-clock** — a 2019 capture assessed today must not report certificates that were valid then as expired, and a wall-clock read would break content-addressed `assessment_id` | `analysis/rules/certificate_rules` | 11 ✅ | wall-clock + determinism tests | findings |
 | D-13 key algorithm/length | ✅ **COMPLETE where observable.** SEC-CERT-003. Length derived from the modulus with ASN.1 sign padding stripped; NIST SP 800-57 Pt.1 Rev.5 minimum 2048 | `crypto/certificates` | 11 ✅ | key-length maths tests | findings |
 | D-14 signature algorithm | ✅ **COMPLETE where observable.** SEC-CERT-004, OID → algorithm with RFC 9155 / NIST SP 800-131A deprecation. Unknown OID ⇒ unidentified, never weak | `crypto/oids` | 11 ✅ | OID + SHA-1 fixture tests | findings |
@@ -177,10 +177,12 @@ Eight new rules (SEC-KEX-001, SEC-FS-001, SEC-CERT-001…005, SEC-CFG-001) on a 
 `POSTURE_ENGINE_VERSION` 0.7.0 → 0.8.0. `POSTURE_SCHEMA_VERSION` stays 1.0: only enum
 members were added, the document shape is unchanged.
 
-### Why D-11 closes PARTIAL and will not close COMPLETE
+### Why D-11 closes PARTIAL — not fully observable from passive PCAP alone
 
 The PS wording is *"Certificate chain validation."* SecureMailScope validates chain
-**structure** and explicitly declines chain **trust**. That is not an unfinished feature:
+**structure** and explicitly declines chain **trust**. That is a limit of passive evidence,
+not an unfinished feature — and it is a scope statement, not a claim of permanent
+impossibility:
 
 * RFC 5280 §6 defines path validation over a set of **trust anchors**. A packet capture
   contains none.
@@ -188,8 +190,10 @@ The PS wording is *"Certificate chain validation."* SecureMailScope validates ch
   mail routinely uses private CAs, so validating against Mozilla/system roots would mark
   legitimate internal deployments untrusted — a systematic false positive on exactly the
   population this PS targets. It hides **OQ-04** rather than resolving it.
-* Revocation is separately impossible: OCSP (RFC 6960) and CRL retrieval are network
-  transactions absent from a mail capture.
+* Revocation status is separately unavailable from the capture: OCSP (RFC 6960) and CRL
+  retrieval are network transactions absent from a mail session. Whether OCSP *stapling*
+  carries usable evidence inside a cleartext handshake was **not measured** this phase and
+  is recorded as **OQ-59** rather than ruled out.
 
 Every chain finding states this in words. A linked chain is never reported as a trusted
 chain, and tests assert that no trust or revocation verdict is ever emitted.
@@ -232,5 +236,6 @@ forward secret, so it cannot discriminate. Answering it needs real traffic conta
 genuinely weak configurations, which modern mail infrastructure encouragingly does not
 produce.
 
-**Still incomplete after Phase 11:** D-11 (trust and revocation, permanently — see above)
-and A-02 (detection value). Both are honest limitations with recorded reasons, not gaps.
+**Still incomplete after Phase 11:** D-11 (trust and revocation — not observable from
+passive PCAP alone; see above) and A-02 (detection value). Both are honest limitations with
+recorded reasons and open questions (OQ-04, OQ-59, OQ-45), not gaps.

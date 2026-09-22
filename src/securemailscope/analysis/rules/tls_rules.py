@@ -190,9 +190,11 @@ class CertificateObservabilityRule(SecurityRule):
 
     Presence and absence now belong to SEC-CERT-001, which can name the specific reason
     (encrypted under TLS 1.3, not sent on resumption, or truncated capture). What
-    remains here is the part that no amount of implementation will change: trust and
-    revocation are not passively observable, at any TLS version, with or without a
-    visible certificate.
+    remains here is the part extraction cannot settle: from a passive capture ALONE,
+    trust and revocation are not observable at any TLS version, with or without a visible
+    certificate. That is a statement about the available evidence, not a claim that the
+    question is unanswerable in principle -- operator-supplied trust material (OQ-04) and
+    OCSP stapling (OQ-59) both remain open.
 
     The rule id and IssueClass are unchanged, so assessments recorded before Phase 11
     stay interpretable.
@@ -200,8 +202,8 @@ class CertificateObservabilityRule(SecurityRule):
 
     rule_id = "SEC-TLS-003"
     title = "Certificate trust and revocation boundary"
-    description = ("States what certificate validation is structurally impossible from a "
-                   "passive capture, independently of whether a certificate was visible.")
+    description = ("States what certificate validation cannot be established from a passive "
+                   "capture alone, independently of whether a certificate was visible.")
     standards = ("RFC 5280 SS6 (path validation requires trust anchors, which a packet "
                  "capture does not contain)",
                  "RFC 6960 (OCSP status is a separate network transaction)",
