@@ -87,6 +87,7 @@ def ref(field_name: str, evidence: EvidenceField) -> EvidenceRef:
         evidence_state=evidence.state,
         frames=tuple(evidence.frames),
         basis=evidence.basis,
+        provenance=evidence.provenance.value,
     )
 
 

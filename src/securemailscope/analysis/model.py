@@ -64,6 +64,13 @@ class EvidenceRef:
     evidence_state: EvidenceState    # the state of that field
     frames: Tuple[int, ...] = ()     # causing frame numbers
     basis: str = ""                  # why the field held that state
+    #: WHERE the value came from. Added in Phase 11 because
+    #: docs/research/01A SS4.1 makes this non-negotiable for certificate facts:
+    #: "A tool that presents an actively retrieved certificate as if it were passively
+    #: observed is making a false forensic claim." The Provenance enum has existed
+    #: since Phase 2, but it stopped at the session layer and never reached a finding,
+    #: so the distinction survived only in prose. Now it is structured and queryable.
+    provenance: str = "none"
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -72,6 +79,7 @@ class EvidenceRef:
             "evidence_state": self.evidence_state.value,
             "frames": list(self.frames),
             "basis": self.basis,
+            "provenance": self.provenance,
         }
 
 
