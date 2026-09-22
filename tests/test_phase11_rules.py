@@ -385,3 +385,50 @@ def test_hostile_certificate_text_is_carried_as_inert_data(hostile):
     # and the finding id stays content-addressed on rule/capture/stream/status only
     assert len(finding.finding_id) == 16
     assert all(c in "0123456789abcdef" for c in finding.finding_id)
+
+
+# ============================================ hostile certificate text, end to end
+def test_hostile_certificate_text_is_escaped_in_the_rendered_report():
+    """Certificate content is attacker-controlled and now reaches the report.
+
+    A SAN entry is whatever the server put on the wire, so it travels into a finding
+    explanation and from there into the HTML report. The renderer must escape it. This
+    drives the real renderer rather than asserting that `html.escape` is imported,
+    because an import proves nothing about the path the text actually takes.
+    """
+    pytest.importorskip("fastapi", reason="backend extra not installed")
+    import re
+
+    from securemailscope.reporting.service import render_bytes
+
+    hostile = '<script>alert(1)</script><img src=x onerror=alert(1)>'
+    certificate = cert(0, san_dns_names=(hostile,))
+    finding = CertificatePresenceRule().evaluate(with_certs([certificate]))[0]
+    assert hostile in finding.explanation, "precondition: the text reaches the finding"
+
+    document = {
+        "assessment_id": "a" * 16, "capture_id": "b" * 64, "run_id": None,
+        "generated_at": "2026-01-01T00:00:00Z",
+        "versions": {"schema": "1.0", "engine": "0.8.0"}, "ai_enabled": False,
+        "overall_posture": "ADEQUATE",
+        "score": {"value": 88.0, "band": "ADEQUATE", "formula_id": "F2-group-damped",
+                  "starting_value": 100.0, "total_penalty": 12.0, "basis": "x",
+                  "components": []},
+        "coverage": {"sessions_total": 1, "sessions_assessed": 1,
+                     "assessed_fraction": 1.0},
+        "limitations": [hostile], "abstentions": [],
+        "issue_groups": [{"issue_class": "CERTIFICATE_EXTRACTION", "title": hostile,
+                          "severity": "INFO", "certainty": "CONFIRMED",
+                          "fact_kind": "POSITIVE_EVIDENCE", "dimension":
+                          "CERTIFICATE_TRUST", "penalising": False, "recurrence": 1,
+                          "finding_count": 1, "protocols": ["smtp"],
+                          "affected_stream_keys": ["k"], "citations": [],
+                          "remediation": None}],
+        "prioritised": [], "model_summary": None, "provenance": {},
+        "risk_summary": {}, "protocol_posture": [], "remediation_summary": [],
+        "standards_summary": [],
+    }
+    body = render_bytes(document, "html")[0].decode("utf-8")
+    assert "<script>alert(1)</script>" not in body
+    assert "&lt;script&gt;" in body                      # present, but as text
+    assert not re.search(r"<img[^>]*onerror", body)
