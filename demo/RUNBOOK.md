@@ -38,8 +38,14 @@ room" step — the History screen already has them.
 
 - **Certificate deep-dive:** upload `demo/captures/backup_weak_certificate.pcap`; state plainly
   it is a *generated* fixture, not real-world traffic, before showing the RSA-1024/SHA-1 findings.
-- **Cross-session deep-dive:** **not staged** — no multi-session capture exists in this bundle
-  (see `docs/finalization/06-cross-session-demo.md` for why, and what to say instead).
+- **Cross-session deep-dive:** upload `demo/captures/deepdive_cross_session_control_endpoint.pcap`
+  (12 sessions, one client deviates from what every *other* client at the same server does — a
+  real `MEDIUM` cross-session finding) or `deepdive_cross_session_no_control.pcap` (6 sessions,
+  all one client, no control endpoint — the honest negative case: `COMPLIANT` with an explicit
+  stated limitation that passive evidence alone cannot rule out consistent stripping here). Full
+  worked walkthrough with verbatim engine output: `docs/finalization/06-cross-session-demo.md`.
+  The interesting evidence is in the **cross-session findings** on the Findings screen, not the
+  top-line posture/score.
 
 ## API response shape — one thing to know before scripting anything live
 

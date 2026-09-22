@@ -43,6 +43,8 @@ bash commands/run_scene.sh scene_a_1_benign_decline
 | Backup — weak certificate (generated fixture) | `backup_weak_certificate.pcap` | CRITICAL | 44.0 |
 | Backup — self-signed certificate (generated fixture) | `backup_selfsigned_certificate.pcap` | ADEQUATE | 88.0 |
 | Backup — healthy chain, negative control (generated fixture) | `backup_healthy_chain.pcap` | STRONG | 100.0 |
+| Deep-dive — cross-session, control endpoint present | `deepdive_cross_session_control_endpoint.pcap` | CRITICAL | 22.15 |
+| Deep-dive — cross-session, no control endpoint (the honest negative case) | `deepdive_cross_session_no_control.pcap` | CRITICAL | 34.15 |
 
 Full demo script and timing: `docs/finalization/03-demo-rehearsal.md` and
 `docs/phase12/03-demo-journey.md`. Full runbook (fresh-machine setup): `docs/finalization/11-deployment-runbook.md`.
