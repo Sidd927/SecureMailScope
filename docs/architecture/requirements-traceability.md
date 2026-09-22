@@ -16,11 +16,15 @@ analyst_ai` (01 §3). Phases per 35-implementation-roadmap. Regression scenarios
 | D-06 handshake | TlsHandshake object | evidence | 2 | C regression | honesty |
 | D-07 version | `supported_versions` read | evidence | 2 | TLS1.3 golden | honesty |
 | D-08 cipher | cipher class map | evidence | 2 | unit | — |
-| D-09 key exchange | KEX/named-group | evidence | 2 | unit | — |
-| D-10–14 X.509 | ⚠️ **NOT implemented**; SEC-TLS-003 reports NOT_OBSERVABLE with the boundary stated | `analysis/rules/tls_rules` | 4 ⚠️ | cert-boundary test | honesty |
+| D-09 key exchange | ✅ **COMPLETE.** SEC-KEX-001. Suite name for TLS ≤1.2; ServerHello `key_share` group for TLS 1.3, which does not encode key exchange in the suite (RFC 8446 §4.2.8). Closed-world table: unknown suite ⇒ AMBIGUOUS, never a guess | `crypto/keyexchange`, `analysis/rules/keyexchange_rules` | 11 ✅ | 43 crypto + rule tests | findings |
+| D-10 X.509 extraction | ✅ **COMPLETE where observable.** SEC-CERT-001 extracts the chain from a cleartext handshake, or names the specific reason none is visible (encrypted / not sent / truncated). Provenance `observed` only | `crypto/certificates`, `analysis/rules/certificate_rules` | 11 ✅ | fixture + attribution tests | findings |
+| D-11 chain validation | 🟡 **PARTIAL, permanently.** SEC-CERT-005 analyses structure — ordering, AKI↔SKI linkage, self-signed detection. **Trust and revocation are NOT_OBSERVABLE**: RFC 5280 §6 path validation needs trust anchors a PCAP does not contain (OQ-04 open), and OCSP/CRL are separate network transactions (RFC 6960). See §Phase 11 | `analysis/rules/certificate_rules` | 11 🟡 | trust/revocation refusal tests | honesty |
+| D-12 expiry | ✅ **COMPLETE where observable.** SEC-CERT-002, evaluated against the **capture timestamp, never wall-clock** — a 2019 capture assessed today must not report certificates that were valid then as expired, and a wall-clock read would break content-addressed `assessment_id` | `analysis/rules/certificate_rules` | 11 ✅ | wall-clock + determinism tests | findings |
+| D-13 key algorithm/length | ✅ **COMPLETE where observable.** SEC-CERT-003. Length derived from the modulus with ASN.1 sign padding stripped; NIST SP 800-57 Pt.1 Rev.5 minimum 2048 | `crypto/certificates` | 11 ✅ | key-length maths tests | findings |
+| D-14 signature algorithm | ✅ **COMPLETE where observable.** SEC-CERT-004, OID → algorithm with RFC 9155 / NIST SP 800-131A deprecation. Unknown OID ⇒ unidentified, never weak | `crypto/oids` | 11 ✅ | OID + SHA-1 fixture tests | findings |
 | D-15 weak/deprecated | ✅ SEC-TLS-001 bound to RFC 8996 + NIST SP 800-52r2 | `analysis/rules/tls_rules` | 4 ✅ | T_TLS10/11/12 golden | findings |
-| D-16 insecure config | bounded versioned checklist | rules | 4 | unit per rule | findings |
-| D-17 forward secrecy | derive from suite/version | evidence/rules | 4 | unit | findings |
+| D-16 insecure config | ✅ **COMPLETE, bounded.** SEC-CFG-001 evaluates a declared, versioned 7-item checklist (closes AMB-06). Items without evidence return NOT_OBSERVABLE, never "pass". Delegates to the dedicated rules rather than re-emitting findings, so fusion recurrence is not inflated | `analysis/rules/configuration_rules` | 11 ✅ | checklist coverage tests | findings |
+| D-17 forward secrecy | ✅ **COMPLETE.** SEC-FS-001. TLS 1.3 ⇒ INFERRED True (RFC 8446 §1.2, App. D.5 removed static RSA/DH); TLS ≤1.2 from the suite. **Never False from an unobserved handshake** — static ECDH is distinguished from ephemeral ECDHE, which OpenSSL's own `Kx` column conflates | `crypto/keyexchange`, `analysis/rules/keyexchange_rules` | 11 ✅ | ECDH-vs-ECDHE + absent-evidence tests | findings |
 | D-18 feature extraction | ✅ 44 governed, evidence-aware features → 164 columns (schema v1.0) | `ml/features`, `ml/encoding` | 6 ✅ | 23 feature tests | anomaly |
 | A-01 risk classification | ✅ **COMPLETE.** 11 standards-bound rules + Phase-7 classification into 6 evidence-supported dimensions, with scope, recurrence and certainty | `analysis/`, `posture/risk` | 4 ✅ / 7 ✅ | 38 Phase-4 + 133 Phase-7 tests | findings |
 | A-02 anomaly detection | 🟡 **capability ✅ / detection value ❌.** Real unsupervised model shipped, evaluated on generator-held-out data, reproducible and explainable — but **0 unique true detections on every held-out split**, so it ships as a *prioritisation signal only* (ADR-0015, doc 17) | `crosssession/` + `ml/` | 5 ✅ / 6 ✅ | 44 Phase-5 + 89 Phase-6 tests | anomaly scene (limitation stated) |
@@ -160,3 +164,73 @@ no detection.
 **Still incomplete after Phase 10:** D-09 (key exchange, no dedicated rule), D-10–14
 (X.509, not implemented), D-16 (bounded subset), D-17 (forward secrecy, derivable but
 no rule).
+
+---
+
+## Phase 11 — requirement closure (ADR-0023, ADR-0024)
+
+**Closed:** D-09, D-10, D-12, D-13, D-14, D-16, D-17. **Closed as PARTIAL:** D-11.
+**Unchanged:** A-02, still capability-yes / detection-value-no.
+
+Eight new rules (SEC-KEX-001, SEC-FS-001, SEC-CERT-001…005, SEC-CFG-001) on a new pure
+`crypto/` package. `RULES_VERSION` 1.0 → 1.1, `analysis.ENGINE_VERSION` 0.4.0 → 0.5.0,
+`POSTURE_ENGINE_VERSION` 0.7.0 → 0.8.0. `POSTURE_SCHEMA_VERSION` stays 1.0: only enum
+members were added, the document shape is unchanged.
+
+### Why D-11 closes PARTIAL and will not close COMPLETE
+
+The PS wording is *"Certificate chain validation."* SecureMailScope validates chain
+**structure** and explicitly declines chain **trust**. That is not an unfinished feature:
+
+* RFC 5280 §6 defines path validation over a set of **trust anchors**. A packet capture
+  contains none.
+* Bundling a public CA root store was considered and **rejected** (ADR-0023): enterprise
+  mail routinely uses private CAs, so validating against Mozilla/system roots would mark
+  legitimate internal deployments untrusted — a systematic false positive on exactly the
+  population this PS targets. It hides **OQ-04** rather than resolving it.
+* Revocation is separately impossible: OCSP (RFC 6960) and CRL retrieval are network
+  transactions absent from a mail capture.
+
+Every chain finding states this in words. A linked chain is never reported as a trusted
+chain, and tests assert that no trust or revocation verdict is ever emitted.
+
+### The evidence limitation, stated rather than hidden
+
+**All ten real OQ-33r captures negotiate TLS 1.3, which encrypts the Certificate message
+(RFC 8446 §2), so the real corpus yields zero X.509 fields and cannot exercise D-10–D-14
+at all.** Those requirements are validated against three TLS 1.2 captures generated in
+this phase (`research/experiments/p11cert/`): a self-signed RSA-2048 leaf, a root+leaf
+chain, and an RSA-1024/SHA-1 certificate. This is recorded as **OQ-60**, and a test
+asserts the limitation so it cannot quietly stop being true.
+
+### Regression property
+
+All ten real captures score **exactly** what they scored at `v0.5.0-phase10` — measured
+against the tag, not assumed. Phase 11 enriches the assessment and re-rates nothing;
+every new finding on real traffic is INFO or COMPLIANT.
+
+### A-02 after Phase 11 — read this before quoting the status
+
+**A-02 remains PARTIAL.** It was re-opened honestly, with a decision rule fixed *before*
+the evaluation ran (`docs/phase11/03-scope-lock.md` §E-i), and the new features were
+measured across all 46 captures the project holds:
+
+* **forward secrecy is constant** — True in 31 sessions, `False` in **zero**;
+* **certificate evidence exists in 1 of 46 captures** — the one generated to prove
+  extraction works;
+* **key exchange fingerprints the generator** — genB and genC use disjoint suite sets,
+  so a suite-derived feature separates them perfectly, worsening the 98.6 % generator
+  leak ADR-0015 identified.
+
+No bake-off was run, because training on a constant, a single sample and a generator
+signature yields a number that is meaningless or favourable for the wrong reason. The new
+evidence flows to the **deterministic** rules, where it has demonstrable value, not to the
+ML lane — asserted structurally by a test that fails if any Phase-11 change touches `ml/`.
+
+**OQ-45 remains open, better characterised:** the real corpus is 100 % TLS 1.3 and 100 %
+forward secret, so it cannot discriminate. Answering it needs real traffic containing
+genuinely weak configurations, which modern mail infrastructure encouragingly does not
+produce.
+
+**Still incomplete after Phase 11:** D-11 (trust and revocation, permanently — see above)
+and A-02 (detection value). Both are honest limitations with recorded reasons, not gaps.
