@@ -90,12 +90,19 @@ class IssueClass(str, Enum):
     CERTIFICATE_OBSERVABILITY = "CERTIFICATE_OBSERVABILITY"
     # ---- Phase 11 (ADR-0023). New members only; no existing member changes meaning,
     # so POSTURE_SCHEMA_VERSION stays at 1.0 -- the document shape is unchanged.
+    #
+    # Named for the DIMENSION, not for a verdict. One class carries both the compliant
+    # and the failing finding for its condition, so a verdict-shaped name lies half the
+    # time: `FORWARD_SECRECY_ABSENT` renders in the dashboard as "Forward secrecy
+    # absent" on a session that HAS forward secrecy, because the label is humanised
+    # from the enum member. (The older DEPRECATED_TLS_VERSION has this wart; it is left
+    # alone because renaming it would change the fusion identity of stored assessments.)
     KEY_EXCHANGE_MECHANISM = "KEY_EXCHANGE_MECHANISM"
-    FORWARD_SECRECY_ABSENT = "FORWARD_SECRECY_ABSENT"
+    FORWARD_SECRECY = "FORWARD_SECRECY"
     CERTIFICATE_EXTRACTION = "CERTIFICATE_EXTRACTION"
-    CERTIFICATE_EXPIRED = "CERTIFICATE_EXPIRED"
-    CERTIFICATE_WEAK_KEY = "CERTIFICATE_WEAK_KEY"
-    CERTIFICATE_WEAK_SIGNATURE = "CERTIFICATE_WEAK_SIGNATURE"
+    CERTIFICATE_VALIDITY = "CERTIFICATE_VALIDITY"
+    CERTIFICATE_KEY_STRENGTH = "CERTIFICATE_KEY_STRENGTH"
+    CERTIFICATE_SIGNATURE_ALGORITHM = "CERTIFICATE_SIGNATURE_ALGORITHM"
     CERTIFICATE_CHAIN_STRUCTURE = "CERTIFICATE_CHAIN_STRUCTURE"
     INSECURE_CONFIGURATION = "INSECURE_CONFIGURATION"
     ANOMALY = "ANOMALY"
@@ -118,11 +125,11 @@ RULE_ISSUE_CLASS: Dict[str, IssueClass] = {
     "CS-TLS-001": IssueClass.TLS_VERSION_DEVIATION,
     # ---- Phase 11 ----
     "SEC-KEX-001": IssueClass.KEY_EXCHANGE_MECHANISM,
-    "SEC-FS-001": IssueClass.FORWARD_SECRECY_ABSENT,
+    "SEC-FS-001": IssueClass.FORWARD_SECRECY,
     "SEC-CERT-001": IssueClass.CERTIFICATE_EXTRACTION,
-    "SEC-CERT-002": IssueClass.CERTIFICATE_EXPIRED,
-    "SEC-CERT-003": IssueClass.CERTIFICATE_WEAK_KEY,
-    "SEC-CERT-004": IssueClass.CERTIFICATE_WEAK_SIGNATURE,
+    "SEC-CERT-002": IssueClass.CERTIFICATE_VALIDITY,
+    "SEC-CERT-003": IssueClass.CERTIFICATE_KEY_STRENGTH,
+    "SEC-CERT-004": IssueClass.CERTIFICATE_SIGNATURE_ALGORITHM,
     "SEC-CERT-005": IssueClass.CERTIFICATE_CHAIN_STRUCTURE,
     "SEC-CFG-001": IssueClass.INSECURE_CONFIGURATION,
 }
@@ -157,11 +164,11 @@ ISSUE_DIMENSION: Dict[IssueClass, RiskDimension] = {
     # Phase 11. No new RiskDimension is invented: certificate conditions sit on the
     # existing CERTIFICATE_TRUST axis and key-exchange conditions on CRYPTO_CONFIGURATION.
     IssueClass.KEY_EXCHANGE_MECHANISM: RiskDimension.CRYPTO_CONFIGURATION,
-    IssueClass.FORWARD_SECRECY_ABSENT: RiskDimension.CRYPTO_CONFIGURATION,
+    IssueClass.FORWARD_SECRECY: RiskDimension.CRYPTO_CONFIGURATION,
     IssueClass.CERTIFICATE_EXTRACTION: RiskDimension.CERTIFICATE_TRUST,
-    IssueClass.CERTIFICATE_EXPIRED: RiskDimension.CERTIFICATE_TRUST,
-    IssueClass.CERTIFICATE_WEAK_KEY: RiskDimension.CERTIFICATE_TRUST,
-    IssueClass.CERTIFICATE_WEAK_SIGNATURE: RiskDimension.CERTIFICATE_TRUST,
+    IssueClass.CERTIFICATE_VALIDITY: RiskDimension.CERTIFICATE_TRUST,
+    IssueClass.CERTIFICATE_KEY_STRENGTH: RiskDimension.CERTIFICATE_TRUST,
+    IssueClass.CERTIFICATE_SIGNATURE_ALGORITHM: RiskDimension.CERTIFICATE_TRUST,
     IssueClass.CERTIFICATE_CHAIN_STRUCTURE: RiskDimension.CERTIFICATE_TRUST,
     IssueClass.INSECURE_CONFIGURATION: RiskDimension.CRYPTO_CONFIGURATION,
     IssueClass.ANOMALY: RiskDimension.BEHAVIOURAL_CONSISTENCY,

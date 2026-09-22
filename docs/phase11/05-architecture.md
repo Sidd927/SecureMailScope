@@ -126,14 +126,25 @@ X509_NOT_BEFORE = ("x509af_x509af_utcTime",   "x509af_x509af_notBefore")
 X509_NOT_AFTER  = ("x509af_x509af_utcTime_1", "x509af_x509af_notAfter")
 ```
 
-This prefers a **positional** key (`utcTime_1`) over the **semantic** one. Measurement (doc 02)
-shows tshark emits `x509af_x509af_notBefore` and `x509af_x509af_notAfter` as distinct keys.
-
 **This is a real defect — category (A), production defect** — though latent, because no code
-reads these constants yet. Ordering is not a contract: a certificate whose fields tshark emits
-in a different order, or a chain of several certificates, would silently swap the two dates and
-turn a valid certificate into an expired one. The preference order is inverted so the semantic
-key wins, with the positional key retained only as a fallback.
+read these constants yet. Both lines are wrong, and measurement (doc 02 §7.1) showed the fix is
+not the obvious one:
+
+* tshark 4.6.8 emits **no `_1`-suffixed keys at all**, so `X509_NOT_AFTER` fell through to
+  `x509af_x509af_notAfter` — which is the ASN.1 **CHOICE selector** (`"0"` = utcTime), not a
+  date. Expiry would have been computed from the string `"0"`.
+* The dates live in `x509af_x509af_utcTime` as an **ordered list**, two entries per
+  certificate: `[leaf.notBefore, leaf.notAfter, issuer.notBefore, issuer.notAfter]`.
+
+An intermediate draft of this document "corrected" the first line by preferring
+`x509af_x509af_notBefore`/`notAfter` as semantic keys. That correction was itself wrong, for
+the reason above. The record is kept because a confident correction of a correct statement is
+exactly the failure mode this project guards against.
+
+**Resolution:** `X509_VALIDITY_UTC` reads the ordered list, and the pairing rule lives in
+`crypto/certificates.py` where it is guarded and tested. The ordering dependence is real and
+unavoidable — `-T json` decodes no X.509 at all in this build — so it is bounded by the
+attribution rule below rather than wished away.
 
 ### 4.3 Expiry — the capture timestamp is the reference instant
 
@@ -157,9 +168,28 @@ recording the derivation.
 
 ### 4.5 Chain structure (D-11)
 
-Observable and implemented: certificate count, ordering, issuer↔subject linkage,
-`basicConstraints cA`, Authority/Subject Key Identifier match, self-signed detection
-(issuer DN == subject DN **and** AKI == SKI).
+**The attribution rule (measured, doc 02 §7.2).** EK output is flat: a chain yields one list
+per field, not one object per certificate. A value is attributed to a specific certificate
+**only** when its list length is exactly *n* or 2*n*; everything else is recorded at chain
+level and marked unattributed. Two measurements forced this to be strict:
+
+* `basicConstraints cA` is emitted **only when true**, so a `[leaf CA:FALSE, root CA:TRUE]`
+  chain yields a single `true`. Index-pairing would hand the root's CA flag to the leaf.
+* A leaf with two SAN entries in a two-certificate chain gives `len(san) == n` by
+  coincidence. Index-pairing credited the root CA — which has no SAN at all — with the
+  leaf's second name. **Matching cardinality is not evidence of correspondence**, so SANs
+  are attributed only for a single-certificate chain.
+
+Observable and implemented: certificate count, ordering, chain linkage, and self-signed
+detection — all from **Authority/Subject Key Identifiers** (RFC 5280 §4.2.1.1), which are
+index-safe. Self-signed is `AKI == SKI`; the chain link is `cert[i].AKI == cert[i+1].SKI`.
+
+**Distinguished-name text is never used, and subject/issuer identity is not reported at all.**
+tshark emits each RDN component as a bare value with no marker for which name it belongs to: a
+single self-signed certificate yields `[CN, O, CN, O]`. An implementation that read `[0]` as
+the subject and `[-1]` as the issuer reported `issuer = "SecureMailScope Probe"` — an
+Organization component, not an issuer identity. Identity is reported from `subjectAltName`,
+which is unambiguous.
 
 Not observable and **explicitly reported as such**: trust-anchor validation (RFC 5280 §6
 requires anchors a PCAP does not contain — OQ-04 open) and revocation (RFC 6960 OCSP and CRL
@@ -226,10 +256,18 @@ change the score for a condition already counted. Items 2–7 map to their own i
 | `POSTURE_ENGINE_VERSION` | `0.7.0` | `0.8.0` | new issue classes participate in scoring |
 | `POSTURE_SCHEMA_VERSION` | `1.0` | **`1.0`** | document *shape* is unchanged; only enum members are added |
 
-New `IssueClass` members: `KEY_EXCHANGE_MECHANISM`, `FORWARD_SECRECY_ABSENT`,
-`CERTIFICATE_EXPIRED`, `CERTIFICATE_WEAK_KEY`, `CERTIFICATE_WEAK_SIGNATURE`,
-`CERTIFICATE_CHAIN_STRUCTURE`, `INSECURE_CONFIGURATION` — mapped to the existing
-`CERTIFICATE_TRUST` and `CRYPTO_CONFIGURATION` risk dimensions. No new dimension is invented.
+New `IssueClass` members: `KEY_EXCHANGE_MECHANISM`, `FORWARD_SECRECY`,
+`CERTIFICATE_EXTRACTION`, `CERTIFICATE_VALIDITY`, `CERTIFICATE_KEY_STRENGTH`,
+`CERTIFICATE_SIGNATURE_ALGORITHM`, `CERTIFICATE_CHAIN_STRUCTURE`,
+`INSECURE_CONFIGURATION` — mapped to the existing `CERTIFICATE_TRUST` and
+`CRYPTO_CONFIGURATION` risk dimensions. No new dimension is invented.
+
+**Named for the dimension, not the verdict.** One issue class carries both the compliant
+and the failing finding for its condition, and the dashboard humanises the enum member
+into a label. A verdict-shaped name therefore lies half the time: an early draft used
+`FORWARD_SECRECY_ABSENT`, which rendered as *"Forward secrecy absent"* on sessions that
+have forward secrecy. (`DEPRECATED_TLS_VERSION` has the same wart and is deliberately
+left alone — renaming it would change the fusion identity of stored assessments.)
 
 **Scoring weights are not touched.** Phase 11 adds conditions to the existing severity tiers; it
 does not re-tune the scale. Changing both the inputs and the scale in one phase would make any
