@@ -1,0 +1,37 @@
+# Phase 12 — 08. Requirement → demo → evidence matrix
+
+**This is the source of truth for the SIH presentation and for answering judge questions live.**
+Every row cross-references a document already produced this phase rather than restating its full
+reasoning — click through for the "why," this table is the "what, where, and how to show it."
+
+Scope: the 18 confirmed PS deliverables/AI/report requirements (D-09–D-17 shown individually since
+they are this phase's focus; D-01–08/15/18 grouped as they are uncontested; A-01–05; R-01–05).
+I-01–08 are omitted here (they are inferences, not PS text — fully covered in
+`01-final-requirements-audit.md` §4) since a judge cannot be shown "evidence" for a requirement
+that isn't in the problem statement.
+
+| Requirement | Implementation | Evidence | Test | Real PCAP | Dashboard | Report | Demo scene | Judge explanation | Limitation |
+|---|---|---|---|---|---|---|---|---|---|
+| D-01–03, D-06–08, D-15, D-18 (ingest, protocol ID, reassembly, handshake, version, cipher, weak-crypto, feature extraction) | `dissect/`, `session/`, `analysis/rules/tls_rules.py`, `ml/features.py` | frame-level `EvidenceField`s | full Phase 1–7 regression suite | 10/10 | all screens | all 3 formats | opening | "the foundational forensic pipeline — every later finding depends on it being right" | none |
+| D-04/05 STARTTLS detection + validation | `session/`, `SEC-STLS-001/002` | advertisement/request/acceptance tracked separately | B/I/J regression + real-vendor tests | 10/10, incl. a server that genuinely doesn't advertise | Findings | all 3 | **Scene A** | *"an absent advertisement is ambiguous, never assumed to be an attack"* | ambiguity is preserved by design where it is genuinely unresolvable within one session |
+| D-09 key exchange | `crypto/keyexchange`, `SEC-KEX-001` | suite name (≤1.2) / `key_share` group (1.3) | 43 crypto + rule tests | 10/10 (all TLS 1.3, ECDHE x25519) | Findings | all 3 | deep-dive | *"TLS 1.3 doesn't encode key exchange in the suite at all — we read it from `key_share`"* | unlisted suite → `AMBIGUOUS`, closed-world table |
+| D-10 X.509 extraction | `crypto/certificates`, `SEC-CERT-001` | 38-field extraction from a cleartext handshake | fixture + attribution tests | **0/10** (all real captures are TLS 1.3) | Findings/Evidence | all 3 | **Scene B** (absence) / deep-dive (presence, generated fixture) | *"TLS 1.3 encrypts this by protocol design — RFC 8446 §2 — so 'not observable' here is not a tool limitation"* | real-world validation rests on 3 generated TLS 1.2 fixtures, not captured traffic |
+| D-11 chain validation | `SEC-CERT-005` | AKI↔SKI linkage, self-signed detection | trust/revocation refusal tests | 0/10 real, 3/3 generated | Evidence | all 3 | deep-dive | *"we validate chain structure; trust needs a trust anchor a PCAP doesn't contain"* | **PARTIAL — not fully observable from passive PCAP alone**; OQ-04 open |
+| D-12 expiry | `SEC-CERT-002` | capture-timestamp-relative evaluation | wall-clock + determinism tests | 0/10 real, 3/3 generated | Findings | all 3 | deep-dive | *"evaluated against when the traffic was captured, never today's date"* | same TLS 1.3 visibility limit as D-10 |
+| D-13 key algorithm/length | `crypto/certificates` | modulus-derived RSA length | key-length maths tests | 0/10 real, 3/3 generated (all RSA) | Findings | all 3 | deep-dive (`smtps_tls12_weak_sha1_rsa1024` → HIGH) | *"a 1024-bit RSA key falls below the NIST minimum"* | no EC certificate has been exercised, only RSA |
+| D-14 signature algorithm | `crypto/oids`, `SEC-CERT-004` | OID → algorithm + deprecation | OID + SHA-1 fixture tests | 0/10 real, 3/3 generated | Findings | all 3 | deep-dive (SHA-1 fixture → HIGH) | *"SHA-1 signatures are prohibited by RFC 9155; we cite it, not an invented rule"* | same visibility limit as D-10 |
+| D-16 insecure configuration | `analysis/rules/configuration_rules.py`, `SEC-CFG-001` | 7-item declared checklist | checklist coverage tests | 10/10 (all pass; generated fixtures show failures) | Findings | all 3 | deep-dive | *"the PS doesn't enumerate this list, so we declared and versioned one rather than leaving it open-ended"* | scope is our defensible interpretation, not the only possible one |
+| D-17 forward secrecy | `crypto/keyexchange`, `SEC-FS-001` | TLS 1.3 → `INFERRED True`; ≤1.2 → `OBSERVED` from suite | ECDH-vs-ECDHE + absent-evidence tests | 10/10 (all True) | Findings | all 3 | Scene B / deep-dive | *"we distinguish static ECDH from ephemeral ECDHE — OpenSSL's own tooling conflates them"* | real corpus never exercises the negative case |
+| A-01 risk classification | `analysis/`, `posture/risk` | 19 rules → 6 risk dimensions | 38 + 133 tests | 10/10 | Findings, Overview | all 3 | throughout | *"every finding sits on one of six risk dimensions, with scope, recurrence, and certainty"* | none |
+| A-02 anomaly detection | `crosssession/` + `ml/` | unsupervised `robust-z-sum`, bounded ±4.0 | 44 + 89 tests, ADR-0015/0024 | 10/10 | Overview ML panel | all 3 | **Scene C** | *"a real model, evaluated honestly, currently shows zero detection value — and we say so"* | **PARTIAL — no demonstrated detection value on any corpus held** |
+| A-03 posture scoring | `posture/scoring` | `F2-group-damped`, coverage-gated | monotonicity/duplicate/coverage tests | 10/10 | Overview | all 3 | opening/closing | *"the score can never be improved by missing evidence"* | none |
+| A-04 prioritisation | `posture/prioritise` | 6 deterministic factors; ML bounded to 4.0 vs. a 30-point tier gap | tier-integrity tests | 10/10 | Findings | all 3 | throughout | *"the ML signal can re-order within a severity tier; it can never cross one"* | none |
+| A-05 remediation | `posture/remediation` | 6 rule-bound templates, citation-traced | remediation-mapping + hostile-text tests | 10/10 | Findings | all 3 | throughout | *"remediation text is templated per rule, never generated"* | non-actionable classes (e.g. `ANOMALY`) correctly have no template |
+| R-01/R-02 findings + posture | `posture/engine`, `posture/model` | canonical `PostureAssessment` | ordering + corpus/serialisation tests | 10/10 | all screens | all 3 | throughout | — | none |
+| R-03 JSON/PDF/HTML | `reporting/` | one `ReportDocument`, semantic equivalence asserted across formats | cross-format equivalence + XSS + PDF-validity tests | 10/10 | download links | is the artifact | closing | *"byte-deterministic — the same assessment always renders to the same bytes"* | no pre-rendered example ships in the repo for offline use |
+| R-04 dashboard | `dashboard/` | 4-screen console, zero npm deps | 423 tests incl. real-PCAP, 125-case security matrix | 7/10 (Phase-10 validation set) | is the artifact | — | live throughout | *"the console computes no security conclusion of its own — it renders the assessment"* | no packet-level drill-down, deliberately |
+| R-05 forensic reports | `posture/engine` → `reporting/` | capture SHA-256, frame refs, coverage, abstentions, all carried into the report | integrity, tamper-detection, provenance tests | 10/10 | Evidence screen | all 3 | Evidence screen | *"every conclusion is traceable back to a frame number"* | none |
+
+**Reading this table under questioning:** every "deep-dive" scene cell above has a corresponding
+pre-demo staging plan in `04-demo-reliability.md` §3 — do not improvise a demo of a deep-dive
+capability without checking that section first.
