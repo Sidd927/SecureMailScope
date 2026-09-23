@@ -26,6 +26,9 @@ from tests.reporting_fixtures import (                            # noqa: E402
 
 HISTORY_JS = "src/securemailscope/dashboard/static/views/history.js"
 APP_JS = "src/securemailscope/dashboard/static/app.js"
+HOME_JS = "src/securemailscope/dashboard/static/views/home.js"
+UPLOAD_JS = "src/securemailscope/dashboard/static/upload.js"
+API_JS = "src/securemailscope/dashboard/static/api.js"
 
 
 def _source(path=HISTORY_JS):
@@ -275,12 +278,88 @@ def test_history_uses_one_request_for_the_page(tmp_path):
 
 
 def test_empty_history_is_explained(tmp_path):
+    """An empty console must explain itself AND be operable from inside the product.
+
+    This assertion used to require the opposite: the empty state printed
+    `curl -F file=@capture.pcap ...`, which told the analyst that operating the
+    product meant leaving it for a terminal. The console now submits captures itself,
+    so the requirement is inverted and tightened — the empty state must still say what
+    the list will contain, and the terminal instruction must be gone.
+    """
     svc = AnalysisService(str(tmp_path / "d"))
     body = _client(svc).get("/api/v1/analyses").json()
     assert body["total"] == 0
+
     prose = _prose()
-    assert "No analyses yet" in prose
-    assert "curl -F file=@capture.pcap" in prose
+    assert "No analyses recorded yet" in prose
+    assert "it appears here with its lifecycle state" in prose
+
+    # the dead end is gone from the shipped code, on this screen and every other.
+    # Comments are stripped: the docstring explaining the removal names what it
+    # removed, and a naive search would flag that explanation as the defect.
+    for path in (HISTORY_JS, HOME_JS, UPLOAD_JS):
+        assert "curl" not in _code(path), path
+
+
+def test_the_console_can_submit_a_capture_without_a_terminal():
+    """The defect this redesign exists to fix: there was no upload path at all."""
+    api = _source(API_JS)
+    assert "export function submitCapture" in api
+    # the field name the server actually reads (`backend/api.py` `_from_multipart`)
+    assert "form.append('file', file, file.name)" in api
+    assert "method: 'POST'" in api
+
+    upload = _source(UPLOAD_JS)
+    assert "submitCapture(picked" in upload
+    # both affordances the research requires: drag AND an explicit picker
+    assert "addEventListener('drop'" in upload
+    assert "type: 'file'" in upload
+
+
+def test_a_drop_never_starts_an_analysis_on_its_own():
+    """Dropping selects; the analyst confirms. Submission is never implicit."""
+    upload = _source(UPLOAD_JS)
+    drop = upload.split("addEventListener('drop'", 1)[1].split("});", 1)[0]
+    assert "choose(files[0])" in drop
+    assert "submit(" not in drop
+
+
+def test_submission_is_guarded_against_a_double_submit():
+    upload = _source(UPLOAD_JS)
+    assert "if (!picked || busy) return;" in upload
+
+
+def test_upload_invents_no_progress_percentage():
+    """`fetch` cannot report upload progress, so none is displayed."""
+    code = _code(UPLOAD_JS)
+    for forbidden in ("percent", "progress", "%"):
+        assert forbidden not in code.lower(), forbidden
+
+
+def test_client_side_checks_are_advisory_and_never_block_submission():
+    """The server is the security boundary; the console never refuses a file."""
+    upload = _source(UPLOAD_JS)
+    assert "still be submitted" in upload
+    # nothing in the submit path consults the advisory checks
+    submit = upload.split("async function submit()", 1)[1].split("\n  }", 1)[0]
+    for forbidden in ("advisories(", "hasKnownExtension(", "ceiling"):
+        assert forbidden not in submit, forbidden
+
+
+def test_home_shows_the_primary_action_before_the_history():
+    home = _source(HOME_JS)
+    blocks = home.split("const blocks = [", 1)[1]
+    assert blocks.index("section('submit'") < blocks.index("historyHost")
+
+
+def test_a_completed_submission_opens_the_run_and_nothing_else_does():
+    """Only a run that produced an assessment is navigated into."""
+    home = _source(HOME_JS)
+    assert "run.state === 'COMPLETED' && run.assessment_id" in home
+    assert "goToRun(run.run_id)" in home
+    # and the identifier is re-validated before it reaches the address bar
+    upload = _source(UPLOAD_JS)
+    assert "if (!isValidRunId(runId)) return;" in upload
 
 
 def test_multiple_runs_all_appear(tmp_path):

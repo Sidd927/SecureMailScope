@@ -70,6 +70,29 @@ export function health() {
   return request(`${BASE}/health`);
 }
 
+/**
+ * Submit a capture for analysis.
+ *
+ * The console does not analyse anything: it hands the bytes to the existing
+ * submission endpoint and renders whatever the backend decides. The multipart field
+ * name is the one the server reads (`backend/api.py` `_from_multipart`), and the two
+ * query flags are the ones that endpoint already accepts.
+ *
+ * `Content-Type` is deliberately NOT set — the browser must write it itself so the
+ * multipart boundary matches the body it generated.
+ */
+export function submitCapture(file, { ai = false, force = false } = {}) {
+  const params = new URLSearchParams();
+  params.set('ai', ai ? 'true' : 'false');
+  params.set('force', force ? 'true' : 'false');
+  const form = new FormData();
+  form.append('file', file, file.name);
+  return request(`${BASE}/analyses?${params.toString()}`, {
+    method: 'POST',
+    body: form,
+  });
+}
+
 export function listAnalyses({ limit = 25, offset = 0, state = null } = {}) {
   const params = new URLSearchParams();
   params.set('limit', String(limit));

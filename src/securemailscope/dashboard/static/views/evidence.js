@@ -32,11 +32,6 @@ const STATE_MEANING = {
   NOT_OBSERVABLE: 'structurally impossible to see from a passive capture',
 };
 
-function stateRank(name) {
-  const index = STATE_ORDER.indexOf(name);
-  return index === -1 ? STATE_ORDER.length : index;
-}
-
 /** Evidence states actually recorded, with their counts and shares. */
 function evidencePanel(vm) {
   const c = vm.coverage;
@@ -52,8 +47,15 @@ function evidencePanel(vm) {
 
   const counts = c.observation_counts || {};
   const fractions = c.observation_fractions || {};
-  const names = Object.keys(counts).sort((a, b) => stateRank(a) - stateRank(b)
-    || a.localeCompare(b));
+  // The whole vocabulary is shown, not only the states this capture happened to
+  // record. A state with no observations is reported as "none recorded" rather than
+  // as a zero, and rather than being omitted: the six are a fixed set, and silently
+  // dropping the ones that did not occur would make the vocabulary look smaller than
+  // it is. Any state the engine emits that this build does not know is appended, so
+  // a future addition is displayed rather than discarded.
+  const extra = Object.keys(counts).filter((n) => STATE_ORDER.indexOf(n) === -1)
+    .sort((a, b) => a.localeCompare(b));
+  const names = STATE_ORDER.concat(extra);
 
   children.push(facts([
     ['Sessions total', text(c.sessions_total, '0')],
@@ -66,9 +68,11 @@ function evidencePanel(vm) {
     'Evidence states recorded across all observed fields',
     ['Evidence state', 'Meaning', 'Count', 'Share'],
     names.map((name) => [
-      name.replace(/_/g, ' '),
+      el('span', { className: 'state-chip', text: name.replace(/_/g, ' ') }),
       STATE_MEANING[name] || 'a state this console version does not recognise',
-      String(counts[name]),
+      counts[name] === undefined
+        ? el('span', { className: 'muted', text: 'none recorded' })
+        : String(counts[name]),
       fractions[name] === undefined ? '—' : `${(fractions[name] * 100).toFixed(1)}%`,
     ]),
     { wide: [1], empty: 'No evidence-state counts were recorded.' }));

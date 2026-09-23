@@ -76,8 +76,9 @@ are marked `NOT CREATED`, not described as if they were ready.
 | **Source** | live system — `demo/screenshots/` is **currently empty** |
 | **Real or generated** | **must caption with the source capture and whether it is real or generated** |
 | **Owner** | ⟨team⟩ |
-| **How to produce** | `bash demo/commands/start_demo.sh` → open `http://127.0.0.1:8000/dashboard/` → upload a capture from `demo/captures/` → screenshot the **Overview** screen |
-| **Required content** | posture band, score, and coverage percentage visible together |
+| **How to produce** | `bash demo/commands/start_demo.sh` → open `http://127.0.0.1:8000/dashboard/` → **drag a capture from `demo/captures/` onto the drop zone** → `Analyze capture` → screenshot the **Overview** screen. The console submits captures itself as of the dashboard redesign; no terminal step is involved. |
+| **Viewport** | 1440 × 900 (the validated primary target — `UI-IMPLEMENTATION-NOTES.md` §8) |
+| **Required content** | the hero block, in which posture band, score, evidence coverage, finding count and abstention count are visible together by construction |
 | **Recommended capture** | `scene_b_certificate_honesty.pcap` (**real** — Dovecot IMAPS) so the screenshot can be honestly captioned as real-vendor traffic |
 | **Must not** | screenshot a generated-fixture result and caption it as real-world |
 
@@ -117,3 +118,11 @@ speaker notes. The real corpus is 100% TLS 1.3 and cannot produce these results.
 **Asset #6 (dashboard screenshot).** Everything else is diagram work that can proceed immediately
 from the specifications above. The screenshot requires a running system and cannot be fabricated —
 and Slide 5 is materially weaker without it.
+
+**Status update (2026-09-24):** the capture-and-screenshot step is now a pure UI action. The
+dashboard redesign added in-console capture submission, so producing this asset no longer requires
+a `curl` command or any terminal work beyond starting the server. The screenshot itself still has
+to be taken from a live run and still must be captioned with its source capture and whether that
+capture is real or generated. Assets #7 (Findings) and #8 (Evidence) are produced the same way and
+are now materially stronger: the Evidence screen renders the full six-state vocabulary, and the
+Overview renders the abstentions with their "what would settle this" text.

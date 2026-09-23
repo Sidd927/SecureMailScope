@@ -18,3 +18,8 @@ research/experiments/oq28/striptls_py3_exceptfix.py
 # OQ-33r local test certificate and key: generated per run, never committed.
 research/experiments/oq33r/test.pem
 research/experiments/oq33r/test.key
+
+# Local backend data directory: SQLite catalog plus stored capture/report artifacts,
+# created by `python3 -m securemailscope.backend`. Machine-local runtime state, all of
+# it reproducible from the captures that produced it.
+/securemailscope-data/

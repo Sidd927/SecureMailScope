@@ -12,11 +12,129 @@
  */
 import { getDashboard, getRun, reportUrl } from '../api.js';
 import {
-  bar, chip, el, facts, mount, notice, section, table, text,
+  bar, chip, el, facts, mount, notice, sanitiseTone, section, table, text,
 } from '../dom.js';
 import { cached } from '../app.js';
 
 const TOP_FINDINGS = 5;
+
+/**
+ * The header line: which capture, which protocols, when, how long.
+ *
+ * Every value is either the run record or the assessment's own identity block. The
+ * protocol list is the assessment's per-protocol posture read back as names — it is
+ * not inferred from anything.
+ */
+function heroHead(vm, run) {
+  const id = vm.identity;
+  const meta = [];
+  const protocols = vm.protocols.map((p) => p.protocol).join(' · ');
+  if (protocols) meta.push(protocols);
+  if (vm.coverage.present && vm.coverage.sessions_total !== null) {
+    meta.push(`${vm.coverage.sessions_total} session(s)`);
+  }
+  meta.push(`analysed ${text(id.generated_at, 'time not recorded')}`);
+  if (run && run.duration_ms !== null && run.duration_ms !== undefined) {
+    meta.push(`${run.duration_ms} ms`);
+  }
+  meta.push(id.ai_enabled ? 'ML lane on' : 'ML lane off');
+
+  return el('div', { className: 'hero-head' }, [
+    el('p', {
+      className: 'hero-capture',
+      text: run ? text(run.source_filename, 'capture') : 'capture',
+    }),
+    el('p', { className: 'hero-meta', text: meta.join('  ·  ') }),
+  ]);
+}
+
+/** One figure in the hero. The caption is always a word, never only a colour. */
+function heroCell(label, value, sub, note, className) {
+  return el('div', { className: className || 'hero-cell' }, [
+    el('div', { className: 'k', text: label }),
+    value,
+    sub ? el('div', { className: 'hero-sub', text: sub }) : null,
+    note ? el('div', { className: 'note', text: note }) : null,
+  ]);
+}
+
+/**
+ * The verdict block. Posture, score and coverage sit together by construction —
+ * there is no arrangement of this function that renders one without the others.
+ *
+ * `tone` reaches a class only through `sanitiseTone`, and the band itself is always
+ * spelled out, so the result survives greyscale and colour blindness intact.
+ */
+function verdictPanel(vm, runId) {
+  const grid = el('div', { className: 'hero-grid' });
+
+  const band = el('div', {
+    className: `hero-band tone-${sanitiseTone(vm.posture.tone)}`,
+    text: vm.posture.label,
+  });
+  const postureCell = heroCell('Security posture', band,
+    vm.posture.score_text,
+    vm.posture.withheld ? vm.posture.withheld_note : null,
+    'hero-cell hero-cell-lead');
+  if (!vm.posture.known) {
+    postureCell.appendChild(el('div', {
+      className: 'note',
+      text: 'This posture value is not recognised by this console version and is '
+        + 'shown exactly as recorded.',
+    }));
+  }
+  grid.appendChild(postureCell);
+
+  grid.appendChild(heroCell('Evidence coverage',
+    el('div', { className: 'hero-figure', text: vm.coverage.percent_text }),
+    vm.coverage.present ? vm.coverage.summary_text : 'no coverage recorded',
+    'Assessed from what the capture can show. Missing evidence never improves '
+      + 'this score.'));
+
+  grid.appendChild(heroCell('Prioritised findings',
+    el('div', { className: 'hero-figure', text: String(vm.findings.length) }),
+    'ranked for investigation',
+    null));
+
+  grid.appendChild(heroCell('Not concluded',
+    el('div', { className: 'hero-figure', text: String(vm.abstentions.length) }),
+    'questions the evidence could not settle',
+    null));
+
+  return el('div', { className: 'hero' }, [grid, heroActions(vm, runId)]);
+}
+
+/**
+ * The two things to do next: inspect, or export. Both hrefs are built here — the
+ * navigation ones from the validated run id, the report ones from the fixed format
+ * allowlist. Neither is ever taken from assessment data.
+ */
+function heroActions(vm, runId) {
+  const row = el('div', { className: 'hero-actions' });
+  row.appendChild(el('a', {
+    className: 'btn btn-primary',
+    text: vm.findings.length
+      ? `Inspect ${vm.findings.length} finding(s)` : 'Open findings',
+    attrs: { href: `#/run/${runId}/findings` },
+  }));
+  row.appendChild(el('a', {
+    className: 'btn',
+    text: 'Evidence & provenance',
+    attrs: { href: `#/run/${runId}/evidence` },
+  }));
+  row.appendChild(el('span', { className: 'hero-actions-gap' }));
+  for (const [format, label] of [['html', 'HTML report'], ['pdf', 'PDF'],
+    ['json', 'JSON']]) {
+    const a = el('a', {
+      className: 'btn btn-quiet',
+      text: label,
+      attrs: { href: reportUrl(runId, format) },
+    });
+    if (format !== 'html') a.setAttribute('download', '');
+    row.appendChild(a);
+  }
+  return row;
+}
 
 /** Identity + lifecycle. Answers "which assessment am I looking at?". */
 function identityPanel(vm, run) {
@@ -34,56 +152,9 @@ function identityPanel(vm, run) {
   if (run && run.duration_ms !== null && run.duration_ms !== undefined) {
     rows.push(['Analysis duration', `${run.duration_ms} ms`]);
   }
-  return section('identity', 'Analysis', [facts(rows)], {
+  return section('identity', 'Analysis identity', [facts(rows)], {
     lead: 'What was analysed, by which engine version.',
   });
-}
-
-/**
- * The verdict block. Posture, score and coverage sit together by construction —
- * there is no arrangement of this function that renders one without the others.
- */
-function verdictPanel(vm) {
-  const grid = el('div', { className: 'verdict' });
-
-  const postureCell = el('div', {}, [
-    el('div', { className: 'k', text: 'Overall posture' }),
-    el('div', { className: 'v' }, [chip(vm.posture.label, vm.posture.tone, null)]),
-  ]);
-  if (vm.posture.withheld) {
-    postureCell.appendChild(el('div', { className: 'note', text: vm.posture.withheld_note }));
-  }
-  if (!vm.posture.known) {
-    postureCell.appendChild(el('div', {
-      className: 'note',
-      text: 'This posture value is not recognised by this console version and is '
-        + 'shown exactly as recorded.',
-    }));
-  }
-  grid.appendChild(postureCell);
-
-  grid.appendChild(el('div', {}, [
-    el('div', { className: 'k', text: 'Posture score' }),
-    el('div', { className: 'v small', text: vm.posture.score_text }),
-    vm.posture.formula_id
-      ? el('div', { className: 'note', text: vm.posture.formula_id }) : null,
-  ]));
-
-  grid.appendChild(el('div', {}, [
-    el('div', { className: 'k', text: 'Evidence coverage' }),
-    el('div', { className: 'v small', text: vm.coverage.summary_text }),
-    vm.coverage.present
-      ? null
-      : el('div', { className: 'note', text: 'no coverage recorded' }),
-  ]));
-
-  grid.appendChild(el('div', {}, [
-    el('div', { className: 'k', text: 'Abstentions' }),
-    el('div', { className: 'v small', text: String(vm.abstentions.length) }),
-    el('div', { className: 'note', text: 'questions declined' }),
-  ]));
-
-  return grid;
 }
 
 /** Score decomposition — the assessment's own components, never recomputed. */
@@ -257,6 +328,158 @@ function findingsPanel(vm, runId) {
 }
 
 /**
+ * What could not be determined.
+ *
+ * The product's distinguishing claim, so it gets its own place on the headline screen
+ * rather than being buried. Every row is the assessment's own wording: the reason, the
+ * question it declined, and what would settle it. Nothing here is styled as a severity,
+ * because an abstention is not one.
+ */
+function abstentionPanel(vm, runId) {
+  const rows = vm.abstentions || [];
+  if (!rows.length) {
+    return section('not-concluded', 'What could not be determined', [
+      el('p', {
+        text: 'The assessment recorded no abstentions: every question its rules asked '
+          + 'of this capture could be answered from the available evidence.',
+      }),
+    ], { lead: 'Questions the assessment declined to answer, and why.' });
+  }
+
+  const list = el('div', { className: 'abstention-list' });
+  for (const row of rows.slice(0, TOP_FINDINGS)) {
+    const card = el('div', { className: 'abstention' });
+    card.appendChild(el('div', { className: 'abstention-head' }, [
+      el('span', { className: 'state-chip', text: row.reason_label || text(row.reason) }),
+      el('span', {
+        className: 'abstention-title',
+        text: row.what_could_not_be_concluded || row.issue_class_label
+          || 'Not recorded',
+      }),
+      el('span', { className: 'abstention-proto', text: row.protocol_label }),
+    ]));
+    if (row.why) {
+      card.appendChild(el('p', { className: 'abstention-why', text: row.why }));
+    }
+    if (row.resolved_by) {
+      card.appendChild(el('p', { className: 'abstention-fix' }, [
+        el('span', { className: 'abstention-fix-k', text: 'Would be settled by: ' }),
+        document.createTextNode(row.resolved_by),
+      ]));
+    }
+    list.appendChild(card);
+  }
+
+  const children = [list];
+  if (rows.length > TOP_FINDINGS) {
+    children.push(el('p', {}, [
+      el('a', {
+        text: `View all ${rows.length} abstention(s) →`,
+        attrs: { href: `#/run/${runId}/evidence` },
+      }),
+    ]));
+  }
+  children.push(notice('An abstention is neither a pass nor a failure. It records '
+    + 'that the evidence did not support a conclusion, so nothing above may be read '
+    + 'as compliant or as a detected problem.'));
+  return section('not-concluded', 'What could not be determined', children, {
+    lead: 'Questions the assessment declined to answer, why, and what evidence would '
+      + 'settle them.',
+  });
+}
+
+/**
+ * Cross-session reasoning, rendered ONLY when the assessment actually contains it.
+ *
+ * Two things can be present and they are different claims:
+ *   - a `BEHAVIOURAL_DEVIATION` finding — an endpoint was compared against comparable
+ *     sessions and differed;
+ *   - an abstention on a deviation issue class — the comparison was attempted and
+ *     declined, which on a capture with too few comparable sessions is what the
+ *     engine's minimum-history floor produces.
+ *
+ * The declined side is detected by ISSUE CLASS rather than by abstention reason.
+ * Verified against real engine output: a history shortfall is recorded as
+ * `INSUFFICIENT_CAPTURE` on `STARTTLS_BEHAVIOUR_DEVIATION`, not as
+ * `INSUFFICIENT_HISTORY`, so keying on the reason alone would have silently missed
+ * every real occurrence. Both history reasons are still matched, because either may
+ * appear and neither should be dropped.
+ *
+ * With neither present, this returns null and the screen says nothing: a panel
+ * announcing that cross-session reasoning exists would imply a comparison that never
+ * happened.
+ */
+const DEVIATION_KIND = 'BEHAVIOURAL_DEVIATION';
+const DEVIATION_CLASSES = ['STARTTLS_BEHAVIOUR_DEVIATION', 'TLS_VERSION_DEVIATION'];
+const HISTORY_REASONS = ['INSUFFICIENT_HISTORY', 'NOT_COMPARABLE'];
+
+/** Identical declined comparisons collapse into one row with a count. */
+function groupDeclined(rows) {
+  const out = new Map();
+  for (const row of rows) {
+    const key = [row.reason, row.issue_class, row.what_could_not_be_concluded,
+      row.why].join('\u241f');
+    const seen = out.get(key);
+    if (seen) seen.count += 1;
+    else out.set(key, { row, count: 1 });
+  }
+  return [...out.values()];
+}
+
+function crossSessionPanel(vm, runId) {
+  const deviations = (vm.findings || []).filter((f) => f.fact_kind === DEVIATION_KIND);
+  const declined = (vm.abstentions || []).filter(
+    (a) => DEVIATION_CLASSES.indexOf(a.issue_class) !== -1
+      || HISTORY_REASONS.indexOf(a.reason) !== -1);
+  if (!deviations.length && !declined.length) return null;
+
+  const children = [];
+  if (deviations.length) {
+    children.push(table(
+      `${deviations.length} behavioural deviation(s) established by comparison`,
+      ['Severity', 'Condition', 'Protocol', 'Sessions', 'What was compared'],
+      deviations.map((f) => [
+        chip(f.severity_label, f.severity_tone, f.severity_marker),
+        f.title || f.issue_class_label,
+        f.protocol_label,
+        text(f.affected_sessions, '1'),
+        text(f.conclusion, '—'),
+      ]),
+      { wide: [4] }));
+  }
+  if (declined.length) {
+    const grouped = groupDeclined(declined);
+    children.push(el('h3', { text: 'Comparisons the engine declined to make' }));
+    children.push(table(
+      `${declined.length} declined comparison(s), grouped by question`,
+      ['Reason', 'Could not conclude', 'Why', 'Sessions'],
+      grouped.map((entry) => [
+        el('span', {
+          className: 'state-chip',
+          text: entry.row.reason_label || text(entry.row.reason),
+        }),
+        text(entry.row.what_could_not_be_concluded, '—'),
+        text(entry.row.why, '—'),
+        String(entry.count),
+      ]),
+      { wide: [1, 2] }));
+  }
+  children.push(notice('A deviation is a statement about behaviour relative to '
+    + 'comparable sessions at the same server. It is not an attribution, and it is '
+    + 'not a claim that an attack occurred.'));
+  children.push(el('p', {}, [
+    el('a', {
+      text: 'See the evidence behind these comparisons →',
+      attrs: { href: `#/run/${runId}/evidence` },
+    }),
+  ]));
+  return section('cross-session', 'Cross-session reasoning', children, {
+    lead: 'What this endpoint looks like next to comparable sessions to the same '
+      + 'server.',
+  });
+}
+
+/**
  * ML transparency. Renders `model_summary.role` and its limitations verbatim and
  * states the boundary. It never describes the lane as detecting anything.
  */
@@ -270,6 +493,7 @@ function mlPanel(vm) {
         + 'this assessment comes from deterministic rules and cross-session reasoning.',
     }));
     return section('ml', 'AI / ML transparency', children, {
+      className: 'ml-section',
       lead: 'What the machine-learning lane did, and what it is not permitted to do.',
     });
   }
@@ -288,6 +512,7 @@ function mlPanel(vm) {
     children.push(notice(limitation));
   }
   return section('ml', 'AI / ML transparency', children, {
+    className: 'ml-section',
     lead: 'What the machine-learning lane did, and what it is not permitted to do.',
   });
 }
@@ -350,9 +575,12 @@ export async function render(root, { runId }) {
     run = null;           // identity still renders from the assessment itself
   }
 
+  // The result comes first. Ordering is the whole point of this screen: posture and
+  // coverage, then what to act on, then what could not be determined, then the
+  // supporting detail an analyst needs to defend any of it.
   const blocks = [
-    identityPanel(vm, run),
-    verdictPanel(vm),
+    section('result', 'Assessment result', [heroHead(vm, run), verdictPanel(vm, runId)],
+      { className: 'hero-section' }),
   ];
   // Withheld verdicts and absent coverage are surfaced immediately under the block
   // they qualify, not at the bottom of the page.
@@ -360,13 +588,16 @@ export async function render(root, { runId }) {
     blocks.push(notice(item, vm.posture.withheld ? 'withheld' : ''));
   }
   blocks.push(
+    findingsPanel(vm, runId),
+    abstentionPanel(vm, runId),
+    protocolPanel(vm),
+    crossSessionPanel(vm, runId),
     scorePanel(vm),
     coveragePanel(vm),
-    protocolPanel(vm),
     distributionPanel(vm),
-    findingsPanel(vm, runId),
     mlPanel(vm),
     reportPanel(runId),
+    identityPanel(vm, run),
     limitationsPanel(vm),
   );
   mount(root, blocks);

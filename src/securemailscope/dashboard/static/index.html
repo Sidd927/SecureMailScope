@@ -11,15 +11,25 @@
 
 <header class="masthead">
   <div class="wrap masthead-inner">
-    <div>
-      <h1><a href="#/" class="brand">SecureMailScope</a></h1>
-      <p class="tagline">Cryptographic Security Posture Assessment · Analyst Console</p>
+    <div class="brand-block">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-words">
+        <h1><a href="#/" class="brand">SecureMailScope</a></h1>
+        <p class="tagline">Cryptographic security posture assessment · analyst console</p>
+      </div>
     </div>
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <ol id="crumbs"></ol>
+    <nav class="masthead-actions" aria-label="Console">
+      <a class="btn btn-primary" id="nav-new" href="#/">New analysis</a>
+      <a class="btn btn-quiet" id="nav-about" href="#/about">About</a>
     </nav>
   </div>
 </header>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol id="crumbs"></ol>
+  </div>
+</nav>
 
 <nav class="tabs" id="run-tabs" hidden aria-label="Analysis views">
   <div class="wrap">

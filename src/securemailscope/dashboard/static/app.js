@@ -4,7 +4,8 @@
  * Hash routing, so the console is a single static document with no server-side
  * rewrite rule and no SPA fallback to get wrong.
  *
- *   #/                        history
+ *   #/                        home — submit a capture, then the analysis history
+ *   #/about                   what this product is, and what this instance is
  *   #/run/{run_id}            overview
  *   #/run/{run_id}/findings   findings
  *   #/run/{run_id}/evidence   evidence and provenance
@@ -20,6 +21,8 @@ const main = document.getElementById('main');
 const crumbs = document.getElementById('crumbs');
 const tabs = document.getElementById('run-tabs');
 const tabList = document.getElementById('tab-list');
+const navNew = document.getElementById('nav-new');
+const navAbout = document.getElementById('nav-about');
 
 /** Assessment cache, keyed by run id: fetched once per run, not once per screen. */
 const cache = new Map();
@@ -39,7 +42,8 @@ export function invalidate(runId) {
 }
 
 const ROUTES = [
-  { pattern: /^#?\/?$/, view: () => import('./views/history.js'), name: 'history' },
+  { pattern: /^#?\/?$/, view: () => import('./views/home.js'), name: 'home' },
+  { pattern: /^#\/about$/, view: () => import('./views/about.js'), name: 'about' },
   {
     pattern: /^#\/run\/([0-9a-f]{32})$/,
     view: () => import('./views/overview.js'),
@@ -62,6 +66,23 @@ const TABS = [
   { name: 'findings', label: 'Findings', suffix: '/findings' },
   { name: 'evidence', label: 'Evidence & provenance', suffix: '/evidence' },
 ];
+
+/**
+ * Mark the active shell action. The two header links are static markup, so this only
+ * sets `aria-current` and a class — it never builds a URL.
+ */
+function setNav(active) {
+  for (const [name, node] of [['home', navNew], ['about', navAbout]]) {
+    if (!node) continue;
+    if (name === active) {
+      node.setAttribute('aria-current', 'page');
+      node.classList.add('current');
+    } else {
+      node.removeAttribute('aria-current');
+      node.classList.remove('current');
+    }
+  }
+}
 
 function setCrumbs(trail) {
   clear(crumbs);
@@ -151,6 +172,7 @@ async function route() {
 
   if (!match) {
     setTabs(null);
+    setNav(null);
     setCrumbs([{ label: 'Analyses', href: '#/' }, { label: 'Not found' }]);
     renderError(new ApiError('NOT_FOUND', 'unknown route'));
     return;
@@ -163,12 +185,16 @@ async function route() {
   }
 
   setTabs(runId, match.r.name);
+  // Home is the root of the trail, so it carries no crumbs of its own; an empty
+  // list collapses rather than rendering a lone orphan label.
   setCrumbs(runId
     ? [{ label: 'Analyses', href: '#/' },
        { label: `Run ${runId.slice(0, 12)}…`, href: `#/run/${runId}` },
        ...(match.r.name === 'overview' ? [] : [{ label: TABS.find(
          (t) => t.name === match.r.name).label }])]
-    : [{ label: 'Analyses' }]);
+    : (match.r.name === 'about'
+      ? [{ label: 'Analyses', href: '#/' }, { label: 'About' }]
+      : []));
 
   // Leaving a view must not leave a timer behind. History polls while runs are in
   // flight; every other route stops it.
@@ -179,7 +205,8 @@ async function route() {
     /* history module unavailable; nothing to stop */
   }
 
-  mount(main, [spinner('Loading analysis…')]);
+  setNav(match.r.name);
+  mount(main, [spinner(runId ? 'Loading analysis…' : 'Loading…')]);
   try {
     const module = await match.r.view();
     await module.render(main, { runId });

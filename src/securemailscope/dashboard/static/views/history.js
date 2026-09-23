@@ -131,31 +131,36 @@ function rowsFor(items) {
     const state = el('span', { className: 'state-cell' });
     state.appendChild(chip(info.label, info.tone, null));
     state.appendChild(el('span', { className: 'note', text: info.explain }));
+    // Column order follows what an analyst scans for: which capture, what came of
+    // it, then the lifecycle and provenance detail.
     return [
       captureCell(item),
-      state,
       postureCell(item),
       scoreCell(item),
-      el('span', { className: 'mono', text: text(item.capture_id, '—').slice(0, 16) }),
-      text(item.created_at, '—'),
+      state,
+      el('span', { className: 'nowrap', text: text(item.created_at, '—') }),
       item.ai_enabled ? 'ML on' : 'ML off',
+      el('span', { className: 'mono', text: text(item.capture_id, '—').slice(0, 12) }),
       failureCell(item),
     ];
   });
 }
 
+/**
+ * The empty state.
+ *
+ * It used to print a `curl` command, which told the analyst that operating the
+ * product required leaving it. The console now submits captures itself, so the empty
+ * state describes what this list will contain and defers to the drop zone above it
+ * rather than pointing at a terminal.
+ */
 function emptyPanel() {
-  return el('div', { className: 'state-panel' }, [
-    el('h3', { text: 'No analyses yet' }),
-    el('p', {
-      text: 'Submit a packet capture to the API to produce an assessment, then it '
-        + 'will appear here.',
-    }),
-    el('pre', {
-      className: 'snippet',
-      text: 'curl -F file=@capture.pcap http://127.0.0.1:8000/api/v1/analyses',
-    }),
-  ]);
+  return el('p', {
+    className: 'empty-note',
+    text: 'Once a capture is submitted using the panel above, it appears here with '
+      + 'its lifecycle state, its posture band and the score stored with its '
+      + 'assessment.',
+  });
 }
 
 export async function render(root, _ctx) {
@@ -171,10 +176,10 @@ export async function render(root, _ctx) {
     const body = await listAnalyses({ limit: 50 });
 
     if (!body.total) {
-      statusLine.textContent = 'No analyses recorded.';
+      statusLine.textContent = 'No analyses recorded yet.';
       mount(host, [emptyPanel()]);
       stopPolling();
-      return;
+      return 0;
     }
 
     const active = body.items.filter(
@@ -185,8 +190,8 @@ export async function render(root, _ctx) {
 
     mount(host, [
       table(`${body.total} analysis run(s), newest first`,
-        ['Capture', 'State', 'Posture', 'Score', 'Capture ID', 'Analysed',
-          'ML lane', 'Failure'],
+        ['Capture', 'Posture', 'Score', 'State', 'Analysed', 'ML lane',
+          'Capture ID', 'Failure'],
         rowsFor(body.items),
         { wide: [7], empty: 'No analyses recorded.' }),
       notice('Posture and score shown here are the listing projections stored with '
@@ -204,9 +209,10 @@ export async function render(root, _ctx) {
     } else {
       stopPolling();
     }
+    return body.total;
   }
 
-  await draw();
+  const total = await draw();
 
   mount(root, [
     section('history', 'Analyses', [statusLine, host], {
@@ -214,6 +220,9 @@ export async function render(root, _ctx) {
         + 'produced no assessment shows its lifecycle state and no posture.',
     }),
   ]);
+  // Returned so the screen above can choose its arrangement. It is a count, not a
+  // security value, and nothing is derived from it.
+  return total;
 }
 
 export { STATES, UNSETTLED, stopPolling };
