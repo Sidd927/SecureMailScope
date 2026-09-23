@@ -27,12 +27,14 @@ function summary() {
     ['Offline operation', 'The console loads no external font, script, style or '
       + 'image, and the analysis makes no network call of its own.'],
   ];
-  const list = el('dl', { className: 'about-list' });
-  for (const [term, body] of points) {
-    list.appendChild(el('dt', { text: term }));
-    list.appendChild(el('dd', { text: body }));
+  const grid = el('div', { className: 'about-grid' });
+  for (const [title, body] of points) {
+    grid.appendChild(el('div', { className: 'about-item' }, [
+      el('h3', { text: title }),
+      el('p', { text: body }),
+    ]));
   }
-  return list;
+  return grid;
 }
 
 export async function render(root, _ctx) {

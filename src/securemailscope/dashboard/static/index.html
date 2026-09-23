@@ -19,8 +19,8 @@
       </div>
     </div>
     <nav class="masthead-actions" aria-label="Console">
-      <a class="btn btn-primary" id="nav-new" href="#/">New analysis</a>
-      <a class="btn btn-quiet" id="nav-about" href="#/about">About</a>
+      <a class="navlink" id="nav-new" href="#/">Analyses</a>
+      <a class="navlink" id="nav-about" href="#/about">About</a>
     </nav>
   </div>
 </header>
@@ -31,9 +31,13 @@
   </div>
 </nav>
 
+<!-- The tab row also carries the persistent run actions (export, new analysis) on its
+     right edge, so both are reachable from Overview, Findings and Evidence alike —
+     not gated behind whichever tab happens to be open. -->
 <nav class="tabs" id="run-tabs" hidden aria-label="Analysis views">
-  <div class="wrap">
+  <div class="wrap tabs-inner">
     <ul id="tab-list"></ul>
+    <div id="tab-actions" class="tab-actions"></div>
   </div>
 </nav>
 

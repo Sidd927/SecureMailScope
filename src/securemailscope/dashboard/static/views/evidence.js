@@ -22,6 +22,15 @@ import { cached } from '../app.js';
 const STATE_ORDER = ['OBSERVED', 'INFERRED', 'AMBIGUOUS', 'INCOMPLETE', 'UNKNOWN',
   'NOT_OBSERVABLE'];
 
+/**
+ * The two clusters the six states fall into. This is a presentation grouping only —
+ * the underlying vocabulary, its spelling and its six-way distinction are unchanged.
+ * A state this build does not recognise is grouped with the uncertain cluster: an
+ * unrecognised reading is definitionally not a settled one.
+ */
+const ESTABLISHED_STATES = ['OBSERVED', 'INFERRED'];
+const UNCERTAIN_STATES = ['AMBIGUOUS', 'INCOMPLETE', 'UNKNOWN', 'NOT_OBSERVABLE'];
+
 /** What each evidence state means. Project vocabulary, not new security advice. */
 const STATE_MEANING = {
   OBSERVED: 'directly present in the captured bytes',
@@ -32,7 +41,26 @@ const STATE_MEANING = {
   NOT_OBSERVABLE: 'structurally impossible to see from a passive capture',
 };
 
-/** Evidence states actually recorded, with their counts and shares. */
+/** One evidence-state table's rows. `names` with no observation still get a row: the
+ * six-state vocabulary is a fixed set, and silently dropping the ones that did not
+ * occur would make it look smaller than it is. */
+function stateRows(names, counts, fractions) {
+  return names.map((name) => [
+    el('span', { className: 'state-chip', text: name.replace(/_/g, ' ') }),
+    STATE_MEANING[name] || 'a state this console version does not recognise',
+    counts[name] === undefined
+      ? el('span', { className: 'muted', text: 'none recorded' })
+      : String(counts[name]),
+    fractions[name] === undefined ? '—' : `${(fractions[name] * 100).toFixed(1)}%`,
+  ]);
+}
+
+/**
+ * Evidence states actually recorded, with their counts and shares — grouped into what
+ * was established and what could not be, because that distinction is the product's
+ * core claim and deserves to be visible before the reader parses six rows of a flat
+ * table to find it.
+ */
 function evidencePanel(vm) {
   const c = vm.coverage;
   const children = [];
@@ -47,15 +75,10 @@ function evidencePanel(vm) {
 
   const counts = c.observation_counts || {};
   const fractions = c.observation_fractions || {};
-  // The whole vocabulary is shown, not only the states this capture happened to
-  // record. A state with no observations is reported as "none recorded" rather than
-  // as a zero, and rather than being omitted: the six are a fixed set, and silently
-  // dropping the ones that did not occur would make the vocabulary look smaller than
-  // it is. Any state the engine emits that this build does not know is appended, so
-  // a future addition is displayed rather than discarded.
+  // Any state the engine emits that this build does not know is appended to the
+  // uncertain cluster, so a future addition is displayed rather than discarded.
   const extra = Object.keys(counts).filter((n) => STATE_ORDER.indexOf(n) === -1)
     .sort((a, b) => a.localeCompare(b));
-  const names = STATE_ORDER.concat(extra);
 
   children.push(facts([
     ['Sessions total', text(c.sessions_total, '0')],
@@ -64,18 +87,19 @@ function evidencePanel(vm) {
     ['Assessed fraction', c.percent_text],
   ]));
 
+  children.push(el('h3', { text: 'What was established' }));
   children.push(table(
-    'Evidence states recorded across all observed fields',
+    'Evidence states that reached a definite reading',
     ['Evidence state', 'Meaning', 'Count', 'Share'],
-    names.map((name) => [
-      el('span', { className: 'state-chip', text: name.replace(/_/g, ' ') }),
-      STATE_MEANING[name] || 'a state this console version does not recognise',
-      counts[name] === undefined
-        ? el('span', { className: 'muted', text: 'none recorded' })
-        : String(counts[name]),
-      fractions[name] === undefined ? '—' : `${(fractions[name] * 100).toFixed(1)}%`,
-    ]),
-    { wide: [1], empty: 'No evidence-state counts were recorded.' }));
+    stateRows(ESTABLISHED_STATES, counts, fractions),
+    { wide: [1], empty: 'None recorded.' }));
+
+  children.push(el('h3', { text: 'What could not be established' }));
+  children.push(table(
+    'Evidence states that could not settle a reading',
+    ['Evidence state', 'Meaning', 'Count', 'Share'],
+    stateRows(UNCERTAIN_STATES.concat(extra), counts, fractions),
+    { wide: [1], empty: 'None recorded.' }));
 
   const completeness = c.completeness_counts || {};
   if (Object.keys(completeness).length) {
@@ -171,10 +195,32 @@ function standardsPanel(vm) {
 }
 
 /** Provenance: identity, versions, rules that ran, source counts. */
+/**
+ * The pipeline shape, as a short fixed rail: six static labels, not a data binding.
+ * The tables that follow are the same provenance detail this screen has always shown;
+ * this is only a visual anchor so the detail reads as a trail rather than a
+ * spreadsheet. Never labelled "chain of custody" — that is a forensic-legal term this
+ * product does not claim.
+ */
+function provenanceRail() {
+  const rail = el('ol', { className: 'rail' });
+  for (const step of ['Capture', 'Frame / stream', 'Evidence', 'Finding', 'Posture',
+    'Report']) {
+    rail.appendChild(el('li', { className: 'rail-step', text: step }));
+  }
+  return rail;
+}
+
 function provenancePanel(vm) {
   const id = vm.identity;
   const p = vm.provenance || { rule_ids: [], source_counts: {}, entries: {} };
-  const children = [facts([
+  const children = [
+    el('p', {
+      className: 'rail-caption',
+      text: 'The path from bytes to conclusion, for every finding on this assessment:',
+    }),
+    provenanceRail(),
+    facts([
     ['Assessment ID', id.assessment_id],
     ['Capture ID (SHA-256)', id.capture_id],
     ['Run ID', text(id.run_id, 'not recorded')],

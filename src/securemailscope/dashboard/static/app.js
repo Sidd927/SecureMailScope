@@ -14,13 +14,14 @@
  * reinvent them — doc 23 §9 requires six failure modes to look like six different
  * things, not one shrug.
  */
-import { ApiError, isValidRunId } from './api.js';
+import { ApiError, isValidRunId, reportUrl } from './api.js';
 import { clear, el, mount, notice, spinner } from './dom.js';
 
 const main = document.getElementById('main');
 const crumbs = document.getElementById('crumbs');
 const tabs = document.getElementById('run-tabs');
 const tabList = document.getElementById('tab-list');
+const tabActions = document.getElementById('tab-actions');
 const navNew = document.getElementById('nav-new');
 const navAbout = document.getElementById('nav-about');
 
@@ -101,6 +102,7 @@ function setTabs(runId, active) {
   if (!runId) {
     tabs.hidden = true;
     clear(tabList);
+    clear(tabActions);
     return;
   }
   tabs.hidden = false;
@@ -116,6 +118,41 @@ function setTabs(runId, active) {
     li.appendChild(a);
     tabList.appendChild(li);
   }
+  setRunActions(runId);
+}
+
+/**
+ * The two actions that must stay reachable from every tab inside a run: exporting the
+ * assessment, and starting over. Built once here rather than repeated inside Overview,
+ * Findings and Evidence — reports are an export action, not a fourth investigative
+ * mode, so they get a persistent control rather than their own tab.
+ *
+ * `Export` reuses the disclosure element already used for findings (`<details>`) —
+ * the console has exactly one expand/collapse interaction, not two. Every href is
+ * built from the validated run id and the fixed format allowlist via `reportUrl`,
+ * never from assessment data.
+ */
+function setRunActions(runId) {
+  clear(tabActions);
+  const menu = el('details', { className: 'export-menu' });
+  menu.appendChild(el('summary', { text: 'Export' }));
+  const list = el('div', { className: 'export-list' });
+  for (const [format, label] of [['html', 'HTML report'], ['pdf', 'PDF'], ['json', 'JSON']]) {
+    const a = el('a', {
+      className: 'export-item',
+      text: label,
+      attrs: { href: reportUrl(runId, format) },
+    });
+    if (format !== 'html') a.setAttribute('download', '');
+    list.appendChild(a);
+  }
+  menu.appendChild(list);
+  tabActions.appendChild(menu);
+  tabActions.appendChild(el('a', {
+    className: 'btn btn-primary btn-sm',
+    text: '+ New analysis',
+    attrs: { href: '#/' },
+  }));
 }
 
 /** Distinct, actionable messages per failure mode (doc 23 §9). */

@@ -1,23 +1,24 @@
 /*
- * Analyst console styling (doc 23 §12, §13).
+ * Analyst workspace styling — V2 (doc 23 §12, §13; UI-DESIGN-SPEC-V2.md).
  *
- * A forensic product, not a consumer dashboard and not a printed document: light,
- * quiet, precise. One accent colour, restrained borders, generous whitespace, strong
- * typographic hierarchy, and no decoration that is not carrying information.
+ * V1 was a disciplined, correct prototype that still read as formatted documentation.
+ * This pass changes composition, not information architecture: fewer bordered boxes,
+ * more considered typography, a deliberate spacing rhythm (tight within a group,
+ * generous between groups), and exactly one true "display" moment per screen — the
+ * posture verdict. Severity, posture-band, accent and text tokens keep their EXACT V1
+ * hex values: they are WCAG-AA verified by `test_contrast_tokens_meet_wcag_aa` and
+ * reused by the report renderer, so nothing about what they mean is renegotiated here.
  *
- * Two rules are load-bearing rather than aesthetic:
+ * Three rules are load-bearing rather than aesthetic:
  *
- * 1. **Colour is always redundant with text.** Every severity, band and state also
- *    carries a word and, where relevant, an ASCII marker (doc 23 §10). Nothing on this
- *    screen is legible only in colour.
- *
+ * 1. **Colour is reserved for meaning.** Severity and posture tones are the only
+ *    colour that carries information; everything else — grouping, elevation,
+ *    structure — is a 1px hairline border and spacing, never a tint or a shadow.
  * 2. **Uncertainty is not styled as failure.** Evidence states and abstentions use a
  *    neutral, deliberate treatment — never a severity colour, never a warning icon.
  *    NOT OBSERVABLE is not a problem; it is a finding about the evidence.
- *
- * Severity tokens mirror reporting/styles.py so the console and the report speak the
- * same visual language about the same assessment, and each is verified against the
- * WCAG AA threshold by test rather than by eye.
+ * 3. **Every severity and state still carries a word.** Colour is always redundant
+ *    with text (doc 23 §10) — nothing here is legible only in colour.
  *
  * Offline by construction: system fonts only, no import, no remote asset of any kind.
  */
@@ -26,20 +27,20 @@
   /* ---- text and line ---- */
   --ink: #15191e;
   --muted: #5c6672;
-  --rule: #e3e6ea;
-  --rule-strong: #d2d7dd;
+  --rule: #e6e1d5;
+  --rule-strong: #d6cfbe;
 
-  /* ---- surfaces ---- */
-  --page: #f5f6f8;
+  /* ---- surfaces: warm neutrals, not cool grey (Notion's canvas, not a spreadsheet's) */
+  --page: #f7f6f2;
   --surface: #ffffff;
-  --panel: #f6f7f9;
-  --panel-2: #fbfcfd;
+  --panel: #f5f2ec;
+  --panel-2: #faf9f5;
 
-  /* ---- accent ---- */
+  /* ---- accent: one, used only where an action or active state is implied ---- */
   --accent: #1f3a5f;
   --accent-soft: #eef2f7;
 
-  /* ---- severity and posture (contrast-verified) ---- */
+  /* ---- severity and posture — EXACT V1 values, WCAG-AA verified, do not change ---- */
   --critical: #8d1f1f;
   --high: #a8480f;
   --medium: #8a6510;
@@ -48,9 +49,17 @@
   --withheld: #4a3a6b;
   --neutral: #5c6672;
 
-  --radius: 10px;
-  --radius-sm: 6px;
-  --shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);
+  --radius: 8px;
+  --radius-sm: 5px;
+
+  /* ---- spacing scale: tight within a group, generous between groups ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-10: 40px;
+  --space-16: 64px;
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
@@ -113,7 +122,16 @@ a:hover { text-decoration: underline; }
 .brand { color: var(--ink); text-decoration: none; }
 .tagline { margin: .05rem 0 0; color: var(--muted); font-size: .78rem; }
 
-.masthead-actions { display: flex; align-items: center; gap: .5rem; }
+.masthead-actions { display: flex; align-items: center; gap: 1.5rem; }
+/* Plain text nav — no button chrome. The primary action lives inside a run, where it
+   is actually needed, not duplicated here for every screen including the one that IS
+   the new-analysis workflow. */
+.navlink {
+  font-size: .86rem; font-weight: 550; color: var(--muted); text-decoration: none;
+  padding: .3rem 0; border-bottom: 2px solid transparent;
+}
+.navlink:hover { color: var(--ink); text-decoration: none; }
+.navlink.current { color: var(--ink); border-bottom-color: var(--accent); }
 
 /* ---------- buttons and button-shaped links ---------- */
 .btn {
@@ -130,8 +148,7 @@ a:hover { text-decoration: underline; }
 .btn-primary:hover { background: #172c48; border-color: #172c48; color: #fff; }
 .btn-quiet { border-color: transparent; background: transparent; color: var(--muted); }
 .btn-quiet:hover { background: var(--panel); color: var(--ink); }
-.btn.current { border-color: var(--accent); color: var(--accent); }
-.btn-primary.current { color: #fff; }
+.btn-sm { font-size: .8rem; padding: .42rem .75rem; }
 .btn[disabled] { opacity: .55; cursor: default; }
 
 /* ---------- breadcrumbs ---------- */
@@ -142,8 +159,9 @@ a:hover { text-decoration: underline; }
 .crumbs ol:empty { display: none; }
 .crumbs li + li::before { content: "/"; margin-right: .4rem; color: var(--rule-strong); }
 
-/* ---------- tabs ---------- */
+/* ---------- tabs + persistent run actions ---------- */
 .tabs { border-bottom: 1px solid var(--rule); background: var(--surface); }
+.tabs-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .tabs ul { list-style: none; display: flex; gap: .25rem; margin: 0; padding: 0; }
 .tabs a {
   display: block; padding: .7rem .1rem; margin-right: 1.4rem; font-size: .86rem;
@@ -153,78 +171,86 @@ a:hover { text-decoration: underline; }
 .tabs a:hover { color: var(--ink); text-decoration: none; }
 .tabs a.active { color: var(--accent); font-weight: 650; border-bottom-color: var(--accent); }
 
+.tab-actions { display: flex; align-items: center; gap: .5rem; padding: .5rem 0; }
+/* The export control reuses the ONE disclosure interaction the console has —
+   <details>, the same element findings already use — rather than inventing a second
+   popover language. */
+.export-menu { position: relative; }
+.export-menu > summary {
+  list-style: none; cursor: pointer; font-size: .84rem; font-weight: 600;
+  color: var(--muted); padding: .42rem .7rem; border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: .3rem;
+}
+.export-menu > summary::-webkit-details-marker { display: none; }
+.export-menu > summary::after { content: "\25BE"; font-size: .7rem; }
+.export-menu > summary:hover { color: var(--ink); background: var(--panel); }
+.export-menu[open] > summary { color: var(--ink); border-color: var(--accent); }
+.export-list {
+  position: absolute; right: 0; top: calc(100% + .3rem); z-index: 5;
+  background: var(--surface); border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm); min-width: 11rem;
+  box-shadow: 0 4px 16px rgba(21, 25, 30, .1);
+}
+.export-item {
+  display: block; padding: .55rem .8rem; font-size: .84rem; color: var(--ink);
+  text-decoration: none;
+}
+.export-item:hover { background: var(--panel); text-decoration: none; }
+.export-item + .export-item { border-top: 1px solid var(--rule); }
+
 /* ---------- sections ---------- */
 /* `main` also carries `.wrap`, which owns the horizontal gutter. Only the vertical
    rhythm belongs here, or the two would compound into a doubled inset. */
-main { padding: 2rem 0 5rem; }
-section { margin: 0 0 1.5rem; }
+main { padding: var(--space-10) 0 5rem; }
+section { margin: 0 0 var(--space-10); }
 h2 {
-  font-size: .72rem; margin: 0 0 .6rem; padding: 0; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  font-size: .7rem; margin: 0 0 var(--space-3); padding: 0; font-weight: 700;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
 }
 .lead { color: var(--muted); margin: -.25rem 0 1rem; font-size: .86rem; max-width: 62rem; }
 .lead-strong { font-size: 1.05rem; margin: 0 0 1rem; max-width: 52rem; }
 
-/* ---------- card surface, shared ---------- */
-.table-wrap, .finding, .state-panel, .hero, .upload, .picked, .submit-error,
-.abstention, dl.about-list {
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: var(--radius); box-shadow: var(--shadow);
+/* ---------- the result: one headline, everything else is typography ---------- */
+/* The result section's own h2 IS the capture filename — no separate "Assessment
+   result" label repeated above it. */
+.result-section > h2 {
+  font-size: 1.375rem; font-weight: 650; letter-spacing: -.01em; text-transform: none;
+  color: var(--ink); overflow-wrap: anywhere; margin-bottom: .3rem;
 }
+.result-meta { margin: 0 0 var(--space-6); color: var(--muted); font-size: .84rem; }
 
-/* ---------- the hero: posture and coverage, inseparable ---------- */
-.hero-section { margin-bottom: 2rem; }
-.hero-head { margin: 0 0 .85rem; }
-.hero-capture {
-  margin: 0; font-size: 1.5rem; font-weight: 650; letter-spacing: -.015em;
-  overflow-wrap: anywhere;
-}
-.hero-meta { margin: .2rem 0 0; color: var(--muted); font-size: .82rem; }
-
-.hero { padding: 0; overflow: hidden; }
-.hero-grid {
-  display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr;
-  gap: 1px; background: var(--rule);
-}
-.hero-cell { background: var(--surface); padding: 1.35rem 1.5rem; min-width: 0; }
-.hero-cell-lead { background: var(--accent-soft); }
-.hero .k {
+.verdict { max-width: 44rem; }
+.posture-eyebrow {
   font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--muted); font-weight: 700; margin-bottom: .55rem;
+  color: var(--muted); font-weight: 700; margin: 0 0 .4rem;
 }
-.hero-band {
-  font-size: 1.65rem; font-weight: 750; letter-spacing: -.02em; line-height: 1.1;
-  color: var(--neutral);
+/* The one true display moment on this screen — nothing else may be this large. */
+.posture-display {
+  font-size: 2.125rem; font-weight: 680; letter-spacing: -.015em; line-height: 1.1;
+  margin: 0; color: var(--neutral);
 }
-.hero-band.tone-strong { color: var(--low); }
-.hero-band.tone-adequate { color: var(--info); }
-.hero-band.tone-weak { color: var(--medium); }
-.hero-band.tone-critical { color: var(--critical); }
-.hero-band.tone-insufficient_evidence { color: var(--withheld); font-size: 1.25rem; }
-.hero-figure {
-  font-size: 1.65rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1;
-  font-variant-numeric: tabular-nums;
+.posture-display.tone-strong { color: var(--low); }
+.posture-display.tone-adequate { color: var(--info); }
+.posture-display.tone-weak { color: var(--medium); }
+.posture-display.tone-critical { color: var(--critical); }
+.posture-display.tone-insufficient_evidence { color: var(--withheld); font-size: 1.6rem; }
+.posture-subline {
+  margin: .6rem 0 0; font-size: 1rem; color: var(--ink); font-variant-numeric: tabular-nums;
 }
-.hero-sub { margin-top: .3rem; font-size: .84rem; color: var(--ink); font-weight: 500; }
-.hero .note { margin-top: .4rem; font-size: .74rem; color: var(--muted); line-height: 1.45; }
+.posture-guarantee { margin: .35rem 0 0; font-size: .82rem; color: var(--muted); }
+.posture-note { margin: .5rem 0 0; font-size: .82rem; color: var(--withheld); }
 
-.hero-actions {
-  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
-  padding: .9rem 1.5rem; border-top: 1px solid var(--rule); background: var(--panel-2);
-}
-.hero-actions-gap { flex: 1 1 1rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
 
 /* ---------- submit / drop zone ---------- */
-.submit-section { margin-bottom: 2.25rem; }
+.submit-section { margin-bottom: var(--space-16); }
 /* On a fresh instance the submit section IS the page, so its heading is a real
    title rather than the small uppercase eyebrow every other section uses. */
-.submit-section.first-run { margin-bottom: 3rem; }
 .submit-section.first-run > h2 {
   font-size: 1.9rem; letter-spacing: -.02em; text-transform: none;
   color: var(--ink); text-align: center; margin: 1.25rem 0 .2rem;
 }
-.upload { padding: 1.25rem; }
-.upload.hero { padding: 2.5rem 2.5rem 2rem; }
+.upload { padding: 0; }
 .upload-kicker {
   margin: 0 0 1.75rem; text-align: center; font-size: 1rem; color: var(--muted);
 }
@@ -232,11 +258,14 @@ h2 {
   margin: 1rem 0 0; font-size: .76rem; color: var(--muted); text-align: center;
 }
 
+/* The drop zone is the page's own surface, not a card nested inside another card —
+   only the interactive target itself carries a border, and it is dashed, signalling
+   "drop here" rather than "contained region." */
 .dropzone {
   border: 2px dashed var(--rule-strong); border-radius: var(--radius);
   background: var(--panel-2); padding: 1.75rem 1.5rem; text-align: center;
 }
-.upload.hero .dropzone { padding: 3rem 1.5rem; }
+.upload.hero .dropzone { padding: 3.5rem 1.5rem; }
 .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
 .dropzone[aria-busy="true"] { opacity: .75; }
 /* An upward arrow over a baseline, drawn with borders. No image, no icon font. */
@@ -255,7 +284,7 @@ h2 {
   border-left: 2px solid var(--accent);
 }
 .dz-title { margin: 0; font-size: 1.05rem; font-weight: 600; }
-.upload.hero .dz-title { font-size: 1.3rem; }
+.upload.hero .dz-title { font-size: 1.4rem; letter-spacing: -.01em; }
 .dz-pick { margin: .85rem 0 0; }
 .dz-browse {
   display: inline-block; font-size: .84rem; font-weight: 600; cursor: pointer;
@@ -272,6 +301,12 @@ h2 {
 .dz-pick:focus-within .dz-browse { outline: 3px solid var(--accent); outline-offset: 2px; }
 .dz-hint { margin: 1rem 0 0; font-size: .78rem; color: var(--muted); }
 
+/* Status surfaces — what was picked, and what went wrong — keep a light border. These
+   are event-like states that benefit from being visually set apart from resting page
+   content, unlike the hero or the findings list. */
+.picked, .submit-error {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);
+}
 .picked { margin-top: 1rem; padding: 1rem 1.15rem; }
 .picked-file { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
 .picked-name { font-weight: 650; overflow-wrap: anywhere; }
@@ -306,20 +341,26 @@ h2 {
 .submit-error-title { margin: 0; font-weight: 650; font-size: .92rem; }
 .submit-error-body { margin: .35rem 0 0; font-size: .86rem; color: var(--ink); }
 
-/* ---------- first-run explainer ---------- */
-.howto {
-  list-style: none; counter-reset: step; margin: 1.75rem 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
+/* ---------- methodology rail: subordinate, never competing with the drop zone ---- */
+.methodology { margin: var(--space-16) 0 0; padding-top: var(--space-6);
+  border-top: 1px solid var(--rule); }
+.methodology-label {
+  margin: 0 0 var(--space-4); font-size: .68rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted); font-weight: 700;
 }
-.howto li { counter-increment: step; }
-.howto li::before {
-  content: counter(step); display: inline-flex; align-items: center;
-  justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 50%;
-  background: var(--accent); color: #fff; font-size: .72rem;
-  font-weight: 700; margin-bottom: .55rem;
+.methodology-rail {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: var(--space-6) var(--space-10);
 }
-.howto-title { display: block; font-weight: 650; font-size: .88rem; }
-.howto-body { display: block; font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+.methodology-rail li { flex: 1 1 12rem; min-width: 0; position: relative; padding-left: 1.1rem; }
+.methodology-rail li::before {
+  content: ""; position: absolute; left: 0; top: .45rem; width: .4rem; height: .4rem;
+  border-radius: 50%; background: var(--accent);
+}
+.methodology-title {
+  display: block; font-weight: 650; font-size: .84rem; color: var(--ink);
+}
+.methodology-body { display: block; font-size: .8rem; color: var(--muted); margin-top: .15rem; }
 
 /* ---------- facts ---------- */
 dl.facts {
@@ -332,11 +373,30 @@ dl.facts dd .note {
   display: block; font-weight: 400; font-size: .76rem; color: var(--muted);
 }
 
-dl.about-list { padding: 1.25rem 1.5rem; margin: 0; }
-dl.about-list dt { font-weight: 650; font-size: .92rem; margin-top: 1rem; }
-dl.about-list dt:first-child { margin-top: 0; }
-dl.about-list dd {
-  margin: .15rem 0 0; color: var(--muted); font-size: .88rem; max-width: 52rem;
+/* ---------- about: a tight block grid, not a bordered document card ---------- */
+.about-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6) var(--space-10);
+  margin: var(--space-6) 0;
+}
+.about-item h3 {
+  margin: 0 0 .3rem; font-size: .92rem; font-weight: 650; letter-spacing: 0;
+  color: var(--ink); text-transform: none;
+}
+.about-item p { margin: 0; color: var(--muted); font-size: .88rem; max-width: 30rem; }
+
+/* ---------- provenance rail ---------- */
+.rail-caption { color: var(--muted); font-size: .84rem; margin: 0 0 .7rem; }
+.rail {
+  list-style: none; display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0; margin: 0 0 1.5rem; padding: 0;
+}
+.rail-step {
+  font-size: .78rem; font-weight: 600; color: var(--ink);
+  background: var(--panel); border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm); padding: .35rem .7rem;
+}
+.rail-step:not(:last-child)::after {
+  content: "\2192"; color: var(--muted); font-weight: 400; margin: 0 .55rem;
 }
 
 /* ---------- tables ---------- */
@@ -345,12 +405,13 @@ dl.about-list dd {
    on whichever edge has more content, using background-attachment rather than JS. */
 .table-wrap {
   margin: 1rem 0; overflow-x: auto; scrollbar-width: thin; padding: 0;
+  border: 1px solid var(--rule); border-radius: var(--radius);
   background:
     linear-gradient(to right, #fff 30%, rgba(255, 255, 255, 0)) left center,
     linear-gradient(to left, #fff 30%, rgba(255, 255, 255, 0)) right center,
-    radial-gradient(farthest-side at 0 50%, rgba(21, 25, 30, .16), transparent)
+    radial-gradient(farthest-side at 0 50%, rgba(21, 25, 30, .12), transparent)
       left center,
-    radial-gradient(farthest-side at 100% 50%, rgba(21, 25, 30, .16), transparent)
+    radial-gradient(farthest-side at 100% 50%, rgba(21, 25, 30, .12), transparent)
       right center;
   background-repeat: no-repeat;
   background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
@@ -423,9 +484,11 @@ td .chip { white-space: nowrap; }
   background: var(--panel); white-space: nowrap;
 }
 
-/* ---------- abstentions: deliberate, not alarming ---------- */
+/* ---------- abstentions (Overview summary cards): deliberate, not alarming ---------- */
 .abstention-list { display: grid; gap: .6rem; margin: 1rem 0; }
-.abstention { padding: .9rem 1.15rem; }
+.abstention {
+  padding: .9rem 1.15rem; border: 1px solid var(--rule); border-radius: var(--radius-sm);
+}
 .abstention-head { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
 .abstention-title { font-weight: 650; font-size: .9rem; }
 .abstention-proto { font-size: .76rem; color: var(--muted); margin-left: auto; }
@@ -433,7 +496,7 @@ td .chip { white-space: nowrap; }
 .abstention-fix { margin: .35rem 0 0; font-size: .82rem; color: var(--muted); }
 .abstention-fix-k { font-weight: 650; color: var(--ink); }
 
-/* ---------- report actions ---------- */
+/* ---------- report actions (Overview's labelled Reports section) ---------- */
 .actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
 .action-wrap { display: flex; flex-direction: column; gap: .25rem; }
 .action {
@@ -476,7 +539,7 @@ ul.mono-list { font-family: var(--mono); font-size: .76rem; columns: 3; }
 .filters {
   display: flex; flex-wrap: wrap; gap: .9rem; margin: 1rem 0;
   border: 1px solid var(--rule); border-radius: var(--radius);
-  background: var(--surface); padding: 1rem 1.15rem; box-shadow: var(--shadow);
+  background: var(--surface); padding: 1rem 1.15rem;
 }
 fieldset.facet {
   border: 0; margin: 0; padding: 0 1rem 0 0; min-width: 8rem; max-width: 16rem;
@@ -518,12 +581,17 @@ fieldset.facet legend {
   font-size: .8rem; color: var(--muted); margin: .5rem 0 .9rem;
 }
 
-/* ---------- findings: cards ---------- */
-.results { display: grid; gap: .5rem; }
-.finding { margin: 0; }
+/* ---------- findings: rows, not cards ---------- */
+/* A list of ten findings as ten shadowed boxes reads as a form builder, not an
+   investigation tool. Rows separated by a hairline divider carry the same
+   information at a fraction of the visual weight, matching the density the rest of
+   the forensic detail (tables, facts) already uses. */
+.results { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.finding { margin: 0; border-bottom: 1px solid var(--rule); }
+.finding:last-child { border-bottom: 0; }
 .finding > summary {
-  cursor: pointer; padding: .8rem 1rem; list-style: none;
-  display: flex; align-items: center; border-radius: var(--radius);
+  cursor: pointer; padding: .75rem 1rem; list-style: none;
+  display: flex; align-items: center;
 }
 .finding > summary::-webkit-details-marker { display: none; }
 .finding > summary::before {
@@ -531,10 +599,8 @@ fieldset.facet legend {
   flex: 0 0 auto;
 }
 .finding[open] > summary::before { content: "\25BE"; }
-.finding[open] > summary {
-  background: var(--panel-2); border-bottom: 1px solid var(--rule);
-  border-radius: var(--radius) var(--radius) 0 0;
-}
+.finding:hover > summary { background: var(--panel-2); }
+.finding[open] > summary { background: var(--panel-2); border-bottom: 1px solid var(--rule); }
 .finding > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
 .sum-line { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; min-width: 0; }
 .sum-rank { font-family: var(--mono); font-size: .74rem; color: var(--muted); }
@@ -558,7 +624,10 @@ fieldset.facet legend {
 }
 .notice.withheld { border-left-color: var(--withheld); color: var(--ink); }
 
-.state-panel { padding: 1.6rem 1.75rem; margin: 1.25rem 0; }
+.state-panel {
+  padding: 1.6rem 1.75rem; margin: 1.25rem 0;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+}
 .state-panel h2, .state-panel h3 {
   border: 0; margin-top: 0; padding: 0; font-size: 1.05rem;
   text-transform: none; letter-spacing: 0; color: var(--ink);
@@ -575,7 +644,8 @@ fieldset.facet legend {
 }
 
 /* The ML lane is a transparency statement, not a feature: quiet by design. */
-.ml-section { opacity: .92; }
+.ml-section { opacity: .9; }
+.ml-section > h2 { color: var(--muted); }
 .ml-section dl.facts { font-size: .85rem; }
 
 .loading { display: flex; align-items: center; gap: .6rem; color: var(--muted);
@@ -597,12 +667,11 @@ fieldset.facet legend {
   font-size: .76rem; color: var(--muted);
 }
 
-/* ---------- 1280x800: the four-up hero and explainer must not crush ---------- */
+/* ---------- 1280x800: generous layouts must not crush ---------- */
 @media (max-width: 1360px) {
   .wrap { padding: 0 1.5rem; }
   main { padding: 1.75rem 0 4.5rem; }
-  .hero-grid { grid-template-columns: 1.3fr 1fr; }
-  .howto { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; }
 }
 
 /* ---------- narrower viewports: desktop-first, but must not break ---------- */
@@ -614,7 +683,7 @@ fieldset.facet legend {
   dl.facts dd { margin-bottom: .5rem; }
   .bar { grid-template-columns: 8rem 1fr 3rem; }
   .masthead-inner { align-items: flex-start; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .howto { grid-template-columns: 1fr; }
-  .upload.hero { padding: 1.5rem 1.15rem; }
+  .methodology-rail { flex-direction: column; gap: var(--space-4); }
+  .upload.hero .dropzone { padding: 1.75rem 1.15rem; }
+  .tabs-inner { flex-direction: column; align-items: flex-start; gap: .5rem; }
 }

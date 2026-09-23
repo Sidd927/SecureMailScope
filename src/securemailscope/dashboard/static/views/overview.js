@@ -19,13 +19,15 @@ import { cached } from '../app.js';
 const TOP_FINDINGS = 5;
 
 /**
- * The header line: which capture, which protocols, when, how long.
+ * Which capture, which protocols, when, how long. This line sits directly under the
+ * page's own heading (the capture filename, rendered by `section()`), so it carries
+ * only the supporting facts — not a second restatement of what was analysed.
  *
  * Every value is either the run record or the assessment's own identity block. The
  * protocol list is the assessment's per-protocol posture read back as names — it is
  * not inferred from anything.
  */
-function heroHead(vm, run) {
+function resultMeta(vm, run) {
   const id = vm.identity;
   const meta = [];
   const protocols = vm.protocols.map((p) => p.protocol).join(' · ');
@@ -38,76 +40,59 @@ function heroHead(vm, run) {
     meta.push(`${run.duration_ms} ms`);
   }
   meta.push(id.ai_enabled ? 'ML lane on' : 'ML lane off');
-
-  return el('div', { className: 'hero-head' }, [
-    el('p', {
-      className: 'hero-capture',
-      text: run ? text(run.source_filename, 'capture') : 'capture',
-    }),
-    el('p', { className: 'hero-meta', text: meta.join('  ·  ') }),
-  ]);
-}
-
-/** One figure in the hero. The caption is always a word, never only a colour. */
-function heroCell(label, value, sub, note, className) {
-  return el('div', { className: className || 'hero-cell' }, [
-    el('div', { className: 'k', text: label }),
-    value,
-    sub ? el('div', { className: 'hero-sub', text: sub }) : null,
-    note ? el('div', { className: 'note', text: note }) : null,
-  ]);
+  return el('p', { className: 'result-meta', text: meta.join('  ·  ') });
 }
 
 /**
- * The verdict block. Posture, score and coverage sit together by construction —
- * there is no arrangement of this function that renders one without the others.
+ * The verdict. One typographic headline — the posture band — and nothing else on this
+ * screen is allowed to compete with it in size. Score and coverage are a single
+ * subline underneath it, never a separate box: a band shown without the coverage that
+ * qualifies it is the misleading claim ADR-0016 §4 exists to prevent, so there is no
+ * arrangement of this function that can render one without the other.
  *
  * `tone` reaches a class only through `sanitiseTone`, and the band itself is always
  * spelled out, so the result survives greyscale and colour blindness intact.
  */
 function verdictPanel(vm, runId) {
-  const grid = el('div', { className: 'hero-grid' });
+  const wrap = el('div', { className: 'verdict' });
 
-  const band = el('div', {
-    className: `hero-band tone-${sanitiseTone(vm.posture.tone)}`,
+  wrap.appendChild(el('p', { className: 'posture-eyebrow', text: 'Security posture' }));
+  wrap.appendChild(el('p', {
+    className: `posture-display tone-${sanitiseTone(vm.posture.tone)}`,
     text: vm.posture.label,
-  });
-  const postureCell = heroCell('Security posture', band,
-    vm.posture.score_text,
-    vm.posture.withheld ? vm.posture.withheld_note : null,
-    'hero-cell hero-cell-lead');
+  }));
+
+  // score_text and summary_text are both self-contained ("88 / 100", "100.0% (1 of 1
+  // sessions assessed)") — concatenating them with the raw percentage as well would
+  // repeat the coverage figure twice in one sentence.
+  const subParts = [vm.posture.score_text];
+  subParts.push(vm.coverage.present
+    ? `evidence coverage ${vm.coverage.summary_text}` : 'evidence coverage not recorded');
+  wrap.appendChild(el('p', { className: 'posture-subline', text: subParts.join(' · ') }));
+
+  if (vm.posture.withheld) {
+    wrap.appendChild(el('p', { className: 'posture-note', text: vm.posture.withheld_note }));
+  }
   if (!vm.posture.known) {
-    postureCell.appendChild(el('div', {
-      className: 'note',
+    wrap.appendChild(el('p', {
+      className: 'posture-note',
       text: 'This posture value is not recognised by this console version and is '
         + 'shown exactly as recorded.',
     }));
   }
-  grid.appendChild(postureCell);
+  wrap.appendChild(el('p', {
+    className: 'posture-guarantee',
+    text: 'Missing evidence never improves this score.',
+  }));
 
-  grid.appendChild(heroCell('Evidence coverage',
-    el('div', { className: 'hero-figure', text: vm.coverage.percent_text }),
-    vm.coverage.present ? vm.coverage.summary_text : 'no coverage recorded',
-    'Assessed from what the capture can show. Missing evidence never improves '
-      + 'this score.'));
-
-  grid.appendChild(heroCell('Prioritised findings',
-    el('div', { className: 'hero-figure', text: String(vm.findings.length) }),
-    'ranked for investigation',
-    null));
-
-  grid.appendChild(heroCell('Not concluded',
-    el('div', { className: 'hero-figure', text: String(vm.abstentions.length) }),
-    'questions the evidence could not settle',
-    null));
-
-  return el('div', { className: 'hero' }, [grid, heroActions(vm, runId)]);
+  wrap.appendChild(heroActions(vm, runId));
+  return wrap;
 }
 
 /**
- * The two things to do next: inspect, or export. Both hrefs are built here — the
- * navigation ones from the validated run id, the report ones from the fixed format
- * allowlist. Neither is ever taken from assessment data.
+ * What to do next: inspect the findings, or read the evidence behind them. Export
+ * lives in the persistent tab-bar control now (reachable from every tab, not just this
+ * one) — this row is investigation, not output.
  */
 function heroActions(vm, runId) {
   const row = el('div', { className: 'hero-actions' });
@@ -122,17 +107,6 @@ function heroActions(vm, runId) {
     text: 'Evidence & provenance',
     attrs: { href: `#/run/${runId}/evidence` },
   }));
-  row.appendChild(el('span', { className: 'hero-actions-gap' }));
-  for (const [format, label] of [['html', 'HTML report'], ['pdf', 'PDF'],
-    ['json', 'JSON']]) {
-    const a = el('a', {
-      className: 'btn btn-quiet',
-      text: label,
-      attrs: { href: reportUrl(runId, format) },
-    });
-    if (format !== 'html') a.setAttribute('download', '');
-    row.appendChild(a);
-  }
   return row;
 }
 
@@ -277,8 +251,10 @@ function distributionPanel(vm) {
 
 /** Top prioritised findings, in canonical rank order. No sort is applied. */
 function findingsPanel(vm, runId) {
+  const heading = vm.findings.length
+    ? `Prioritised findings (${vm.findings.length})` : 'Prioritised findings';
   if (!vm.findings.length) {
-    return section('top-findings', 'Prioritised findings', [
+    return section('top-findings', heading, [
       el('div', { className: 'state-panel' }, [
         el('h3', { text: 'No prioritised findings' }),
         el('p', {
@@ -322,7 +298,7 @@ function findingsPanel(vm, runId) {
       }),
     ]));
   }
-  return section('top-findings', 'Prioritised findings', children, {
+  return section('top-findings', heading, children, {
     lead: 'What the assessment ranked as most worth an analyst\'s attention.',
   });
 }
@@ -337,8 +313,10 @@ function findingsPanel(vm, runId) {
  */
 function abstentionPanel(vm, runId) {
   const rows = vm.abstentions || [];
+  const heading = rows.length
+    ? `What could not be determined (${rows.length})` : 'What could not be determined';
   if (!rows.length) {
-    return section('not-concluded', 'What could not be determined', [
+    return section('not-concluded', heading, [
       el('p', {
         text: 'The assessment recorded no abstentions: every question its rules asked '
           + 'of this capture could be answered from the available evidence.',
@@ -382,7 +360,7 @@ function abstentionPanel(vm, runId) {
   children.push(notice('An abstention is neither a pass nor a failure. It records '
     + 'that the evidence did not support a conclusion, so nothing above may be read '
     + 'as compliant or as a detected problem.'));
-  return section('not-concluded', 'What could not be determined', children, {
+  return section('not-concluded', heading, children, {
     lead: 'Questions the assessment declined to answer, why, and what evidence would '
       + 'settle them.',
   });
@@ -578,9 +556,14 @@ export async function render(root, { runId }) {
   // The result comes first. Ordering is the whole point of this screen: posture and
   // coverage, then what to act on, then what could not be determined, then the
   // supporting detail an analyst needs to defend any of it.
+  //
+  // The section title IS the capture filename — the page's one true heading, doing
+  // double duty as the accessible landmark and the visible identity line, rather than
+  // a generic "Assessment result" label repeated above it.
+  const resultTitle = run ? text(run.source_filename, 'Overview') : 'Overview';
   const blocks = [
-    section('result', 'Assessment result', [heroHead(vm, run), verdictPanel(vm, runId)],
-      { className: 'hero-section' }),
+    section('result', resultTitle, [resultMeta(vm, run), verdictPanel(vm, runId)],
+      { className: 'result-section' }),
   ];
   // Withheld verdicts and absent coverage are surfaced immediately under the block
   // they qualify, not at the bottom of the page.

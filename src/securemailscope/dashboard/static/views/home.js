@@ -32,25 +32,33 @@ function instanceLimits() {
   return limitsPromise;
 }
 
-function whatItDoes() {
+/**
+ * The methodology, as a slim rail — not a grid of marketing-style cards competing with
+ * the drop zone above it. One row, small type, a section break before it so it never
+ * reads as part of the primary action. The four steps are unchanged from the original
+ * explainer; only their visual weight is demoted.
+ */
+function methodologyRail() {
   const steps = [
-    ['Reconstruct', 'SMTP, IMAP and POP3 sessions are rebuilt from the captured '
-      + 'frames, including STARTTLS upgrades and implicit TLS.'],
-    ['Assess', 'Deterministic rules examine TLS version, cipher selection, forward '
-      + 'secrecy, certificate properties and plaintext exposure.'],
-    ['Cite', 'Every finding names the published standard it rests on, and the frames '
-      + 'it was read from.'],
-    ['Abstain', 'Where the capture cannot settle a question, the assessment says so '
-      + 'and says what would settle it — rather than guessing in either direction.'],
+    ['Reconstruct', 'sessions rebuilt from the captured frames'],
+    ['Assess', 'deterministic rules examine the evidence'],
+    ['Cite', 'every finding names its standard'],
+    ['Abstain', 'uncertain questions are declared, not guessed'],
   ];
-  const list = el('ol', { className: 'howto' });
+  const wrap = el('div', { className: 'methodology' });
+  wrap.appendChild(el('p', {
+    className: 'methodology-label',
+    text: 'How SecureMailScope works',
+  }));
+  const rail = el('ol', { className: 'methodology-rail' });
   for (const [title, body] of steps) {
-    list.appendChild(el('li', {}, [
-      el('span', { className: 'howto-title', text: title }),
-      el('span', { className: 'howto-body', text: body }),
+    rail.appendChild(el('li', {}, [
+      el('span', { className: 'methodology-title', text: title }),
+      el('span', { className: 'methodology-body', text: body }),
     ]));
   }
-  return list;
+  wrap.appendChild(rail);
+  return wrap;
 }
 
 export async function render(root, _ctx) {
@@ -78,7 +86,7 @@ export async function render(root, _ctx) {
 
   const blocks = [
     section('submit', fresh ? 'Assess an email capture' : 'New analysis',
-      fresh ? [panel, whatItDoes()] : [panel],
+      fresh ? [panel, methodologyRail()] : [panel],
       { className: fresh ? 'submit-section first-run' : 'submit-section' }),
     historyHost,
   ];
