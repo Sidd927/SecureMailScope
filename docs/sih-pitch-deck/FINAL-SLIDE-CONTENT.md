@@ -6,6 +6,16 @@ Official headings are fixed by the SIH template and must not be changed
 
 **Format reminders:** max 6 slides including title · no paragraphs · export to **PDF only**.
 
+> **This file is the canonical slide-content source.** If another pitch document conflicts with it,
+> the conflict must be resolved **against the repository evidence** before use — not by editing
+> whichever document is more convenient. The authority order is:
+> *production source / executed experiment → verified project evidence → research documents →
+> pitch content → visual instructions.* **A presentation document never overrides the
+> implementation.**
+>
+> Claim-by-claim evidence: `FINAL-CLAIM-AUDIT.md` · Prohibited wording: `DO-NOT-CLAIM.md` ·
+> Entry point for newcomers: `FINAL-PITCH-DECK-HANDOFF.md`
+
 ---
 
 ============================================================
@@ -56,8 +66,8 @@ Reasoning across sessions, not just parsing packets
 - Judging one session alone, a tool must either **guess** or **stay silent**
 
 **BODY — Innovation and uniqueness:**
-- **Cross-session reasoning**: compares a session against every other session with the **same
-  server**, resolving what a single session cannot
+- **Cross-session reasoning**: compares a session against **comparable prior sessions at the same
+  endpoint, protocol and TLS mode**, resolving ambiguities a single session cannot
 - **Six evidence states** — so missing evidence never becomes a false verdict in either direction
 - Our **source-code audit of five competing implementations found none performing cross-session
   reasoning**
@@ -96,7 +106,7 @@ A deterministic evidence pipeline — with AI kept in its place
 
 **BODY — Technologies:**
 - **Python 3.9+**, **tshark/Wireshark** (dissection), **FastAPI**, **SQLite**, **ReportLab** (PDF)
-- **Zero third-party runtime dependencies** in the analysis core
+- **0 third-party Python runtime packages** in the analysis core; **TShark is the required external dissection binary**
 - Dashboard: plain ES modules — **no npm packages, no build step**
 
 **BODY — Methodology:**
@@ -107,7 +117,7 @@ A deterministic evidence pipeline — with AI kept in its place
 - **AI lane is bounded**: capped at **4.0** against a **30-point severity-tier gap** — it re-orders
   within a tier and **can never create a finding**
 
-**KEY METRIC:** 19 rules · 11 standards · 0 runtime dependencies
+**KEY METRIC:** 19 rules · 11 standards · 0 third-party Python runtime packages in the analysis core
 
 **VISUAL / DIAGRAM — pipeline (primary):**
 ```
@@ -119,8 +129,8 @@ PCAP → dissect → session reconstruction → 16 deterministic rules
                      ✗ never writes a finding
 ```
 
-**SECONDARY VISUAL — six evidence states:**
-`OBSERVED · INFERRED · AMBIGUOUS · INCOMPLETE · UNKNOWN · NOT_OBSERVABLE`
+**SECONDARY VISUAL — six evidence states** *(exact spelling and order — `evidence/states.py`)*:
+`OBSERVED · INFERRED · UNKNOWN · AMBIGUOUS · INCOMPLETE · NOT_OBSERVABLE`
 
 **CALLOUT:** *Missing evidence can never improve a score.*
 
@@ -148,7 +158,7 @@ A working prototype — and we can name exactly what it cannot prove
 | automated tests, 0 failures | real Postfix + Dovecot captures | published standards cited | per-capture analysis (115–320 ms) | identical repeat runs |
 
 - Validated across **SMTP, IMAP, POP3** and **4 TLS modes** on real vendor traffic
-- Runs **fully offline** — no internet, no external AI service
+- **Runs without network access** — no internet, no external AI service
 - Adding certificate analysis changed **no existing verdict** (10/10 captures scored identically)
 
 **BODY — Challenges, risks and strategies:**
@@ -189,13 +199,13 @@ Evidence an analyst can defend
 **BODY — Benefits:**
 - Works on **evidence teams already collect** — no new instrumentation
 - **Passive**: never touches production mail servers · no keys · no message content
-- **Air-gapped capable**: no internet, no external AI service, zero runtime dependencies
+- **Runs without network access**: no internet, no external AI service; 0 third-party Python runtime packages in the analysis core (TShark required as an external binary)
 - Every finding **cites a published standard**, so conclusions survive review
 - Exports **JSON / HTML / PDF** for incident reports
 - Surfaces **silent** failures — downgrades, deprecated TLS, weak certificates — that leave no
   trace in the mail itself
 
-**KEY METRIC:** sub-second analysis, fully offline
+**KEY METRIC:** sub-second analysis, runs without network access
 
 **VISUAL:** four user-type icons across the top; **dashboard or report screenshot** on the right
 showing posture + coverage + a finding with its cited standard.

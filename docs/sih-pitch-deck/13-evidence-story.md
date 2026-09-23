@@ -36,7 +36,9 @@ Six labels, six short glosses. This renders as a clean vertical strip and needs 
 
 ## The structural guarantee (the part a technical judge will appreciate)
 
-This is not a convention — it is **enforced in code**. A finding whose status is
+This is not a convention — it is **enforced in code**. (Note: the statuses named in this
+paragraph are `FindingStatus` values — the *analytic outcome* of a rule — which is a different
+vocabulary from the six `EvidenceState` values above. See `DO-NOT-CLAIM.md` §A.) A finding whose status is
 `AMBIGUOUS`/`INSUFFICIENT_EVIDENCE`/`NOT_OBSERVABLE`/`COMPLIANT`/`INFORMATIONAL` **cannot carry a
 severity above INFO**; the constructor raises. And the posture score is **coverage-gated**: the
 band is withheld below 50% assessed coverage, so a capture that shows too little gets

@@ -59,10 +59,11 @@ pre-verbally. **Omit:** pipeline, metrics, AI.
 │              ML lane ──┘ (ranking only, capped 4.0)      │
 ├───────────────────┬──────────────────────────────────────┤
 │ LEFT: technologies│ RIGHT: six evidence states (strip)   │
-│ Python 3.9+       │ OBSERVED · INFERRED · AMBIGUOUS      │
-│ tshark            │ INCOMPLETE · UNKNOWN · NOT_OBSERVABLE│
+│ Python 3.9+       │ OBSERVED · INFERRED · UNKNOWN        │
+│ TShark (required) │ AMBIGUOUS · INCOMPLETE ·             │
+│                   │ NOT_OBSERVABLE                       │
 │ FastAPI · SQLite  │ ─────────────────────────────────    │
-│ 0 runtime deps    │ "Missing evidence can never          │
+│ 0 3p Py packages  │ "Missing evidence can never          │
 │                   │  improve a score."                   │
 ├───────────────────┴──────────────────────────────────────┤
 │ FOOTER STRIP: PCAP SHA-256 → frame → stream → finding    │
@@ -90,7 +91,8 @@ strip. **Omit:** formula names, ADR numbers, code.
 │  Trust needs an anchor   │ validate structure; state limit│
 │  ML: no detection value  │ bounded prioritisation only    │
 ├──────────────────────────────────────────────────────────┤
-│ BOTTOM: offline · passive · zero runtime dependencies     │
+│ BOTTOM: runs without network access · passive ·           │
+│         0 third-party Python packages (TShark required)   │
 └──────────────────────────────────────────────────────────┘
 ```
 

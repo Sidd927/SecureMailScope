@@ -68,7 +68,7 @@ dashboard over the same document — which recomputes nothing.
 | Session reconstruction | protocol state machines, explicit + implicit TLS | Phase 3, regression suite |
 | Deterministic analysis | **16 rules**, every finding citing one of **11 distinct standards** (RFC 2595, 3207, 5280, 6960, 8314, 8446, 8996, 9155; NIST SP 800-52r2, 800-57, 800-131A) | verified by enumerating `ALL_RULES` |
 | Cross-session reasoning | **3 rules**, per-server baselines, ≥5 comparable sessions | `crosssession/rules.py` |
-| Evidence fusion | six evidence states never collapsed | `evidence/states.py` |
+| Evidence fusion | six evidence states never collapsed — **`OBSERVED · INFERRED · UNKNOWN · AMBIGUOUS · INCOMPLETE · NOT_OBSERVABLE`** (this is `EvidenceState`; `INSUFFICIENT_EVIDENCE` belongs to `FindingStatus` and `NOT_APPLICABLE` to `BaselineStatus` — see `DO-NOT-CLAIM.md` §A) | `evidence/states.py` |
 | Posture scoring | `F2-group-damped`; INFO 0 → CRITICAL 55 weights; band withheld below 50% coverage | `posture/scoring.py` |
 | ML | `robust-z-sum`, bounded at **4.0** against a **30-point** severity-tier gap | `MAX_ML_ADJUSTMENT`, verified |
 | Reporting | one model → 3 formats, byte-deterministic, `report_sha256` identity | Phase 9 |
@@ -78,7 +78,9 @@ dashboard over the same document — which recomputes nothing.
 
 Not "we use tshark" — everyone does. The two genuinely defensible differentiators:
 
-1. **Cross-session reasoning.** A source-code audit of five competing SIH26159 implementations
+1. **Cross-session reasoning.** Baselines are built from **prior comparable sessions at the same
+   endpoint, protocol and TLS mode** (`DEFAULT_MIN_HISTORY = 5`), not from "every session with the
+   server". A source-code audit of five competing SIH26159 implementations
    found every one reasons about a single session at a time; cross-session reasoning was
    **verified absent from all five** (`docs/research/01D-sih-competitor-source-audit.md` §4). This
    is what resolves the STARTTLS stripping-vs-non-support ambiguity that is unresolvable within a
@@ -105,7 +107,7 @@ generally (Zeek, Arkime).
 - **Certificate analysis works where observable**: a generated TLS 1.2 capture yields 38 distinct
   X.509 fields; RSA-1024 and SHA-1 both correctly flagged HIGH → CRITICAL posture (44.0).
 - **Performance**: full PCAP → assessment in **115–320 ms**; 20/20 repeated demo executions stable.
-- **Zero third-party runtime dependencies** in the analysis core — re-verified this phase.
+- **0 third-party Python runtime packages** in the analysis core; **TShark is the required external dissection binary** — re-verified this phase.
 
 ## I. What is NOT proven?
 

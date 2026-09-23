@@ -49,8 +49,8 @@ parsing packets"**
 **JUDGE QUESTION:** "What is it, and what's genuinely new?"
 
 **CORE MESSAGE:** Email security evidence in a PCAP is encrypted, ambiguous and incomplete —
-SecureMailScope produces a cited security posture anyway, by reasoning across every session with
-the same server instead of judging each connection alone.
+SecureMailScope produces a cited security posture anyway, by reasoning across comparable prior
+sessions at the same endpoint instead of judging each connection alone.
 
 **MUST SHOW:** the ambiguity visual — two sessions that look byte-identical in isolation, separated
 once cross-session evidence is applied.
@@ -141,7 +141,8 @@ technical limits stated and mitigated rather than hidden.
 **MUST SAY:**
 - *Feasibility:* **1219 automated tests**, 0 failures · validated on **10 real Postfix/Dovecot
   captures** across SMTP/IMAP/POP3 and 4 TLS modes · **115–320 ms** per capture · **20/20**
-  reproducible demo runs · runs **fully offline**, zero third-party runtime dependencies.
+  reproducible demo runs · **runs without network access**; 0 third-party Python runtime
+  packages in the analysis core (TShark required as an external binary).
 - *Risks & mitigations:*
   | Risk | Reality | Strategy |
   |---|---|---|
@@ -184,8 +185,8 @@ captures they already hold — with no server access, no keys, no internet, and 
 - *Audience (PS-named):* SOC analysts · digital-forensics investigators · incident-response teams ·
   enterprise mail administrators.
 - *Operational benefits:* works on **evidence already collected** (no new instrumentation) ·
-  **passive** — never touches production mail servers · **air-gapped-capable** — no internet, no
-  external AI service · every finding **cites a published standard**, so it survives review ·
+  **passive** — never touches production mail servers · **runs without network access** — no
+  internet, no external AI service · every finding **cites a published standard**, so it survives review ·
   exports **JSON / HTML / PDF** for incident reports.
 - *Security benefit:* finds silent transport-security failures — downgrades, deprecated TLS, weak
   certificates — that leave no trace in the mail itself.

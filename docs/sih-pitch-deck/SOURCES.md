@@ -55,6 +55,31 @@ registry (enumerated programmatically from `ALL_RULES`).
 | `docs/finalization/14-final-release-gate.md` | 1219 tests, 0 failures, 3 independent runs; zero production drift |
 | `docs/phase12/12-novelty-audit.md` | The scoping discipline for every novelty claim |
 
+## Slide mapping
+
+| Source | Slide(s) used |
+|---|---|
+| Official SIH template | structure of all 6 slides |
+| RFC 8446 | 2, 4, 6 |
+| RFC 8996 / 3207 / 2595 / 8314 | 3, 6 |
+| RFC 5280 / 6960 / 9155 | 4, 6 |
+| NIST SP 800-52r2 / 800-57 / 800-131A | 3, 6 |
+| `docs/research/19` (PS record) | 1, 5 |
+| `docs/research/01D` (competitor audit) | 2, 6 |
+| `docs/finalization/06` (cross-session) | 2, 6 |
+| `docs/finalization/04` (real-PCAP pack) | 4 |
+| `docs/finalization/14` (release gate) | 4 |
+| ADR-0015 / ADR-0024 | 3, 4, 6 |
+| ADR-0023 | 4 |
+
+## Evidence-category clarification (important)
+
+The cross-session demonstration evidence (`G_control_endpoint.pcap`, `H_no_control.pcap`) is
+**executed, validated evidence from the generated scenario corpus** — real engine output, produced
+by running the released system. It is **not** real-world production traffic, and must never be
+described as such. The 10 Postfix/Dovecot captures are the real-vendor evidence; the 3 TLS 1.2
+certificate captures are **generated fixtures**. See `DO-NOT-CLAIM.md` §B.
+
 ## Method note
 
 Claims in this package are traceable to one of three tiers: **(1)** the official SIH template file

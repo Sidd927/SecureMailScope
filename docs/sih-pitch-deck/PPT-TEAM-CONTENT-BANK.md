@@ -10,7 +10,7 @@ DO NOT USE.**
 
 | Slide | PRIMARY | ALTERNATIVE |
 |---|---|---|
-| 2 | Reasoning across sessions, not just parsing packets | One session can't tell you; every session can |
+| 2 | Reasoning across sessions, not just parsing packets | One session can't tell you; comparable sessions can |
 | 3 | A deterministic evidence pipeline — with AI kept in its place | Standards-cited findings, bounded AI |
 | 4 | A working prototype — and we can name exactly what it cannot prove | Measured, reproducible, and honest about its limits |
 | 5 | Evidence an analyst can defend | From a capture you already have to a citable assessment |
@@ -25,7 +25,7 @@ DO NOT USE.**
 
 **ALTERNATIVE:**
 - *Turns an email packet capture into a standards-cited security posture — without decrypting anything.*
-- *Reasons across every session with a server, not just one connection at a time.*
+- *Reasons across comparable prior sessions with a server, not just one connection at a time.*
 
 **OPTIONAL (closing line):** *It tells you what it can prove, and what it can't.*
 
@@ -63,8 +63,11 @@ rules` → `3 cross-session rules` → `Evidence fusion` → `Coverage-gated pos
 **ML lane label:** `ML lane — ranking only (capped 4.0 / 30-pt tier gap)` with a blocked arrow to
 findings.
 
-**Evidence states (exact spelling):** `OBSERVED` · `INFERRED` · `AMBIGUOUS` · `INCOMPLETE` ·
-`UNKNOWN` · `NOT_OBSERVABLE`
+**Evidence states (exact spelling and order — matches `evidence/states.py`):**
+`OBSERVED` · `INFERRED` · `UNKNOWN` · `AMBIGUOUS` · `INCOMPLETE` · `NOT_OBSERVABLE`
+
+⚠️ Do **not** add `INSUFFICIENT_EVIDENCE` (that is a `FindingStatus`) or `NOT_APPLICABLE`
+(that is a `BaselineStatus`) to this strip — see `DO-NOT-CLAIM.md` §A.
 
 **Provenance strip:** `PCAP SHA-256 → frame → TCP stream → evidence state → finding → cited
 standard → report`
@@ -96,8 +99,9 @@ published standard for every finding.
 
 **50 words:** Email transport security fails silently, and the packet capture is often the only
 evidence. SecureMailScope reconstructs each session, assesses its cryptographic posture against 11
-published standards, and reasons across every session with the same server — resolving ambiguities
-a single-session analyser cannot, and stating explicitly what the evidence cannot establish.
+published standards, and reasons across comparable prior sessions at the same endpoint — resolving
+ambiguities a single-session analyser cannot, and stating explicitly what the evidence cannot
+establish.
 
 ## 7. Screenshots to capture
 

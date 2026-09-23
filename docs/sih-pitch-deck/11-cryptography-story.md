@@ -48,7 +48,8 @@ what can't it?"* — which is exactly what the official pointers on those two sl
 
 ## The single sentence, if space collapses
 
-> **Assesses TLS version, cipher, key exchange and forward secrecy on every session; extracts and
+> **Assesses TLS version, cipher, key exchange and forward secrecy on every session where a
+> ServerHello is observed; extracts and
 > analyses X.509 certificates wherever the handshake exposes them; and states explicitly where
 > passive evidence cannot reach — including certificate trust, which requires an anchor no capture
 > contains.**

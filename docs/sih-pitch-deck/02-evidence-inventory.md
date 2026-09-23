@@ -36,7 +36,7 @@ H = not verified
 | 22 | Provenance chain complete | A+C | `EvidenceRef`; 13 executions | frame, stream, timestamp, evidence state, provenance on every ref | "every finding traces to specific frames" | not legal chain-of-custody |
 | 23 | Content-addressed integrity | A+B | PCAP SHA-256 → capture_id → assessment_id → report_sha256 | re-hashed on access | "content-addressed and integrity-verified" | none |
 | 24 | Three report formats, byte-deterministic | A+B | Phase 9; verified this phase | JSON/HTML/PDF; zero `<script>`; PDF text-extractable | "JSON, HTML and PDF" | none |
-| 25 | Runs fully offline, zero runtime dependencies | A | import-set inspection, re-verified 2026-09-23 | 0 third-party modules in core | "zero third-party runtime dependencies in the analysis core; runs air-gapped" | tshark is a required external binary — say so |
+| 25 | Runs without network access; no third-party Python runtime packages in the core | A | import-set inspection, re-verified 2026-09-23 | 0 third-party modules in core | "0 third-party Python runtime packages in the analysis core; runs without network access" | **TShark is a required external binary — must be stated alongside.** Do not say "zero dependencies" or "air-gapped" unqualified |
 | 26 | Performance | C | measured this phase | **115–320 ms** per capture end-to-end | "sub-second analysis" | don't say "real-time" |
 | 27 | Demo reliability | C | 4 scenes × 5 runs | **20/20** stable | "20 of 20 repeated runs produced identical results" | none |
 | 28 | Dashboard has zero npm dependencies | A | `dashboard/static/`, no `package.json` | 0 | "no build step, no npm packages" | none |

@@ -9,12 +9,12 @@ and **future potential**, and forbids everything else.
 
 | Claim | Evidence |
 |---|---|
-| Runs **fully offline / air-gapped** | zero network calls anywhere in `src/`, re-verified by import-set inspection 2026-09-23; live health check succeeded with no internet dependency |
+| **Runs without network access** | zero network calls anywhere in `src/`, re-verified by import-set inspection 2026-09-23; live health check succeeded with no internet dependency. **An actual air-gapped deployment was never separately validated — say "runs without network access", not "air-gapped certified".** |
 | **No external AI service** required | the ML lane is a local, CPU-only, unsupervised model — no API key, no cloud inference, no model download |
 | **Passive** — never touches production mail servers | architectural: the only input is a capture file; no socket is ever opened to a mail server |
 | **No keys, no message content** | analyses transport metadata and handshakes only |
 | Works on **evidence teams already collect** | PCAP is standard SOC/DFIR capture output — no new instrumentation required |
-| **Zero third-party runtime dependencies** in the analysis core | verified; only tshark (external binary) is required |
+| **0 third-party Python runtime packages** in the analysis core | verified; **TShark is required as an external dissection binary** |
 | **Three export formats** (JSON/HTML/PDF) | verified this phase: valid JSON, script-free HTML, text-extractable PDF |
 | Every finding **cites a published standard** | 11 standards, enumerated from the rule registry |
 | **Sub-second** per-capture analysis | 115–320 ms measured end-to-end |
@@ -58,7 +58,7 @@ This is operational impact, fully supported, and it does not require a single in
 
 **Built and tested** (1219 tests, 0 failures) · **validated on real vendor traffic** (10 Postfix
 and Dovecot captures, 3 protocols, 4 TLS modes) · **reproducible** (20/20 identical repeat runs) ·
-**fast** (115–320 ms) · **deployable** (offline, zero runtime dependencies, single external binary).
+**fast** (115–320 ms) · **deployable** (runs without network access; 0 third-party Python runtime packages in the analysis core; TShark required as an external binary).
 
 ## Risks, honestly (Slide 4's required pointer)
 

@@ -12,8 +12,9 @@ Our headline differentiator. Built from **real engine output**, not an illustrat
 
 ## The mechanism
 
-Compare the session against **every other session with the same server in the same capture**.
-A baseline requires **≥5 comparable sessions**; below that the engine abstains rather than infers.
+Compare the session against **comparable prior sessions at the same endpoint, protocol and TLS
+mode**, within the same capture. A baseline requires **≥5 prior comparable sessions**
+(`DEFAULT_MIN_HISTORY = 5`); below that the engine abstains rather than infers.
 
 ## The real result — positive case
 

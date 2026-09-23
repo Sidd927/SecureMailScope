@@ -19,9 +19,9 @@ PS text, differentiation evidence, and overclaim risk.
 ## Selected narrative
 
 > **SecureMailScope reads a passive email packet capture and produces a standards-cited
-> cryptographic security posture — by reasoning across every session with the same server rather
-> than judging each connection alone, which is what makes it possible to tell a stripped STARTTLS
-> from a client that simply declined.**
+> cryptographic security posture — by reasoning across comparable prior sessions at the same
+> endpoint rather than judging each connection alone, which is what makes it possible to tell a
+> stripped STARTTLS from a client that simply declined.**
 
 **Why this wins:** it is **D anchored in C**. C establishes what the system *is* in terms a judge
 already understands (PCAP in, security posture out). D supplies the *why it's different*, and it is
@@ -38,8 +38,8 @@ Slides 3–4 rather than the headline.
 2. But that evidence is **encrypted, ambiguous, and incomplete** — TLS 1.3 hides the certificate;
    a stripped STARTTLS looks byte-identical to a declined one.
 3. Judging each session alone, you must either **guess** or **stay silent**.
-4. Comparing a session against every other session with the same server **resolves** what one
-   session cannot.
+4. Comparing a session against comparable prior sessions at the same endpoint **resolves** what
+   one session cannot.
 5. And where even that isn't enough, the system **says so explicitly** instead of guessing.
 6. Result: a posture assessment an analyst can put in a report and defend under review.
 
