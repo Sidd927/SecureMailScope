@@ -427,19 +427,31 @@ dl.facts dd .note {
 }
 .about-item p { margin: 0; color: var(--muted); font-size: .88rem; max-width: 30rem; }
 
-/* ---------- provenance rail ---------- */
-.rail-caption { color: var(--muted); font-size: .84rem; margin: 0 0 .7rem; }
+/* ---------- provenance rail: a trace, not a breadcrumb ---------- */
+/* Each step carries its own position (a mono index, not just an arrow glyph) and a
+   continuous hairline runs behind the whole sequence — the visual language is a
+   connected forensic trace from bytes to report, not a navigation aid. */
+.rail-caption { color: var(--muted); font-size: .84rem; margin: 0 0 var(--space-3); }
 .rail {
-  list-style: none; display: flex; flex-wrap: wrap; align-items: center;
-  gap: 0; margin: 0 0 1.5rem; padding: 0;
+  counter-reset: railstep; list-style: none; display: flex; flex-wrap: wrap;
+  align-items: center; gap: 0; margin: 0 0 var(--space-6); padding: 0; position: relative;
 }
 .rail-step {
+  counter-increment: railstep; display: inline-flex; align-items: center; gap: .45rem;
   font-size: .78rem; font-weight: 600; color: var(--ink);
-  background: var(--panel); border: 1px solid var(--rule-strong);
-  border-radius: var(--radius-sm); padding: .35rem .7rem;
+  background: var(--surface); border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm); padding: .35rem .7rem .35rem .55rem;
+  position: relative; z-index: 1;
+}
+.rail-step::before {
+  content: counter(railstep); font-family: var(--mono); font-weight: 600;
+  font-size: .68rem; color: var(--accent); background: var(--accent-soft);
+  border-radius: 50%; width: 1.1rem; height: 1.1rem; display: inline-flex;
+  align-items: center; justify-content: center; flex: 0 0 auto;
 }
 .rail-step:not(:last-child)::after {
-  content: "\2192"; color: var(--muted); font-weight: 400; margin: 0 .55rem;
+  content: ""; position: absolute; left: 100%; top: 50%; width: .7rem;
+  border-top: 1px dashed var(--rule-strong); margin-top: -1px;
 }
 
 /* ---------- tables ---------- */
@@ -500,7 +512,7 @@ td .chip { white-space: nowrap; }
 .chip {
   display: inline-flex; align-items: center; gap: .35rem;
   font-size: .72rem; font-weight: 700; letter-spacing: .03em;
-  padding: .14rem .45rem; border: 1px solid currentColor; border-radius: 3px;
+  padding: .14rem .45rem; border: 1px solid currentColor; border-radius: var(--radius-sm);
   white-space: nowrap;
 }
 .chip .marker { font-family: var(--mono); font-weight: 400; font-size: .68rem; }
@@ -523,7 +535,7 @@ td .chip { white-space: nowrap; }
 .state-chip {
   display: inline-flex; align-items: center; font-size: .68rem; font-weight: 700;
   letter-spacing: .06em; text-transform: uppercase; padding: .16rem .45rem;
-  border: 1px solid var(--rule-strong); border-radius: 3px; color: var(--muted);
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); color: var(--muted);
   background: var(--panel); white-space: nowrap;
 }
 
