@@ -34,7 +34,7 @@ from securemailscope.backend.errors import (
 from securemailscope.backend.lifecycle import JobState
 from securemailscope.backend.schemas import (
     ArtifactListResponse, AssessmentResponse, HealthResponse, ReportListResponse,
-    RunListResponse, RunResponse, run_to_response,
+    RunListResponse, RunResponse, SessionListResponse, run_to_response,
 )
 from securemailscope.backend.service import AnalysisService
 from securemailscope.dissect import TsharkAdapter
@@ -223,6 +223,22 @@ def create_app(service: Optional[AnalysisService] = None,
         rid = _validate_run_id(run_id)
         return ArtifactListResponse(
             run_id=rid, items=svc.list_artifacts(rid, verify=verify))
+
+    @router.get("/analyses/{run_id}/sessions", response_model=SessionListResponse)
+    def get_sessions(run_id: str) -> SessionListResponse:
+        """Per-session detail for a run, verbatim, in reconstruction order.
+
+        Read-only projection over what Phase 3 already computed for this run
+        (doc capability audit, V4 investigation rebuild). Not a second authority --
+        findings, posture and evidence state remain `.../assessment`'s and
+        `.../dashboard`'s. This exists so the console can pivot from a finding
+        (`affected_stream_keys`) to the session it was found in.
+        """
+        rid = _validate_run_id(run_id)
+        items = svc.get_sessions(rid)
+        capture_id = items[0].get("capture_id") if items else None
+        return SessionListResponse(
+            run_id=rid, capture_id=capture_id, total=len(items), items=items)
 
     # ---------------------------------------------------------- dashboard
     @router.get("/analyses/{run_id}/dashboard")

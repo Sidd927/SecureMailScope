@@ -101,6 +101,20 @@ class AssessmentResponse(BaseModel):
     assessment: Dict[str, Any]
 
 
+class SessionListResponse(BaseModel):
+    """Per-session detail for a run, verbatim (`SessionEvidence.to_dict()`).
+
+    A projection over what Phase 3 already computed for this run, not a second
+    authority: `.../assessment` and `.../dashboard` remain canonical for findings,
+    posture and evidence. This exists so the console can let an analyst pivot from a
+    finding (`affected_stream_keys`) to the session behind it.
+    """
+    run_id: str
+    capture_id: Optional[str] = None
+    total: int
+    items: List[Dict[str, Any]]
+
+
 class ArtifactResponse(BaseModel):
     artifact_id: str
     run_id: str

@@ -353,6 +353,42 @@ class Repository:
                            detail={"assessment_id": assessment_id})
         return json.loads(row["document"])
 
+    # --------------------------------------------------------------- sessions
+    def store_sessions(self, run_id: str, sessions: List[Dict[str, Any]], *,
+                       cursor: Optional[sqlite3.Cursor] = None) -> None:
+        """Persist each session document verbatim, in reconstruction order.
+
+        `sessions` is already `[s.to_dict() for s in pipeline_result.sessions]` --
+        this method takes dicts, exactly like `store_assessment`, and does not import
+        or depend on `SessionEvidence`. Read-only projection: this stores exactly what
+        Phase 3 already computed for this run and nothing else. No field is derived,
+        renamed or recomputed here.
+        """
+        rows = [
+            (run_id, s.get("stream_key"), s.get("tcp_stream_id"), s.get("protocol"),
+             canonical_json(s))
+            for s in sessions
+        ]
+
+        def _write(cur: sqlite3.Cursor) -> None:
+            cur.executemany(
+                "INSERT INTO run_sessions(run_id, stream_key, tcp_stream_id, "
+                "protocol, document) VALUES(?,?,?,?,?)", rows)
+
+        if cursor is not None:
+            _write(cursor)
+            return
+        with self.db.transaction() as cur:
+            _write(cur)
+
+    def get_sessions(self, run_id: str) -> List[Dict[str, Any]]:
+        """Every session document stored for this run, in reconstruction order."""
+        with self.db.read() as cur:
+            rows = cur.execute(
+                "SELECT document FROM run_sessions WHERE run_id=? ORDER BY id ASC",
+                (run_id,)).fetchall()
+        return [json.loads(r["document"]) for r in rows]
+
     def assessment_meta(self, assessment_id: str) -> Optional[Dict[str, Any]]:
         with self.db.read() as cur:
             row = cur.execute(

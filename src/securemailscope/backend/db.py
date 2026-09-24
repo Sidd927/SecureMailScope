@@ -82,6 +82,26 @@ CREATE TABLE IF NOT EXISTS artifacts (
 );
 CREATE INDEX IF NOT EXISTS idx_artifacts_run ON artifacts(run_id);
 
+-- Per-session detail (Phase-3 SessionEvidence.to_dict()), stored verbatim at the same
+-- point the assessment is finalised. Computed by every run already; previously
+-- discarded once the assessment was built. Read-only projection: no new analysis, no
+-- new security reasoning -- exactly what the pipeline already produced, kept long
+-- enough to be queried. Never an authority: the assessment document remains canonical
+-- (`assessments.document`); this table exists so the console can let an analyst pivot
+-- from an assessed issue back to the session it came from.
+-- `stream_key` is nullable (a session with no `tcp_stream_id` yields none) so it is
+-- deliberately NOT part of a composite key -- an autoincrement rowid is the identity,
+-- exactly as `run_events` already does for the same reason.
+CREATE TABLE IF NOT EXISTS run_sessions (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_id        TEXT NOT NULL REFERENCES runs(run_id),
+    stream_key    TEXT,
+    tcp_stream_id INTEGER,
+    protocol      TEXT,
+    document      TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_run_sessions_run ON run_sessions(run_id);
+
 -- Append-only transition trail: distinguishes "crashed" from "failed during analysis".
 CREATE TABLE IF NOT EXISTS run_events (
     event_id   INTEGER PRIMARY KEY AUTOINCREMENT,
