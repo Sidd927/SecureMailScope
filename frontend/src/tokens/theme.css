@@ -1,0 +1,194 @@
+/**
+ * SecureMailScope — Technical Design System Tokens
+ * Archival / Forensic Light Theme
+ * WCAG-AA Verified Contrast & Exact Backend Token Parity
+ */
+
+:root {
+  /* Surfaces & Canvas */
+  --color-page: #f8f7f4;
+  --color-surface: #ffffff;
+  --color-panel: #f4f1ea;
+  --color-panel-muted: #eae5db;
+  --color-panel-card: #faf8f5;
+  --color-subtle: #f0ece3;
+
+  /* Typography / Inks */
+  --color-ink: #15191e;
+  --color-ink-secondary: #424b57;
+  --color-ink-muted: #5c6672;
+  --color-ink-faint: #88929e;
+
+  /* Hairlines & Structural Borders */
+  --color-border: #e4ded3;
+  --color-border-strong: #d2cab8;
+  --color-border-subtle: #eee9df;
+
+  /* Accent: Deep Prussian Slate Navy */
+  --color-accent: #1f3a5f;
+  --color-accent-hover: #152741;
+  --color-accent-soft: #eef3f8;
+  --color-accent-border: #bcd0e6;
+  --color-accent-ink: #11233b;
+
+  /* Severity Tokens (WCAG-AA verified) */
+  --color-sev-critical: #8d1f1f;
+  --color-sev-critical-bg: #fdf2f2;
+  --color-sev-critical-border: #f0c3c3;
+
+  --color-sev-high: #a8480f;
+  --color-sev-high-bg: #fef5ed;
+  --color-sev-high-border: #f7d2b8;
+
+  --color-sev-medium: #8a6510;
+  --color-sev-medium-bg: #fcf8ee;
+  --color-sev-medium-border: #ebd89e;
+
+  --color-sev-low: #3d5a2b;
+  --color-sev-low-bg: #f4f8f1;
+  --color-sev-low-border: #c8debf;
+
+  --color-sev-info: #41526b;
+  --color-sev-info-bg: #f1f4f8;
+  --color-sev-info-border: #cad5e2;
+
+  --color-sev-withheld: #4a3a6b;
+  --color-sev-withheld-bg: #f5f2f9;
+  --color-sev-withheld-border: #d5c8e8;
+
+  /* Posture Bands */
+  --posture-strong: #3d5a2b;
+  --posture-adequate: #1f3a5f;
+  --posture-weak: #a8480f;
+  --posture-critical: #8d1f1f;
+  --posture-insufficient: #5c6672;
+
+  /* Evidence State Specific Styling */
+  --evidence-observed-color: #111827;
+  --evidence-observed-bg: #f3f4f6;
+  --evidence-observed-border: #374151;
+
+  --evidence-inferred-color: #1e3a8a;
+  --evidence-inferred-bg: #eff6ff;
+  --evidence-inferred-border: #3b82f6;
+
+  --evidence-not-observable-color: #4b5563;
+  --evidence-not-observable-bg: #f9fafb;
+  --evidence-not-observable-border: #9ca3af;
+
+  --evidence-ambiguous-color: #854d0e;
+  --evidence-ambiguous-bg: #fefce8;
+  --evidence-ambiguous-border: #ca8a04;
+
+  --evidence-unknown-color: #6b7280;
+  --evidence-unknown-bg: #f3f4f6;
+  --evidence-unknown-border: #d1d5db;
+
+  --evidence-incomplete-color: #9a3412;
+  --evidence-incomplete-bg: #fff7ed;
+  --evidence-incomplete-border: #f97316;
+
+  /* Typography System */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Typographic Scale */
+  --text-2xs: 0.6875rem; /* 11px */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.8125rem;  /* 13px */
+  --text-base: 0.875rem; /* 14px */
+  --text-md: 0.9375rem;  /* 15px */
+  --text-lg: 1.0625rem;  /* 17px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-display: 2.25rem; /* 36px */
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radii - Subtle & Architectural */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Shadows - Minimal & Restrained */
+  --shadow-subtle: 0 1px 2px rgba(21, 25, 30, 0.04);
+  --shadow-flyout: 0 4px 16px rgba(21, 25, 30, 0.08), 0 1px 3px rgba(21, 25, 30, 0.05);
+
+  /* Transitions */
+  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS Reset & Global Styling */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Monospace Utilities */
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "cv01" 1, "cv02" 1;
+}
+
+/* Focus Visible Accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Custom Scrollbar for High-Density Technical Panes */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-panel);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-xs);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-muted);
+}

@@ -23,3 +23,5 @@ research/experiments/oq33r/test.key
 # created by `python3 -m securemailscope.backend`. Machine-local runtime state, all of
 # it reproducible from the captures that produced it.
 /securemailscope-data/
+backend.log
+frontend/dist/
