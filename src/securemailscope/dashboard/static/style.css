@@ -1,13 +1,18 @@
 /*
- * Analyst workspace styling — V2 (doc 23 §12, §13; UI-DESIGN-SPEC-V2.md).
+ * Analyst workspace styling — V3 (doc 23 §12, §13; UI-DESIGN-SPEC-V2.md;
+ * docs/sih-pitch-deck/design-v3/DESIGN.md).
  *
- * V1 was a disciplined, correct prototype that still read as formatted documentation.
- * This pass changes composition, not information architecture: fewer bordered boxes,
- * more considered typography, a deliberate spacing rhythm (tight within a group,
- * generous between groups), and exactly one true "display" moment per screen — the
- * posture verdict. Severity, posture-band, accent and text tokens keep their EXACT V1
- * hex values: they are WCAG-AA verified by `test_contrast_tokens_meet_wcag_aa` and
- * reused by the report renderer, so nothing about what they mean is renegotiated here.
+ * V2 fixed composition on every screen except the one that matters most on a first
+ * visit: Home was still a centred hero over a giant drop zone, which is the exact
+ * shape a generic upload demo takes. V3 changes two things and preserves everything
+ * else: Home becomes a bounded, two-column investigation intro (intake beside context,
+ * history promoted immediately beneath — see `.workspace-intro` below), and the
+ * typographic and spacing system is formalised into named tokens so hierarchy reads as
+ * deliberate rather than merely functional. Severity, posture-band, accent and text
+ * tokens keep their EXACT V2 hex values: they are WCAG-AA verified by
+ * `test_contrast_tokens_meet_wcag_aa` and reused verbatim by the report renderer
+ * (`reporting/styles.py`), so nothing about what they mean is renegotiated here — a
+ * finding reads the same colour in the console and in the exported PDF.
  *
  * Three rules are load-bearing rather than aesthetic:
  *
@@ -24,7 +29,7 @@
  */
 
 :root {
-  /* ---- text and line ---- */
+  /* ---- text and line — EXACT values, shared with reporting/styles.py, do not change */
   --ink: #15191e;
   --muted: #5c6672;
   --rule: #e6e1d5;
@@ -35,6 +40,7 @@
   --surface: #ffffff;
   --panel: #f5f2ec;
   --panel-2: #faf9f5;
+  --panel-3: #f0ece2;
 
   /* ---- accent: one, used only where an action or active state is implied ---- */
   --accent: #1f3a5f;
@@ -49,17 +55,30 @@
   --withheld: #4a3a6b;
   --neutral: #5c6672;
 
-  --radius: 8px;
-  --radius-sm: 5px;
+  --radius: 7px;
+  --radius-sm: 4px;
+  --radius-lg: 10px;
 
   /* ---- spacing scale: tight within a group, generous between groups ---- */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
+  --space-8: 32px;
   --space-10: 40px;
+  --space-12: 48px;
   --space-16: 64px;
+
+  /* ---- typographic scale: named so hierarchy is a deliberate choice, not an ad hoc
+     size at each call site. Sizes below are additive to what already existed. ---- */
+  --text-display: 2.375rem;   /* the one true display moment: the posture verdict */
+  --text-title: 1.2rem;       /* a screen's own title, e.g. the intro band, an error */
+  --text-subtitle: 1.05rem;   /* lead-strong paragraphs */
+  --text-eyebrow: .7rem;      /* uppercase section labels */
+  --weight-display: 680;
+  --weight-title: 650;
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
@@ -226,8 +245,9 @@ h2 {
 }
 /* The one true display moment on this screen — nothing else may be this large. */
 .posture-display {
-  font-size: 2.125rem; font-weight: 680; letter-spacing: -.015em; line-height: 1.1;
-  margin: 0; color: var(--neutral);
+  font-size: var(--text-display); font-weight: var(--weight-display);
+  letter-spacing: -.018em; line-height: 1.08; margin: 0; color: var(--neutral);
+  font-variant-numeric: tabular-nums;
 }
 .posture-display.tone-strong { color: var(--low); }
 .posture-display.tone-adequate { color: var(--info); }
@@ -242,30 +262,45 @@ h2 {
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
 
-/* ---------- submit / drop zone ---------- */
-.submit-section { margin-bottom: var(--space-16); }
-/* On a fresh instance the submit section IS the page, so its heading is a real
-   title rather than the small uppercase eyebrow every other section uses. */
-.submit-section.first-run > h2 {
-  font-size: 1.9rem; letter-spacing: -.02em; text-transform: none;
-  color: var(--ink); text-align: center; margin: 1.25rem 0 .2rem;
+/* ---------- Home: the investigation intro band ---------- */
+.submit-section { margin-bottom: var(--space-12); }
+/* A real title, but never the oversized centred hero heading V2 used on first run —
+   the composition below, not the heading size, is what carries this screen now. */
+.submit-section > h2 {
+  font-size: var(--text-title); font-weight: var(--weight-title);
+  letter-spacing: -.01em; text-transform: none; color: var(--ink); margin: 0 0 var(--space-4);
+}
+
+/* Intake and context sit side by side in one bounded band. Neither may dominate the
+   viewport: the intake panel takes the wider share because it carries the primary
+   action, and the rail is capped to a reading column rather than stretching to match.
+   This is the direct replacement for the V2 hero: a drop zone that used to be the
+   page's own full-width surface is now one participant in a two-column composition. */
+.workspace-intro {
+  display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 1fr);
+  gap: var(--space-8); align-items: start;
+}
+@media (max-width: 1024px) {
+  .workspace-intro { grid-template-columns: 1fr; }
+}
+
+.intake-panel {
+  border: 1px solid var(--rule); border-radius: var(--radius-lg);
+  background: var(--surface); padding: var(--space-5);
 }
 .upload { padding: 0; }
 .upload-kicker {
   margin: 0 0 1.75rem; text-align: center; font-size: 1rem; color: var(--muted);
 }
-.upload-scope {
-  margin: 1rem 0 0; font-size: .76rem; color: var(--muted); text-align: center;
-}
+.upload-scope { margin: var(--space-4) 0 0; font-size: .76rem; color: var(--muted); }
 
-/* The drop zone is the page's own surface, not a card nested inside another card —
-   only the interactive target itself carries a border, and it is dashed, signalling
-   "drop here" rather than "contained region." */
+/* The drop zone is a precise intake surface, not a marketing hero: compact, dashed to
+   signal "drop here" rather than "contained region," but no longer sized to dominate
+   the screen the way the V2 first-run hero was. */
 .dropzone {
   border: 2px dashed var(--rule-strong); border-radius: var(--radius);
-  background: var(--panel-2); padding: 1.75rem 1.5rem; text-align: center;
+  background: var(--panel-2); padding: var(--space-6) var(--space-5); text-align: center;
 }
-.upload.hero .dropzone { padding: 3.5rem 1.5rem; }
 .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
 .dropzone[aria-busy="true"] { opacity: .75; }
 /* An upward arrow over a baseline, drawn with borders. No image, no icon font. */
@@ -284,7 +319,6 @@ h2 {
   border-left: 2px solid var(--accent);
 }
 .dz-title { margin: 0; font-size: 1.05rem; font-weight: 600; }
-.upload.hero .dz-title { font-size: 1.4rem; letter-spacing: -.01em; }
 .dz-pick { margin: .85rem 0 0; }
 .dz-browse {
   display: inline-block; font-size: .84rem; font-weight: 600; cursor: pointer;
@@ -341,26 +375,35 @@ h2 {
 .submit-error-title { margin: 0; font-weight: 650; font-size: .92rem; }
 .submit-error-body { margin: .35rem 0 0; font-size: .86rem; color: var(--ink); }
 
-/* ---------- methodology rail: subordinate, never competing with the drop zone ---- */
-.methodology { margin: var(--space-16) 0 0; padding-top: var(--space-6);
-  border-top: 1px solid var(--rule); }
-.methodology-label {
-  margin: 0 0 var(--space-4); font-size: .68rem; letter-spacing: .09em;
+/* ---------- context rail: beside the intake panel, capped to a reading column ---- */
+.context-rail {
+  border-left: 1px solid var(--rule); padding-left: var(--space-6);
+}
+@media (max-width: 1024px) {
+  .context-rail { border-left: 0; padding-left: 0; padding-top: var(--space-5);
+    border-top: 1px solid var(--rule); }
+}
+.context-rail-label {
+  margin: 0 0 var(--space-3); font-size: .68rem; letter-spacing: .09em;
   text-transform: uppercase; color: var(--muted); font-weight: 700;
 }
-.methodology-rail {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: var(--space-6) var(--space-10);
+.context-rail-list {
+  list-style: none; margin: 0 0 var(--space-4); padding: 0;
+  display: grid; gap: var(--space-3);
 }
-.methodology-rail li { flex: 1 1 12rem; min-width: 0; position: relative; padding-left: 1.1rem; }
-.methodology-rail li::before {
+.context-rail-list li { position: relative; padding-left: 1.1rem; }
+.context-rail-list li::before {
   content: ""; position: absolute; left: 0; top: .45rem; width: .4rem; height: .4rem;
   border-radius: 50%; background: var(--accent);
 }
-.methodology-title {
+.context-rail-title {
   display: block; font-weight: 650; font-size: .84rem; color: var(--ink);
 }
-.methodology-body { display: block; font-size: .8rem; color: var(--muted); margin-top: .15rem; }
+.context-rail-body { display: block; font-size: .8rem; color: var(--muted); margin-top: .15rem; }
+.context-rail-scope {
+  margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--rule);
+  font-size: .74rem; color: var(--muted);
+}
 
 /* ---------- facts ---------- */
 dl.facts {
@@ -683,7 +726,6 @@ fieldset.facet legend {
   dl.facts dd { margin-bottom: .5rem; }
   .bar { grid-template-columns: 8rem 1fr 3rem; }
   .masthead-inner { align-items: flex-start; }
-  .methodology-rail { flex-direction: column; gap: var(--space-4); }
-  .upload.hero .dropzone { padding: 1.75rem 1.15rem; }
+  .dropzone { padding: var(--space-5) var(--space-3); }
   .tabs-inner { flex-direction: column; align-items: flex-start; gap: .5rem; }
 }

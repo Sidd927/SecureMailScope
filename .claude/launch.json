@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "securemailscope-dashboard",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["demo/commands/start_demo.sh", "8000"],
+      "port": 8000
+    }
+  ]
+}

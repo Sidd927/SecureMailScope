@@ -1,15 +1,19 @@
 /**
  * Home — start an analysis, then see the ones that exist (doc 23 §7 Screen 1).
  *
- * The primary action is always the first thing on this screen. On a fresh instance it
- * is the *only* thing, because an empty console whose empty state is a sentence about
- * an API is a dead end; on a populated one it sits above the history without competing
- * with it.
+ * Composition (V3): an investigation workspace, not a landing page. The intake and the
+ * "how this works" rail sit side by side in a compact, bounded intro band — neither one
+ * is allowed to dominate the viewport — and the analysis history is promoted to a
+ * first-class, always-visible element directly beneath it, not a section a returning
+ * analyst has to scroll past a hero to reach. There is no longer a distinct "hero"
+ * layout for the empty-history case: the same compact composition holds regardless of
+ * whether any analyses exist yet, because a giant centred drop zone was the single
+ * largest signal that this was a demo rather than a workspace.
  *
  * This view composes two independent pieces and adds no logic of its own:
  *   - `upload.js` submits a capture to the existing endpoint;
  *   - `history.js` renders the list exactly as it always has, and reports the total so
- *     this screen can choose the hero or the compact arrangement.
+ *     this screen can choose its heading.
  *
  * No security value is read, derived or displayed here.
  */
@@ -33,31 +37,37 @@ function instanceLimits() {
 }
 
 /**
- * The methodology, as a slim rail — not a grid of marketing-style cards competing with
- * the drop zone above it. One row, small type, a section break before it so it never
- * reads as part of the primary action. The four steps are unchanged from the original
- * explainer; only their visual weight is demoted.
+ * The context rail: what this workspace does, in the fewest words that stay accurate.
+ * A vertical list, not a card grid, sized to sit beside the intake panel rather than
+ * below it — this is what replaced the four-column marketing-style row underneath the
+ * old drop zone. No heading element of its own (a labelled paragraph, same pattern the
+ * original explainer used): the intro band's one `h2` belongs to the section title.
  */
-function methodologyRail() {
+function contextRail() {
   const steps = [
     ['Reconstruct', 'sessions rebuilt from the captured frames'],
     ['Assess', 'deterministic rules examine the evidence'],
     ['Cite', 'every finding names its standard'],
     ['Abstain', 'uncertain questions are declared, not guessed'],
   ];
-  const wrap = el('div', { className: 'methodology' });
+  const wrap = el('div', { className: 'context-rail' });
   wrap.appendChild(el('p', {
-    className: 'methodology-label',
-    text: 'How SecureMailScope works',
+    className: 'context-rail-label',
+    text: 'How this works',
   }));
-  const rail = el('ol', { className: 'methodology-rail' });
+  const rail = el('ol', { className: 'context-rail-list' });
   for (const [title, body] of steps) {
     rail.appendChild(el('li', {}, [
-      el('span', { className: 'methodology-title', text: title }),
-      el('span', { className: 'methodology-body', text: body }),
+      el('span', { className: 'context-rail-title', text: title }),
+      el('span', { className: 'context-rail-body', text: body }),
     ]));
   }
   wrap.appendChild(rail);
+  wrap.appendChild(el('p', {
+    className: 'context-rail-scope',
+    text: 'Passive only: no server access, no credentials, no active probing, and no '
+      + 'message content is read.',
+  }));
   return wrap;
 }
 
@@ -68,7 +78,7 @@ export async function render(root, _ctx) {
   const fresh = !total;
 
   const panel = uploadPanel({
-    hero: fresh,
+    hero: false,
     limits,
     onSubmitted: (run) => {
       // A completed run has something to show, so go straight to it. Anything else is
@@ -84,10 +94,17 @@ export async function render(root, _ctx) {
     onFailed: () => { renderHistory(historyHost, {}); },
   });
 
+  // Intake and context sit side by side in one bounded band — neither the drop zone
+  // nor the explainer is allowed to read as the page's hero. The same composition
+  // holds whether this is the first capture or the fiftieth.
+  const intro = el('div', { className: 'workspace-intro' }, [
+    el('div', { className: 'intake-panel' }, [panel]),
+    contextRail(),
+  ]);
+
   const blocks = [
-    section('submit', fresh ? 'Assess an email capture' : 'New analysis',
-      fresh ? [panel, methodologyRail()] : [panel],
-      { className: fresh ? 'submit-section first-run' : 'submit-section' }),
+    section('submit', fresh ? 'Start an investigation' : 'New analysis', [intro],
+      { className: 'submit-section' }),
     historyHost,
   ];
   mount(root, blocks);
