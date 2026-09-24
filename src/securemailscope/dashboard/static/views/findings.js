@@ -56,8 +56,35 @@ function findingSummaryLine(row) {
   return line;
 }
 
+/** The tcp_stream_id suffix of a `capture_id:tcp_stream_id` stream key, for building a
+ * session-detail link. Returns null for anything that is not that exact shape, rather
+ * than guessing -- a malformed key must not produce a link to the wrong session. */
+function tcpStreamIdOf(streamKey) {
+  if (typeof streamKey !== 'string' || streamKey.indexOf(':') === -1) return null;
+  const suffix = streamKey.slice(streamKey.lastIndexOf(':') + 1);
+  return /^\d+$/.test(suffix) ? suffix : null;
+}
+
+/** Sessions this finding is attributed to, as links into the session detail drawer.
+ * Falls back to plain text for any stream key that cannot be resolved to a link. */
+function sessionLinks(row, runId) {
+  const keys = row.affected_stream_keys && row.affected_stream_keys.length
+    ? row.affected_stream_keys : (row.stream_key ? [row.stream_key] : []);
+  if (!keys.length) return text(null, 'not recorded');
+  const wrap = el('span');
+  keys.forEach((key, index) => {
+    if (index > 0) wrap.appendChild(document.createTextNode(', '));
+    const streamId = tcpStreamIdOf(key);
+    wrap.appendChild(streamId
+      ? el('a', { text: `stream ${streamId}`,
+        attrs: { href: `#/run/${runId}/sessions/${streamId}` } })
+      : document.createTextNode(key));
+  });
+  return wrap;
+}
+
 /** Full detail for one finding. Every value is canonical; none is rewritten. */
-function findingDetail(row) {
+function findingDetail(row, runId) {
   const body = el('div', { className: 'finding-body' });
 
   body.appendChild(facts([
@@ -73,10 +100,15 @@ function findingDetail(row) {
     ['Investigative priority', text(row.priority_score)],
     ['ML adjustment', text(row.ml_adjustment, '0'),
       'ordering only; cannot cross a severity tier'],
-    ['Stream', text(row.stream_key, 'not recorded')],
     ['Frame references', row.frames_text],
     ['Rule ids', row.source_rule_ids.length
       ? row.source_rule_ids.join(' · ') : 'none recorded'],
+  ]));
+  // `facts()` coerces every value to a string, so the one row that needs a real link
+  // (not text) is built directly rather than routed through it.
+  body.appendChild(el('dl', { className: 'facts' }, [
+    el('dt', { text: 'Sessions' }),
+    el('dd', {}, [sessionLinks(row, runId)]),
   ]));
 
   if (row.conclusion) {
@@ -128,14 +160,14 @@ function findingDetail(row) {
   return body;
 }
 
-function findingCard(row) {
+function findingCard(row, runId) {
   // <details> gives native keyboard operation and expanded state without ARIA
   // bookkeeping that could drift out of sync.
   const card = el('details', { className: 'finding' });
   const summary = el('summary');
   summary.appendChild(findingSummaryLine(row));
   card.appendChild(summary);
-  card.appendChild(findingDetail(row));
+  card.appendChild(findingDetail(row, runId));
   return card;
 }
 
@@ -248,7 +280,7 @@ export async function render(root, { runId }) {
       ])]);
       return;
     }
-    mount(resultsHost, visible.map(findingCard));
+    mount(resultsHost, visible.map((row) => findingCard(row, runId)));
   }
 
   redraw();

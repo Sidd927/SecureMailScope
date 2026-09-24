@@ -133,6 +133,17 @@ export function listArtifacts(runId, { verify = false } = {}) {
 }
 
 /**
+ * Per-session detail (`SessionEvidence.to_dict()`, verbatim) for every session
+ * reconstructed from this capture. A projection, not a second authority: findings,
+ * posture and evidence state remain `getDashboard`'s. Powers the session explorer and
+ * session detail views, and the pivot from a finding or abstention's stream key to the
+ * session it names.
+ */
+export function getSessions(runId) {
+  return request(`${BASE}/analyses/${requireRunId(runId)}/sessions`);
+}
+
+/**
  * A report URL. Built from a validated run id and a FIXED format allowlist —
  * never from a string the API supplied (doc 23 §11).
  */

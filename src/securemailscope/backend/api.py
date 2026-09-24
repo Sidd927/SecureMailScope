@@ -36,6 +36,7 @@ from securemailscope.backend.schemas import (
     ArtifactListResponse, AssessmentResponse, HealthResponse, ReportListResponse,
     RunListResponse, RunResponse, SessionListResponse, run_to_response,
 )
+from securemailscope.backend.artifacts import KIND_PCAP
 from securemailscope.backend.service import AnalysisService
 from securemailscope.dissect import TsharkAdapter
 from securemailscope.posture import POSTURE_ENGINE_VERSION, POSTURE_SCHEMA_VERSION
@@ -226,19 +227,36 @@ def create_app(service: Optional[AnalysisService] = None,
 
     @router.get("/analyses/{run_id}/sessions", response_model=SessionListResponse)
     def get_sessions(run_id: str) -> SessionListResponse:
-        """Per-session detail for a run, verbatim, in reconstruction order.
+        """Per-session detail for a run (`SessionEvidence.to_dict()`, verbatim).
 
-        Read-only projection over what Phase 3 already computed for this run
-        (doc capability audit, V4 investigation rebuild). Not a second authority --
-        findings, posture and evidence state remain `.../assessment`'s and
-        `.../dashboard`'s. This exists so the console can pivot from a finding
-        (`affected_stream_keys`) to the session it was found in.
+        Re-derived from the stored capture artifact on every request -- the same
+        pattern `.../dashboard` already uses to re-derive from the stored assessment,
+        applied one layer earlier. Phase 3 session reconstruction is deterministic and
+        side-effect-free, so re-running it over the exact bytes this run analysed
+        reproduces the exact sessions that run saw, without persisting a second copy of
+        them or touching the Phase-8 backend core (db.py, service.py) to do it.
+
+        Not a second authority: findings, posture and evidence state remain
+        `.../assessment`'s and `.../dashboard`'s. This exists so the console can pivot
+        from a finding (`affected_stream_keys`) or an abstention (`stream_key`) to the
+        session it names.
         """
+        from securemailscope.ingest import analyze_capture
+        from securemailscope.session import reconstruct_sessions
+
         rid = _validate_run_id(run_id)
-        items = svc.get_sessions(rid)
-        capture_id = items[0].get("capture_id") if items else None
+        svc.get_run(rid)                    # 404 for an unknown run id
+        record = next((a for a in svc.repo.list_artifacts(rid) if a.kind == KIND_PCAP),
+                      None)
+        if record is None:
+            return SessionListResponse(run_id=rid, total=0, items=[])
+
+        path = svc.artifacts.absolute(record.relative_path)
+        _run, frames = analyze_capture(path, config=svc.config)
+        sessions = reconstruct_sessions(frames, record.sha256)
+        items = [s.to_dict() for s in sessions]
         return SessionListResponse(
-            run_id=rid, capture_id=capture_id, total=len(items), items=items)
+            run_id=rid, capture_id=record.sha256, total=len(items), items=items)
 
     # ---------------------------------------------------------- dashboard
     @router.get("/analyses/{run_id}/dashboard")

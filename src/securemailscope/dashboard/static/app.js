@@ -60,12 +60,31 @@ const ROUTES = [
     view: () => import('./views/evidence.js'),
     name: 'evidence',
   },
+  {
+    pattern: /^#\/run\/([0-9a-f]{32})\/sessions$/,
+    view: () => import('./views/sessions.js'),
+    name: 'sessions',
+  },
+  {
+    // The session detail drawer is the same view with a stream selected -- deep
+    // linkable, so a pivot from a finding or a shared link opens straight to it.
+    pattern: /^#\/run\/([0-9a-f]{32})\/sessions\/(\d+)$/,
+    view: () => import('./views/sessions.js'),
+    name: 'sessions',
+  },
+  {
+    pattern: /^#\/run\/([0-9a-f]{32})\/crosssession$/,
+    view: () => import('./views/crosssession.js'),
+    name: 'crosssession',
+  },
 ];
 
 const TABS = [
   { name: 'overview', label: 'Overview', suffix: '' },
   { name: 'findings', label: 'Findings', suffix: '/findings' },
+  { name: 'sessions', label: 'Sessions', suffix: '/sessions' },
   { name: 'evidence', label: 'Evidence & provenance', suffix: '/evidence' },
+  { name: 'crosssession', label: 'Cross-session', suffix: '/crosssession' },
 ];
 
 /**
@@ -242,11 +261,19 @@ async function route() {
     /* history module unavailable; nothing to stop */
   }
 
+  // Leaving a view must not leave a drawer behind either. The session detail drawer
+  // mounts to `document.body` (an overlay, not a child of `#main`) so its own close
+  // button can dismiss it without a full re-render; a nav-link click bypasses that
+  // button entirely, so the router clears any stray drawer on every navigation.
+  document.querySelectorAll('.drawer').forEach((node) => node.remove());
+
   setNav(match.r.name);
   mount(main, [spinner(runId ? 'Loading analysis…' : 'Loading…')]);
   try {
     const module = await match.r.view();
-    await module.render(main, { runId });
+    // A second capture group, where a route has one, addresses a sub-resource within
+    // the run -- currently only the session detail drawer's tcp_stream_id.
+    await module.render(main, { runId, streamId: match.m[2] || null });
     main.focus({ preventScroll: true });
   } catch (error) {
     renderError(error);

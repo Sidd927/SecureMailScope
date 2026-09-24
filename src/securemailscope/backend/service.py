@@ -213,14 +213,6 @@ class AnalysisService:
         try:
             with self.db.transaction() as cur:
                 assessment_id = self.repo.store_assessment(document, cursor=cur)
-                # Per-session detail, in the same transaction as the assessment it was
-                # computed alongside: a crash before commit leaves neither stored, a
-                # crash after leaves both (ADR-0018 Decision 2, extended here rather
-                # than re-litigated). Read-only projection -- these are the exact
-                # `SessionEvidence` objects `result.assessment` was already derived
-                # from, not a new computation.
-                self.repo.store_sessions(
-                    run.run_id, [s.to_dict() for s in result.sessions], cursor=cur)
                 # Re-home the artifact record under the real capture_id now that it is
                 # known. The file itself is content-addressed by its own hash already.
                 self.repo.add_artifact(artifact, cursor=cur)
@@ -251,16 +243,6 @@ class AnalysisService:
                 detail={"run_id": run_id, "state": run.state.value},
                 run_id=run_id)
         return self.repo.get_assessment(run.assessment_id)
-
-    def get_sessions(self, run_id: str) -> List[Dict[str, Any]]:
-        """Per-session detail for a run, verbatim, in reconstruction order.
-
-        A run that exists but has no sessions stored (e.g. it failed before Phase 3,
-        or predates this table) returns an empty list rather than 404 -- the run
-        itself is real, it simply has nothing here to show.
-        """
-        self.repo.get_run(run_id)          # 404 for an unknown run id
-        return self.repo.get_sessions(run_id)
 
     def list_runs(self, limit: int, offset: int,
                   state: Optional[JobState] = None,

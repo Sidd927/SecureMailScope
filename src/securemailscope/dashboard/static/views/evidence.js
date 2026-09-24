@@ -117,6 +117,18 @@ function evidencePanel(vm) {
   });
 }
 
+/**
+ * The session a row names, as text only. This file deliberately builds no clickable
+ * link from any data it renders (`test_evidence_view_builds_no_urls_from_data`) --
+ * provenance, standards and abstention text on this screen are exactly the fields a
+ * hostile capture can steer, and the simplest guarantee against a crafted stream key
+ * ever reaching a navigable attribute is that this file has no such code path at all.
+ * An analyst who needs the linked drawer view reaches it from the Sessions tab.
+ */
+function sessionCell(streamKey) {
+  return text(streamKey, '—');
+}
+
 /** Abstentions: what was declined, why, and what would settle it. */
 function abstentionPanel(vm) {
   const rows = vm.abstentions || [];
@@ -132,7 +144,7 @@ function abstentionPanel(vm) {
   return section('abstentions', 'Abstentions', [
     table(`${rows.length} abstention(s)`,
       ['Reason', 'Issue class', 'Could not conclude', 'Why', 'Would be resolved by',
-        'Protocol', 'Frames'],
+        'Protocol', 'Session', 'Frames'],
       rows.map((a) => [
         a.reason_label || text(a.reason),
         a.issue_class_label || text(a.issue_class, '—'),
@@ -140,6 +152,7 @@ function abstentionPanel(vm) {
         text(a.why, '—'),
         text(a.resolved_by, '—'),
         a.protocol_label,
+        sessionCell(a.stream_key),
         a.frames && a.frames.length ? a.frames.join(', ') : 'none recorded',
       ]),
       { wide: [2, 3, 4] }),

@@ -1,12 +1,16 @@
 """
-Sessions API: per-session detail, persisted and served verbatim.
+Sessions API: per-session detail, re-derived from the stored capture and served
+verbatim.
 
 `SessionEvidence` was always computed by the pipeline (Phase 3) but discarded once the
 assessment was built -- there was no way to retrieve it after a run completed. This
-endpoint is a read-only projection over exactly that data, stored in the same
-transaction as the assessment (ADR-0018 Decision 2, extended). It introduces no new
-analysis, no new security reasoning, and is not a second authority: `.../assessment`
-and `.../dashboard` remain canonical for findings, posture and evidence state.
+endpoint re-runs ingest + session reconstruction (Phase 2/3, deterministic and
+side-effect-free) over the exact artifact bytes that run analysed, on every request --
+the same pattern `.../dashboard` already uses to re-derive from the stored assessment,
+applied one layer earlier. It introduces no new analysis, no new security reasoning,
+and touches none of the Phase-8 backend core (db.py, service.py stay untouched;
+test_backend_architecture.py's freeze tests guard that). `.../assessment` and
+`.../dashboard` remain the canonical documents.
 """
 import os
 
@@ -62,7 +66,7 @@ def test_malformed_run_id_is_400(tmp_path):
 
 @needs_tshark
 @needs_pcaps
-def test_sessions_are_persisted_and_served(tmp_path):
+def test_sessions_are_re_derived_and_served(tmp_path):
     client = _client(tmp_path)
     run = _upload(client, PLAINTEXT).json()
     assert run["state"] == "COMPLETED"
@@ -89,13 +93,14 @@ def test_sessions_are_persisted_and_served(tmp_path):
             "OBSERVED", "INFERRED", "UNKNOWN", "AMBIGUOUS", "INCOMPLETE",
             "NOT_OBSERVABLE"), (field_name, field_value)
     assert body["capture_id"] == session["capture_id"]
+    assert body["capture_id"] == run["capture_id"]
 
 
 @needs_tshark
 @needs_pcaps
-def test_sessions_match_pipeline_session_count(tmp_path):
-    """The stored/served count must equal what Phase 3 actually reconstructed --
-    verified against a direct pipeline invocation, not assumed."""
+def test_sessions_match_a_direct_pipeline_invocation(tmp_path):
+    """The served sessions must equal what Phase 3 actually reconstructs -- verified
+    against a direct pipeline invocation over the same bytes, not assumed."""
     from securemailscope.backend.pipeline import run_pipeline
 
     client = _client(tmp_path)
@@ -105,13 +110,19 @@ def test_sessions_match_pipeline_session_count(tmp_path):
     direct = run_pipeline(IMPLICIT)
     served = client.get(f"/api/v1/analyses/{run['run_id']}/sessions").json()
     assert served["total"] == len(direct.sessions)
+    # Reconstruction is deterministic: the same protocol/tcp_stream_id pairs, in the
+    # same order, not just the same count.
+    served_keys = [(s["protocol"], s["tcp_stream_id"]) for s in served["items"]]
+    direct_keys = [(s.protocol, s.tcp_stream_id) for s in direct.sessions]
+    assert served_keys == direct_keys
 
 
 @needs_tshark
 @needs_pcaps
 def test_sessions_survive_a_fresh_service_instance(tmp_path):
-    """Persisted, not cached in memory: a new `AnalysisService` over the same data
-    directory must still be able to serve the sessions of an earlier run."""
+    """The stored artifact -- not an in-memory result -- is what this endpoint reads:
+    a new `AnalysisService` over the same data directory must still be able to
+    re-derive the sessions of an earlier run."""
     data_dir = str(tmp_path / "data")
     first = TestClient(create_app(service=AnalysisService(data_dir)),
                        raise_server_exceptions=False)
@@ -124,14 +135,28 @@ def test_sessions_survive_a_fresh_service_instance(tmp_path):
     assert body["total"] >= 1
 
 
-def test_incomplete_run_has_no_sessions_not_a_500(tmp_path):
-    """A run that never reached Phase 3 (e.g. rejected at ingest) has nothing stored
-    here -- an empty list, not an error, because the run itself is real."""
+def test_run_with_no_stored_capture_artifact_returns_an_empty_list(tmp_path):
+    """A run that never reached a stored artifact has nothing to re-derive from --
+    an empty list, not an error, because the run itself is real."""
     client = _client(tmp_path)
     r = client.post("/api/v1/analyses", content=b"not a capture",
                     headers={"content-type": "application/octet-stream"})
-    # Whatever the submission outcome, if a run_id exists its /sessions must not 500.
     if r.status_code < 500 and isinstance(r.json(), dict) and "run_id" in r.json():
         run_id = r.json()["run_id"]
         sr = client.get(f"/api/v1/analyses/{run_id}/sessions")
         assert sr.status_code in (200, 404)
+
+
+def test_backend_core_was_not_touched_to_build_this():
+    """This endpoint must not have required db.py or service.py to change -- the
+    freeze tests in test_backend_architecture.py are the enforcement; this test names
+    the intent so a future regression here is legible without cross-referencing."""
+    import subprocess
+    diff = subprocess.run(["git", "diff", "--name-only", "v0.3.0-phase8", "HEAD"],
+                          capture_output=True, text=True)
+    if diff.returncode != 0:
+        pytest.skip("git unavailable")
+    changed = {os.path.basename(f) for f in diff.stdout.splitlines()
+              if f.startswith("src/securemailscope/backend/")}
+    assert "db.py" not in changed
+    assert "service.py" not in changed
