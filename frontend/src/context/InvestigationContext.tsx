@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../api/client';
-import { FIXTURES, type FixtureKey } from '../design-lab/fixtures';
+import { FIXTURES, type FixtureKey } from '../fixtures';
 import type {
   RunResponse,
   DashboardViewModel,
@@ -9,6 +9,7 @@ import type {
   AssessmentResponse,
   ReportItem,
   ProtocolEvent,
+  ReportDocument,
 } from '../api/types';
 
 export const DEFAULT_FALLBACK_RUNS: RunResponse[] = [
@@ -86,8 +87,12 @@ export type ForensicTab =
   | 'cross_session'
   | 'report';
 
+export type SectionErrors = Partial<Record<'sessions' | 'assessment' | 'reports', string>>;
+
 interface InvestigationContextType {
   runs: RunResponse[];
+  /** False until the first run-list request settles; until then `runs` holds fixture placeholders. */
+  runsLoaded: boolean;
   activeRunId: string | null;
   activeRun: RunResponse | null;
   dashboard: DashboardViewModel | null;
@@ -104,6 +109,12 @@ interface InvestigationContextType {
   activeTab: ForensicTab;
   isLoading: boolean;
   error: string | null;
+  isUsingFixtures: boolean;
+  sectionErrors: SectionErrors;
+  reportDoc: ReportDocument | null;
+  reportStatus: 'idle' | 'loading' | 'ready' | 'error';
+  reportError: string | null;
+  loadReport: () => Promise<void>;
   filterProtocol: string | null;
   filterSeverity: string | null;
   searchQuery: string;
@@ -173,6 +184,15 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [showShortcuts, setShowShortcuts] = useState<boolean>(initialModal === 'shortcuts');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [runsFromFixtures, setRunsFromFixtures] = useState<boolean>(false);
+  const [runsLoaded, setRunsLoaded] = useState<boolean>(false);
+  const [runDetail, setRunDetail] = useState<RunResponse | null>(null);
+  const [investigationFromFixtures, setInvestigationFromFixtures] = useState<boolean>(false);
+  const isUsingFixtures = runsFromFixtures || investigationFromFixtures;
+  const [sectionErrors, setSectionErrors] = useState<SectionErrors>({});
+  const [reportDoc, setReportDoc] = useState<ReportDocument | null>(null);
+  const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [reportError, setReportError] = useState<string | null>(null);
 
   // Filters
   const [filterProtocol, setFilterProtocol] = useState<string | null>(null);
@@ -191,7 +211,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
       params.delete('session');
     }
     if (selectedFinding?.title) {
-      params.set('finding', encodeURIComponent(selectedFinding.title));
+      params.set('finding', selectedFinding.title);
     } else {
       params.delete('finding');
     }
@@ -233,19 +253,19 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
         setActiveTab('overview');
       } else if (e.key === '2') {
         setActiveView('workbench');
-        setActiveTab('provenance');
+        setActiveTab('evidence');
       } else if (e.key === '3') {
         setActiveView('workbench');
         setActiveTab('journey');
       } else if (e.key === '4') {
         setActiveView('workbench');
-        setActiveTab('evidence');
+        setActiveTab('certs');
       } else if (e.key === '5') {
         setActiveView('workbench');
-        setActiveTab('certs');
+        setActiveTab('cross_session');
       } else if (e.key === '6') {
         setActiveView('workbench');
-        setActiveTab('cross_session');
+        setActiveTab('provenance');
       } else if (e.key === '7') {
         setActiveView('workbench');
         setActiveTab('report');
@@ -261,19 +281,10 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
     if (found) return found;
     const fix = Object.values(FIXTURES).find((f) => f.run.run_id === activeRunId);
     if (fix) return fix.run as unknown as RunResponse;
-    if (dashboard && activeRunId) {
-      return {
-        run_id: activeRunId,
-        capture_id: dashboard.identity?.capture_id || '',
-        state: 'COMPLETED',
-        created_at: dashboard.identity?.generated_at || new Date().toISOString(),
-        source_filename: dashboard.identity?.capture_id || 'capture.pcap',
-        duration_ms: null,
-        ai_enabled: dashboard.identity?.ai_enabled || false,
-      } as RunResponse;
-    }
+    // Runs outside the 50-item list come from GET /analyses/{id}; nothing is synthesised.
+    if (runDetail?.run_id === activeRunId) return runDetail;
     return null;
-  }, [runs, activeRunId, dashboard]);
+  }, [runs, activeRunId, runDetail]);
 
   const selectedSession = useMemo(() => {
     if (!selectedStreamKey || !sessions.length) return sessions[0] || null;
@@ -285,19 +296,28 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
       const resp = await api.getAnalyses({ limit: 50 });
       if (resp && resp.items && resp.items.length > 0) {
         setRuns(resp.items);
+        setRunsFromFixtures(false);
+        setRunsLoaded(true);
         return resp.items;
       }
       setRuns(DEFAULT_FALLBACK_RUNS);
+      setRunsFromFixtures(true);
+      setRunsLoaded(true);
       return DEFAULT_FALLBACK_RUNS;
     } catch (err: any) {
       console.warn('Backend unavailable, using authentic offline PCAP fixtures:', err);
       setRuns(DEFAULT_FALLBACK_RUNS);
+      setRunsFromFixtures(true);
+      setRunsLoaded(true);
       return DEFAULT_FALLBACK_RUNS;
     }
   }, []);
 
   const selectRun = useCallback(async (runId: string) => {
     setActiveRunId(runId);
+    setReportDoc(null);
+    setReportStatus('idle');
+    setReportError(null);
     setIsLoading(true);
     setError(null);
     setSelectedFinding(null);
@@ -306,23 +326,28 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
     setDossierOpen(false);
 
     try {
-      const [dashData, sessData, assessData, repsData] = await Promise.all([
+      const failures: SectionErrors = {};
+      const [dashData, runData, sessData, assessData, repsData] = await Promise.all([
         api.getDashboard(runId),
+        api.getAnalysis(runId).catch(() => null),
         api.getSessions(runId).catch((e) => {
-          console.warn('Sessions endpoint warning:', e);
+          failures.sessions = e?.message || 'Sessions request failed';
           return { run_id: runId, capture_id: '', total: 0, items: [] };
         }),
         api.getAssessment(runId).catch((e) => {
-          console.warn('Assessment endpoint warning:', e);
+          failures.assessment = e?.message || 'Assessment request failed';
           return null;
         }),
         api.getReports(runId).catch((e) => {
-          console.warn('Reports endpoint warning:', e);
+          failures.reports = e?.message || 'Reports request failed';
           return { run_id: runId, items: [] };
         }),
       ]);
+      setSectionErrors(failures);
+      setRunDetail(runData);
 
       setDashboard(dashData);
+      setInvestigationFromFixtures(false);
       setAssessment(assessData);
       setReports(repsData?.items || []);
       const items = sessData.items || [];
@@ -336,7 +361,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       if (initialFindingId && dashData.findings && dashData.findings.length > 0) {
-        const decoded = decodeURIComponent(initialFindingId).toLowerCase();
+        const decoded = initialFindingId.toLowerCase();
         const matchingFinding = dashData.findings.find(
           (f) =>
             f.title.toLowerCase().includes(decoded) ||
@@ -360,6 +385,8 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
       if (fixtureKey && FIXTURES[fixtureKey]) {
         const fix = FIXTURES[fixtureKey];
         setDashboard(fix.dashboard);
+        setInvestigationFromFixtures(true);
+        setSectionErrors({});
         setAssessment(fix.assessment);
         const fixSessions = fix.sessions?.items || [];
         setSessions(fixSessions);
@@ -367,7 +394,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
           setSelectedStreamKey(fixSessions[0].stream_key);
         }
         if (initialFindingId && fix.dashboard?.findings && fix.dashboard.findings.length > 0) {
-          const decoded = decodeURIComponent(initialFindingId).toLowerCase();
+          const decoded = initialFindingId.toLowerCase();
           const match = fix.dashboard.findings.find(
             (f: any) => f.title.toLowerCase().includes(decoded) || (f.issue_class && f.issue_class.toLowerCase().includes(decoded))
           );
@@ -382,6 +409,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
         setError(null);
       } else {
         setDashboard(null);
+        setInvestigationFromFixtures(false);
         setError(`Unable to resolve investigation session for runId: "${runId}". (HTTP 502 Bad Gateway)`);
       }
     } finally {
@@ -401,6 +429,19 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
     setSelectedEventFrame(null);
     setSelectedEvent(null);
   }, []);
+
+  const loadReport = useCallback(async () => {
+    if (!activeRunId || investigationFromFixtures) return;
+    setReportStatus('loading');
+    setReportError(null);
+    try {
+      setReportDoc(await api.getReportJson(activeRunId));
+      setReportStatus('ready');
+    } catch (err: any) {
+      setReportError(err?.message || 'Report request failed');
+      setReportStatus('error');
+    }
+  }, [activeRunId, investigationFromFixtures]);
 
   const selectFinding = useCallback((finding: FindingRow | null) => {
     setSelectedFinding(finding);
@@ -442,8 +483,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
         setActiveView('workbench');
         return run;
       } catch (err: any) {
-        console.error('Upload failed:', err);
-        setError(err.message || 'Capture analysis failed');
+        // The caller reports the failure; the global error belongs to the loaded run.
         throw err;
       } finally {
         setIsLoading(false);
@@ -500,6 +540,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
     <InvestigationContext.Provider
       value={{
         runs,
+        runsLoaded,
         activeRunId,
         activeRun,
         dashboard,
@@ -516,6 +557,12 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
         activeTab,
         isLoading,
         error,
+        isUsingFixtures,
+        sectionErrors,
+        reportDoc,
+        reportStatus,
+        reportError,
+        loadReport,
         filterProtocol,
         filterSeverity,
         searchQuery,

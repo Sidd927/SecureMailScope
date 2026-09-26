@@ -1,114 +1,55 @@
 import React from 'react';
-import type { EvidenceState } from '../../api/types';
+import { Eye, GitBranch, HelpCircle, Split, Scissors, EyeOff } from 'lucide-react';
+import { evidenceStateMeta } from '../../utils/evidence';
 
 interface EvidenceBadgeProps {
-  state: EvidenceState | string;
+  state: string | null | undefined;
   size?: 'sm' | 'md';
-  showGlyph?: boolean;
+  count?: number;
 }
 
-const GLYPHS: Record<EvidenceState, string> = {
-  OBSERVED: '●',
-  INFERRED: '⊢',
-  UNKNOWN: '?',
-  AMBIGUOUS: '⧖',
-  INCOMPLETE: '⇥',
-  NOT_OBSERVABLE: '⊘',
+const ICONS: Record<string, React.ElementType> = {
+  OBSERVED: Eye,
+  INFERRED: GitBranch,
+  UNKNOWN: HelpCircle,
+  AMBIGUOUS: Split,
+  INCOMPLETE: Scissors,
+  NOT_OBSERVABLE: EyeOff,
 };
 
-const LABELS: Record<EvidenceState, string> = {
-  OBSERVED: 'OBSERVED',
-  INFERRED: 'INFERRED',
-  UNKNOWN: 'UNKNOWN',
-  AMBIGUOUS: 'AMBIGUOUS',
-  INCOMPLETE: 'INCOMPLETE',
-  NOT_OBSERVABLE: 'NOT OBSERVABLE',
-};
-
-export const EvidenceBadge: React.FC<EvidenceBadgeProps> = ({
-  state,
-  size = 'md',
-  showGlyph = true,
-}) => {
-  const normState = (state as EvidenceState) || 'UNKNOWN';
-  const glyph = GLYPHS[normState] || '•';
-  const label = LABELS[normState] || String(state);
-
-  const styleMap: Record<EvidenceState, React.CSSProperties> = {
-    OBSERVED: {
-      color: 'var(--evidence-observed-color)',
-      backgroundColor: 'var(--evidence-observed-bg)',
-      borderColor: 'var(--evidence-observed-border)',
-      borderStyle: 'solid',
-    },
-    INFERRED: {
-      color: 'var(--evidence-inferred-color)',
-      backgroundColor: 'var(--evidence-inferred-bg)',
-      borderColor: 'var(--evidence-inferred-border)',
-      borderStyle: 'dashed',
-    },
-    NOT_OBSERVABLE: {
-      color: 'var(--evidence-not-observable-color)',
-      backgroundColor: 'var(--evidence-not-observable-bg)',
-      borderColor: 'var(--evidence-not-observable-border)',
-      borderStyle: 'solid',
-    },
-    AMBIGUOUS: {
-      color: 'var(--evidence-ambiguous-color)',
-      backgroundColor: 'var(--evidence-ambiguous-bg)',
-      borderColor: 'var(--evidence-ambiguous-border)',
-      borderStyle: 'solid',
-    },
-    UNKNOWN: {
-      color: 'var(--evidence-unknown-color)',
-      backgroundColor: 'var(--evidence-unknown-bg)',
-      borderColor: 'var(--evidence-unknown-border)',
-      borderStyle: 'dotted',
-    },
-    INCOMPLETE: {
-      color: 'var(--evidence-incomplete-color)',
-      backgroundColor: 'var(--evidence-incomplete-bg)',
-      borderColor: 'var(--evidence-incomplete-border)',
-      borderStyle: 'solid',
-    },
-  };
-
-  const currentStyle = styleMap[normState] || styleMap.UNKNOWN;
+export const EvidenceBadge: React.FC<EvidenceBadgeProps> = ({ state, size = 'md', count }) => {
+  const meta = evidenceStateMeta(state);
+  if (!meta) {
+    return <span style={{ fontFamily: 'var(--ds-font-mono)', fontSize: 'var(--ds-text-12)', color: 'var(--ds-ink-muted)' }}>—</span>;
+  }
+  const Icon = ICONS[meta.state];
   const isSm = size === 'sm';
 
   return (
     <span
+      title={`Evidence state: ${meta.label}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: isSm ? '3px' : '5px',
-        padding: isSm ? '1px 5px' : '2px 7px',
-        fontSize: isSm ? 'var(--text-2xs)' : 'var(--text-xs)',
+        gap: 'var(--ds-space-4)',
+        padding: isSm ? '1px 6px' : '2px 8px',
+        fontFamily: 'var(--ds-font-mono)',
+        fontSize: isSm ? 'var(--ds-text-12)' : 'var(--ds-text-12)',
         fontWeight: 600,
-        fontFamily: 'var(--font-mono)',
-        letterSpacing: '0.04em',
-        borderRadius: 'var(--radius-xs)',
-        borderWidth: '1px',
-        lineHeight: 1.2,
-        userSelect: 'none',
+        letterSpacing: '0.02em',
         whiteSpace: 'nowrap',
-        ...currentStyle,
+        lineHeight: 'var(--ds-leading-tight)',
+        borderRadius: 'var(--ds-radius-sm)',
+        borderWidth: '1px',
+        borderStyle: meta.borderStyle,
+        color: `var(--ds-ev-${meta.token}-text)`,
+        backgroundColor: `var(--ds-ev-${meta.token}-bg)`,
+        borderColor: `var(--ds-ev-${meta.token}-border)`,
       }}
-      title={`Evidence status: ${label}`}
     >
-      {showGlyph && (
-        <span
-          style={{
-            fontSize: isSm ? '8px' : '10px',
-            opacity: 0.85,
-            fontWeight: 800,
-          }}
-          aria-hidden="true"
-        >
-          {glyph}
-        </span>
-      )}
-      <span>{label}</span>
+      <Icon size={isSm ? 10 : 11} aria-hidden="true" />
+      <span>{meta.state.replace('_', ' ')}</span>
+      {count !== undefined && <span style={{ fontFeatureSettings: '"tnum" 1', opacity: 0.8 }}>{count}</span>}
     </span>
   );
 };

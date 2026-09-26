@@ -5,6 +5,7 @@
 
 import type {
   DashboardViewModel,
+  ReportDocument,
   HealthResponse,
   RunListResponse,
   RunResponse,
@@ -27,7 +28,20 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, options?: RequestInit, retries = 2): Promise<T> {
+// The backend shares one SQLite connection across request threads; two overlapping
+// requests can crash it (TECH-DEBT item 10). Run requests one at a time until that's fixed.
+let queue: Promise<unknown> = Promise.resolve();
+function serialized<T>(task: () => Promise<T>): Promise<T> {
+  const run = queue.then(task, task);
+  queue = run.catch(() => undefined);
+  return run;
+}
+
+function request<T>(path: string, options?: RequestInit, retries = 2): Promise<T> {
+  return serialized(() => requestNow<T>(path, options, retries));
+}
+
+async function requestNow<T>(path: string, options: RequestInit | undefined, retries: number): Promise<T> {
   const url = `${BASE_URL}${path}`;
   let lastError: any = null;
 
@@ -136,13 +150,22 @@ export const api = {
   },
 
   /**
+   * JSON rendition of the forensic report, used for the in-app preview
+   */
+  async getReportJson(runId: string): Promise<ReportDocument> {
+    return request<ReportDocument>(`/analyses/${encodeURIComponent(runId)}/reports/json`);
+  },
+
+  /**
    * Fetch raw report HTML
    */
   async getReportHtml(runId: string): Promise<string> {
     const url = `${BASE_URL}/analyses/${encodeURIComponent(runId)}/reports/html`;
-    const res = await fetch(url);
-    if (!res.ok) throw new ApiError('Failed to fetch report HTML', 'REPORT_ERROR', res.status);
-    return res.text();
+    return serialized(async () => {
+      const res = await fetch(url);
+      if (!res.ok) throw new ApiError('Failed to fetch report HTML', 'REPORT_ERROR', res.status);
+      return res.text();
+    });
   },
 
   /**

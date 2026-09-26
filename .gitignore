@@ -25,3 +25,10 @@ research/experiments/oq33r/test.key
 /securemailscope-data/
 backend.log
 frontend/dist/
+
+# Playwright MCP scratch output (snapshots, console logs, recorded API responses)
+/.playwright-mcp/
+# Generated visual-regression screenshots; regenerate rather than commit
+/audit/
+# Local browser profile used for manual testing
+.chrome-profile/

@@ -1,4 +1,5 @@
 @import './tokens/theme.css';
+@import './styles/components.css';
 
 /* Global Reset & Base Typography */
 *, *::before, *::after {
@@ -9,10 +10,10 @@
 
 html, body {
   height: 100%;
-  background-color: var(--bg-app);
-  color: var(--ink-primary);
-  font-family: var(--font-sans);
-  font-size: 14px;
+  background-color: var(--ds-bg-app);
+  color: var(--ds-ink-primary);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-14);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,22 +25,9 @@ html, body {
   flex-direction: column;
 }
 
-/* Monospace Utilities */
-code, pre, .font-mono {
-  font-family: var(--font-mono);
+code, pre, kbd {
+  font-family: var(--ds-font-mono);
   font-feature-settings: "tnum" 1, "zero" 1;
-}
-
-/* Number columns: tabular figures */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
-}
-
-/* Focus Visible Accessibility */
-:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
 }
 
 button {
@@ -50,151 +38,46 @@ button {
   color: inherit;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 input, select, textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
 }
 
-/* Micro Technical Scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--rule-strong);
-  border-radius: var(--radius-xs);
+  background: var(--ds-border-medium);
+  border-radius: var(--ds-radius-sm);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--ink-muted);
-}
-
-/* Screen reader only utility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+  background: var(--ds-ink-faint);
 }
 
 /* Skip link for keyboard accessibility */
 .skip-link {
   position: absolute;
   top: -100px;
-  left: 16px;
-  background: var(--accent-primary);
-  color: #fff;
-  padding: 8px 16px;
+  left: var(--ds-space-16);
+  background: var(--ds-carbon);
+  color: var(--ds-ink-inverse);
+  padding: var(--ds-space-8) var(--ds-space-16);
   font-weight: 600;
-  border-radius: var(--radius-sm);
+  border-radius: var(--ds-radius-sm);
   z-index: 9999;
   text-decoration: none;
-  transition: top var(--duration-micro) var(--ease-out);
+  transition: top var(--ds-transition-fast);
 }
 
 .skip-link:focus {
-  top: 16px;
-}
-
-/* Common Forensic Badges & Inks */
-.badge-epistemic {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 2px 7px;
-  border-radius: var(--radius-xs);
-  border: 1px solid transparent;
-  line-height: 1.2;
-}
-
-.badge-epistemic-observed {
-  background: var(--epistemic-observed-bg);
-  color: var(--epistemic-observed-ink);
-  border-color: var(--epistemic-observed-border);
-}
-
-.badge-epistemic-inferred {
-  background: var(--epistemic-inferred-bg);
-  color: var(--epistemic-inferred-ink);
-  border-color: var(--epistemic-inferred-border);
-}
-
-.badge-epistemic-ambiguous {
-  background: var(--epistemic-ambiguous-bg);
-  color: var(--epistemic-ambiguous-ink);
-  border-color: var(--epistemic-ambiguous-border);
-}
-
-.badge-epistemic-unknown {
-  background: var(--epistemic-unknown-bg);
-  color: var(--epistemic-unknown-ink);
-  border-color: var(--epistemic-unknown-border);
-}
-
-.badge-epistemic-incomplete {
-  background: var(--epistemic-incomplete-bg);
-  color: var(--epistemic-incomplete-ink);
-  border-color: var(--epistemic-incomplete-border);
-}
-
-.badge-epistemic-not-observable {
-  background: var(--epistemic-not-observable-bg);
-  color: var(--epistemic-not-observable-ink);
-  border-color: var(--epistemic-not-observable-border);
-}
-
-/* Posture Pills */
-.badge-posture {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: var(--text-xs);
-  letter-spacing: 0.05em;
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
-  border-left: 3px solid;
-}
-
-.badge-posture-critical {
-  background: var(--posture-critical-bg);
-  color: var(--posture-critical-ink);
-  border-left-color: var(--posture-critical-rule);
-}
-
-.badge-posture-weak {
-  background: var(--posture-weak-bg);
-  color: var(--posture-weak-ink);
-  border-left-color: var(--posture-weak-rule);
-}
-
-.badge-posture-adequate {
-  background: var(--posture-adequate-bg);
-  color: var(--posture-adequate-ink);
-  border-left-color: var(--posture-adequate-rule);
-}
-
-.badge-posture-strong {
-  background: var(--posture-strong-bg);
-  color: var(--posture-strong-ink);
-  border-left-color: var(--posture-strong-rule);
-}
-
-.badge-posture-insufficient {
-  background: var(--posture-insufficient-bg);
-  color: var(--posture-insufficient-ink);
-  border-left-color: var(--posture-insufficient-rule);
+  top: var(--ds-space-16);
 }

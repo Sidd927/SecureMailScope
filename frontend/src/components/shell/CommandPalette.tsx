@@ -1,499 +1,154 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Award, FileText, GitBranch, Hash, HelpCircle, LayoutDashboard, Network, Rows3, Search, Upload, Waypoints } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
-import {
-  Search,
-  Compass,
-  FileCode,
-  ShieldAlert,
-  Network,
-  Upload,
-  Layers,
-  HelpCircle,
-  Hash,
-} from 'lucide-react';
+import type { ForensicTab } from '../../context/InvestigationContext';
+import { SeverityDot } from '../common/SeverityBadge';
+import { sessionLabel } from '../../utils/session';
+
+type Category = 'Views' | 'Findings' | 'Sessions' | 'Analyses' | 'Actions';
 
 interface CommandItem {
   id: string;
-  category: 'Views' | 'Findings' | 'Streams' | 'Investigations' | 'Actions';
+  category: Category;
   title: string;
   subtitle?: string;
-  badge?: string;
+  hint?: string;
   icon: React.ReactNode;
   onSelect: () => void;
 }
 
-export const CommandPalette: React.FC = () => {
-  const {
-    showCommandPalette,
-    setShowCommandPalette,
-    dashboard,
-    sessions,
-    runs,
-    selectRun,
-    selectSession,
-    selectFinding,
-    setActiveView,
-    setActiveTab,
-    setShowShortcuts,
-  } = useInvestigation();
+// Shortcut hints mirror the keyboard map in InvestigationContext.
+const VIEWS: Array<{ tab: ForensicTab; title: string; subtitle: string; key: string; icon: React.ReactNode }> = [
+  { tab: 'overview', title: 'Summary', subtitle: 'Posture, score and findings', key: '1', icon: <LayoutDashboard size={16} /> },
+  { tab: 'evidence', title: 'Evidence & Findings', subtitle: 'Each finding with the evidence it cites', key: '2', icon: <Rows3 size={16} /> },
+  { tab: 'journey', title: 'Protocol Journey', subtitle: 'Events, evidence and transitions per session', key: '3', icon: <Network size={16} /> },
+  { tab: 'certs', title: 'Certificates', subtitle: 'Certificate evidence per TLS session', key: '4', icon: <Award size={16} /> },
+  { tab: 'cross_session', title: 'Cross-Session', subtitle: 'Sessions compared, with engine deviations', key: '5', icon: <GitBranch size={16} /> },
+  { tab: 'provenance', title: 'Provenance', subtitle: 'Trace a finding back to capture bytes', key: '6', icon: <Waypoints size={16} /> },
+  { tab: 'report', title: 'Report', subtitle: 'Preview and download HTML, PDF, JSON', key: '7', icon: <FileText size={16} /> },
+];
 
+export const CommandPalette: React.FC = () => {
+  const { showCommandPalette, setShowCommandPalette, dashboard, sessions, runs, selectRun, selectSession, selectFinding, setActiveView, setActiveTab, setShowShortcuts } = useInvestigation();
   const [query, setQuery] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (showCommandPalette) {
-      setQuery('');
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
+    if (!showCommandPalette) return;
+    setQuery('');
+    setActive(0);
+    requestAnimationFrame(() => inputRef.current?.focus());
   }, [showCommandPalette]);
 
   const commands = useMemo<CommandItem[]>(() => {
-    const list: CommandItem[] = [];
+    const go = (tab: ForensicTab) => { setActiveView('workbench'); setActiveTab(tab); };
+    const list: CommandItem[] = VIEWS.map((v) => ({ id: `view-${v.tab}`, category: 'Views', title: v.title, subtitle: v.subtitle, hint: v.key, icon: v.icon, onSelect: () => go(v.tab) }));
+    list.push({ id: 'view-home', category: 'Views', title: 'Home', subtitle: 'Upload a capture or open a recent analysis', icon: <Upload size={16} />, onSelect: () => setActiveView('home') });
 
-    // 1. Navigation Views
-    list.push(
-      {
-        id: 'nav-overview',
-        category: 'Views',
-        title: 'Investigation Overview',
-        subtitle: 'Executive verdict, evidence coverage bar & provenance graph',
-        badge: '1',
-        icon: <Compass size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('overview');
-        },
-      },
-      {
-        id: 'nav-provenance',
-        category: 'Views',
-        title: 'Evidence Provenance Trace',
-        subtitle: 'Signature visual trace: Capture → Stream → Frame → Finding → Standard',
-        badge: '2',
-        icon: <Compass size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('provenance');
-        },
-      },
-      {
-        id: 'nav-timeline',
-        category: 'Views',
-        title: 'Protocol Journey & Sequence',
-        subtitle: 'Directional Client ↔ Server packet ladder & state transitions',
-        badge: '3',
-        icon: <Network size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('journey');
-        },
-      },
-      {
-        id: 'nav-evidence',
-        category: 'Views',
-        title: 'Epistemic Evidence Ledger',
-        subtitle: '13 canonical transport dimensions with state verifications',
-        badge: '4',
-        icon: <Layers size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('evidence');
-        },
-      },
-      {
-        id: 'nav-certs',
-        category: 'Views',
-        title: 'X.509 Certificates Forensics',
-        subtitle: 'PKI leaf & chain inspection, key lengths, and validity',
-        badge: '5',
-        icon: <FileCode size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('certs');
-        },
-      },
-      {
-        id: 'nav-cross-session',
-        category: 'Views',
-        title: 'Cross-Session Baseline Matrix',
-        subtitle: 'Endpoint behavioral baseline comparison & deviation analysis',
-        badge: '6',
-        icon: <Layers size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('cross_session');
-        },
-      },
-      {
-        id: 'nav-report',
-        category: 'Views',
-        title: 'Forensic Assessment Report',
-        subtitle: 'Professional assessment preview & export (HTML/PDF/JSON)',
-        badge: '7',
-        icon: <FileCode size={16} />,
-        onSelect: () => {
-          setActiveView('workbench');
-          setActiveTab('report');
-        },
-      },
-      {
-        id: 'nav-launchpad',
-        category: 'Views',
-        title: 'Forensic Case Desk',
-        subtitle: 'Ingest new capture or review triage desk',
-        badge: 'Desk',
-        icon: <Upload size={16} />,
-        onSelect: () => {
-          setActiveView('home');
-        },
-      }
-    );
+    (dashboard?.findings ?? []).forEach((f, i) => list.push({
+      id: `finding-${i}`,
+      category: 'Findings',
+      title: f.title,
+      subtitle: [f.severity, f.source_rule_ids?.join(', ')].filter(Boolean).join(' · '),
+      icon: <SeverityDot severity={f.severity} size={8} />,
+      onSelect: () => { selectFinding(f); go('evidence'); },
+    }));
 
-    // 2. Active Findings
-    if (dashboard?.findings && dashboard.findings.length > 0) {
-      dashboard.findings.forEach((f, idx) => {
-        list.push({
-          id: `finding-${idx}`,
-          category: 'Findings',
-          title: f.title,
-          subtitle: f.conclusion || f.explanation,
-          badge: f.severity || undefined,
-          icon: <ShieldAlert size={16} style={{ color: 'var(--color-sev-critical)' }} />,
-          onSelect: () => {
-            setActiveView('workbench');
-            selectFinding(f);
-          },
-        });
-      });
-    }
+    sessions.forEach((s) => list.push({
+      id: `session-${s.stream_key}`,
+      category: 'Sessions',
+      title: sessionLabel(s),
+      // Only implicit TLS is known from the session record itself; STARTTLS state lives in evidence fields.
+      subtitle: [`${s.timing.packet_count} packets`, `frames ${s.timing.first_frame}–${s.timing.last_frame}`, s.implicit_tls ? 'implicit TLS' : null].filter(Boolean).join(' · '),
+      icon: <Network size={16} />,
+      onSelect: () => { selectSession(s.stream_key); go('journey'); },
+    }));
 
-    // 3. Dissected Streams
-    if (sessions && sessions.length > 0) {
-      sessions.forEach((s) => {
-        list.push({
-          id: `stream-${s.stream_key}`,
-          category: 'Streams',
-          title: `Stream #${s.tcp_stream_id}: ${s.protocol} (${s.client.ip}:${s.client.port} → ${s.server.ip}:${s.server.port})`,
-          subtitle: `${s.timing.packet_count} packets · Frames ${s.timing.first_frame}-${s.timing.last_frame}`,
-          badge: s.implicit_tls ? 'DIRECT TLS' : 'STARTTLS',
-          icon: <Network size={16} style={{ color: 'var(--color-accent)' }} />,
-          onSelect: () => {
-            setActiveView('workbench');
-            selectSession(s.stream_key);
-          },
-        });
-      });
-    }
+    runs.filter((r) => r.state === 'COMPLETED').forEach((r) => list.push({
+      id: `run-${r.run_id}`,
+      category: 'Analyses',
+      title: r.source_filename,
+      subtitle: [r.overall_posture, r.score_value != null ? r.score_value.toFixed(2) : null, `SHA-256 ${r.capture_id.slice(0, 12)}…`].filter(Boolean).join(' · '),
+      icon: <Hash size={16} />,
+      onSelect: () => { go('overview'); selectRun(r.run_id); },
+    }));
 
-    // 4. Switch Investigation Cases
-    if (runs && runs.length > 0) {
-      runs
-        .filter((r) => r.state === 'COMPLETED')
-        .forEach((r) => {
-          list.push({
-            id: `run-${r.run_id}`,
-            category: 'Investigations',
-            title: r.source_filename,
-            subtitle: `SHA-256: ${r.capture_id.slice(0, 16)}... · ${r.duration_ms ? `${r.duration_ms}ms` : ''}`,
-            badge: r.overall_posture || undefined,
-            icon: <Hash size={16} />,
-            onSelect: async () => {
-              await selectRun(r.run_id);
-              setActiveView('workbench');
-            },
-          });
-        });
-    }
-
-    // 5. Actions & Help
-    list.push(
-      {
-        id: 'action-shortcuts',
-        category: 'Actions',
-        title: 'Keyboard Shortcuts Reference',
-        subtitle: 'View all keyboard navigation and inspection bindings',
-        badge: '?',
-        icon: <HelpCircle size={16} />,
-        onSelect: () => {
-          setShowShortcuts(true);
-        },
-      },
-      {
-        id: 'action-upload',
-        category: 'Actions',
-        title: 'Ingest New PCAP Capture File',
-        subtitle: 'Drag and drop or select packet capture from local drive',
-        badge: 'Upload',
-        icon: <Upload size={16} />,
-        onSelect: () => {
-          setActiveView('home');
-        },
-      }
-    );
-
+    list.push({ id: 'action-shortcuts', category: 'Actions', title: 'Keyboard shortcuts', hint: '?', icon: <HelpCircle size={16} />, onSelect: () => setShowShortcuts(true) });
     return list;
-  }, [
-    dashboard,
-    sessions,
-    runs,
-    setActiveView,
-    setActiveTab,
-    selectFinding,
-    selectSession,
-    selectRun,
-    setShowShortcuts,
-  ]);
+  }, [dashboard, sessions, runs, setActiveView, setActiveTab, selectFinding, selectSession, selectRun, setShowShortcuts]);
 
-  const filteredCommands = useMemo(() => {
-    if (!query.trim()) return commands;
-    const q = query.toLowerCase();
-    return commands.filter(
-      (c) =>
-        c.title.toLowerCase().includes(q) ||
-        (c.subtitle && c.subtitle.toLowerCase().includes(q)) ||
-        c.category.toLowerCase().includes(q)
-    );
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return commands;
+    return commands.filter((c) => [c.title, c.subtitle, c.category].some((t) => t?.toLowerCase().includes(q)));
   }, [commands, query]);
 
-  // Keep selected index within bounds
+  useEffect(() => { setActive(0); }, [filtered.length]);
   useEffect(() => {
-    setSelectedIndex(0);
-  }, [filteredCommands.length]);
+    listRef.current?.querySelector(`[data-index="${active}"]`)?.scrollIntoView({ block: 'nearest' });
+  }, [active]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedIndex((prev) => (prev < filteredCommands.length - 1 ? prev + 1 : 0));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : filteredCommands.length - 1));
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (filteredCommands[selectedIndex]) {
-        filteredCommands[selectedIndex].onSelect();
-        setShowCommandPalette(false);
-      }
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      setShowCommandPalette(false);
-    }
+  const run = (cmd: CommandItem | undefined) => {
+    if (!cmd) return;
+    setShowCommandPalette(false);
+    cmd.onSelect();
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive((i) => (i + 1) % Math.max(filtered.length, 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((i) => (i - 1 + filtered.length) % Math.max(filtered.length, 1)); }
+    else if (e.key === 'Enter') { e.preventDefault(); run(filtered[active]); }
+    else if (e.key === 'Escape') { e.preventDefault(); setShowCommandPalette(false); }
   };
 
   if (!showCommandPalette) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: 'rgba(21, 25, 30, 0.5)',
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        paddingTop: '10vh',
-        zIndex: 2000,
-        paddingLeft: '20px',
-        paddingRight: '20px',
-      }}
-      onClick={() => setShowCommandPalette(false)}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '680px',
-          backgroundColor: 'var(--color-surface)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--color-border-strong)',
-          boxShadow: 'var(--shadow-flyout)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          maxHeight: '75vh',
-        }}
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={handleKeyDown}
-      >
-        {/* Search Input Bar */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '14px 18px',
-            borderBottom: '1px solid var(--color-border)',
-            backgroundColor: 'var(--color-panel)',
-          }}
-        >
-          <Search size={16} style={{ color: 'var(--color-ink-muted)' }} />
+    <div className="sms-overlay" onClick={() => setShowCommandPalette(false)}>
+      <div className="sms-modal" role="dialog" aria-modal="true" aria-label="Command palette" onClick={(e) => e.stopPropagation()} onKeyDown={onKeyDown}>
+        <div className="sms-palette__search">
+          <Search size={16} aria-hidden="true" />
           <input
             ref={inputRef}
-            type="text"
+            className="sms-palette__input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search case, sessions, findings, or jump to views... (↑↓ to move, Enter to run)"
-            style={{
-              flex: 1,
-              border: 'none',
-              outline: 'none',
-              backgroundColor: 'transparent',
-              fontSize: 'var(--text-base)',
-              fontFamily: 'inherit',
-              color: 'var(--color-ink)',
-            }}
+            placeholder="Jump to a view, finding, session or analysis"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="sms-palette-list"
+            aria-activedescendant={filtered[active] ? `sms-cmd-${filtered[active].id}` : undefined}
           />
-          <span
-            style={{
-              fontSize: '11px',
-              fontFamily: 'var(--font-mono)',
-              padding: '2px 6px',
-              borderRadius: 'var(--radius-xs)',
-              backgroundColor: 'var(--color-border)',
-              color: 'var(--color-ink-muted)',
-            }}
-          >
-            ESC
-          </span>
+          <span className="sms-kbd">Esc</span>
         </div>
-
-        {/* Command List */}
-        <div
-          ref={listRef}
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '8px 0',
-          }}
-        >
-          {filteredCommands.length === 0 ? (
-            <div
-              style={{
-                padding: '32px 20px',
-                textAlign: 'center',
-                color: 'var(--color-ink-muted)',
-                fontSize: 'var(--text-sm)',
-              }}
-            >
-              No matching commands, findings, or sessions found.
-            </div>
-          ) : (
-            filteredCommands.map((cmd, idx) => {
-              const isSelected = idx === selectedIndex;
-              return (
-                <div
-                  key={cmd.id}
-                  onClick={() => {
-                    cmd.onSelect();
-                    setShowCommandPalette(false);
-                  }}
-                  onMouseEnter={() => setSelectedIndex(idx)}
-                  style={{
-                    padding: '10px 18px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    cursor: 'pointer',
-                    backgroundColor: isSelected ? 'var(--color-accent-soft)' : 'transparent',
-                    borderLeft: `3px solid ${isSelected ? 'var(--color-accent)' : 'transparent'}`,
-                    transition: 'background-color var(--transition-fast)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
-                    <div
-                      style={{
-                        color: isSelected ? 'var(--color-accent)' : 'var(--color-ink-muted)',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {cmd.icon}
-                    </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 }}>
-                      <div
-                        style={{
-                          fontSize: 'var(--text-sm)',
-                          fontWeight: isSelected ? 600 : 500,
-                          color: 'var(--color-ink)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {cmd.title}
-                      </div>
-                      {cmd.subtitle && (
-                        <div
-                          style={{
-                            fontSize: '11px',
-                            color: 'var(--color-ink-muted)',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {cmd.subtitle}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '12px' }}>
-                    <span
-                      style={{
-                        fontSize: '10px',
-                        textTransform: 'uppercase',
-                        fontFamily: 'var(--font-mono)',
-                        color: 'var(--color-ink-faint)',
-                      }}
-                    >
-                      {cmd.category}
-                    </span>
-                    {cmd.badge && (
-                      <span
-                        style={{
-                          fontSize: '10px',
-                          fontWeight: 700,
-                          fontFamily: 'var(--font-mono)',
-                          padding: '2px 6px',
-                          borderRadius: 'var(--radius-xs)',
-                          backgroundColor: isSelected ? '#ffffff' : 'var(--color-panel)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-ink-secondary)',
-                        }}
-                      >
-                        {cmd.badge}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            padding: '8px 18px',
-            borderTop: '1px solid var(--color-border)',
-            backgroundColor: 'var(--color-panel)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '11px',
-            color: 'var(--color-ink-faint)',
-            fontFamily: 'var(--font-mono)',
-          }}
-        >
-          <span>Use ↑↓ to navigate</span>
-          <span>Press Enter to select</span>
-          <span>ESC to dismiss</span>
+        <ul ref={listRef} id="sms-palette-list" className="sms-palette__list" role="listbox" aria-label="Commands">
+          {filtered.length === 0 && <li className="sms-palette__group" role="presentation">No matches for "{query}"</li>}
+          {filtered.map((cmd, i) => (
+            <React.Fragment key={cmd.id}>
+              {(i === 0 || filtered[i - 1].category !== cmd.category) && <li className="sms-palette__group" role="presentation">{cmd.category}</li>}
+              <li
+                id={`sms-cmd-${cmd.id}`}
+                data-index={i}
+                role="option"
+                aria-selected={i === active}
+                className="sms-palette__item"
+                onMouseMove={() => setActive(i)}
+                onClick={() => run(cmd)}
+              >
+                <span style={{ display: 'grid', placeItems: 'center' }} aria-hidden="true">{cmd.icon}</span>
+                <span style={{ minWidth: 0 }}>
+                  <span className="sms-palette__title" style={{ display: 'block' }}>{cmd.title}</span>
+                  {cmd.subtitle && <span className="sms-palette__sub" style={{ display: 'block' }}>{cmd.subtitle}</span>}
+                </span>
+                {cmd.hint && <span className="sms-kbd">{cmd.hint}</span>}
+              </li>
+            </React.Fragment>
+          ))}
+        </ul>
+        <div className="sms-palette__foot" aria-hidden="true">
+          <span>↑↓ move</span><span>Enter open</span><span>Esc close</span>
         </div>
       </div>
     </div>

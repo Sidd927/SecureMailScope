@@ -5,220 +5,226 @@
  */
 
 :root {
-  /* Surfaces & Canvas (Direction S: Slate-White Forensic Canvas) */
-  --bg-app: #f8fafc;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f1f5f9;
-  --bg-panel: #ffffff;
-  --bg-inset: #e2e8f0;
-  --bg-hover: #f1f5f9;
-  --bg-active: #e2e8f0;
+  /* 1. Surfaces */
+  --ds-bg-app: #0a0e14;
+  --ds-bg-canvas: #0f1520;
+  --ds-bg-subtle: #141c28;
+  --ds-bg-elevated: #1a2232;
+  --ds-bg-inset: #0d1219;
+  --ds-bg-hover: #1e2a3a;
 
-  /* Typography / Inks (Deep Carbon & Slate) */
-  --ink-primary: #0f172a;
-  --ink-secondary: #334155;
-  --ink-muted: #64748b;
-  --ink-faint: #94a3b8;
-  --ink-inverse: #ffffff;
+  /* 2. Borders */
+  --ds-border-subtle: #1e2a3a;
+  --ds-border-light: #243040;
+  --ds-border-medium: #2d3d52;
+  --ds-border-strong: #3d5166;
+  --ds-border-focus: #4c8edb;
 
-  /* Hairlines & Structural Architecture Rules */
-  --rule-subtle: #f1f5f9;
-  --rule-base: #e2e8f0;
-  --rule-strong: #cbd5e1;
-  --rule-heavy: #0f172a;
+  /* 3. Ink */
+  --ds-ink-primary: #e8edf2;
+  --ds-ink-secondary: #9baabb;
+  --ds-ink-muted: #8391a4; /* 4.97:1 on bg-elevated, the darkest-contrast surface it sits on */
+  --ds-ink-faint: #3d5166; /* 2.4:1: icons, rules and separators only, never text */
+  --ds-ink-inverse: #0a0e14;
 
-  /* Primary Accent: Deep Forensic Carbon & Slate (Restrained Authority) */
-  --accent-primary: #0f172a;
-  --accent-hover: #1e293b;
-  --accent-soft: #f1f5f9;
-  --accent-border: #cbd5e1;
-  --accent-ink: #0f172a;
+  /* 4. Accent (carbon) */
+  --ds-carbon: #4c8edb;
+  --ds-carbon-hover: #6ba3e3;
+  --ds-carbon-soft: #0f1e33;
+  --ds-carbon-border: #1e3a5f;
 
-  /* Direction S Dedicated Palette Aliases */
-  --ds-bg-app: #f8fafc;
-  --ds-bg-canvas: #ffffff;
-  --ds-bg-subtle: #f1f5f9;
-  --ds-bg-elevated: #ffffff;
-  --ds-bg-inset: #e2e8f0;
-  --ds-border-light: #e2e8f0;
-  --ds-border-medium: #cbd5e1;
-  --ds-border-strong: #94a3b8;
-  --ds-border-focus: #3b82f6;
-  --ds-ink-primary: #0f172a;
-  --ds-ink-secondary: #334155;
-  --ds-ink-muted: #64748b;
-  --ds-ink-faint: #94a3b8;
-  --ds-indigo: #0f172a;
-  --ds-indigo-soft: #f1f5f9;
-  --ds-indigo-border: #cbd5e1;
-  --ds-cyan: #0284c7;
-  --ds-cyan-soft: #f0f9ff;
-  --ds-cyan-border: #bae6fd;
-  --ds-crimson: #dc2626;
-  --ds-crimson-soft: #fef2f2;
-  --ds-crimson-border: #fecaca;
-  --ds-crimson-ink: #991b1b;
+  /* 5. Hue families */
+  --ds-crimson: #f05252;
+  --ds-crimson-soft: #1f0a0a;
+  --ds-crimson-border: #4a1515;
+  --ds-crimson-ink: #fca5a5;
+  --ds-crimson-rail: #ef4444;
   --ds-emerald: #059669;
-  --ds-emerald-soft: #ecfdf5;
-  --ds-emerald-border: #a7f3d0;
-  --ds-emerald-ink: #065f46;
+  --ds-emerald-soft: #071a12;
+  --ds-emerald-border: #0e3320;
+  --ds-emerald-ink: #6ee7b7;
+  --ds-emerald-rail: #10b981;
   --ds-amber: #d97706;
-  --ds-amber-soft: #fffbeb;
-  --ds-amber-border: #fde68a;
-  --ds-amber-ink: #92400e;
-  --ds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', system-ui, sans-serif;
-  --ds-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --ds-amber-soft: #1a1200;
+  --ds-amber-border: #3d2d00;
+  --ds-amber-ink: #fcd34d;
+  --ds-cyan: #0ea5e9;
+  --ds-cyan-soft: #051525;
+  --ds-cyan-border: #0a2a42;
+  --ds-indigo: #0f172a;
+  --ds-indigo-soft: #0f1430;
+  --ds-indigo-border: #1e2655;
 
-  /* Severity Tokens (WCAG-AA verified) */
-  --sev-critical-ink: #991b1b;
-  --sev-critical-bg: #fef2f2;
-  --sev-critical-border: #fecaca;
-  --sev-critical-rule: #dc2626;
+  /* 6. Evidence state (EvidenceState enum) */
+  --ds-ev-observed-text: #cfd8e3;
+  --ds-ev-observed-bg: #0d1a0d;
+  --ds-ev-observed-border: #1a3320;
+  --ds-ev-inferred-text: #a5b4fc;
+  --ds-ev-inferred-bg: #0d0f2a;
+  --ds-ev-inferred-border: #1a1f4a;
+  --ds-ev-unknown-text: #94a3b8;
+  --ds-ev-unknown-bg: #0f1520;
+  --ds-ev-unknown-border: #1e2a3a;
+  --ds-ev-ambiguous-text: #fcd34d;
+  --ds-ev-ambiguous-bg: #1a1200;
+  --ds-ev-ambiguous-border: #3d2d00;
+  --ds-ev-incomplete-text: #fdba74;
+  --ds-ev-incomplete-bg: #1a0d00;
+  --ds-ev-incomplete-border: #3d1e00;
+  --ds-ev-not-observable-text: #8b98ab;
+  --ds-ev-not-observable-bg: #0f1520;
+  --ds-ev-not-observable-border: #1e2a3a;
 
-  --sev-high-ink: #9a3412;
-  --sev-high-bg: #fff7ed;
-  --sev-high-border: #fed7aa;
-  --sev-high-rule: #ea580c;
+  /* 7. Severity (Severity enum) */
+  --ds-sev-critical-text: #f87171;
+  --ds-sev-critical-bg: #1f0a0a;
+  --ds-sev-critical-border: #4a1515;
+  --ds-sev-critical-rule: #dc2626;
+  --ds-sev-high-text: #fb923c;
+  --ds-sev-high-bg: #1a0d00;
+  --ds-sev-high-border: #3d1e00;
+  --ds-sev-high-rule: #ea580c;
+  --ds-sev-medium-text: #facc15;
+  --ds-sev-medium-bg: #1a1200;
+  --ds-sev-medium-border: #3d2d00;
+  --ds-sev-medium-rule: #eab308;
+  --ds-sev-low-text: #34d399;
+  --ds-sev-low-bg: #071a12;
+  --ds-sev-low-border: #0e3320;
+  --ds-sev-low-rule: #059669;
+  --ds-sev-info-text: #60a5fa;
+  --ds-sev-info-bg: #051525;
+  --ds-sev-info-border: #0a2a42;
+  --ds-sev-info-rule: #2563eb;
 
-  --sev-medium-ink: #92400e;
-  --sev-medium-bg: #fffbeb;
-  --sev-medium-border: #fde68a;
-  --sev-medium-rule: #d97706;
+  /* 8. Posture band (PostureBand enum) */
+  --ds-posture-strong-text: #34d399;
+  --ds-posture-strong-bg: #071a12;
+  --ds-posture-strong-rule: #059669;
+  --ds-posture-adequate-text: #93c5fd;
+  --ds-posture-adequate-bg: #0d0f2a;
+  --ds-posture-adequate-rule: #4f46e5;
+  --ds-posture-weak-text: #fbbf24;
+  --ds-posture-weak-bg: #1a1200;
+  --ds-posture-weak-rule: #d97706;
+  --ds-posture-critical-text: #f87171;
+  --ds-posture-critical-bg: #1f0a0a;
+  --ds-posture-critical-rule: #dc2626;
+  --ds-posture-insufficient-text: #94a3b8;
+  --ds-posture-insufficient-bg: #0f1520;
+  --ds-posture-insufficient-rule: #94a3b8;
 
-  --sev-low-ink: #065f46;
-  --sev-low-bg: #ecfdf5;
-  --sev-low-border: #a7f3d0;
-  --sev-low-rule: #059669;
+  /* 9. Job lifecycle (JobState enum): new; nothing renders these yet */
+  --ds-job-created-text: var(--ds-ink-muted);
+  --ds-job-created-bg: var(--ds-bg-subtle);
+  --ds-job-validating-text: var(--ds-sev-info-text);
+  --ds-job-validating-bg: var(--ds-sev-info-bg);
+  --ds-job-queued-text: var(--ds-sev-info-text);
+  --ds-job-queued-bg: var(--ds-sev-info-bg);
+  --ds-job-running-text: var(--ds-sev-info-text);
+  --ds-job-running-bg: var(--ds-sev-info-bg);
+  --ds-job-finalizing-text: var(--ds-sev-info-text);
+  --ds-job-finalizing-bg: var(--ds-sev-info-bg);
+  --ds-job-completed-text: var(--ds-emerald-ink);
+  --ds-job-completed-bg: var(--ds-emerald-soft);
+  --ds-job-failed-text: var(--ds-crimson-ink);
+  --ds-job-failed-bg: var(--ds-crimson-soft);
+  --ds-job-cancelled-text: var(--ds-ink-muted);
+  --ds-job-cancelled-bg: var(--ds-bg-subtle);
+  --ds-job-recovery-required-text: var(--ds-amber-ink);
+  --ds-job-recovery-required-bg: var(--ds-amber-soft);
 
-  --sev-info-ink: #1e40af;
-  --sev-info-bg: #eff6ff;
-  --sev-info-border: #bfdbfe;
-  --sev-info-rule: #2563eb;
+  /* 9B. Finding status (FindingStatus enum): independent of severity; no component renders it yet */
+  --ds-finding-observed-issue-text: var(--ds-crimson-ink);
+  --ds-finding-observed-issue-bg: var(--ds-crimson-soft);
+  --ds-finding-observed-issue-border: var(--ds-crimson-border);
+  --ds-finding-compliant-text: var(--ds-emerald-ink);
+  --ds-finding-compliant-bg: var(--ds-emerald-soft);
+  --ds-finding-compliant-border: var(--ds-emerald-border);
+  --ds-finding-informational-text: var(--ds-ink-secondary);
+  --ds-finding-informational-bg: var(--ds-bg-subtle);
+  --ds-finding-informational-border: var(--ds-border-light);
+  --ds-finding-ambiguous-text: var(--ds-ev-ambiguous-text);
+  --ds-finding-ambiguous-bg: var(--ds-ev-ambiguous-bg);
+  --ds-finding-ambiguous-border: var(--ds-ev-ambiguous-border);
+  --ds-finding-insufficient-evidence-text: var(--ds-ev-unknown-text);
+  --ds-finding-insufficient-evidence-bg: var(--ds-ev-unknown-bg);
+  --ds-finding-insufficient-evidence-border: var(--ds-ev-unknown-border);
+  --ds-finding-not-observable-text: var(--ds-ev-not-observable-text);
+  --ds-finding-not-observable-bg: var(--ds-ev-not-observable-bg);
+  --ds-finding-not-observable-border: var(--ds-ev-not-observable-border);
 
-  /* Posture Bands */
-  --posture-strong-ink: #065f46;
-  --posture-strong-bg: #ecfdf5;
-  --posture-strong-rule: #059669;
+  /* 9C. Certainty (EvidenceCertainty enum): mirrors certainty_from_refs() in posture/model.py */
+  --ds-certainty-confirmed-text: var(--ds-ev-observed-text);
+  --ds-certainty-confirmed-bg: var(--ds-ev-observed-bg);
+  --ds-certainty-confirmed-border: var(--ds-ev-observed-border);
+  --ds-certainty-probable-text: var(--ds-ev-inferred-text);
+  --ds-certainty-probable-bg: var(--ds-ev-inferred-bg);
+  --ds-certainty-probable-border: var(--ds-ev-inferred-border);
+  --ds-certainty-uncertain-text: var(--ds-ev-ambiguous-text);
+  --ds-certainty-uncertain-bg: var(--ds-ev-ambiguous-bg);
+  --ds-certainty-uncertain-border: var(--ds-ev-ambiguous-border);
+  --ds-certainty-undetermined-text: var(--ds-ev-unknown-text);
+  --ds-certainty-undetermined-bg: var(--ds-ev-unknown-bg);
+  --ds-certainty-undetermined-border: var(--ds-ev-unknown-border);
 
-  --posture-adequate-ink: #312e81;
-  --posture-adequate-bg: #eef2ff;
-  --posture-adequate-rule: #4f46e5;
+  /* 10. Spacing */
+  --ds-space-4: 4px;
+  --ds-space-8: 8px;
+  --ds-space-12: 12px;
+  --ds-space-16: 16px;
+  --ds-space-20: 20px;
+  --ds-space-24: 24px;
+  --ds-space-32: 32px;
+  --ds-space-40: 40px;
+  --ds-space-48: 48px;
+  --ds-space-64: 64px;
 
-  --posture-weak-ink: #92400e;
-  --posture-weak-bg: #fffbeb;
-  --posture-weak-rule: #d97706;
+  /* 11. Typography: the DESIGN.md 2.2 scale (12/13/14/16/20/24/32), nothing in between */
+  --ds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --ds-font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ds-text-12: 0.75rem;
+  --ds-text-13: 0.8125rem;
+  --ds-text-14: 0.875rem;
+  --ds-text-16: 1rem;
+  --ds-text-20: 1.25rem;
+  --ds-text-24: 1.5rem;
+  --ds-text-32: 2rem;
+  --ds-leading-tight: 1.2;
+  --ds-leading-body: 1.4;
+  --ds-leading-evidence: 1.6;
 
-  --posture-critical-ink: #991b1b;
-  --posture-critical-bg: #fef2f2;
-  --posture-critical-rule: #dc2626;
+  /* 12. Radius */
+  --ds-radius-sm: 2px;
+  --ds-radius-md: 4px;
+  --ds-radius-lg: 6px;
+  --ds-radius-xl: 8px;
 
-  --posture-insufficient-ink: #475569;
-  --posture-insufficient-bg: #f1f5f9;
-  --posture-insufficient-rule: #94a3b8;
+  /* 13. Shadows */
+  --ds-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --ds-shadow-dropdown: 0 4px 12px rgba(0, 0, 0, 0.32);
+  --ds-shadow-modal: 0 8px 24px rgba(0, 0, 0, 0.36), 0 2px 6px rgba(0, 0, 0, 0.24);
+  --ds-scrim: rgba(3, 6, 10, 0.72);
 
-  /* Exact Epistemic Evidence States */
-  --epistemic-observed-ink: #0f172a;
-  --epistemic-observed-bg: #f1f5f9;
-  --epistemic-observed-border: #cbd5e1;
-
-  --epistemic-inferred-ink: #312e81;
-  --epistemic-inferred-bg: #eef2ff;
-  --epistemic-inferred-border: #818cf8;
-
-  --epistemic-ambiguous-ink: #92400e;
-  --epistemic-ambiguous-bg: #fffbeb;
-  --epistemic-ambiguous-border: #f59e0b;
-
-  --epistemic-unknown-ink: #475569;
-  --epistemic-unknown-bg: #f8fafc;
-  --epistemic-unknown-border: #cbd5e1;
-
-  --epistemic-incomplete-ink: #9a3412;
-  --epistemic-incomplete-bg: #fff7ed;
-  --epistemic-incomplete-border: #fb923c;
-
-  --epistemic-not-observable-ink: #475569;
-  --epistemic-not-observable-bg: #f1f5f9;
-  --epistemic-not-observable-border: #94a3b8;
-
-  /* Typography System */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-
-  /* Typographic Hierarchy Scale */
-  --text-3xs: 0.625rem;  /* 10px */
-  --text-2xs: 0.6875rem; /* 11px */
-  --text-xs: 0.75rem;    /* 12px */
-  --text-sm: 0.8125rem;  /* 13px */
-  --text-base: 0.875rem; /* 14px */
-  --text-md: 0.9375rem;  /* 15px */
-  --text-lg: 1.0625rem;  /* 17px */
-  --text-xl: 1.25rem;    /* 20px */
-  --text-2xl: 1.5rem;    /* 24px */
-  --text-display: 2.25rem; /* 36px */
-
-  /* Spacing Scale */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-
-  /* Structural Radii - Architectural & Crisp */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-
-  /* Shadows - Minimal & Purposeful */
-  --shadow-subtle: 0 1px 2px rgba(18, 22, 26, 0.04);
-  --shadow-flyout: 0 8px 24px rgba(18, 22, 26, 0.09), 0 2px 6px rgba(18, 22, 26, 0.04);
-
-  /* Motion Timings */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --duration-micro: 140ms;
-  --duration-normal: 220ms;
-  --duration-context: 320ms;
+  /* 14. Motion */
+  --ds-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-duration-fast: 140ms;
+  --ds-duration-base: 220ms;
+  --ds-duration-slow: 320ms;
+  --ds-transition-fast: var(--ds-duration-fast) var(--ds-ease-out);
+  --ds-transition-base: var(--ds-duration-base) var(--ds-ease-out);
+  --ds-transition-slow: var(--ds-duration-slow) var(--ds-ease-out);
 }
 
-/* Animations */
-@keyframes sms-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes sms-skeleton-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
-@keyframes sms-slide-up {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes sms-slide-in-right {
-  from { opacity: 0; transform: translateX(16px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes sms-pulse-accent {
-  0% { box-shadow: 0 0 0 0 rgba(24, 51, 84, 0.25); }
-  70% { box-shadow: 0 0 0 6px rgba(24, 51, 84, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(24, 51, 84, 0); }
-}
-
-/* Utility Animations */
-.animate-fade-in {
-  animation: sms-fade-in var(--duration-normal) var(--ease-out) forwards;
-}
-
-.animate-slide-up {
-  animation: sms-slide-up var(--duration-normal) var(--ease-out) forwards;
-}
-
-.animate-drawer-in {
-  animation: sms-slide-in-right var(--duration-context) var(--ease-out) forwards;
+.ds-skeleton {
+  background-color: var(--ds-bg-subtle);
+  border-radius: var(--ds-radius-md);
+  animation: sms-skeleton-pulse 1.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

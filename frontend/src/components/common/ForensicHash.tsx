@@ -1,71 +1,37 @@
 import React, { useState } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
 
 interface ForensicHashProps {
-  value: string;
+  value: string | null | undefined;
   length?: number;
   label?: string;
-  mono?: boolean;
 }
 
-export const ForensicHash: React.FC<ForensicHashProps> = ({
-  value,
-  length = 12,
-  label,
-  mono = true,
-}) => {
+export const ForensicHash: React.FC<ForensicHashProps> = ({ value, length = 12, label }) => {
   const [copied, setCopied] = useState(false);
+  if (!value) return <span className="sms-muted sms-mono">—</span>;
+  const display = value.length > length ? `${value.slice(0, length)}…` : value;
 
-  const display =
-    value && value.length > length ? `${value.slice(0, length)}…` : value || '—';
-
-  const handleCopy = (e: React.MouseEvent) => {
+  const copy = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!value) return;
-    navigator.clipboard.writeText(value);
+    await navigator.clipboard.writeText(value);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        fontSize: 'var(--text-xs)',
-        color: 'var(--color-ink-muted)',
-      }}
-      title={value}
-    >
-      {label && <span style={{ color: 'var(--color-ink-faint)', marginRight: '2px' }}>{label}:</span>}
-      <span
-        style={{
-          fontFamily: mono ? 'var(--font-mono)' : 'inherit',
-          color: 'var(--color-ink)',
-          letterSpacing: mono ? '0.02em' : 'normal',
-        }}
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--ds-space-4)', fontSize: 'var(--ds-text-12)' }} title={value}>
+      {label && <span className="sms-muted">{label}</span>}
+      <span className="sms-mono" style={{ color: 'var(--ds-ink-secondary)' }}>{display}</span>
+      <button
+        type="button"
+        onClick={copy}
+        className="sms-btn sms-btn--ghost"
+        style={{ height: 22, padding: '0 var(--ds-space-4)', color: copied ? 'var(--ds-emerald-ink)' : 'var(--ds-ink-muted)' }}
+        aria-label={copied ? 'Copied' : `Copy ${label || 'hash'}`}
       >
-        {display}
-      </span>
-      {value && (
-        <button
-          onClick={handleCopy}
-          type="button"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '2px',
-            color: copied ? 'var(--color-sev-low)' : 'var(--color-ink-faint)',
-            borderRadius: 'var(--radius-xs)',
-            transition: 'color var(--transition-fast)',
-          }}
-          title={copied ? 'Copied full hash' : 'Copy full hash'}
-        >
-          {copied ? <Check size={11} /> : <Copy size={11} />}
-        </button>
-      )}
+        {copied ? <Check size={12} aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
+      </button>
     </span>
   );
 };

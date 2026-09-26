@@ -1,79 +1,43 @@
 import React from 'react';
+import { getSeverityTokens } from '../../utils/severity';
 
 interface SeverityBadgeProps {
-  severity: 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | string | null;
+  severity: string | null | undefined;
   size?: 'sm' | 'md';
 }
 
-const SEVERITY_CONFIG: Record<
-  string,
-  { label: string; color: string; bg: string; border: string; marker: string }
-> = {
-  CRITICAL: {
-    label: 'CRITICAL',
-    color: 'var(--color-sev-critical)',
-    bg: 'var(--color-sev-critical-bg)',
-    border: 'var(--color-sev-critical-border)',
-    marker: '■',
-  },
-  HIGH: {
-    label: 'HIGH',
-    color: 'var(--color-sev-high)',
-    bg: 'var(--color-sev-high-bg)',
-    border: 'var(--color-sev-high-border)',
-    marker: '▲',
-  },
-  MEDIUM: {
-    label: 'MEDIUM',
-    color: 'var(--color-sev-medium)',
-    bg: 'var(--color-sev-medium-bg)',
-    border: 'var(--color-sev-medium-border)',
-    marker: '◆',
-  },
-  LOW: {
-    label: 'LOW',
-    color: 'var(--color-sev-low)',
-    bg: 'var(--color-sev-low-bg)',
-    border: 'var(--color-sev-low-border)',
-    marker: '▼',
-  },
-  INFO: {
-    label: 'INFO',
-    color: 'var(--color-sev-info)',
-    bg: 'var(--color-sev-info-bg)',
-    border: 'var(--color-sev-info-border)',
-    marker: '●',
-  },
-};
-
+/** Severity is the only vocabulary allowed to use alarm hue (DESIGN.md §1.8 B). A missing severity renders a neutral dash, never a guess. */
 export const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity, size = 'md' }) => {
-  const norm = (severity || 'INFO').toUpperCase();
-  const config = SEVERITY_CONFIG[norm] || SEVERITY_CONFIG.INFO;
-  const isSm = size === 'sm';
-
+  const t = getSeverityTokens(severity);
+  if (!t) {
+    return <span className="sms-badge sms-badge--muted" title="Severity not reported">—</span>;
+  }
   return (
     <span
+      className="sms-badge"
+      title={`Severity: ${t.level}`}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: isSm ? '4px' : '6px',
-        padding: isSm ? '1px 6px' : '2px 8px',
-        fontSize: isSm ? 'var(--text-2xs)' : 'var(--text-xs)',
-        fontWeight: 700,
-        fontFamily: 'var(--font-mono)',
-        letterSpacing: '0.05em',
-        borderRadius: 'var(--radius-xs)',
-        backgroundColor: config.bg,
-        color: config.color,
-        border: `1px solid ${config.border}`,
-        borderLeft: `3px solid ${config.color}`,
-        lineHeight: 1.25,
-        userSelect: 'none',
-        whiteSpace: 'nowrap',
+        color: t.text,
+        background: t.bg,
+        borderColor: t.border,
+        fontSize: size === 'sm' ? 'var(--ds-text-12)' : undefined,
       }}
     >
-      <span style={{ fontSize: isSm ? '8px' : '9px', opacity: 0.9 }}>{config.marker}</span>
-      <span>{config.label}</span>
+      <span className="sms-dot" style={{ width: 6, height: 6, background: t.rule }} aria-hidden="true" />
+      {t.level}
     </span>
+  );
+};
+
+export const SeverityDot: React.FC<{ severity: string | null | undefined; size?: number }> = ({ severity, size = 10 }) => {
+  const t = getSeverityTokens(severity);
+  return (
+    <span
+      className="sms-dot"
+      role="img"
+      aria-label={t ? `Severity ${t.level}` : 'Severity not reported'}
+      title={t ? t.level : 'Severity not reported'}
+      style={{ width: size, height: size, background: t ? t.rule : 'transparent', border: t ? undefined : '1px solid var(--ds-border-strong)' }}
+    />
   );
 };

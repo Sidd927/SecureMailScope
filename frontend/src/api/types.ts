@@ -386,9 +386,10 @@ export interface SessionEvidence {
   stream_key: string;
   capture_id: string;
   tcp_stream_id: number;
-  protocol: string;
-  client: { ip: string; port: number };
-  server: { ip: string; port: number };
+  // Null when the dissector could not attribute endpoints or a protocol to the stream.
+  protocol: string | null;
+  client: { ip: string | null; port: number | null };
+  server: { ip: string | null; port: number | null };
   endpoint_basis: string;
   timing: {
     first_frame: number;
@@ -510,3 +511,20 @@ export const EPISTEMIC_DESCRIPTIONS: Record<EvidenceState, string> = {
   INCOMPLETE: 'Capture boundary severed mid-handshake or dialogue before state resolved.',
   NOT_OBSERVABLE: 'Inherently unobservable by passive capture design (e.g. TLS 1.3 encrypted certs, missing trust store).',
 };
+
+/** JSON rendition of the forensic report (GET /analyses/{id}/reports/json). Only fields the UI reads are typed. */
+export interface ReportDocument {
+  assessment_id: string;
+  capture_id: string;
+  run_id: string;
+  generated_at: string;
+  overall_posture: PostureBand;
+  ai_enabled: boolean;
+  score?: { band: string; value: number | null; basis: string; formula_id: string | null; starting_value: number | null; total_penalty: number | null };
+  issue_groups?: Array<{ title: string; severity: string | null; certainty: string | null; recurrence: number | null; issue_class: string; penalising: boolean; citations: Citation[] }>;
+  remediation_summary?: Remediation[];
+  limitations?: string[];
+  risk_summary?: { abstentions?: { total: number; by_reason?: Record<string, number> }; note?: string };
+  provenance?: { rule_ids?: string[]; source_counts?: Record<string, number>; note?: string };
+  versions?: { engine?: string; schema?: string };
+}

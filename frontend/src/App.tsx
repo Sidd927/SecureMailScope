@@ -6,29 +6,16 @@ import { CommandPalette } from './components/shell/CommandPalette';
 import { KeyboardShortcutsModal } from './components/shell/KeyboardShortcutsModal';
 import { HomeView } from './components/home/HomeView';
 import { WorkbenchView } from './components/workbench/WorkbenchView';
-import { DesignLab } from './design-lab/DesignLab';
-import { AlertTriangle, X } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
-  const isDesignLab = typeof window !== 'undefined' && (
-    window.location.pathname.startsWith('/design-lab') ||
-    new URLSearchParams(window.location.search).get('view') === 'design-lab' ||
-    new URLSearchParams(window.location.search).has('design-lab') ||
-    new URLSearchParams(window.location.search).has('lab')
-  );
-
-  if (isDesignLab) {
-    return <DesignLab />;
-  }
-
-  const { activeView, error } = useInvestigation();
+  // Errors are shown where they happen: the workbench's ErrorState and the upload zone.
+  const { activeView } = useInvestigation();
   const [showRunPicker, setShowRunPicker] = useState(() => {
     if (typeof window !== 'undefined') {
       return new URLSearchParams(window.location.search).get('modal') === 'run-picker';
     }
     return false;
   });
-  const [dismissError, setDismissError] = useState(false);
 
   React.useEffect(() => {
     const handlePopState = () => {
@@ -64,43 +51,7 @@ const MainLayout: React.FC = () => {
       </a>
 
       {/* Persistent Application Shell Header */}
-      <Header
-        onOpenRunPicker={handleOpenRunPicker}
-        onOpenUpload={() => {
-          // Switching to home brings up intake dropzone
-          // Note: handled by navigation
-        }}
-      />
-
-      {/* Global Error Banner */}
-      {error && !dismissError && (
-        <div
-          role="alert"
-          style={{
-            backgroundColor: 'var(--color-sev-critical-bg)',
-            borderBottom: '1px solid var(--color-sev-critical-border)',
-            padding: '8px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-sev-critical)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertTriangle size={14} />
-            <span>{error}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setDismissError(true)}
-            style={{ color: 'var(--color-sev-critical)', padding: '2px' }}
-            aria-label="Dismiss error"
-          >
-            <X size={14} />
-          </button>
-        </div>
-      )}
+      <Header onOpenRunPicker={handleOpenRunPicker} />
 
       {/* Main Content Area */}
       <div id="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
