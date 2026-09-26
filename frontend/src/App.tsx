@@ -6,9 +6,21 @@ import { CommandPalette } from './components/shell/CommandPalette';
 import { KeyboardShortcutsModal } from './components/shell/KeyboardShortcutsModal';
 import { HomeView } from './components/home/HomeView';
 import { WorkbenchView } from './components/workbench/WorkbenchView';
+import { DesignLab } from './design-lab/DesignLab';
 import { AlertTriangle, X } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
+  const isDesignLab = typeof window !== 'undefined' && (
+    window.location.pathname.startsWith('/design-lab') ||
+    new URLSearchParams(window.location.search).get('view') === 'design-lab' ||
+    new URLSearchParams(window.location.search).has('design-lab') ||
+    new URLSearchParams(window.location.search).has('lab')
+  );
+
+  if (isDesignLab) {
+    return <DesignLab />;
+  }
+
   const { activeView, error } = useInvestigation();
   const [showRunPicker, setShowRunPicker] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -103,6 +115,7 @@ const MainLayout: React.FC = () => {
 
       {/* Keyboard Shortcuts Reference Modal (?) */}
       <KeyboardShortcutsModal />
+
     </div>
   );
 };

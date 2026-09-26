@@ -122,6 +122,30 @@ export const api = {
   },
 
   /**
+   * Get canonical assessment document
+   */
+  async getAssessment(runId: string): Promise<any> {
+    return request<any>(`/analyses/${runId}/assessment`);
+  },
+
+  /**
+   * Get available reports list
+   */
+  async getReports(runId: string): Promise<any> {
+    return request<any>(`/analyses/${runId}/reports`);
+  },
+
+  /**
+   * Fetch raw report HTML
+   */
+  async getReportHtml(runId: string): Promise<string> {
+    const url = `${BASE_URL}/analyses/${encodeURIComponent(runId)}/reports/html`;
+    const res = await fetch(url);
+    if (!res.ok) throw new ApiError('Failed to fetch report HTML', 'REPORT_ERROR', res.status);
+    return res.text();
+  },
+
+  /**
    * Get live session dissection data for an analysis
    */
   async getSessions(runId: string): Promise<SessionListResponse> {

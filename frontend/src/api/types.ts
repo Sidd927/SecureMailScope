@@ -430,3 +430,83 @@ export interface SessionListResponse {
   total: number;
   items: SessionEvidence[];
 }
+
+export interface AssessmentResponse {
+  run_id: string;
+  assessment_id: string;
+  capture_id: string;
+  overall_posture: PostureBand;
+  coverage: any;
+  limitations: string[];
+  assessment: {
+    assessment_id: string;
+    capture_id: string;
+    overall_posture: PostureBand;
+    coverage?: Coverage;
+    limitations?: string[];
+    generated_at: string;
+    versions?: Record<string, string>;
+    score?: {
+      starting_value: number;
+      total_penalty: number;
+      score_value: number;
+      formula_id: string;
+      basis: string;
+    };
+    prioritised?: Array<{
+      rank: number;
+      priority_score: number;
+      ml_adjustment: number;
+      affected_sessions: number;
+      affected_stream_keys: string[];
+      explanation: string;
+      representative_finding: any;
+    }>;
+    issue_groups?: any[];
+    abstentions?: any[];
+    protocol_posture?: any[];
+    standards_summary?: any;
+    model_summary?: any;
+    provenance?: any;
+    risk_summary?: any;
+  };
+}
+
+export interface ReportItem {
+  format: 'html' | 'pdf' | 'json';
+  media_type: string;
+  filename: string;
+  renderer_available: boolean;
+  report_schema_version: string;
+  renderer_version: string;
+  generated: boolean;
+  artifact_id: string | null;
+  report_sha256: string | null;
+  size_bytes: number | null;
+  created_at: string | null;
+  current: boolean | null;
+  integrity: string | null;
+}
+
+export interface ReportListResponse {
+  run_id: string;
+  items: ReportItem[];
+}
+
+export const EPISTEMIC_SYMBOLS: Record<EvidenceState, string> = {
+  OBSERVED: '●',
+  INFERRED: '⊢',
+  UNKNOWN: '?',
+  AMBIGUOUS: '≬',
+  INCOMPLETE: '⋯',
+  NOT_OBSERVABLE: '∅',
+};
+
+export const EPISTEMIC_DESCRIPTIONS: Record<EvidenceState, string> = {
+  OBSERVED: 'Directly and unambiguously demonstrated by passive packet inspection.',
+  INFERRED: 'Logically deduced from observed protocol states and deterministic rules.',
+  UNKNOWN: 'Expected state could not be determined from the available captured frames.',
+  AMBIGUOUS: 'Contradictory or branching signals observed; cannot uniquely establish state.',
+  INCOMPLETE: 'Capture boundary severed mid-handshake or dialogue before state resolved.',
+  NOT_OBSERVABLE: 'Inherently unobservable by passive capture design (e.g. TLS 1.3 encrypted certs, missing trust store).',
+};

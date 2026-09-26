@@ -1,44 +1,37 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useInvestigation } from '../../context/InvestigationContext';
-import { ProtocolTimeline } from './timeline/ProtocolTimeline';
-import { EvidenceMatrix } from './evidence/EvidenceMatrix';
-import { CertificateForensics } from './evidence/CertificateForensics';
-import { ContextualInspector } from './inspector/ContextualInspector';
 import { InvestigationOverview } from './overview/InvestigationOverview';
-import { SeverityBadge } from '../common/SeverityBadge';
-import { ForensicHash } from '../common/ForensicHash';
+import { ProvenanceGraph } from './provenance/ProvenanceGraph';
+import { ProtocolJourney } from './timeline/ProtocolJourney';
+import { EvidenceLedger } from './evidence/EvidenceLedger';
+import { CertificateForensics } from './evidence/CertificateForensics';
+import { CrossSessionWorkspace } from './crosssession/CrossSessionWorkspace';
+import { ReportExperience } from './report/ReportExperience';
+import { InspectorDossier } from './inspector/InspectorDossier';
+import type { ForensicTab } from '../../context/InvestigationContext';
 import {
-  GitCommit,
-  Layers,
-  Award,
-  Search,
-  ShieldAlert,
   Compass,
+  GitBranch,
+  Network,
+  Table,
+  KeyRound,
+  Layers,
+  FileText,
   AlertTriangle,
-  RefreshCw,
 } from 'lucide-react';
-import { formatEndpoint, formatProtocol } from '../../utils/formatters';
 
 export const WorkbenchView: React.FC = () => {
   const {
     activeRunId,
     activeRun,
     dashboard,
-    sessions,
-    selectedSession,
-    selectSession,
-    selectFinding,
     activeTab,
     setActiveTab,
     setActiveView,
-    selectRun,
     isLoading,
     error,
+    selectRun,
   } = useInvestigation();
-
-  // Search & Filter state for stream reel
-  const [streamFilter, setStreamFilter] = useState('');
-  const [selectedProto, setSelectedProto] = useState<string | null>(null);
 
   const handleOpenScoreModal = () => {
     const params = new URLSearchParams(window.location.search);
@@ -47,666 +40,209 @@ export const WorkbenchView: React.FC = () => {
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
-  // Filtered streams for horizontal reel
-  const filteredSessions = useMemo(() => {
-    return sessions.filter((s) => {
-      if (selectedProto && s.protocol.toLowerCase() !== selectedProto.toLowerCase()) {
-        return false;
-      }
-      if (!streamFilter.trim()) return true;
-      const q = streamFilter.toLowerCase();
-      const clientStr = s.client ? `${s.client.ip}:${s.client.port}` : '';
-      const serverStr = s.server ? `${s.server.ip}:${s.server.port}` : '';
-      return (
-        s.stream_key.toLowerCase().includes(q) ||
-        clientStr.toLowerCase().includes(q) ||
-        serverStr.toLowerCase().includes(q) ||
-        s.protocol.toLowerCase().includes(q)
-      );
-    });
-  }, [sessions, selectedProto, streamFilter]);
-
-  // Unique protocols available
-  const availableProtos = useMemo(() => {
-    const set = new Set<string>();
-    for (const s of sessions) {
-      if (s.protocol) set.add(s.protocol.toUpperCase());
-    }
-    return Array.from(set);
-  }, [sessions]);
-
-  // Findings for currently selected stream
-  const currentSessionFindings = useMemo(() => {
-    if (!selectedSession || !dashboard?.findings) return [];
-    return dashboard.findings.filter((f) =>
-      f.affected_stream_keys.includes(selectedSession.stream_key)
-    );
-  }, [selectedSession, dashboard]);
-
   if (isLoading) {
     return (
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--color-page)',
-          color: 'var(--color-ink-muted)',
-          fontSize: 'var(--text-sm)',
-          fontFamily: 'var(--font-mono)',
-        }}
-      >
-        Dissecting network frames & verifying cryptographic state machine…
+      <div style={{ maxWidth: '1240px', width: '100%', margin: '0 auto', padding: '32px 24px' }}>
+        {/* Restrained Forensic Skeletons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }} className="animate-pulse">
+          {/* Case Identity Skeleton */}
+          <div style={{ borderBottom: '1px solid var(--ds-border-light)', paddingBottom: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div style={{ height: '14px', width: '90px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '4px' }} />
+              <div style={{ height: '14px', width: '180px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '4px' }} />
+            </div>
+            <div style={{ height: '28px', width: '320px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '4px', marginBottom: '12px' }} />
+            <div style={{ height: '16px', width: '560px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '4px' }} />
+          </div>
+
+          {/* Verdict Skeleton */}
+          <div
+            style={{
+              padding: '24px',
+              backgroundColor: 'var(--ds-bg-subtle)',
+              border: '1px solid var(--ds-border-light)',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ height: '12px', width: '120px', backgroundColor: 'var(--ds-border-medium)', borderRadius: '3px' }} />
+              <div style={{ height: '24px', width: '280px', backgroundColor: 'var(--ds-border-medium)', borderRadius: '4px' }} />
+            </div>
+            <div style={{ height: '48px', width: '140px', backgroundColor: 'var(--ds-border-medium)', borderRadius: '6px' }} />
+          </div>
+
+          {/* Findings Skeleton */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ height: '14px', width: '160px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '3px' }} />
+            <div style={{ height: '72px', backgroundColor: 'var(--ds-bg-canvas)', border: '1px solid var(--ds-border-light)', borderRadius: '6px' }} />
+            <div style={{ height: '72px', backgroundColor: 'var(--ds-bg-canvas)', border: '1px solid var(--ds-border-light)', borderRadius: '6px' }} />
+          </div>
+        </div>
       </div>
     );
   }
 
-  if (error && !dashboard) {
+  if (error || !dashboard || !activeRun) {
+    const isNetworkOr502 = typeof error === 'string' && (error.includes('502') || error.includes('fetch') || error.includes('network') || error.includes('Failed to fetch'));
+    const displayReason = isNetworkOr502 ? 'Backend unavailable or network service unreachable.' : (error || 'Investigation session could not be resolved from storage.');
+    const technicalDetail = error || 'HTTP 502 Bad Gateway / Connection Refused';
+
     return (
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--color-page)',
-          padding: '40px',
-          textAlign: 'center',
-        }}
-      >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '5px 12px',
-            borderRadius: 'var(--radius-xs)',
-            backgroundColor: 'var(--color-sev-critical-bg)',
-            border: '1px solid var(--color-sev-critical-border)',
-            color: 'var(--color-sev-critical)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            fontWeight: 800,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            marginBottom: '16px',
-          }}
-        >
-          <AlertTriangle size={14} />
+      <div style={{ maxWidth: '580px', margin: '80px auto', padding: '36px 32px', textAlign: 'center', backgroundColor: 'var(--ds-bg-canvas)', border: '1px solid var(--ds-border-light)', borderRadius: '8px', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
+        <div style={{ display: 'inline-flex', padding: '10px', borderRadius: '50%', backgroundColor: 'var(--ds-crimson-soft)', color: 'var(--ds-crimson)', marginBottom: '16px' }}>
+          <AlertTriangle size={24} />
+        </div>
+        <div style={{ fontFamily: 'var(--ds-font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--ds-crimson)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '6px' }}>
           ANALYSIS UNAVAILABLE
         </div>
-        <h2 style={{ fontSize: 'var(--text-xl)', fontWeight: 800, color: 'var(--color-ink)', marginBottom: '8px' }}>
-          Forensic Engine Could Not Complete Request
+        <h2 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--ds-ink-primary)', marginBottom: '8px' }}>
+          We couldn't retrieve this investigation.
         </h2>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink-muted)', maxWidth: '480px', marginBottom: '20px', lineHeight: 1.5 }}>
-          The backend service is either starting up or encountering transient connection limits. All prior artifacts remain safe in the forensic ledger.
+        <p style={{ fontSize: '13px', color: 'var(--ds-ink-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
+          <strong>Reason:</strong> {displayReason}
         </p>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {activeRunId && (
-            <button
-              type="button"
-              onClick={() => selectRun(activeRunId)}
-              className="btn btn-primary"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <RefreshCw size={13} />
-              Retry Analysis Retrieval
-            </button>
-          )}
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '24px' }}>
+          <button
+            type="button"
+            onClick={() => activeRunId && selectRun(activeRunId)}
+            style={{
+              padding: '8px 18px',
+              backgroundColor: 'var(--ds-carbon)',
+              color: '#ffffff',
+              borderRadius: '6px',
+              fontSize: '12px',
+              fontFamily: 'var(--ds-font-sans)',
+              fontWeight: 600,
+              cursor: 'pointer',
+              border: 'none',
+            }}
+          >
+            Retry Analysis
+          </button>
           <button
             type="button"
             onClick={() => setActiveView('home')}
-            className="btn btn-secondary"
+            style={{
+              padding: '8px 18px',
+              backgroundColor: 'var(--ds-bg-canvas)',
+              border: '1px solid var(--ds-border-medium)',
+              color: 'var(--ds-ink-primary)',
+              borderRadius: '6px',
+              fontSize: '12px',
+              fontFamily: 'var(--ds-font-sans)',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
           >
-            Return to Launchpad
+            Return to Case Desk
           </button>
         </div>
-        <details style={{ marginTop: '24px', textAlign: 'left', maxWidth: '480px' }}>
-          <summary style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)', cursor: 'pointer' }}>
-            Technical Diagnostic Information (Expand)
+
+        {/* Collapsible Progressive Technical Detail */}
+        <details style={{ textAlign: 'left', borderTop: '1px solid var(--ds-border-light)', paddingTop: '14px', fontSize: '12px', color: 'var(--ds-ink-muted)' }}>
+          <summary style={{ cursor: 'pointer', fontFamily: 'var(--ds-font-mono)', fontSize: '11px' }}>
+            Technical detail
           </summary>
-          <pre style={{ marginTop: '8px', padding: '10px', backgroundColor: 'var(--color-panel)', borderRadius: 'var(--radius-sm)', fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-secondary)', overflowX: 'auto', border: '1px solid var(--color-border)' }}>
-            {error}
+          <pre style={{ margin: '10px 0 0', padding: '10px', backgroundColor: 'var(--ds-bg-subtle)', borderRadius: '4px', fontSize: '11px', fontFamily: 'var(--ds-font-mono)', color: 'var(--ds-ink-secondary)', overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
+            {technicalDetail}
           </pre>
         </details>
       </div>
     );
   }
 
-  if (!activeRun) {
-    return (
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--color-page)',
-          padding: '40px',
-        }}
-      >
-        <div style={{ fontSize: 'var(--text-lg)', fontWeight: 800, color: 'var(--color-ink)' }}>
-          No Active Investigation Case File Selected
-        </div>
-        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink-muted)', marginTop: '8px' }}>
-          Select an investigation from the Launchpad or ingest a new PCAP capture file.
-        </div>
-      </div>
-    );
-  }
+  // Navigation Items
+  const navTabs: Array<{ id: ForensicTab; label: string; icon: React.ReactNode; shortcut: string }> = [
+    { id: 'overview', label: 'Overview & Verdict', icon: <Compass size={13} />, shortcut: '1' },
+    { id: 'provenance', label: 'Provenance Trace', icon: <GitBranch size={13} />, shortcut: '2' },
+    { id: 'journey', label: 'Protocol Journey', icon: <Network size={13} />, shortcut: '3' },
+    { id: 'evidence', label: 'Evidence Ledger', icon: <Table size={13} />, shortcut: '4' },
+    { id: 'certs', label: 'Certificate Forensics', icon: <KeyRound size={13} />, shortcut: '5' },
+    { id: 'cross_session', label: 'Cross-Session Baseline', icon: <Layers size={13} />, shortcut: '6' },
+    { id: 'report', label: 'Forensic Report', icon: <FileText size={13} />, shortcut: '7' },
+  ];
 
   return (
-    <div
-      style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'var(--color-page)',
-        minHeight: 0,
-        overflow: 'hidden',
-      }}
-    >
-      {/* ============================================================ */}
-      {/* 1. TOP CASE FILE DOSSIER BAR */}
-      {/* ============================================================ */}
-      <div
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'var(--bg-app)' }}>
+      {/* Primary Investigation Navigation Bar */}
+      <nav
+        aria-label="Investigation Navigation"
         style={{
-          backgroundColor: 'var(--color-surface)',
-          borderBottom: '1px solid var(--color-border)',
-          padding: '10px 24px',
+          backgroundColor: 'var(--ds-bg-canvas)',
+          borderBottom: '1px solid var(--ds-border-light)',
+          padding: '0 28px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '16px',
-          boxShadow: 'var(--shadow-subtle)',
-          flexShrink: 0,
+          gap: '4px',
+          overflowX: 'auto',
+          position: 'sticky',
+          top: '56px',
+          zIndex: 90,
+          boxShadow: '0 1px 2px rgba(0,0,0,0.02)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          <div>
-            <div
+        {navTabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
               style={{
-                fontSize: '10px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: 'var(--color-ink-muted)',
-                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                padding: '11px 16px',
+                fontSize: '12px',
+                fontFamily: 'var(--ds-font-sans)',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? 'var(--ds-ink-primary)' : 'var(--ds-ink-muted)',
+                backgroundColor: 'transparent',
+                borderBottom: isActive ? '2px solid var(--ds-carbon)' : '2px solid transparent',
+                marginBottom: '-1px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease',
               }}
             >
-              ACTIVE FORENSIC CASE FILE
-            </div>
-            <h1
-              style={{
-                fontSize: 'var(--text-base)',
-                fontWeight: 800,
-                color: 'var(--color-ink)',
-                lineHeight: 1.2,
-                marginTop: '1px',
-              }}
-            >
-              {activeRun.source_filename}
-            </h1>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <ForensicHash value={activeRun.capture_id} length={12} label="SHA-256" />
-            {activeRun.duration_ms && (
+              <span style={{ color: isActive ? 'var(--ds-carbon)' : 'inherit' }}>{tab.icon}</span>
+              <span>{tab.label}</span>
               <span
                 style={{
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--color-ink-muted)',
-                  backgroundColor: 'var(--color-panel)',
-                  padding: '2px 6px',
-                  borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                {activeRun.duration_ms}ms parse
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* View Switcher Tabs & Global Coverage */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {dashboard?.coverage && (
-            <div
-              style={{
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--color-ink-secondary)',
-              }}
-            >
-              Coverage: <strong style={{ color: 'var(--color-ink)' }}>{dashboard.coverage.percent_text}</strong>
-            </div>
-          )}
-
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: 'var(--color-panel)',
-              padding: '3px',
-              borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--color-border)',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => setActiveTab('overview')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '4px 10px',
-                fontSize: 'var(--text-xs)',
-                fontWeight: activeTab === 'overview' ? 800 : 600,
-                color: activeTab === 'overview' ? 'var(--color-accent)' : 'var(--color-ink-muted)',
-                backgroundColor: activeTab === 'overview' ? 'var(--color-surface)' : 'transparent',
-                borderRadius: 'var(--radius-xs)',
-                boxShadow: activeTab === 'overview' ? 'var(--shadow-subtle)' : 'none',
-                transition: 'all var(--transition-fast)',
-              }}
-            >
-              <Compass size={13} />
-              <span>1. Overview</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab('timeline')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '4px 10px',
-                fontSize: 'var(--text-xs)',
-                fontWeight: activeTab === 'timeline' ? 800 : 600,
-                color: activeTab === 'timeline' ? 'var(--color-accent)' : 'var(--color-ink-muted)',
-                backgroundColor: activeTab === 'timeline' ? 'var(--color-surface)' : 'transparent',
-                borderRadius: 'var(--radius-xs)',
-                boxShadow: activeTab === 'timeline' ? 'var(--shadow-subtle)' : 'none',
-                transition: 'all var(--transition-fast)',
-              }}
-            >
-              <GitCommit size={13} />
-              <span>2. Protocol Journey</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab('evidence')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '4px 10px',
-                fontSize: 'var(--text-xs)',
-                fontWeight: activeTab === 'evidence' ? 800 : 600,
-                color: activeTab === 'evidence' ? 'var(--color-accent)' : 'var(--color-ink-muted)',
-                backgroundColor: activeTab === 'evidence' ? 'var(--color-surface)' : 'transparent',
-                borderRadius: 'var(--radius-xs)',
-                boxShadow: activeTab === 'evidence' ? 'var(--shadow-subtle)' : 'none',
-                transition: 'all var(--transition-fast)',
-              }}
-            >
-              <Layers size={13} />
-              <span>3. Evidence Ledger</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab('certs')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '4px 10px',
-                fontSize: 'var(--text-xs)',
-                fontWeight: activeTab === 'certs' ? 800 : 600,
-                color: activeTab === 'certs' ? 'var(--color-accent)' : 'var(--color-ink-muted)',
-                backgroundColor: activeTab === 'certs' ? 'var(--color-surface)' : 'transparent',
-                borderRadius: 'var(--radius-xs)',
-                boxShadow: activeTab === 'certs' ? 'var(--shadow-subtle)' : 'none',
-                transition: 'all var(--transition-fast)',
-              }}
-            >
-              <Award size={13} />
-              <span>4. X.509 Certs ({selectedSession?.certificates?.length ?? 0})</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ============================================================ */}
-      {/* 2. HORIZONTAL STREAM NAVIGATION REEL (For Stream Tabs) */}
-      {/* ============================================================ */}
-      {activeTab !== 'overview' && (
-        <div
-          style={{
-            backgroundColor: 'var(--color-panel)',
-            borderBottom: '1px solid var(--color-border)',
-            padding: '8px 24px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '14px',
-            flexShrink: 0,
-            overflowX: 'auto',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <span
-              style={{
-                fontSize: '10px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                fontWeight: 800,
-                color: 'var(--color-ink-muted)',
-              }}
-            >
-              DISSECTED STREAMS ({filteredSessions.length}/{sessions.length}):
-            </span>
-
-            {/* Quick Protocol Filter Chips */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <button
-                type="button"
-                onClick={() => setSelectedProto(null)}
-                style={{
+                  fontFamily: 'var(--ds-font-mono)',
                   fontSize: '10px',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: selectedProto === null ? 800 : 600,
-                  padding: '2px 6px',
-                  borderRadius: 'var(--radius-xs)',
-                  backgroundColor: selectedProto === null ? 'var(--color-ink)' : 'var(--color-surface)',
-                  color: selectedProto === null ? '#ffffff' : 'var(--color-ink-muted)',
-                  border: '1px solid var(--color-border)',
+                  color: isActive ? 'var(--ds-carbon)' : 'var(--ds-ink-faint)',
+                  opacity: 0.8,
+                  marginLeft: '2px',
                 }}
               >
-                ALL
-              </button>
-              {availableProtos.map((pr) => (
-                <button
-                  key={pr}
-                  type="button"
-                  onClick={() => setSelectedProto(selectedProto === pr ? null : pr)}
-                  style={{
-                    fontSize: '10px',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: selectedProto === pr ? 800 : 600,
-                    padding: '2px 6px',
-                    borderRadius: 'var(--radius-xs)',
-                    backgroundColor: selectedProto === pr ? 'var(--color-accent)' : 'var(--color-surface)',
-                    color: selectedProto === pr ? '#ffffff' : 'var(--color-ink-muted)',
-                    border: '1px solid var(--color-border)',
-                  }}
-                >
-                  {pr}
-                </button>
-              ))}
+                [{tab.shortcut}]
+              </span>
+            </button>
+          );
+        })}
+      </nav>
 
-              {/* Quick Stream Search */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: 'var(--color-surface)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 'var(--radius-xs)',
-                  padding: '2px 8px',
-                  marginLeft: '8px',
-                }}
-              >
-                <Search size={11} style={{ color: 'var(--color-ink-muted)' }} />
-                <input
-                  type="text"
-                  placeholder="Search stream or IP…"
-                  value={streamFilter}
-                  onChange={(e) => setStreamFilter(e.target.value)}
-                  style={{
-                    border: 'none',
-                    background: 'none',
-                    outline: 'none',
-                    fontSize: '10px',
-                    fontFamily: 'var(--font-mono)',
-                    width: '130px',
-                    color: 'var(--color-ink)',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Horizontal Stream Cards Reel */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              overflowX: 'auto',
-              padding: '2px 0',
-              flex: 1,
-            }}
-          >
-            {filteredSessions.map((s) => {
-              const isSelected = selectedSession?.stream_key === s.stream_key;
-              const streamFindings = (dashboard?.findings || []).filter((f) =>
-                f.affected_stream_keys.includes(s.stream_key)
-              );
-              const hasCritical = streamFindings.some((f) => f.severity === 'CRITICAL' || f.severity === 'HIGH');
-
-              return (
-                <button
-                  key={s.stream_key}
-                  type="button"
-                  onClick={() => selectSession(s.stream_key)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '5px 10px',
-                    borderRadius: 'var(--radius-xs)',
-                    backgroundColor: isSelected
-                      ? 'var(--color-surface)'
-                      : hasCritical
-                        ? 'var(--color-sev-critical-bg)'
-                        : 'var(--color-surface)',
-                    border: `1px solid ${isSelected ? 'var(--color-accent)' : hasCritical ? 'var(--color-sev-critical-border)' : 'var(--color-border)'}`,
-                    boxShadow: isSelected ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                    flexShrink: 0,
-                    cursor: 'pointer',
-                    transition: 'all var(--transition-fast)',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontFamily: 'var(--font-mono)',
-                      fontWeight: 800,
-                      color: isSelected ? 'var(--color-accent)' : 'var(--color-ink)',
-                    }}
-                  >
-                    #{s.tcp_stream_id} {formatProtocol(s.protocol, s.implicit_tls)}
-                  </span>
-
-                  <span
-                    style={{
-                      fontSize: '11px',
-                      fontFamily: 'var(--font-mono)',
-                      color: 'var(--color-ink-secondary)',
-                    }}
-                  >
-                    {formatEndpoint(s.client)} ➔ {formatEndpoint(s.server)}
-                  </span>
-
-                  {streamFindings.length > 0 && (
-                    <span
-                      style={{
-                        fontSize: '9px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 800,
-                        padding: '1px 5px',
-                        borderRadius: 'var(--radius-xs)',
-                        backgroundColor: hasCritical ? 'var(--color-sev-critical)' : 'var(--color-sev-medium)',
-                        color: '#ffffff',
-                      }}
-                    >
-                      {streamFindings.length} ⚠
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ============================================================ */}
-      {/* 3. MAIN INVESTIGATION WORKSPACE CANVAS */}
-      {/* ============================================================ */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '28px',
-        }}
-      >
-        {activeTab === 'overview' ? (
-          <div style={{ maxWidth: '1180px', margin: '0 auto', width: '100%' }}>
-            <InvestigationOverview onOpenScoreModal={handleOpenScoreModal} />
-          </div>
-        ) : selectedSession ? (
-          <>
-            {activeTab === 'timeline' && (
-              <>
-                {/* Protocol Timeline Hero Feature */}
-                <ProtocolTimeline session={selectedSession} />
-
-                {/* Sub-Timeline Conclusions Deck */}
-                {currentSessionFindings.length > 0 && (
-                  <div
-                    style={{
-                      maxWidth: '1080px',
-                      margin: '0 auto',
-                      width: '100%',
-                      backgroundColor: 'var(--color-surface)',
-                      borderRadius: 'var(--radius-md)',
-                      border: '1px solid var(--color-border)',
-                      padding: '20px 24px',
-                      boxShadow: 'var(--shadow-subtle)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '16px',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <ShieldAlert size={16} style={{ color: 'var(--color-sev-critical)' }} />
-                        <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 800, color: 'var(--color-ink)' }}>
-                          Attributed Cryptographic Anomalies on Stream #{selectedSession.tcp_stream_id} ({currentSessionFindings.length})
-                        </h3>
-                      </div>
-                      <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>
-                        CLICK CARD TO OPEN DETAILED DOSSIER
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '12px' }}>
-                      {currentSessionFindings.map((f, fIdx) => (
-                        <div
-                          key={fIdx}
-                          onClick={() => selectFinding(f)}
-                          style={{
-                            padding: '14px 16px',
-                            backgroundColor: 'var(--color-panel-card)',
-                            border: '1px solid var(--color-border)',
-                            borderLeft: `4px solid ${f.severity === 'CRITICAL' || f.severity === 'HIGH' ? 'var(--color-sev-critical)' : 'var(--color-sev-medium)'}`,
-                            borderRadius: 'var(--radius-xs)',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '8px',
-                            transition: 'all var(--transition-fast)',
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <SeverityBadge severity={f.severity} />
-                            {f.penalising && (
-                              <span
-                                style={{
-                                  fontSize: '10px',
-                                  fontFamily: 'var(--font-mono)',
-                                  fontWeight: 800,
-                                  color: 'var(--color-sev-critical)',
-                                }}
-                              >
-                                PENALISING
-                              </span>
-                            )}
-                          </div>
-
-                          <div style={{ fontWeight: 800, fontSize: 'var(--text-xs)', color: 'var(--color-ink)' }}>
-                            {f.title}
-                          </div>
-
-                          <div style={{ fontSize: '11px', color: 'var(--color-ink-secondary)', lineHeight: 1.4 }}>
-                            {f.conclusion || f.explanation}
-                          </div>
-
-                          {f.citations && f.citations.length > 0 && (
-                            <div
-                              style={{
-                                fontSize: '10px',
-                                fontFamily: 'var(--font-mono)',
-                                color: 'var(--color-accent)',
-                                marginTop: '4px',
-                                fontWeight: 700,
-                              }}
-                            >
-                              Standard: {f.citations[0].standard} {f.citations[0].section}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-
-            {activeTab === 'evidence' && <EvidenceMatrix session={selectedSession} />}
-
-            {activeTab === 'certs' && <CertificateForensics session={selectedSession} />}
-          </>
-        ) : (
-          <div
-            style={{
-              padding: '40px',
-              textAlign: 'center',
-              color: 'var(--color-ink-muted)',
-              fontSize: 'var(--text-sm)',
-            }}
-          >
-            No session currently selected. Select a stream from the horizontal reel above.
-          </div>
+      {/* Primary View Content Area */}
+      <main style={{ flex: 1, padding: '0 32px' }}>
+        {activeTab === 'overview' && (
+          <InvestigationOverview onOpenScoreModal={handleOpenScoreModal} />
         )}
-      </div>
+        {activeTab === 'provenance' && <ProvenanceGraph />}
+        {activeTab === 'journey' && <ProtocolJourney />}
+        {activeTab === 'evidence' && <EvidenceLedger />}
+        {activeTab === 'certs' && <CertificateForensics />}
+        {activeTab === 'cross_session' && <CrossSessionWorkspace />}
+        {activeTab === 'report' && <ReportExperience />}
+      </main>
 
-      {/* ============================================================ */}
-      {/* 4. CONTEXTUAL FORENSIC DOSSIER SLIDE-OVER DRAWER */}
-      {/* ============================================================ */}
-      <ContextualInspector session={selectedSession} />
+      {/* Contextual Sliding Investigation Dossier */}
+      <InspectorDossier />
     </div>
   );
 };

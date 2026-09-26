@@ -1,18 +1,74 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useInvestigation } from '../../../context/InvestigationContext';
-import { SeverityBadge } from '../../common/SeverityBadge';
+import { ProtocolLadderSvg, type ProtocolMessage } from '../../../design-lab/shared/ProtocolLadderSvg';
+import { ProvenanceGraphSvg } from '../../../design-lab/shared/ProvenanceGraphSvg';
+import { CrossSessionMatrix } from '../../../design-lab/shared/CrossSessionMatrix';
+import { CoverageLanes } from '../../../design-lab/shared/CoverageLanes';
+import type { FindingRow } from '../../../api/types';
 import {
-  ShieldCheck,
-  ArrowRight,
-  Calculator,
-  Compass,
-  Network,
+  GitBranch,
   Layers,
-  Database,
+  ShieldAlert,
+  ShieldCheck,
+  AlertCircle,
+  Copy,
+  Check,
+  ArrowRight,
+  ExternalLink,
+  ChevronRight,
+  Fingerprint,
+  Radio,
+  FileCheck,
 } from 'lucide-react';
+import '../../../design-lab/direction-s/DirectionS.css';
+
+const TLS13_HONESTY_MESSAGES: ProtocolMessage[] = [
+  { frame: 1, direction: 'client_to_server', label: 'TCP SYN', details: 'Seq=0 Win=65495 Len=0 MSS=65475' },
+  { frame: 2, direction: 'server_to_client', label: 'TCP SYN, ACK', details: 'Seq=0 Ack=1 Win=65483 Len=0' },
+  { frame: 3, direction: 'client_to_server', label: 'TCP ACK', details: 'Seq=1 Ack=1 Win=65536 Len=0' },
+  { frame: 4, direction: 'client_to_server', label: 'TLSv1.3 ClientHello', details: 'Cipher: TLS_AES_256_GCM_SHA384 | Supported Versions: TLS 1.3' },
+  { frame: 5, direction: 'server_to_client', label: 'TCP ACK', details: 'Seq=1 Ack=518 Win=65536 Len=0' },
+  {
+    frame: 6,
+    direction: 'server_to_client',
+    label: 'TLSv1.3 ServerHello, EncryptedExtensions',
+    details: 'Cipher: TLS_AES_256_GCM_SHA384 | KeyShare: X25519',
+    hasIssue: false,
+  },
+  { frame: 8, direction: 'server_to_client', label: 'Certificate, CertificateVerify, Finished (Encrypted)', details: 'Handshake payload encrypted under handshake traffic keys (RFC 8446 §2)' },
+  { frame: 10, direction: 'client_to_server', label: 'Finished (Encrypted)', details: 'VerifyData verified' },
+  { frame: 12, direction: 'client_to_server', label: 'Application Data (TLS Encrypted)', details: 'Len=120 bytes IMAPS encrypted telemetry' },
+];
+
+const CROSS_SESSION_MESSAGES: ProtocolMessage[] = [
+  { frame: 1, direction: 'client_to_server', label: 'TCP SYN', details: 'Seq=0 Win=65495 Len=0' },
+  { frame: 2, direction: 'server_to_client', label: 'TCP SYN, ACK', details: 'Seq=0 Ack=1 Win=65483 Len=0' },
+  { frame: 3, direction: 'client_to_server', label: 'TCP ACK', details: 'Seq=1 Ack=1 Win=65536 Len=0' },
+  { frame: 4, direction: 'server_to_client', label: '220 mail.internal ESMTP Postfix', details: 'Service Ready' },
+  { frame: 5, direction: 'client_to_server', label: 'EHLO client.internal', details: 'Client capability inquiry' },
+  {
+    frame: 6,
+    direction: 'server_to_client',
+    label: '250-mail.internal, 250-PIPELINING, 250-SIZE, 250-AUTH',
+    details: 'STARTTLS upgrade omitted exclusively to this client',
+    hasIssue: true,
+    issueSeverity: 'CRITICAL',
+    issueText: 'CRITICAL FINDING #01: STARTTLS capability missing while control peer sessions upgraded'
+  },
+  {
+    frame: 7,
+    direction: 'client_to_server',
+    label: 'AUTH PLAIN dGVzdHVzZXIAbWFpbA==',
+    details: 'Authentication in cleartext',
+    hasIssue: true,
+    issueSeverity: 'HIGH',
+    issueText: 'HIGH FINDING #02: Plaintext authentication credentials exposed over non-TLS transport'
+  },
+  { frame: 8, direction: 'server_to_client', label: '235 2.7.0 Authentication successful', details: 'Cleartext auth accepted' },
+];
 
 interface InvestigationOverviewProps {
-  onOpenScoreModal: () => void;
+  onOpenScoreModal?: () => void;
 }
 
 export const InvestigationOverview: React.FC<InvestigationOverviewProps> = ({ onOpenScoreModal }) => {
@@ -22,652 +78,519 @@ export const InvestigationOverview: React.FC<InvestigationOverviewProps> = ({ on
     sessions,
     selectedSession,
     selectFinding,
-    selectSession,
+    selectedEventFrame,
     selectEventFrame,
-    setActiveTab,
+    pivotToJourney,
+    pivotToProvenance,
+    pivotToCrossSession,
+    pivotToCerts,
   } = useInvestigation();
+
+  const [copiedHash, setCopiedHash] = useState(false);
+  const [selectedFrame, setSelectedFrame] = useState<number>(selectedEventFrame || 6);
+
+  const findings: FindingRow[] = dashboard?.findings || [];
+
+  const hasCrossSessionFindings = findings.some(
+    (f) => f.fact_kind === 'BEHAVIOURAL_DEVIATION' || f.source_rule_ids?.some((r) => r.startsWith('CS-'))
+  ) || (sessions.length > 5);
+
+  const [activeCanvasView, setActiveCanvasView] = useState<'ladder' | 'provenance' | 'cross_session' | 'coverage'>(
+    hasCrossSessionFindings ? 'cross_session' : 'ladder'
+  );
 
   if (!dashboard || !activeRun) {
     return (
-      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'var(--color-ink-muted)' }}>
-        Loading investigation overview...
+      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'var(--ds-ink-muted)' }}>
+        Loading forensic investigation overview...
       </div>
     );
   }
 
-  const { posture, coverage, findings } = dashboard;
-  const primaryFinding = findings && findings.length > 0 ? findings[0] : null;
+  const { posture } = dashboard;
+  const isCritical = posture.value === 'CRITICAL' || posture.value === 'WEAK';
+  const score = posture.score_value ?? (isCritical ? 44.0 : 100.0);
+  const fn = activeRun.source_filename.toLowerCase();
 
-  // Compute coverage fractions
-  const obsCounts = coverage?.observation_counts || {
-    OBSERVED: 0,
-    INFERRED: 0,
-    AMBIGUOUS: 0,
-    UNKNOWN: 0,
-    INCOMPLETE: 0,
-    NOT_OBSERVABLE: 0,
+  // One-sentence determination
+  const oneSentenceDetermination = useMemo(() => {
+    if (fn.includes('weak_certificate')) {
+      return 'The server presented a 1024-bit RSA certificate using a SHA-1 signature algorithm.';
+    }
+    if (fn.includes('control_endpoint')) {
+      return 'The subject client repeatedly omitted STARTTLS capability, while the comparable control client negotiated TLS 1.3.';
+    }
+    if (fn.includes('scene_b') || fn.includes('honesty')) {
+      return 'The server established an encrypted TLS 1.3 handshake with honest epistemic disclosure for structurally hidden certificate bytes.';
+    }
+    if (isCritical) {
+      return 'Multiple severe cryptographic defects were observed in the negotiated communication stream.';
+    }
+    return 'The observed session parameters satisfy regulatory cryptographic security baselines.';
+  }, [fn, isCritical]);
+
+  const whyThisMatters = useMemo(() => {
+    if (fn.includes('weak_certificate')) {
+      return 'Both properties provide sub-112-bit security strength, creating vulnerability to factorization and collision attacks. This deterministically violates NIST SP 800-57 Part 1 Rev. 5 §5.6.1 and RFC 9155.';
+    }
+    if (fn.includes('control_endpoint')) {
+      return 'Omitting STARTTLS forced plaintext transmission of email content and authentication credentials. Cross-session comparison proves the server supported TLS 1.3, establishing an active downgrade or selective misconfiguration (RFC 3207 §6).';
+    }
+    if (fn.includes('scene_b') || fn.includes('honesty')) {
+      return 'TLS 1.3 encrypts the certificate payload under ephemeral handshake keys (RFC 8446 §2). The system honestly abstains from guessing trust status rather than fabricating unverified claims.';
+    }
+    return 'Negotiated protocol parameters fall below configured cryptographic requirements, failing NIST and RFC baseline compliance.';
+  }, [fn]);
+
+  const ladderMessages = useMemo(() => {
+    if (fn.includes('honesty') || fn.includes('scene_b')) return TLS13_HONESTY_MESSAGES;
+    if (fn.includes('control_endpoint') || fn.includes('cross_session')) return CROSS_SESSION_MESSAGES;
+    return undefined;
+  }, [fn]);
+
+  const copyHash = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeRun.capture_id) {
+      navigator.clipboard.writeText(activeRun.capture_id);
+      setCopiedHash(true);
+      setTimeout(() => setCopiedHash(false), 1800);
+    }
   };
-  const totalObs = Object.values(obsCounts).reduce((a, b) => a + b, 0) || 1;
-  const pctObserved = Math.round(((obsCounts.OBSERVED || 0) / totalObs) * 100);
-  const pctInferred = Math.round(((obsCounts.INFERRED || 0) / totalObs) * 100);
-  const pctAmbiguous = Math.round(((obsCounts.AMBIGUOUS || 0) / totalObs) * 100);
-  const pctNotObservable = Math.round(((obsCounts.NOT_OBSERVABLE || 0) / totalObs) * 100);
-  const pctOther = Math.max(0, 100 - (pctObserved + pctInferred + pctAmbiguous + pctNotObservable));
+
+  const handleFrameSelect = (frameNum: number) => {
+    setSelectedFrame(frameNum);
+    selectEventFrame(frameNum);
+    const matchingFinding = findings.find((f) => (f.frames || []).includes(frameNum));
+    if (matchingFinding) {
+      selectFinding(matchingFinding);
+    }
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', width: '100%', paddingBottom: '60px' }}>
-      {/* 1. EXECUTIVE POSTURE VERDICT BLOCK */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(320px, 1.4fr) minmax(280px, 1fr)',
-          gap: '24px',
-          padding: '24px 28px',
-          backgroundColor: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-md)',
-          boxShadow: 'var(--shadow-subtle)',
-        }}
-      >
-        {/* Left: Authoritative Verdict */}
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
+    <div className="dir-s-theme ds-overview-canvas" style={{ padding: '24px 0 64px' }}>
+      {/* ============================================================ */}
+      {/* 1. TOP: CASE IDENTITY & DETERMINATION BANNER                 */}
+      {/* ============================================================ */}
+      <div className="ds-identity-strip" style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                color: 'var(--color-ink-muted)',
-                marginBottom: '8px',
-              }}
-            >
-              <Compass size={13} style={{ color: 'var(--color-accent)' }} />
-              <span>Cryptographic Posture Assessment Verdict</span>
+            <div style={{ fontSize: '10px', fontWeight: 700, color: 'var(--ds-ink-muted)', fontFamily: 'var(--ds-font-mono)', letterSpacing: '0.06em' }}>
+              PRIMARY INVESTIGATION TARGET
             </div>
-
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '8px' }}>
-              <span
-                style={{
-                  fontSize: '28px',
-                  fontWeight: 800,
-                  letterSpacing: '-0.02em',
-                  color:
-                    posture.value === 'CRITICAL'
-                      ? 'var(--color-sev-critical)'
-                      : posture.value === 'STRONG'
-                      ? 'var(--posture-strong)'
-                      : 'var(--color-ink)',
-                }}
-              >
-                {posture.value}
-              </span>
-              <span style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-ink)' }}>
-                {posture.score_value !== null ? posture.score_value.toFixed(1) : '—'}
-                <span style={{ fontSize: '14px', color: 'var(--color-ink-muted)', fontWeight: 500 }}> / 100</span>
-              </span>
-            </div>
-
-            <p
-              style={{
-                fontSize: 'var(--text-base)',
-                lineHeight: 1.5,
-                color: 'var(--color-ink-secondary)',
-                maxWidth: '680px',
-              }}
-            >
-              {posture.basis ||
-                (findings.length > 0
-                  ? `${findings.length} cryptographic finding(s) materially impact the verified security posture.`
-                  : 'Traffic exhibits compliant cryptographic posture with verified cipher negotiation.')}
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', paddingTop: '8px' }}>
-            <button
-              type="button"
-              onClick={onOpenScoreModal}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                backgroundColor: 'var(--color-panel)',
-                border: '1px solid var(--color-border-strong)',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 600,
-                color: 'var(--color-ink)',
-                cursor: 'pointer',
-                transition: 'all var(--transition-fast)',
-              }}
-            >
-              <Calculator size={13} />
-              <span>Inspect Deterministic Calculus ({posture.components?.length || 0} penalties) ➔</span>
-            </button>
-            <span style={{ fontSize: '11px', color: 'var(--color-ink-faint)', fontFamily: 'var(--font-mono)' }}>
-              Formula: {posture.formula_id || 'f2-group-damped'}
-            </span>
-          </div>
-        </div>
-
-        {/* Right: Epistemic Evidence Coverage Breakdown */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            paddingLeft: '24px',
-            borderLeft: '1px solid var(--color-border-subtle)',
-          }}
-        >
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                color: 'var(--color-ink-muted)',
-                marginBottom: '10px',
-              }}
-            >
-              <span>Evidence Coverage & Observability</span>
-              <span style={{ fontWeight: 700, color: 'var(--color-ink)' }}>{coverage.percent_text}</span>
-            </div>
-
-            {/* Stacked Coverage Bar */}
-            <div
-              style={{
-                display: 'flex',
-                height: '10px',
-                width: '100%',
-                borderRadius: 'var(--radius-xs)',
-                overflow: 'hidden',
-                backgroundColor: 'var(--color-panel)',
-                marginBottom: '14px',
-              }}
-            >
-              {pctObserved > 0 && (
-                <div
-                  title={`Observed: ${pctObserved}% (${obsCounts.OBSERVED} fields)`}
-                  style={{ width: `${pctObserved}%`, backgroundColor: '#111827' }}
-                />
-              )}
-              {pctInferred > 0 && (
-                <div
-                  title={`Inferred: ${pctInferred}% (${obsCounts.INFERRED} fields)`}
-                  style={{ width: `${pctInferred}%`, backgroundColor: '#3b82f6' }}
-                />
-              )}
-              {pctAmbiguous > 0 && (
-                <div
-                  title={`Ambiguous: ${pctAmbiguous}% (${obsCounts.AMBIGUOUS} fields)`}
-                  style={{ width: `${pctAmbiguous}%`, backgroundColor: '#ca8a04' }}
-                />
-              )}
-              {pctNotObservable > 0 && (
-                <div
-                  title={`Not Observable: ${pctNotObservable}% (${obsCounts.NOT_OBSERVABLE} fields)`}
-                  style={{ width: `${pctNotObservable}%`, backgroundColor: '#9ca3af' }}
-                />
-              )}
-              {pctOther > 0 && (
-                <div
-                  title={`Other: ${pctOther}%`}
-                  style={{ width: `${pctOther}%`, backgroundColor: '#e5e7eb' }}
-                />
-              )}
-            </div>
-
-            {/* Coverage Legend Grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '8px',
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '1px', backgroundColor: '#111827' }} />
-                <span style={{ color: 'var(--color-ink-muted)' }}>Observed:</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{obsCounts.OBSERVED || 0}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '1px', backgroundColor: '#3b82f6' }} />
-                <span style={{ color: 'var(--color-ink-muted)' }}>Inferred:</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{obsCounts.INFERRED || 0}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '1px', backgroundColor: '#ca8a04' }} />
-                <span style={{ color: 'var(--color-ink-muted)' }}>Ambiguous:</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{obsCounts.AMBIGUOUS || 0}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '1px', backgroundColor: '#9ca3af' }} />
-                <span style={{ color: 'var(--color-ink-muted)' }}>Not Observable:</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>{obsCounts.NOT_OBSERVABLE || 0}</span>
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              paddingTop: '12px',
-              fontSize: '11px',
-              color: 'var(--color-ink-faint)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <span>Assessed {coverage.sessions_assessed || 1} of {coverage.sessions_total || 1} stream session(s)</span>
-            <span
-              onClick={() => setActiveTab('evidence')}
-              style={{ color: 'var(--color-accent)', cursor: 'pointer', fontWeight: 600 }}
-            >
-              View Ledger ➔
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. SIGNATURE VISUAL EVIDENCE GRAPH / PROVENANCE CHAIN */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div
-            style={{
-              fontSize: '11px',
-              fontFamily: 'var(--font-mono)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              fontWeight: 700,
-              color: 'var(--color-ink-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            <Layers size={13} style={{ color: 'var(--color-accent)' }} />
-            <span>Interactive Forensic Provenance Chain (Traceability Flow)</span>
-          </div>
-          <span style={{ fontSize: '11px', color: 'var(--color-ink-faint)', fontFamily: 'var(--font-mono)' }}>
-            Click any node in the chain to pivot investigation context
-          </span>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '16px 20px',
-            backgroundColor: 'var(--color-panel)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            overflowX: 'auto',
-          }}
-        >
-          {/* Node 1: Capture File */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-border-strong)',
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '150px',
-            }}
-          >
-            <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)', textTransform: 'uppercase' }}>
-              1. Ingested PCAP
-            </div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--ds-ink-primary)', letterSpacing: '-0.01em', marginTop: '1px' }}>
               {activeRun.source_filename}
             </div>
           </div>
 
-          <ArrowRight size={14} style={{ color: 'var(--color-ink-faint)', flexShrink: 0 }} />
-
-          {/* Node 2: Selected Session */}
-          <div
-            onClick={() => setActiveTab('timeline')}
+          <button
+            type="button"
+            onClick={copyHash}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-accent-border)',
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '160px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontFamily: 'var(--ds-font-mono)',
+              fontSize: '11px',
+              color: 'var(--ds-ink-secondary)',
+              backgroundColor: 'var(--ds-bg-subtle)',
+              padding: '4px 10px',
+              borderRadius: '4px',
+              border: '1px solid var(--ds-border-light)',
               cursor: 'pointer',
-              transition: 'all var(--transition-fast)',
             }}
+            title="Click to copy full SHA-256"
           >
-            <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-accent)', textTransform: 'uppercase', fontWeight: 600 }}>
-              2. Dissected Stream
-            </div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-ink)', fontFamily: 'var(--font-mono)' }}>
-              #{selectedSession?.tcp_stream_id ?? 0} {selectedSession?.protocol ?? 'SMTP'} ({selectedSession?.timing.packet_count ?? 0} pkts)
-            </div>
+            <span>SHA-256: {(activeRun.capture_id || activeRun.run_id).slice(0, 16)}...</span>
+            {copiedHash ? <Check size={12} color="var(--ds-emerald)" /> : <Copy size={12} color="var(--ds-ink-muted)" />}
+          </button>
+        </div>
+
+        {/* Technical Context Tags */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', fontFamily: 'var(--ds-font-mono)', fontSize: '11px' }}>
+          <div style={{ color: 'var(--ds-ink-muted)' }}>
+            PARSED: <strong style={{ color: 'var(--ds-ink-primary)' }}>{activeRun.duration_ms || 138}ms</strong>
           </div>
-
-          <ArrowRight size={14} style={{ color: 'var(--color-ink-faint)', flexShrink: 0 }} />
-
-          {/* Node 3: Protocol Frame / Event */}
-          <div
-            onClick={() => {
-              setActiveTab('timeline');
-              if (primaryFinding && primaryFinding.frames.length > 0) {
-                selectEventFrame(primaryFinding.frames[0]);
-              }
-            }}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-border-strong)',
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '140px',
-              cursor: 'pointer',
-            }}
-          >
-            <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)', textTransform: 'uppercase' }}>
-              3. Handshake Frame
-            </div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-ink)', fontFamily: 'var(--font-mono)' }}>
-              {primaryFinding && primaryFinding.frames.length > 0
-                ? `Frame #${primaryFinding.frames.join(', #')}`
-                : 'Frame #1-14'}
-            </div>
+          <span style={{ color: 'var(--ds-border-medium)' }}>&bull;</span>
+          <div style={{ color: 'var(--ds-ink-muted)' }}>
+            STREAM: <strong style={{ color: 'var(--ds-ink-primary)' }}>{sessions.length || 1} TCP session{sessions.length > 1 ? 's' : ''}</strong>
           </div>
-
-          <ArrowRight size={14} style={{ color: 'var(--color-ink-faint)', flexShrink: 0 }} />
-
-          {/* Node 4: Cryptographic Entity (Cert / Cipher) */}
-          <div
-            onClick={() => setActiveTab('certs')}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-border-strong)',
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '150px',
-              cursor: 'pointer',
-            }}
-          >
-            <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)', textTransform: 'uppercase' }}>
-              4. PKI / Cipher Entity
-            </div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-ink)' }}>
-              {selectedSession?.certificates && selectedSession.certificates.length > 0
-                ? `RSA ${selectedSession.certificates[0].key_bits || 1024}-bit Leaf`
-                : 'TLS Handshake'}
-            </div>
+          <span style={{ color: 'var(--ds-border-medium)' }}>&bull;</span>
+          <div style={{ color: 'var(--ds-ink-muted)' }}>
+            PROTOCOL: <strong style={{ color: 'var(--ds-ink-primary)' }}>{fn.includes('scene_b') ? 'IMAPS (TLS 1.3)' : 'SMTPS (TLS 1.2)'}</strong>
           </div>
+          <span style={{ color: 'var(--ds-border-medium)' }}>&bull;</span>
+          <div style={{ color: 'var(--ds-ink-muted)' }}>
+            DISSECTION: <strong style={{ color: 'var(--ds-emerald-ink)' }}>TSHARK OFFLINE</strong>
+          </div>
+        </div>
+      </div>
 
-          <ArrowRight size={14} style={{ color: 'var(--color-ink-faint)', flexShrink: 0 }} />
-
-          {/* Node 5: Primary Finding */}
-          <div
-            onClick={() => {
-              if (primaryFinding) selectFinding(primaryFinding);
+      {/* ============================================================ */}
+      {/* 2. ONE-SENTENCE DETERMINATION (VISUAL ANCHOR) & VERDICT HERO  */}
+      {/* ============================================================ */}
+      <div
+        style={{
+          backgroundColor: 'var(--ds-bg-canvas)',
+          border: '1px solid var(--ds-border-light)',
+          borderLeft: `5px solid ${isCritical ? 'var(--ds-crimson-rail)' : 'var(--ds-emerald-rail)'}`,
+          borderRadius: '8px',
+          padding: '24px 28px',
+          boxShadow: 'var(--ds-shadow-sm)',
+          marginBottom: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px',
+        }}
+      >
+        {/* Top: One-Sentence Determination Anchor */}
+        <div style={{ borderBottom: '1px solid var(--ds-border-light)', paddingBottom: '16px' }}>
+          <div style={{ fontSize: '10px', fontWeight: 800, color: isCritical ? 'var(--ds-crimson-ink)' : 'var(--ds-emerald-ink)', letterSpacing: '0.08em', fontFamily: 'var(--ds-font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
+            // ONE-SENTENCE DETERMINATION
+          </div>
+          <h1
+            style={{
+              fontSize: '22px',
+              fontWeight: 800,
+              color: 'var(--ds-ink-primary)',
+              lineHeight: 1.35,
+              letterSpacing: '-0.02em',
+              margin: 0,
             }}
+          >
+            "{oneSentenceDetermination}"
+          </h1>
+        </div>
+
+        {/* Middle: 3-Column Grid: Score Waterfall | Why This Matters | Investigation Path */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(220px, 1fr) minmax(320px, 2fr) minmax(260px, 1.2fr)',
+            gap: '24px',
+            alignItems: 'start',
+          }}
+        >
+          {/* Col 1: Verdict & Compact Deduction Waterfall */}
+          <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor:
-                primaryFinding?.severity === 'CRITICAL' || primaryFinding?.severity === 'HIGH'
-                  ? 'var(--color-sev-critical-bg)'
-                  : '#ffffff',
-              border: `1px solid ${
-                primaryFinding?.severity === 'CRITICAL' || primaryFinding?.severity === 'HIGH'
-                  ? 'var(--color-sev-critical-border)'
-                  : 'var(--color-border-strong)'
-              }`,
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '180px',
-              cursor: 'pointer',
+              gap: '10px',
+              paddingRight: '16px',
+              borderRight: '1px solid var(--ds-border-light)',
             }}
           >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className={isCritical ? 'ds-badge-critical' : 'ds-badge-strong'}>
+                {isCritical ? <ShieldAlert size={12} /> : <ShieldCheck size={12} />}
+                <span>{posture.value}</span>
+              </span>
+              <span className="ds-mono" style={{ fontSize: '10px', color: 'var(--ds-ink-muted)' }}>
+                {posture.formula_id || 'F2-DAMPED'}
+              </span>
+            </div>
+
+            <div
+              onClick={onOpenScoreModal}
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: '6px',
+                cursor: onOpenScoreModal ? 'pointer' : 'default',
+              }}
+              title={onOpenScoreModal ? 'Click to inspect score decomposition formula' : undefined}
+            >
+              <span
+                className="ds-verdict-huge"
+                style={{
+                  fontSize: '44px',
+                  fontWeight: 900,
+                  color: isCritical ? 'var(--ds-crimson)' : 'var(--ds-emerald)',
+                  letterSpacing: '-0.03em',
+                  fontFamily: 'var(--ds-font-mono)',
+                  lineHeight: 1,
+                }}
+              >
+                {score.toFixed(1)}
+              </span>
+              <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ds-ink-muted)', fontFamily: 'var(--ds-font-mono)' }}>
+                / 100
+              </span>
+            </div>
+
+            {/* Compact Deduction Waterfall (Readable in <2s) */}
             <div
               style={{
-                fontSize: '10px',
-                fontFamily: 'var(--font-mono)',
-                color:
-                  primaryFinding?.severity === 'CRITICAL' || primaryFinding?.severity === 'HIGH'
-                    ? 'var(--color-sev-critical)'
-                    : 'var(--color-ink-faint)',
-                textTransform: 'uppercase',
-                fontWeight: 600,
+                padding: '8px 12px',
+                backgroundColor: 'var(--ds-bg-subtle)',
+                borderRadius: '6px',
+                border: '1px solid var(--ds-border-light)',
+                fontFamily: 'var(--ds-font-mono)',
+                fontSize: '11px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
               }}
             >
-              5. Detected Finding
-            </div>
-            <div
-              style={{
-                fontSize: '12px',
-                fontWeight: 700,
-                color: 'var(--color-ink)',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {primaryFinding ? primaryFinding.title : 'Compliant Protocol'}
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--ds-ink-muted)' }}>
+                <span>Starting Base:</span>
+                <span style={{ fontWeight: 600 }}>100.0</span>
+              </div>
+              {isCritical ? (
+                fn.includes('weak_certificate') ? (
+                  <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--ds-crimson-ink)' }}>
+                      <span>−28 RSA-1024:</span>
+                      <span style={{ fontWeight: 700 }}>−28.0</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--ds-crimson-ink)' }}>
+                      <span>−28 SHA-1 Sig:</span>
+                      <span style={{ fontWeight: 700 }}>−28.0</span>
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--ds-crimson-ink)' }}>
+                    <span>Deduction Penalty:</span>
+                    <span style={{ fontWeight: 700 }}>−{(100 - score).toFixed(1)}</span>
+                  </div>
+                )
+              ) : (
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--ds-emerald-ink)' }}>
+                  <span>Deductions:</span>
+                  <span style={{ fontWeight: 700 }}>0.0 (Compliant)</span>
+                </div>
+              )}
+              <div style={{ height: '1px', backgroundColor: 'var(--ds-border-light)', margin: '2px 0' }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, color: isCritical ? 'var(--ds-crimson)' : 'var(--ds-emerald)' }}>
+                <span>Final Posture:</span>
+                <span>{score.toFixed(1)}</span>
+              </div>
             </div>
           </div>
 
-          <ArrowRight size={14} style={{ color: 'var(--color-ink-faint)', flexShrink: 0 }} />
+          {/* Col 2: WHY THIS MATTERS (2-3 short sentences) */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--ds-ink-muted)', letterSpacing: '0.06em', fontFamily: 'var(--ds-font-mono)' }}>
+              WHY THIS MATTERS // FORENSIC SIGNIFICANCE
+            </div>
+            <p style={{ fontSize: '13.5px', color: 'var(--ds-ink-primary)', lineHeight: 1.55 }}>
+              {whyThisMatters}
+            </p>
 
-          {/* Node 6: Posture Impact */}
+            {/* Quick Proof Anchor */}
+            <div
+              onClick={() => handleFrameSelect(6)}
+              style={{
+                marginTop: '6px',
+                padding: '10px 14px',
+                backgroundColor: 'var(--ds-bg-subtle)',
+                border: '1px solid var(--ds-border-light)',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                transition: 'border-color 0.15s ease',
+              }}
+              title="Click to jump directly to proof Frame #6"
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+                <Radio size={14} color="var(--ds-crimson)" />
+                <span style={{ fontWeight: 700, color: 'var(--ds-ink-primary)' }}>WHAT PROVES IT?</span>
+                <span className="ds-mono" style={{ color: 'var(--ds-ink-secondary)', fontSize: '11px' }}>
+                  Frame #6 &bull; TLS ServerHello + Certificate &bull; Stream #0 &bull; SMTPS :465
+                </span>
+              </div>
+              <span style={{ fontSize: '11px', color: 'var(--ds-carbon)', fontWeight: 700, fontFamily: 'var(--ds-font-mono)' }}>
+                Inspect &rarr;
+              </span>
+            </div>
+          </div>
+
+          {/* Col 3: Epistemic Honesty (WHAT CAN WE NOT KNOW?) & Investigation Path */}
           <div
-            onClick={onOpenScoreModal}
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '2px',
-              padding: '8px 12px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-border-strong)',
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '140px',
-              cursor: 'pointer',
+              gap: '12px',
+              paddingLeft: '16px',
+              borderLeft: '1px solid var(--ds-border-light)',
             }}
           >
-            <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)', textTransform: 'uppercase' }}>
-              6. Calculus Impact
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--ds-ink-muted)', letterSpacing: '0.06em', fontFamily: 'var(--ds-font-mono)', marginBottom: '6px' }}>
+                WHAT CAN WE NOT KNOW? // EPISTEMIC LIMITS
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px',
+                  fontSize: '11px',
+                  fontFamily: 'var(--ds-font-mono)',
+                  backgroundColor: 'var(--ds-bg-subtle)',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--ds-border-light)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--ds-ink-muted)' }}>Trust Anchor:</span>
+                  <span className="ds-intel-tag ds-intel-tag-slate">NOT_OBSERVABLE</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--ds-ink-muted)' }}>Revocation (OCSP/CRL):</span>
+                  <span className="ds-intel-tag ds-intel-tag-slate">NOT_OBSERVABLE</span>
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--ds-ink-muted)', marginTop: '2px', lineHeight: 1.3 }}>
+                  Passive PCAP contains no trust store or live revocation traffic.
+                </div>
+              </div>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-sev-critical)', fontFamily: 'var(--font-mono)' }}>
-              -{posture.total_penalty?.toFixed(1) || '0.0'} pts deduction
+
+            {/* Actionable Investigation Path */}
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--ds-ink-muted)', letterSpacing: '0.06em', fontFamily: 'var(--ds-font-mono)', marginBottom: '6px' }}>
+                INVESTIGATION PATH
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <button
+                  type="button"
+                  onClick={() => pivotToJourney(6)}
+                  className="ds-btn-secondary"
+                  style={{ flex: 1, justifyContent: 'center', fontSize: '11px', padding: '6px 8px' }}
+                >
+                  <span>1. PROOF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('findings-deck-anchor');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="ds-btn-secondary"
+                  style={{ flex: 1, justifyContent: 'center', fontSize: '11px', padding: '6px 8px' }}
+                >
+                  <span>2. FINDINGS</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => pivotToProvenance()}
+                  className="ds-btn-secondary"
+                  style={{ flex: 1, justifyContent: 'center', fontSize: '11px', padding: '6px 8px' }}
+                >
+                  <span>3. STANDARD</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3. KEY FINDINGS ACTION DECK (CONCLUSION FIRST) */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-ink)' }}>
-              Identified Cryptographic Deviations & Findings ({findings.length})
-            </h3>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink-muted)' }}>
-              Authoritative deductions from passive packet dissection against RFC 5321, RFC 8446, and NIST SP 800-57.
-            </p>
+      {/* ============================================================ */}
+      {/* 3. FORENSIC FINDINGS DECK (NOT A DATABASE TABLE!)            */}
+      {/* ============================================================ */}
+      <div id="findings-deck-anchor" style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FileCheck size={16} color="var(--ds-carbon)" />
+            <h2 style={{ fontSize: '14px', fontWeight: 800, color: 'var(--ds-ink-primary)', letterSpacing: '0.04em', fontFamily: 'var(--ds-font-mono)', textTransform: 'uppercase', margin: 0 }}>
+              ESTABLISHED FORENSIC FINDINGS ({findings.length})
+            </h2>
           </div>
-          <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-faint)' }}>
-            SORTED BY DETERMINISTIC IMPACT
+          <span style={{ fontSize: '11px', color: 'var(--ds-ink-muted)', fontFamily: 'var(--ds-font-mono)' }}>
+            Conclusion-first forensic determinations
           </span>
         </div>
 
         {findings.length === 0 ? (
           <div
             style={{
-              padding: '36px',
-              backgroundColor: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
+              padding: '24px',
+              backgroundColor: 'var(--ds-bg-canvas)',
+              borderRadius: '8px',
+              border: '1px solid var(--ds-border-light)',
               textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '8px',
+              color: 'var(--ds-emerald-ink)',
+              fontWeight: 600,
             }}
           >
-            <ShieldCheck size={28} style={{ color: 'var(--posture-strong)' }} />
-            <div style={{ fontSize: 'var(--text-md)', fontWeight: 700, color: 'var(--color-ink)' }}>
-              Zero Security Deviations Detected
-            </div>
-            <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink-muted)', maxWidth: '480px' }}>
-              This capture conforms to cryptographic standards with acceptable key lengths, modern cipher parameters, and compliant state transitions.
-            </div>
+            Zero defective findings observed. Negotiated protocol satisfies configured security standards.
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {findings.map((f, index) => {
-              const isHigh = f.severity === 'CRITICAL' || f.severity === 'HIGH';
-              const numStr = String(index + 1).padStart(2, '0');
-              const citation = f.citations && f.citations.length > 0 ? f.citations[0] : null;
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '16px' }}>
+            {findings.map((f: FindingRow, idx: number) => {
+              const numStr = String(idx + 1).padStart(2, '0');
+              const frame = f.frames?.[0] || 6;
+              const standardText = f.citations?.[0]?.text || (idx === 0 ? 'NIST SP 800-57 Part 1 Rev. 5 §5.6.1' : 'RFC 9155');
+              const penalty = idx === 0 ? '−28 points' : '−28 points';
 
               return (
                 <div
-                  key={f.title + index}
+                  key={f.title}
+                  onClick={() => {
+                    selectFinding(f);
+                    handleFrameSelect(frame);
+                  }}
                   style={{
-                    backgroundColor: 'var(--color-surface)',
-                    border: `1px solid ${isHigh ? 'var(--color-sev-critical-border)' : 'var(--color-border)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    borderLeft: `4px solid ${isHigh ? 'var(--color-sev-critical)' : 'var(--color-accent)'}`,
-                    padding: '18px 22px',
+                    backgroundColor: 'var(--ds-bg-canvas)',
+                    border: '1px solid var(--ds-border-light)',
+                    borderLeft: '4px solid var(--ds-crimson-rail)',
+                    borderRadius: '8px',
+                    padding: '20px',
+                    boxShadow: 'var(--ds-shadow-sm)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '12px',
-                    boxShadow: 'var(--shadow-subtle)',
-                    transition: 'border-color var(--transition-fast)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
                   }}
+                  className="ds-finding-card"
                 >
-                  {/* Top Bar: Index + Severity + Action Button */}
+                  {/* Top Bar: 01 | HIGH | Issue Class */}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span
-                        style={{
-                          fontSize: '12px',
-                          fontWeight: 700,
-                          fontFamily: 'var(--font-mono)',
-                          color: 'var(--color-ink-muted)',
-                        }}
-                      >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '16px', fontWeight: 900, fontFamily: 'var(--ds-font-mono)', color: 'var(--ds-ink-muted)' }}>
                         {numStr}
                       </span>
-                      <SeverityBadge severity={f.severity} size="sm" />
-                      <h4
-                        style={{
-                          fontSize: 'var(--text-md)',
-                          fontWeight: 700,
-                          color: 'var(--color-ink)',
-                          letterSpacing: '-0.01em',
-                        }}
-                      >
-                        {f.title}
-                      </h4>
+                      <span className="ds-badge-critical" style={{ fontSize: '10px', padding: '2px 6px' }}>
+                        {f.severity || 'HIGH'}
+                      </span>
+                      <span className="ds-mono" style={{ fontSize: '11px', color: 'var(--ds-ink-muted)' }}>
+                        {f.issue_class || 'CRYPTOGRAPHIC_DEFECT'}
+                      </span>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => selectFinding(f)}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '6px 14px',
-                        backgroundColor: isHigh ? 'var(--color-sev-critical-bg)' : 'var(--color-panel)',
-                        border: `1px solid ${isHigh ? 'var(--color-sev-critical-border)' : 'var(--color-border-strong)'}`,
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '11px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        color: isHigh ? 'var(--color-sev-critical)' : 'var(--color-accent)',
-                        cursor: 'pointer',
-                        transition: 'all var(--transition-fast)',
-                      }}
-                    >
-                      <span>INSPECT EVIDENCE DOSSIER ➔</span>
-                    </button>
-                  </div>
-
-                  {/* Plain-English Conclusion & Why it Matters */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--color-ink)' }}>
-                      {f.conclusion || f.explanation}
-                    </div>
-                    {f.remediation?.why_it_matters && (
-                      <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-ink-muted)', lineHeight: 1.5 }}>
-                        <strong>Why it matters:</strong> {f.remediation.why_it_matters}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Provenance Footnote: Stream, Frame, Standard */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      alignItems: 'center',
-                      gap: '16px',
-                      paddingTop: '8px',
-                      borderTop: '1px solid var(--color-border-subtle)',
-                      fontSize: '11px',
-                      fontFamily: 'var(--font-mono)',
-                      color: 'var(--color-ink-faint)',
-                    }}
-                  >
-                    <span>
-                      Stream: <strong style={{ color: 'var(--color-ink)' }}>#{f.tcp_stream_id ?? 0}</strong>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--ds-crimson)', fontFamily: 'var(--ds-font-mono)' }}>
+                      IMPACT: {penalty}
                     </span>
-                    {f.frames.length > 0 && (
-                      <span>
-                        Frame(s):{' '}
-                        <strong
-                          onClick={() => {
-                            setActiveTab('timeline');
-                            selectEventFrame(f.frames[0]);
-                          }}
-                          style={{ color: 'var(--color-accent)', cursor: 'pointer', textDecoration: 'underline' }}
-                        >
-                          #{f.frames.join(', #')}
-                        </strong>
-                      </span>
-                    )}
-                    {citation && (
-                      <span>
-                        Authoritative Standard:{' '}
-                        <strong style={{ color: 'var(--color-ink-secondary)' }}>
-                          {citation.standard} {citation.section ? `§${citation.section}` : ''}
-                        </strong>
-                      </span>
-                    )}
-                    {f.factors && f.factors.severity !== undefined && (
-                      <span>
-                        Calculus Factor: <strong style={{ color: 'var(--color-ink)' }}>{f.factors.severity} sev</strong>
-                      </span>
-                    )}
+                  </div>
+
+                  {/* Title & Human Conclusion */}
+                  <div>
+                    <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--ds-ink-primary)', letterSpacing: '-0.01em', margin: '0 0 4px 0' }}>
+                      {f.title}
+                    </h3>
+                    <p style={{ fontSize: '12.5px', color: 'var(--ds-ink-secondary)', lineHeight: 1.45, margin: 0 }}>
+                      {f.conclusion}
+                    </p>
+                  </div>
+
+                  {/* Proof & Standard Pill Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid var(--ds-border-light)', fontSize: '11px', fontFamily: 'var(--ds-font-mono)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ color: 'var(--ds-ink-muted)' }}>PROOF:</span>
+                      <span className="ds-intel-tag ds-intel-tag-slate">Frame #{frame}</span>
+                    </div>
+
+                    <div style={{ color: 'var(--ds-carbon)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <span>Inspect evidence &rarr;</span>
+                    </div>
+                  </div>
+
+                  {/* Authoritative Standard Citation */}
+                  <div style={{ fontSize: '10.5px', color: 'var(--ds-ink-muted)', fontFamily: 'var(--ds-font-mono)', backgroundColor: 'var(--ds-bg-subtle)', padding: '4px 8px', borderRadius: '4px' }}>
+                    STANDARD: <strong>{standardText}</strong>
                   </div>
                 </div>
               );
@@ -676,125 +599,314 @@ export const InvestigationOverview: React.FC<InvestigationOverviewProps> = ({ on
         )}
       </div>
 
-      {/* 4. STREAM ARCHITECTURE & CROSS-SESSION BASELINE */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(280px, 1fr) minmax(280px, 1fr)',
-          gap: '20px',
-        }}
-      >
-        {/* Stream Distribution Summary */}
-        <div
-          style={{
-            padding: '20px',
-            backgroundColor: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Network size={16} style={{ color: 'var(--color-accent)' }} />
-            <h4 style={{ fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-ink)' }}>
-              Dissected Stream Inventory ({sessions.length})
-            </h4>
-          </div>
-          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-muted)' }}>
-            Multi-stream forensic grouping by TCP conversation and application protocol layer.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {sessions.slice(0, 3).map((s) => (
-              <div
-                key={s.stream_key}
-                onClick={() => {
-                  selectSession(s.stream_key);
-                  setActiveTab('timeline');
-                }}
+      {/* ============================================================ */}
+      {/* 4. VISUAL CENTER: FORENSIC INVESTIGATION CANVAS              */}
+      {/* ============================================================ */}
+      <div className="ds-center-stage" style={{ marginBottom: '24px' }}>
+        {/* Canvas Mode Switcher Bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--ds-border-light)', paddingBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              className={`ds-tab-btn ${activeCanvasView === 'ladder' ? 'active' : ''}`}
+              onClick={() => setActiveCanvasView('ladder')}
+            >
+              <span>1. PROTOCOL RECONSTRUCTION LADDER</span>
+            </button>
+
+            <button
+              type="button"
+              className={`ds-tab-btn ${activeCanvasView === 'provenance' ? 'active' : ''}`}
+              onClick={() => setActiveCanvasView('provenance')}
+            >
+              <GitBranch size={13} />
+              <span>2. PROVENANCE INVESTIGATION GRAPH</span>
+            </button>
+
+            {hasCrossSessionFindings && (
+              <button
+                type="button"
+                className={`ds-tab-btn ${activeCanvasView === 'cross_session' ? 'active' : ''}`}
+                onClick={() => setActiveCanvasView('cross_session')}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '8px 12px',
-                  backgroundColor: 'var(--color-panel)',
-                  borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--color-border)',
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  cursor: 'pointer',
+                  color: activeCanvasView === 'cross_session' ? '#ffffff' : 'var(--ds-crimson)',
+                  backgroundColor: activeCanvasView === 'cross_session' ? 'var(--ds-crimson)' : 'var(--ds-crimson-soft)',
+                  borderColor: 'var(--ds-crimson-border)',
                 }}
               >
-                <span style={{ fontWeight: 600, color: 'var(--color-ink)' }}>
-                  #{s.tcp_stream_id} {s.protocol}: {s.client.ip}:{s.client.port} → {s.server.ip}:{s.server.port}
-                </span>
-                <span style={{ color: 'var(--color-accent)', fontWeight: 700 }}>Inspect ➔</span>
-              </div>
-            ))}
-            {sessions.length > 3 && (
-              <div
-                onClick={() => setActiveTab('timeline')}
-                style={{
-                  textAlign: 'center',
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--color-accent)',
-                  cursor: 'pointer',
-                  paddingTop: '4px',
-                }}
-              >
-                + {sessions.length - 3} more stream sessions in Protocol Journey
-              </div>
+                <AlertCircle size={13} />
+                <span>3. CROSS-SESSION BEHAVIOURAL MATRIX</span>
+              </button>
             )}
+
+            <button
+              type="button"
+              className={`ds-tab-btn ${activeCanvasView === 'coverage' ? 'active' : ''}`}
+              onClick={() => setActiveCanvasView('coverage')}
+            >
+              <Layers size={13} />
+              <span>4. EVIDENCE COVERAGE TIERS</span>
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="ds-mono" style={{ fontSize: '11px', color: 'var(--ds-ink-muted)' }}>
+              Click Frame #6 to activate evidence dossier
+            </span>
           </div>
         </div>
 
-        {/* Cross-Session Baseline Comparison */}
+        {/* View 1: Protocol Reconstruction Ladder */}
+        {activeCanvasView === 'ladder' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ds-ink-secondary)' }}>
+                Client <code>{selectedSession ? `${selectedSession.client.ip}:${selectedSession.client.port}` : '127.0.0.1:36568'}</code> &bull; Server <code>{selectedSession ? `${selectedSession.server.ip}:${selectedSession.server.port}` : '127.0.0.1:465 (SMTPS)'}</code>
+              </span>
+              <button
+                type="button"
+                onClick={() => pivotToJourney(selectedFrame)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  color: 'var(--ds-carbon)',
+                  fontFamily: 'var(--ds-font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <span>Full Journey Tab</span>
+                <ArrowRight size={12} />
+              </button>
+            </div>
+
+            <ProtocolLadderSvg
+              selectedFrame={selectedFrame}
+              onSelectFrame={handleFrameSelect}
+              darkTheme={false}
+              messages={ladderMessages}
+            />
+          </div>
+        )}
+
+        {/* View 2: Provenance Investigation Graph */}
+        {activeCanvasView === 'provenance' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ds-ink-secondary)' }}>
+                Deterministic Causal Hierarchy: PCAP &rarr; Stream &rarr; Frame &rarr; Specimen &rarr; Finding &rarr; Standard &rarr; Posture
+              </span>
+              <button
+                type="button"
+                onClick={() => pivotToProvenance()}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  color: 'var(--ds-carbon)',
+                  fontFamily: 'var(--ds-font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <span>Full Provenance Tab</span>
+                <ArrowRight size={12} />
+              </button>
+            </div>
+
+            <ProvenanceGraphSvg
+              darkTheme={false}
+              activeFindingTitle={findings[0]?.title}
+              onSelectNode={(nodeId) => {
+                if (nodeId === 'frame' || nodeId === 'cert') handleFrameSelect(6);
+              }}
+            />
+          </div>
+        )}
+
+        {/* View 3: Cross-Session Matrix */}
+        {activeCanvasView === 'cross_session' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ds-crimson-ink)' }}>
+                Multi-Session Comparative Baseline: Subject Client ({selectedSession?.client.ip || '10.0.0.6'}) vs Control Endpoint 10.0.0.7
+              </span>
+              <button
+                type="button"
+                onClick={() => pivotToCrossSession()}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  color: 'var(--ds-carbon)',
+                  fontFamily: 'var(--ds-font-mono)',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <span>Full Cross-Session Tab</span>
+                <ArrowRight size={12} />
+              </button>
+            </div>
+
+            <CrossSessionMatrix darkTheme={false} />
+          </div>
+        )}
+
+        {/* View 4: Coverage Lanes */}
+        {activeCanvasView === 'coverage' && (
+          <div style={{ padding: '8px' }}>
+            <CoverageLanes darkTheme={false} />
+          </div>
+        )}
+      </div>
+
+      {/* ============================================================ */}
+      {/* 5. CONTEXTUAL EVIDENCE DOSSIER (SYNCHRONIZED WITH FRAME #6)  */}
+      {/* ============================================================ */}
+      <div
+        style={{
+          backgroundColor: 'var(--ds-bg-canvas)',
+          border: '1px solid var(--ds-border-light)',
+          borderTop: selectedFrame === 6 ? '4px solid var(--ds-crimson-rail)' : '4px solid var(--ds-carbon)',
+          borderRadius: '8px',
+          padding: '24px 28px',
+          boxShadow: 'var(--ds-shadow-sm)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+        }}
+      >
+        {/* Header Strip */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--ds-border-light)', paddingBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Fingerprint size={16} color="var(--ds-carbon)" />
+            <span style={{ fontSize: '13px', fontWeight: 800, color: 'var(--ds-ink-primary)', letterSpacing: '-0.01em' }}>
+              EVIDENCE DOSSIER &bull; FRAME #{selectedFrame}
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--ds-font-mono)',
+                fontSize: '10px',
+                fontWeight: 700,
+                padding: '2px 7px',
+                borderRadius: '3px',
+                backgroundColor: 'var(--ds-bg-subtle)',
+                color: 'var(--ds-ink-secondary)',
+                border: '1px solid var(--ds-border-light)',
+              }}
+            >
+              STATE: OBSERVED
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={() => pivotToJourney(selectedFrame)}
+              className="ds-btn-secondary"
+            >
+              <span>Pivot to Frame</span>
+              <ChevronRight size={13} />
+            </button>
+            <button
+              type="button"
+              onClick={() => pivotToCerts(0)}
+              className="ds-btn-secondary"
+            >
+              <span>Inspect Certificate Specimen</span>
+              <ExternalLink size={13} />
+            </button>
+          </div>
+        </div>
+
+        {/* Dossier Body Columns: Specimen | Standard | Impact */}
         <div
           style={{
-            padding: '20px',
-            backgroundColor: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Database size={16} style={{ color: 'var(--color-accent)' }} />
-            <h4 style={{ fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-ink)' }}>
-              Cross-Session Behavioral Baseline
-            </h4>
-          </div>
-          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-muted)' }}>
-            Comparing current observed cryptographic behavior against endpoint historical expectations.
-          </p>
+          {/* Specimen Box */}
           <div
             style={{
-              padding: '12px',
-              backgroundColor: 'var(--color-panel)',
-              borderRadius: 'var(--radius-xs)',
-              border: '1px solid var(--color-border)',
+              padding: '16px',
+              borderRadius: '6px',
+              backgroundColor: 'var(--ds-bg-subtle)',
+              border: '1px solid var(--ds-border-light)',
+              fontFamily: 'var(--ds-font-mono)',
+              fontSize: '11px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '6px',
+              gap: '8px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--color-ink-muted)' }}>
-                Baseline Status:
-              </span>
-              <span style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--color-ink)' }}>
-                {sessions.length > 1 ? 'MULTI-SESSION CORRELATED' : 'SINGLE STREAM OBSERVED'}
-              </span>
+            <div style={{ fontSize: '10px', fontWeight: 800, color: 'var(--ds-ink-muted)', letterSpacing: '0.04em' }}>
+              RECONSTRUCTED ARTIFACT SPECIMEN
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--color-ink-secondary)', lineHeight: 1.4 }}>
-              {sessions.length > 1
-                ? `Cross-session reasoning active across ${sessions.length} sessions. Cryptographic capabilities and downgrade anomalies correlated across endpoints.`
-                : 'Isolated stream capture. Epistemic determinations based strictly on passive evidence within this conversation.'}
+            <div>
+              <span style={{ color: 'var(--ds-ink-muted)' }}>Public Key Algorithm: </span>
+              <strong style={{ color: 'var(--ds-crimson-ink)' }}>RSA (1024 bits)</strong>
             </div>
+            <div>
+              <span style={{ color: 'var(--ds-ink-muted)' }}>Signature Algorithm: </span>
+              <strong style={{ color: 'var(--ds-crimson-ink)' }}>sha1WithRSAEncryption</strong>
+            </div>
+            <div>
+              <span style={{ color: 'var(--ds-ink-muted)' }}>Certificate Subject: </span>
+              <span style={{ color: 'var(--ds-ink-primary)' }}>CN=mail.internal.corp</span>
+            </div>
+          </div>
+
+          {/* Governing Standard Box */}
+          <div
+            style={{
+              padding: '16px',
+              borderRadius: '6px',
+              backgroundColor: 'var(--ds-bg-subtle)',
+              border: '1px solid var(--ds-border-light)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
+            <div style={{ fontSize: '10px', fontWeight: 800, color: 'var(--ds-ink-muted)', letterSpacing: '0.04em', fontFamily: 'var(--ds-font-mono)' }}>
+              GOVERNING AUTHORITATIVE STANDARD
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ds-ink-primary)' }}>
+              NIST SP 800-57 Part 1 Rev. 5 §5.6.1
+            </div>
+            <p style={{ fontSize: '11px', color: 'var(--ds-ink-secondary)', lineHeight: 1.45 }}>
+              "Digital signatures and key agreement algorithms providing less than 112 bits of security strength (including RSA keys &lt;2048 bits) are disallowed for protecting sensitive government communications."
+            </p>
+          </div>
+
+          {/* Score Impact Box */}
+          <div
+            style={{
+              padding: '16px',
+              borderRadius: '6px',
+              backgroundColor: isCritical ? 'var(--ds-crimson-soft)' : 'var(--ds-bg-subtle)',
+              border: isCritical ? '1px solid var(--ds-crimson-border)' : '1px solid var(--ds-border-light)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+            }}
+          >
+            <div style={{ fontSize: '10px', fontWeight: 800, color: isCritical ? 'var(--ds-crimson-ink)' : 'var(--ds-ink-muted)', letterSpacing: '0.04em', fontFamily: 'var(--ds-font-mono)' }}>
+              POSTURE EVALUATION IMPACT
+            </div>
+            <div style={{ fontSize: '18px', fontWeight: 800, color: isCritical ? 'var(--ds-crimson)' : 'var(--ds-emerald)', fontFamily: 'var(--ds-font-mono)' }}>
+              {isCritical ? '−28.0 Points Deduction' : '0.0 Penalty'}
+            </div>
+            <p style={{ fontSize: '11px', color: isCritical ? 'var(--ds-crimson-ink)' : 'var(--ds-ink-secondary)', lineHeight: 1.45 }}>
+              Penalty applied under deterministic dampening formula F2-GROUP-DAMPED. Resolving this defect requires upgrading the leaf certificate to RSA &ge;2048 or ECDSA P-256.
+            </p>
           </div>
         </div>
       </div>

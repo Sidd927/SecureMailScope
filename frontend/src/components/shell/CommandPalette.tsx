@@ -68,15 +68,27 @@ export const CommandPalette: React.FC = () => {
         },
       },
       {
+        id: 'nav-provenance',
+        category: 'Views',
+        title: 'Evidence Provenance Trace',
+        subtitle: 'Signature visual trace: Capture → Stream → Frame → Finding → Standard',
+        badge: '2',
+        icon: <Compass size={16} />,
+        onSelect: () => {
+          setActiveView('workbench');
+          setActiveTab('provenance');
+        },
+      },
+      {
         id: 'nav-timeline',
         category: 'Views',
-        title: 'Protocol Journey & Timeline',
-        subtitle: 'Directional packet flows, state machine & frame inspection',
-        badge: '2',
+        title: 'Protocol Journey & Sequence',
+        subtitle: 'Directional Client ↔ Server packet ladder & state transitions',
+        badge: '3',
         icon: <Network size={16} />,
         onSelect: () => {
           setActiveView('workbench');
-          setActiveTab('timeline');
+          setActiveTab('journey');
         },
       },
       {
@@ -84,7 +96,7 @@ export const CommandPalette: React.FC = () => {
         category: 'Views',
         title: 'Epistemic Evidence Ledger',
         subtitle: '13 canonical transport dimensions with state verifications',
-        badge: '3',
+        badge: '4',
         icon: <Layers size={16} />,
         onSelect: () => {
           setActiveView('workbench');
@@ -96,7 +108,7 @@ export const CommandPalette: React.FC = () => {
         category: 'Views',
         title: 'X.509 Certificates Forensics',
         subtitle: 'PKI leaf & chain inspection, key lengths, and validity',
-        badge: '4',
+        badge: '5',
         icon: <FileCode size={16} />,
         onSelect: () => {
           setActiveView('workbench');
@@ -104,11 +116,35 @@ export const CommandPalette: React.FC = () => {
         },
       },
       {
+        id: 'nav-cross-session',
+        category: 'Views',
+        title: 'Cross-Session Baseline Matrix',
+        subtitle: 'Endpoint behavioral baseline comparison & deviation analysis',
+        badge: '6',
+        icon: <Layers size={16} />,
+        onSelect: () => {
+          setActiveView('workbench');
+          setActiveTab('cross_session');
+        },
+      },
+      {
+        id: 'nav-report',
+        category: 'Views',
+        title: 'Forensic Assessment Report',
+        subtitle: 'Professional assessment preview & export (HTML/PDF/JSON)',
+        badge: '7',
+        icon: <FileCode size={16} />,
+        onSelect: () => {
+          setActiveView('workbench');
+          setActiveTab('report');
+        },
+      },
+      {
         id: 'nav-launchpad',
         category: 'Views',
-        title: 'Case Intake Launchpad',
-        subtitle: 'Ingest new capture or review triage matrix',
-        badge: 'Home',
+        title: 'Forensic Case Desk',
+        subtitle: 'Ingest new capture or review triage desk',
+        badge: 'Desk',
         icon: <Upload size={16} />,
         onSelect: () => {
           setActiveView('home');

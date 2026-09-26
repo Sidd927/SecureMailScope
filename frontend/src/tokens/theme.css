@@ -1,98 +1,152 @@
 /**
- * SecureMailScope — Technical Design System Tokens
- * Archival / Forensic Light Theme
- * WCAG-AA Verified Contrast & Exact Backend Token Parity
+ * SecureMailScope — Technical Design System Tokens 3.0
+ * Archival / Forensic Investigation Environment Theme
+ * WCAG-AA Verified Contrast & Exact Epistemic State Semantics
  */
 
 :root {
-  /* Surfaces & Canvas */
-  --color-page: #f8f7f4;
-  --color-surface: #ffffff;
-  --color-panel: #f4f1ea;
-  --color-panel-muted: #eae5db;
-  --color-panel-card: #faf8f5;
-  --color-subtle: #f0ece3;
+  /* Surfaces & Canvas (Direction S: Slate-White Forensic Canvas) */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --bg-panel: #ffffff;
+  --bg-inset: #e2e8f0;
+  --bg-hover: #f1f5f9;
+  --bg-active: #e2e8f0;
 
-  /* Typography / Inks */
-  --color-ink: #15191e;
-  --color-ink-secondary: #424b57;
-  --color-ink-muted: #5c6672;
-  --color-ink-faint: #88929e;
+  /* Typography / Inks (Deep Carbon & Slate) */
+  --ink-primary: #0f172a;
+  --ink-secondary: #334155;
+  --ink-muted: #64748b;
+  --ink-faint: #94a3b8;
+  --ink-inverse: #ffffff;
 
-  /* Hairlines & Structural Borders */
-  --color-border: #e4ded3;
-  --color-border-strong: #d2cab8;
-  --color-border-subtle: #eee9df;
+  /* Hairlines & Structural Architecture Rules */
+  --rule-subtle: #f1f5f9;
+  --rule-base: #e2e8f0;
+  --rule-strong: #cbd5e1;
+  --rule-heavy: #0f172a;
 
-  /* Accent: Deep Prussian Slate Navy */
-  --color-accent: #1f3a5f;
-  --color-accent-hover: #152741;
-  --color-accent-soft: #eef3f8;
-  --color-accent-border: #bcd0e6;
-  --color-accent-ink: #11233b;
+  /* Primary Accent: Deep Forensic Carbon & Slate (Restrained Authority) */
+  --accent-primary: #0f172a;
+  --accent-hover: #1e293b;
+  --accent-soft: #f1f5f9;
+  --accent-border: #cbd5e1;
+  --accent-ink: #0f172a;
+
+  /* Direction S Dedicated Palette Aliases */
+  --ds-bg-app: #f8fafc;
+  --ds-bg-canvas: #ffffff;
+  --ds-bg-subtle: #f1f5f9;
+  --ds-bg-elevated: #ffffff;
+  --ds-bg-inset: #e2e8f0;
+  --ds-border-light: #e2e8f0;
+  --ds-border-medium: #cbd5e1;
+  --ds-border-strong: #94a3b8;
+  --ds-border-focus: #3b82f6;
+  --ds-ink-primary: #0f172a;
+  --ds-ink-secondary: #334155;
+  --ds-ink-muted: #64748b;
+  --ds-ink-faint: #94a3b8;
+  --ds-indigo: #0f172a;
+  --ds-indigo-soft: #f1f5f9;
+  --ds-indigo-border: #cbd5e1;
+  --ds-cyan: #0284c7;
+  --ds-cyan-soft: #f0f9ff;
+  --ds-cyan-border: #bae6fd;
+  --ds-crimson: #dc2626;
+  --ds-crimson-soft: #fef2f2;
+  --ds-crimson-border: #fecaca;
+  --ds-crimson-ink: #991b1b;
+  --ds-emerald: #059669;
+  --ds-emerald-soft: #ecfdf5;
+  --ds-emerald-border: #a7f3d0;
+  --ds-emerald-ink: #065f46;
+  --ds-amber: #d97706;
+  --ds-amber-soft: #fffbeb;
+  --ds-amber-border: #fde68a;
+  --ds-amber-ink: #92400e;
+  --ds-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', system-ui, sans-serif;
+  --ds-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* Severity Tokens (WCAG-AA verified) */
-  --color-sev-critical: #8d1f1f;
-  --color-sev-critical-bg: #fdf2f2;
-  --color-sev-critical-border: #f0c3c3;
+  --sev-critical-ink: #991b1b;
+  --sev-critical-bg: #fef2f2;
+  --sev-critical-border: #fecaca;
+  --sev-critical-rule: #dc2626;
 
-  --color-sev-high: #a8480f;
-  --color-sev-high-bg: #fef5ed;
-  --color-sev-high-border: #f7d2b8;
+  --sev-high-ink: #9a3412;
+  --sev-high-bg: #fff7ed;
+  --sev-high-border: #fed7aa;
+  --sev-high-rule: #ea580c;
 
-  --color-sev-medium: #8a6510;
-  --color-sev-medium-bg: #fcf8ee;
-  --color-sev-medium-border: #ebd89e;
+  --sev-medium-ink: #92400e;
+  --sev-medium-bg: #fffbeb;
+  --sev-medium-border: #fde68a;
+  --sev-medium-rule: #d97706;
 
-  --color-sev-low: #3d5a2b;
-  --color-sev-low-bg: #f4f8f1;
-  --color-sev-low-border: #c8debf;
+  --sev-low-ink: #065f46;
+  --sev-low-bg: #ecfdf5;
+  --sev-low-border: #a7f3d0;
+  --sev-low-rule: #059669;
 
-  --color-sev-info: #41526b;
-  --color-sev-info-bg: #f1f4f8;
-  --color-sev-info-border: #cad5e2;
-
-  --color-sev-withheld: #4a3a6b;
-  --color-sev-withheld-bg: #f5f2f9;
-  --color-sev-withheld-border: #d5c8e8;
+  --sev-info-ink: #1e40af;
+  --sev-info-bg: #eff6ff;
+  --sev-info-border: #bfdbfe;
+  --sev-info-rule: #2563eb;
 
   /* Posture Bands */
-  --posture-strong: #3d5a2b;
-  --posture-adequate: #1f3a5f;
-  --posture-weak: #a8480f;
-  --posture-critical: #8d1f1f;
-  --posture-insufficient: #5c6672;
+  --posture-strong-ink: #065f46;
+  --posture-strong-bg: #ecfdf5;
+  --posture-strong-rule: #059669;
 
-  /* Evidence State Specific Styling */
-  --evidence-observed-color: #111827;
-  --evidence-observed-bg: #f3f4f6;
-  --evidence-observed-border: #374151;
+  --posture-adequate-ink: #312e81;
+  --posture-adequate-bg: #eef2ff;
+  --posture-adequate-rule: #4f46e5;
 
-  --evidence-inferred-color: #1e3a8a;
-  --evidence-inferred-bg: #eff6ff;
-  --evidence-inferred-border: #3b82f6;
+  --posture-weak-ink: #92400e;
+  --posture-weak-bg: #fffbeb;
+  --posture-weak-rule: #d97706;
 
-  --evidence-not-observable-color: #4b5563;
-  --evidence-not-observable-bg: #f9fafb;
-  --evidence-not-observable-border: #9ca3af;
+  --posture-critical-ink: #991b1b;
+  --posture-critical-bg: #fef2f2;
+  --posture-critical-rule: #dc2626;
 
-  --evidence-ambiguous-color: #854d0e;
-  --evidence-ambiguous-bg: #fefce8;
-  --evidence-ambiguous-border: #ca8a04;
+  --posture-insufficient-ink: #475569;
+  --posture-insufficient-bg: #f1f5f9;
+  --posture-insufficient-rule: #94a3b8;
 
-  --evidence-unknown-color: #6b7280;
-  --evidence-unknown-bg: #f3f4f6;
-  --evidence-unknown-border: #d1d5db;
+  /* Exact Epistemic Evidence States */
+  --epistemic-observed-ink: #0f172a;
+  --epistemic-observed-bg: #f1f5f9;
+  --epistemic-observed-border: #cbd5e1;
 
-  --evidence-incomplete-color: #9a3412;
-  --evidence-incomplete-bg: #fff7ed;
-  --evidence-incomplete-border: #f97316;
+  --epistemic-inferred-ink: #312e81;
+  --epistemic-inferred-bg: #eef2ff;
+  --epistemic-inferred-border: #818cf8;
+
+  --epistemic-ambiguous-ink: #92400e;
+  --epistemic-ambiguous-bg: #fffbeb;
+  --epistemic-ambiguous-border: #f59e0b;
+
+  --epistemic-unknown-ink: #475569;
+  --epistemic-unknown-bg: #f8fafc;
+  --epistemic-unknown-border: #cbd5e1;
+
+  --epistemic-incomplete-ink: #9a3412;
+  --epistemic-incomplete-bg: #fff7ed;
+  --epistemic-incomplete-border: #fb923c;
+
+  --epistemic-not-observable-ink: #475569;
+  --epistemic-not-observable-bg: #f1f5f9;
+  --epistemic-not-observable-border: #94a3b8;
 
   /* Typography System */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  /* Typographic Scale */
+  /* Typographic Hierarchy Scale */
+  --text-3xs: 0.625rem;  /* 10px */
   --text-2xs: 0.6875rem; /* 11px */
   --text-xs: 0.75rem;    /* 12px */
   --text-sm: 0.8125rem;  /* 13px */
@@ -114,81 +168,64 @@
   --space-10: 40px;
   --space-12: 48px;
 
-  /* Radii - Subtle & Architectural */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  /* Structural Radii - Architectural & Crisp */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
 
-  /* Shadows - Minimal & Restrained */
-  --shadow-subtle: 0 1px 2px rgba(21, 25, 30, 0.04);
-  --shadow-flyout: 0 4px 16px rgba(21, 25, 30, 0.08), 0 1px 3px rgba(21, 25, 30, 0.05);
+  /* Shadows - Minimal & Purposeful */
+  --shadow-subtle: 0 1px 2px rgba(18, 22, 26, 0.04);
+  --shadow-flyout: 0 8px 24px rgba(18, 22, 26, 0.09), 0 2px 6px rgba(18, 22, 26, 0.04);
 
-  /* Transitions */
-  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* CSS Reset & Global Styling */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  /* Motion Timings */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-micro: 140ms;
+  --duration-normal: 220ms;
+  --duration-context: 320ms;
 }
 
-html, body {
-  height: 100%;
-  background-color: var(--color-page);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Animations */
+@keyframes sms-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-#root {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+@keyframes sms-slide-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Monospace Utilities */
-code, pre, .font-mono {
-  font-family: var(--font-mono);
-  font-feature-settings: "tnum" 1, "cv01" 1, "cv02" 1;
+@keyframes sms-slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-/* Focus Visible Accessibility */
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+@keyframes sms-pulse-accent {
+  0% { box-shadow: 0 0 0 0 rgba(24, 51, 84, 0.25); }
+  70% { box-shadow: 0 0 0 6px rgba(24, 51, 84, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(24, 51, 84, 0); }
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
+/* Utility Animations */
+.animate-fade-in {
+  animation: sms-fade-in var(--duration-normal) var(--ease-out) forwards;
 }
 
-input, select, textarea {
-  font-family: inherit;
-  font-size: inherit;
+.animate-slide-up {
+  animation: sms-slide-up var(--duration-normal) var(--ease-out) forwards;
 }
 
-/* Custom Scrollbar for High-Density Technical Panes */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.animate-drawer-in {
+  animation: sms-slide-in-right var(--duration-context) var(--ease-out) forwards;
 }
-::-webkit-scrollbar-track {
-  background: var(--color-panel);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
-  border-radius: var(--radius-xs);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-muted);
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

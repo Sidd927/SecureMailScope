@@ -1,0 +1,144 @@
+/* Direction B: Forensic Report / Editorial Stylesheet */
+.dir-b-theme {
+  --db-bg-root: #f6f4ee;
+  --db-bg-paper: #ffffff;
+  --db-bg-subtle: #efece3;
+  --db-border-hairline: #d8d3c5;
+  --db-border-strong: #231f1e;
+  --db-ink-black: #141211;
+  --db-ink-body: #2d2a28;
+  --db-ink-muted: #6e6863;
+  --db-crimson: #9e1b1b;
+  --db-crimson-bg: #fdf2f2;
+  --db-emerald: #1b6336;
+  --db-emerald-bg: #f0f7f3;
+  --db-navy: #182e4b;
+  --db-font-serif: 'Newsreader', Georgia, serif;
+  --db-font-sans: 'Inter', system-ui, sans-serif;
+  --db-font-mono: 'JetBrains Mono', monospace;
+
+  background-color: var(--db-bg-root);
+  color: var(--db-ink-body);
+  font-family: var(--db-font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dir-b-theme * {
+  box-sizing: border-box;
+}
+
+.db-serif {
+  font-family: var(--db-font-serif);
+}
+
+.db-mono {
+  font-family: var(--db-font-mono);
+}
+
+/* Formal Archival Masthead */
+.db-masthead {
+  border-bottom: 2px solid var(--db-ink-black);
+  padding: 24px 48px;
+  background-color: var(--db-bg-paper);
+}
+
+.db-masthead-title {
+  font-family: var(--db-font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--db-ink-black);
+}
+
+.db-masthead-meta {
+  font-size: 11px;
+  font-family: var(--db-font-mono);
+  color: var(--db-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* Docket Hero Card (Case Desk) */
+.db-docket-card {
+  background-color: var(--db-bg-paper);
+  border: 1px solid var(--db-border-hairline);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  padding: 32px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+
+.db-docket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  border-color: var(--db-ink-black);
+}
+
+.db-stamp-critical {
+  display: inline-block;
+  border: 2px solid var(--db-crimson);
+  color: var(--db-crimson);
+  padding: 4px 12px;
+  font-family: var(--db-font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.db-stamp-strong {
+  display: inline-block;
+  border: 2px solid var(--db-emerald);
+  color: var(--db-emerald);
+  padding: 4px 12px;
+  font-family: var(--db-font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Formal Investigation Exhibit Layout */
+.db-report-container {
+  max-width: 960px;
+  margin: 40px auto;
+  background-color: var(--db-bg-paper);
+  border: 1px solid var(--db-border-hairline);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  padding: 56px 64px;
+}
+
+.db-section-heading {
+  font-family: var(--db-font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--db-ink-black);
+  border-bottom: 1px solid var(--db-ink-black);
+  padding-bottom: 8px;
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+/* Forensic Exhibit Specimen Box */
+.db-exhibit-box {
+  background-color: #faf9f6;
+  border: 1px solid var(--db-border-hairline);
+  border-left: 4px solid var(--db-crimson);
+  padding: 24px;
+  margin: 20px 0;
+  position: relative;
+}
+
+.db-exhibit-label {
+  font-family: var(--db-font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--db-crimson);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
