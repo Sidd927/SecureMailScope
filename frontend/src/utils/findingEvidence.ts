@@ -32,7 +32,8 @@ interface PrioritisedEntry {
  */
 export function sourcesForFinding(assessment: AssessmentResponse | null, finding: FindingRow | null): FindingSource[] {
   if (!assessment || !finding) return [];
-  const prioritised = ((assessment.assessment as unknown as { prioritised?: PrioritisedEntry[] }).prioritised) ?? [];
+  const raw = (assessment as unknown as { assessment?: { prioritised?: PrioritisedEntry[] } })?.assessment ?? assessment;
+  const prioritised = ((raw as unknown as { prioritised?: PrioritisedEntry[] })?.prioritised) ?? [];
   const entry =
     prioritised.find((p) => p.rank === finding.rank && p.representative_finding?.title === finding.title) ??
     prioritised.find((p) => p.representative_finding?.title === finding.title);
