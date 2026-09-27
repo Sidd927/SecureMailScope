@@ -133,10 +133,25 @@ because the assessment does not contain one.
 
 There is **no authentication**: bind to loopback only.
 
+## Forensic Workstation Frontend
+
+The production-grade React/TypeScript forensic workstation interface provides deep packet exploration, protocol state machine timelines, cross-session comparative matrices, and 8-stage byte-to-posture provenance tracing.
+
+- **Current Release Branch:** `frontend/final-polish`
+- **Release Tags:** `frontend-v1.0.0` (implementation baseline) / `frontend-v1.0.1` (team handoff)
+- **Team Handoff Guide:** [`docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md`](docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md)
+- **Release Manifest:** [`docs/releases/SECUREMAILSCOPE-FRONTEND-RELEASE-MANIFEST.md`](docs/releases/SECUREMAILSCOPE-FRONTEND-RELEASE-MANIFEST.md)
+
+Future frontend development should branch directly from the validated release tag:
+```bash
+git checkout -b frontend/next-feature frontend-v1.0.1
+```
+
 ## Where to look
 
 | Document | Why |
 |---|---|
+| `docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md` | **Frontend engineering team handoff & running guide** |
 | `docs/CLAUDE_CONTINUATION_CONTEXT.md` | orientation for a fresh session |
 | `docs/architecture/ARCHITECTURE_STATUS.md` | current status and open questions |
 | `docs/architecture/requirements-traceability.md` | requirement status with evidence |
