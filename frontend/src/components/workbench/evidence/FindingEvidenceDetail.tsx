@@ -1,10 +1,11 @@
 import React from 'react';
-import { Radio } from 'lucide-react';
+import { Radio, GitFork, BookOpen } from 'lucide-react';
 import type { AssessmentResponse, FindingRow } from '../../../api/types';
 import { evidenceRefsForFinding, fieldLabel } from '../../../utils/findingEvidence';
 import { framesLabel } from '../../../utils/evidence';
 import { EvidenceBadge } from '../../common/EvidenceBadge';
 import { SeverityBadge } from '../../common/SeverityBadge';
+import { CertaintyBadge } from '../../common/VocabularyBadges';
 import { EmptyState } from '../../common/StateViews';
 
 interface Props {
@@ -12,81 +13,191 @@ interface Props {
   assessment: AssessmentResponse | null;
   assessmentError?: string;
   onOpenFrame: (frame: number, streamKey?: string) => void;
+  onTrace?: (finding: FindingRow) => void;
 }
 
-export const FindingEvidenceDetail: React.FC<Props> = ({ finding, assessment, assessmentError, onOpenFrame }) => {
-  if (!finding) return <EmptyState title="Select a finding to view evidence" />;
+export const FindingEvidenceDetail: React.FC<Props> = ({
+  finding,
+  assessment,
+  assessmentError,
+  onOpenFrame,
+  onTrace,
+}) => {
+  if (!finding) return <EmptyState title="Select a finding to inspect its evidence" />;
+
   const refs = evidenceRefsForFinding(assessment, finding);
   const remediation = finding.remediation;
+  const primaryFrame = finding.frames && finding.frames.length > 0 ? finding.frames[0] : null;
 
   return (
-    <div className="sms-stack">
-      <div className="sms-stack sms-stack--tight">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--ds-space-8)', flexWrap: 'wrap' }}>
+    <div className="sms-focused-evidence-view" aria-label={`Forensic note for ${finding.title}`}>
+      {/* 1. TITLE & VERDICT EYEBROW */}
+      <header className="sms-analyst-note__header">
+        <div className="sms-analyst-note__eyebrow">
           <SeverityBadge severity={finding.severity} />
-          <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-12)' }}>{finding.issue_class_label || finding.issue_class}</span>
+          <CertaintyBadge certainty={finding.certainty} />
+          <span className="sms-mono sms-analyst-note__rule-tag">
+            {finding.source_rule_ids?.join(', ') || finding.issue_class_label || finding.issue_class}
+          </span>
         </div>
-        <h3 style={{ fontSize: 'var(--ds-text-16)', fontWeight: 600, color: 'var(--ds-ink-primary)' }}>{finding.title}</h3>
-        {finding.explanation && <p className="sms-prose">{finding.explanation}</p>}
-      </div>
+        <h2 className="sms-analyst-note__title">{finding.title}</h2>
+      </header>
 
-      <section className="sms-stack sms-stack--tight" aria-label="Supporting evidence">
-        <span className="sms-label">Supporting evidence</span>
+      {/* 2. WHAT WAS OBSERVED */}
+      <section className="sms-analyst-note__section" aria-label="What was observed">
+        <span className="sms-label">What was observed</span>
+        <p className="sms-prose sms-analyst-note__lead">
+          {finding.conclusion || finding.explanation || 'Protocol activity was captured and evaluated under deterministic rules.'}
+        </p>
+      </section>
+
+      {/* 3. WHY IT MATTERS */}
+      {finding.explanation && finding.conclusion && (
+        <section className="sms-analyst-note__section" aria-label="Why it matters">
+          <span className="sms-label">Why it matters</span>
+          <p className="sms-prose sms-analyst-note__body">
+            {finding.explanation}
+          </p>
+        </section>
+      )}
+
+      {/* 4. WIRE FACTS (VISUALLY SPECIAL MACHINE FACT REGION) */}
+      <section className="sms-analyst-note__section sms-analyst-note__wire-facts" aria-label="Wire facts">
+        <div className="sms-analyst-note__section-head">
+          <span className="sms-label">Wire evidence facts</span>
+          <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-11)' }}>
+            Physical wire proof
+          </span>
+        </div>
+
         {assessmentError ? (
-          <p className="sms-prose" style={{ color: 'var(--ds-crimson-ink)' }}>Assessment failed to load: {assessmentError}</p>
+          <p className="sms-prose" style={{ color: 'var(--ds-crimson-ink)' }}>
+            Assessment failed to load: {assessmentError}
+          </p>
         ) : refs.length === 0 ? (
-          <p className="sms-prose">The assessment lists no evidence fields for this finding.</p>
+          <p className="sms-prose sms-muted">The assessment lists no wire evidence fields for this finding.</p>
         ) : (
-          <div className="sms-kv">
-            {refs.map((ref, i) => {
-              const proof = framesLabel(ref.frames);
-              return (
-                <React.Fragment key={`${ref.field}-${i}`}>
-                  {i > 0 && <span className="sms-kv__divider" />}
-                  <span className="sms-kv__key">{fieldLabel(ref.field)}</span>
-                  <span className="sms-kv__value">
-                    {ref.observed_value ?? <span className="sms-muted">no value</span>}
-                    {ref.basis && <span className="sms-muted" style={{ display: 'block', fontFamily: 'var(--ds-font-sans)' }}>{ref.basis}</span>}
-                    {proof && (
-                      <button type="button" className="sms-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--ds-space-4)', marginTop: 'var(--ds-space-4)' }} onClick={() => onOpenFrame(ref.frames[0], finding.stream_key ?? undefined)}>
-                        <Radio size={11} aria-hidden="true" />{proof}
-                      </button>
-                    )}
-                  </span>
+          <div className="sms-wire-facts-grid">
+            {refs.map((ref, i) => (
+              <div key={`${ref.field}-${i}`} className="sms-wire-fact-card">
+                <div className="sms-wire-fact-card__header">
+                  <span className="sms-wire-fact-card__key sms-mono">{fieldLabel(ref.field)}</span>
                   <EvidenceBadge state={ref.evidence_state} size="sm" />
-                </React.Fragment>
-              );
-            })}
+                </div>
+                <div className="sms-wire-fact-card__val sms-mono">
+                  {ref.observed_value ?? <span className="sms-muted">NOT OBSERVED</span>}
+                </div>
+                {ref.basis && (
+                  <p className="sms-wire-fact-card__basis">{ref.basis}</p>
+                )}
+                {ref.frames && ref.frames.length > 0 && (
+                  <button
+                    type="button"
+                    className="sms-link sms-wire-fact-card__frame-link"
+                    onClick={() => onOpenFrame(ref.frames[0], finding.stream_key ?? undefined)}
+                  >
+                    <Radio size={11} aria-hidden="true" />
+                    <span>{framesLabel(ref.frames)}</span>
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {primaryFrame != null && (
+              <div className="sms-wire-fact-card">
+                <div className="sms-wire-fact-card__header">
+                  <span className="sms-wire-fact-card__key sms-mono">WIRE_FRAME</span>
+                  <span className="sms-badge sms-badge--muted">Anchor</span>
+                </div>
+                <div className="sms-wire-fact-card__val sms-mono">
+                  Frame #{primaryFrame}
+                </div>
+                <button
+                  type="button"
+                  className="sms-link sms-wire-fact-card__frame-link"
+                  onClick={() => onOpenFrame(primaryFrame, finding.stream_key ?? undefined)}
+                >
+                  <Radio size={11} aria-hidden="true" />
+                  <span>Inspect Packet #{primaryFrame}</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </section>
 
-      {finding.citations?.length > 0 && (
-        <section className="sms-stack sms-stack--tight" aria-label="Standards">
-          <span className="sms-label">Standards</span>
-          {finding.citations.map((c, i) => (
-            <div key={`${c.standard}-${c.section ?? ""}-${i}`}>
-              <p className="sms-mono" style={{ fontSize: 'var(--ds-text-12)', color: 'var(--ds-ink-primary)' }}>{[c.standard, c.section].filter(Boolean).join(' ')}</p>
-              {(c.text || c.reason) && <p className="sms-prose">{c.text || c.reason}</p>}
-            </div>
-          ))}
+      {/* 5. NORMATIVE STANDARD */}
+      {finding.citations && finding.citations.length > 0 && (
+        <section className="sms-analyst-note__section" aria-label="Normative standard">
+          <span className="sms-label">Normative standard</span>
+          <div className="sms-analyst-note__citations">
+            {finding.citations.map((c, i) => (
+              <div key={`${c.standard}-${c.section ?? ''}-${i}`} className="sms-citation-block">
+                <div className="sms-citation-title">
+                  <BookOpen size={13} aria-hidden="true" />
+                  <span className="sms-mono">{[c.standard, c.section].filter(Boolean).join(' ')}</span>
+                </div>
+                {(c.text || c.reason) && (
+                  <p className="sms-prose" style={{ fontSize: 'var(--ds-text-13)', marginTop: '4px' }}>
+                    {c.text || c.reason}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         </section>
       )}
 
+      {/* 6. RECOMMENDED ACTION */}
       {remediation?.recommended_action && (
-        <section className="sms-stack sms-stack--tight" aria-label="Recommended action">
+        <section className="sms-analyst-note__section" aria-label="Recommended action">
           <span className="sms-label">Recommended action</span>
-          <p className="sms-prose">{remediation.recommended_action}</p>
-          {remediation.verification && <p className="sms-prose sms-muted">Verify: {remediation.verification}</p>}
+          <p className="sms-prose sms-analyst-note__action-text">{remediation.recommended_action}</p>
+          {remediation.verification && (
+            <p className="sms-prose sms-muted" style={{ fontSize: 'var(--ds-text-12)', marginTop: '6px' }}>
+              <strong>Verification:</strong> {remediation.verification}
+            </p>
+          )}
         </section>
       )}
 
-      {finding.limitations?.length > 0 && (
-        <section className="sms-stack sms-stack--tight" aria-label="Limitations">
-          <span className="sms-label">Limitations</span>
-          <ul className="sms-list sms-list--bulleted">{finding.limitations.map((l) => <li key={l}>{l}</li>)}</ul>
+      {/* 7. FORENSIC LIMITATION */}
+      {finding.limitations && finding.limitations.length > 0 && (
+        <section className="sms-analyst-note__section" aria-label="Forensic limitations">
+          <span className="sms-label">Forensic limitations</span>
+          <ul className="sms-list sms-list--bulleted">
+            {finding.limitations.map((l, idx) => (
+              <li key={idx} style={{ fontSize: 'var(--ds-text-13)', color: 'var(--sms-text-secondary)' }}>{l}</li>
+            ))}
+          </ul>
         </section>
       )}
+
+      {/* 8. PIVOT ACTION BAR */}
+      <footer className="sms-analyst-note__actions">
+        {primaryFrame != null && (
+          <button
+            type="button"
+            className="sms-btn sms-btn--primary sms-btn--sm"
+            onClick={() => onOpenFrame(primaryFrame, finding.stream_key ?? undefined)}
+          >
+            <Radio size={13} aria-hidden="true" />
+            <span>Open in Protocol Journey</span>
+          </button>
+        )}
+
+        {onTrace && (
+          <button
+            type="button"
+            className="sms-btn sms-btn--secondary sms-btn--sm"
+            onClick={() => onTrace(finding)}
+          >
+            <GitFork size={13} aria-hidden="true" />
+            <span>Trace Provenance</span>
+          </button>
+        )}
+      </footer>
     </div>
   );
 };
+

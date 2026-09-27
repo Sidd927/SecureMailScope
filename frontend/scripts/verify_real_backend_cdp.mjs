@@ -95,7 +95,7 @@ async function runVerification() {
           url: params.response.url,
           body: bodyRes.body
         });
-      } catch (e) {
+      } catch (_e) {
         // Body might not be available or already consumed
       }
     }
@@ -287,7 +287,7 @@ async function runVerification() {
   console.log('\n=== SUMMARY OF ALL INTERCEPTED API CALLS ===');
   const postCalls = networkLog.filter(n => n.method === 'POST');
   console.log(`Total API Requests: ${networkLog.length}, Total POST: ${postCalls.length}`);
-  for (const [reqId, res] of responseBodies.entries()) {
+  for (const [_reqId, res] of responseBodies.entries()) {
     console.log(`\nResponse [${res.status}] ${res.url}:`);
     console.log(res.body.slice(0, 300) + (res.body.length > 300 ? '...' : ''));
   }

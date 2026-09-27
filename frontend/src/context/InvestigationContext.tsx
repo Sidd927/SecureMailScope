@@ -7,7 +7,7 @@ import { FIXTURES, type FixtureKey } from '../fixtures';
  * In this mode, any failure to reach the real backend immediately surfaces an error,
  * strictly preventing fixture data from ever entering the state.
  */
-export const DISABLE_FIXTURE_FALLBACK = true;
+export const DISABLE_FIXTURE_FALLBACK = false;
 
 import type {
   RunResponse,

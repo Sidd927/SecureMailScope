@@ -55,7 +55,7 @@ const MainLayout: React.FC = () => {
 
       {/* Main Content Area */}
       <div id="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {activeView === 'home' ? <HomeView /> : <WorkbenchView />}
+        {activeView === 'home' ? <HomeView /> : <WorkbenchView onOpenRunPicker={handleOpenRunPicker} />}
       </div>
 
       {/* Run Selector Modal */}

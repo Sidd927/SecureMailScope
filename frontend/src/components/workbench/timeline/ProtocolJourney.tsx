@@ -3,12 +3,23 @@ import { useInvestigation } from '../../../context/InvestigationContext';
 import { Panel } from '../../common/Panel';
 import { EmptyState, ErrorState, SkeletonRows } from '../../common/StateViews';
 import { JourneyTimeline } from './JourneyTimeline';
+import { ProtocolStateMachineStory } from './ProtocolStateMachineStory';
 import { endpointLabel, sessionLabel } from '../../../utils/session';
 
 const humanize = (s: string | null | undefined) => (s ? s.replace(/_/g, ' ').toLowerCase() : '—');
 
 export const ProtocolJourney: React.FC = () => {
-  const { sessions, selectedSession, selectSession, selectedEventFrame, isLoading, sectionErrors, selectRun, activeRunId } = useInvestigation();
+  const {
+    sessions,
+    selectedSession,
+    selectSession,
+    selectedEventFrame,
+    selectEventFrame,
+    isLoading,
+    sectionErrors,
+    selectRun,
+    activeRunId,
+  } = useInvestigation();
   const session = selectedSession;
 
   let body: React.ReactNode;
@@ -61,9 +72,18 @@ export const ProtocolJourney: React.FC = () => {
         </div>
       )}
 
-      <Panel title="Timeline" meta={session ? `stream #${session.tcp_stream_id}` : undefined} flush>
+      {session && ((session.events?.length ?? 0) > 0 || (session.transitions?.length ?? 0) > 0) && (
+        <ProtocolStateMachineStory
+          session={session}
+          focusFrame={selectedEventFrame}
+          onSelectFrame={selectEventFrame}
+        />
+      )}
+
+      <Panel title="Raw event timeline" meta={session ? `stream #${session.tcp_stream_id}` : undefined} flush>
         {body}
       </Panel>
     </div>
   );
 };
+

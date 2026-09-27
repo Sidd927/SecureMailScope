@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Shield, Cpu, Lock, GitCompare, FileCheck } from 'lucide-react';
 import { api } from '../../api/client';
 import type { HealthResponse } from '../../api/types';
-import { OfflineBanner } from '../common/OfflineBanner';
 import { BrandLogo } from '../common/BrandLogo';
 import { CaptureUpload } from './CaptureUpload';
+import { ForensicProcessPipeline } from './ForensicProcessPipeline';
 import { RecentAnalyses } from './RecentAnalyses';
 
 export const HomeView: React.FC = () => {
@@ -19,17 +19,16 @@ export const HomeView: React.FC = () => {
 
   return (
     <>
-      <OfflineBanner />
       <main className="sms-case-desk" role="main" aria-label="Forensic Investigation Case Desk">
         <div className="sms-case-desk__inner">
           {/* A. PRODUCT & EDITORIAL HERO */}
           <header className="sms-case-desk__hero">
             <div className="sms-case-desk__badge-row">
               <span className="sms-label sms-case-desk__overline">
-                Forensic Case Desk
+                Forensic Workstation
               </span>
               <span className="sms-badge sms-badge--muted sms-case-desk__version-badge">
-                Engine {health?.version ?? '0.8.0'}
+                Engine {health?.posture_engine_version ?? '0.8.0'}
               </span>
             </div>
 
@@ -37,19 +36,15 @@ export const HomeView: React.FC = () => {
               <BrandLogo variant="full" size="lg" showSubtitle={false} />
             </div>
 
-            <h1 className="sms-case-desk__title">
-              Cryptographic Security Posture Assessment
-            </h1>
-
             <p className="sms-case-desk__tagline">
-              Evidence-driven forensic dissection of email communication protocols (SMTP, IMAP, POP3) from passive packet captures.
+              Passive cryptographic forensics for email communications.
             </p>
 
             {/* Technical Characteristics Line */}
             <div className="sms-case-desk__tech-pills" aria-label="System characteristics">
               <div className="sms-tech-pill" title="Passive offline packet capture only; zero active network probing">
                 <Shield size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>100% Passive Ingestion</span>
+                <span>Passive Ingestion</span>
               </div>
               <div className="sms-tech-pill" title="Full TLS handshake and cryptographic suite extraction via TShark">
                 <Cpu size={12} className="sms-tech-pill__icon" aria-hidden="true" />
@@ -57,7 +52,7 @@ export const HomeView: React.FC = () => {
               </div>
               <div className="sms-tech-pill" title="Evaluated against RFC 8314, RFC 8996, and NIST SP 800-52r2 standards">
                 <Lock size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>NIST & RFC Normative Rules</span>
+                <span>NIST & RFC Rules</span>
               </div>
               <div className="sms-tech-pill" title="Multi-session comparison for capability stripping and downgrade detection">
                 <GitCompare size={12} className="sms-tech-pill__icon" aria-hidden="true" />
@@ -65,12 +60,15 @@ export const HomeView: React.FC = () => {
               </div>
               <div className="sms-tech-pill" title="Full provenance from capture bytes to posture determination">
                 <FileCheck size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>Byte-to-Posture Traceability</span>
+                <span>Byte-to-Posture Provenance</span>
               </div>
             </div>
           </header>
 
-          {/* B. PRIMARY FORENSIC INGEST BAY */}
+          {/* B. FORENSIC METHODOLOGY PIPELINE (CAPTURE → RECONSTRUCT → ANALYZE → CORRELATE → PROVE → REPORT) */}
+          <ForensicProcessPipeline />
+
+          {/* C. START AN INVESTIGATION (PRIMARY FORENSIC INGEST BAY) */}
           <CaptureUpload
             maxUploadBytes={health?.limits.max_upload_bytes ?? null}
             maxAnalysisSeconds={health?.limits.max_analysis_seconds ?? null}
@@ -86,7 +84,7 @@ export const HomeView: React.FC = () => {
             </div>
           )}
 
-          {/* C. RECENT INVESTIGATIONS LEDGER & SECONDARY VALIDATED SCENARIOS */}
+          {/* D. RECENT INVESTIGATIONS LEDGER & SECONDARY VALIDATED SCENARIOS */}
           <RecentAnalyses />
         </div>
       </main>

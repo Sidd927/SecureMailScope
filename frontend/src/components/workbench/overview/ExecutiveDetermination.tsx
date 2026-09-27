@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ShieldAlert, ShieldCheck, AlertTriangle, FileCode } from 'lucide-react';
+import { ShieldAlert, ShieldCheck, AlertTriangle, ExternalLink, GitBranch } from 'lucide-react';
 import type { DashboardViewModel, FindingRow, SessionEvidence } from '../../../api/types';
 import { CertaintyBadge } from '../../common/VocabularyBadges';
 import { SeverityBadge } from '../../common/SeverityBadge';
@@ -8,8 +8,9 @@ interface ExecutiveDeterminationProps {
   dashboard: DashboardViewModel;
   primaryFinding?: FindingRow;
   sessions: SessionEvidence[];
-  onOpenFinding: (finding: FindingRow) => void;
-  onOpenJourney: (frame?: number, streamKey?: string) => void;
+  onOpenFinding?: (finding: FindingRow) => void;
+  onOpenFrame?: (frame: number, streamKey?: string) => void;
+  onTraceProvenance?: (finding?: FindingRow) => void;
 }
 
 export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
@@ -17,7 +18,8 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
   primaryFinding,
   sessions,
   onOpenFinding,
-  onOpenJourney,
+  onOpenFrame,
+  onTraceProvenance,
 }) => {
   const { posture } = dashboard;
   const isClean = dashboard.findings.length === 0 && posture.value === 'STRONG';
@@ -32,7 +34,6 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
       return posture.basis || 'Cryptographic security assessment completed with findings requiring forensic review.';
     }
 
-    // High precision synthesis from real findings
     const title = primaryFinding.title.toLowerCase();
     const affected = primaryFinding.affected_sessions;
     const sessionCountText = affected ? ` across ${affected} session${affected === 1 ? '' : 's'}` : '';
@@ -57,10 +58,6 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
   const citation = primaryFinding?.citations?.[0];
   const standardText = citation ? [citation.standard, citation.section].filter(Boolean).join(' ') : null;
   const ruleId = primaryFinding?.source_rule_ids?.[0];
-
-  // Target frame and stream for one-click proof pivot
-  const targetFrame = primaryFinding?.frames?.[0];
-  const targetStream = primaryFinding?.stream_key || (primaryFinding?.tcp_stream_id != null ? `stream-${primaryFinding.tcp_stream_id}` : sessions[0]?.stream_key);
 
   const getPostureTone = () => {
     switch (posture.value) {
@@ -171,104 +168,47 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
         )}
         {isClean && (
           <span className="sms-badge sms-badge--muted">
-            {sessions.length} sessions assessed · Compliant
+            {sessions.length} session{sessions.length === 1 ? '' : 's'} assessed · Compliant
           </span>
         )}
       </div>
 
-      {/* Wire-Level Evidence Proof Box */}
+      {/* Primary Investigation Actions */}
       {primaryFinding && (
-        <div className="sms-determination-hero__proof-box">
-          <div className="sms-determination-hero__proof-head">
-            <span className="sms-label" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <FileCode size={12} aria-hidden="true" /> Wire-Level Proof Anchor
-            </span>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              {primaryFinding.tcp_stream_id != null && (
-                <span className="sms-mono sms-badge sms-badge--muted">Stream #{primaryFinding.tcp_stream_id}</span>
-              )}
-              {targetFrame != null && (
-                <span className="sms-mono sms-badge sms-badge--muted">Frame #{targetFrame}</span>
-              )}
-            </div>
-          </div>
-
-          <div className="sms-determination-hero__proof-body">
-            <div className="sms-determination-hero__proof-facts">
-              {primaryFinding.title.toLowerCase().includes('authentication') ? (
-                <>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">AUTH_ACTIVITY =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">OBSERVED</span>
-                  </div>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">TLS_TRANSITION =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">FALSE</span>
-                  </div>
-                </>
-              ) : primaryFinding.title.toLowerCase().includes('rsa') || primaryFinding.title.toLowerCase().includes('sha-1') ? (
-                <>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">RSA_KEY_SIZE =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">1024 BITS</span>
-                  </div>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">SIG_ALGORITHM =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">SHA-1 (DEPRECATED)</span>
-                  </div>
-                </>
-              ) : primaryFinding.title.toLowerCase().includes('starttls') ? (
-                <>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">SUBJECT_ENDPOINT =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">STARTTLS NOT ADVERTISED</span>
-                  </div>
-                  <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">CONTROL_BASELINE =</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--good">STARTTLS ADVERTISED</span>
-                  </div>
-                </>
-              ) : (
-                <p className="sms-prose" style={{ margin: 0, fontSize: 'var(--ds-text-13)' }}>
-                  {primaryFinding.explanation || primaryFinding.conclusion}
-                </p>
-              )}
-            </div>
-
-            <div className="sms-determination-hero__proof-actions">
-              <button
-                type="button"
-                className="sms-btn sms-btn--primary sms-btn--sm"
-                onClick={() => onOpenJourney(targetFrame, targetStream)}
-                title="Jump directly to this exact packet frame in the Protocol Journey"
-              >
-                Open Frame #{targetFrame ?? 1} in Protocol Journey <ArrowRight size={13} aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className="sms-btn sms-btn--ghost sms-btn--sm"
-                onClick={() => onOpenFinding(primaryFinding)}
-                title="View full evidence dossier for this finding"
-              >
-                Inspect Full Evidence
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Case C Honest Observability Notice */}
-      {isClean && (
-        <div className="sms-determination-hero__clean-notice">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
-            <span className="sms-label">Epistemic Observability Boundary</span>
-            <span className="sms-badge sms-badge--info sms-mono">
-              CERTIFICATE CONTENT: NOT_OBSERVABLE
-            </span>
-          </div>
-          <p className="sms-prose" style={{ margin: '4px 0 0 0', fontSize: 'var(--ds-text-13)', color: 'var(--sms-text-secondary)', lineHeight: 1.5 }}>
-            No certificate fields were observable in this passive capture. Under RFC 8446 specifications, server X.509 certificate handshakes in TLS 1.3 are cryptographically encrypted on the wire. This is an intentional epistemic boundary of passive packet analysis, not an engine error or missing data.
-          </p>
+        <div className="sms-determination-hero__actions">
+          {onOpenFrame && primaryFinding.frames && primaryFinding.frames.length > 0 && (
+            <button
+              type="button"
+              className="sms-btn sms-btn--primary sms-btn--sm"
+              onClick={() => onOpenFrame(primaryFinding.frames[0], primaryFinding.stream_key || undefined)}
+              title={`Jump directly to wire evidence Frame #${primaryFinding.frames[0]}`}
+            >
+              <ExternalLink size={13} aria-hidden="true" />
+              <span>Open Frame #{primaryFinding.frames[0]}</span>
+            </button>
+          )}
+          {onTraceProvenance && (
+            <button
+              type="button"
+              className="sms-btn sms-btn--secondary sms-btn--sm"
+              onClick={() => onTraceProvenance(primaryFinding)}
+              title="Trace analytical provenance from packet to posture"
+            >
+              <GitBranch size={13} aria-hidden="true" />
+              <span>Trace Provenance</span>
+            </button>
+          )}
+          {onOpenFinding && (
+            <button
+              type="button"
+              className="sms-btn sms-btn--ghost sms-btn--sm"
+              onClick={() => onOpenFinding(primaryFinding)}
+              title="Inspect comprehensive finding details"
+            >
+              <ShieldAlert size={13} aria-hidden="true" />
+              <span>Inspect Finding ({ruleId || 'Detail'})</span>
+            </button>
+          )}
         </div>
       )}
     </article>

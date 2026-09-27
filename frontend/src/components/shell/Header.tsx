@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Plus, FileSpreadsheet, ShieldAlert, Cpu } from 'lucide-react';
+import { ChevronDown, Plus, FileSpreadsheet } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
 import { PosturePill } from '../common/PosturePill';
 import { BrandLogo } from '../common/BrandLogo';
@@ -56,130 +56,134 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
   return (
     <>
       <header className="sms-header" role="banner" aria-label="Forensic Investigation Shell">
-        {/* Left: Brand Identity & Active Case Breadcrumb */}
-        <div className="sms-header__left">
-          <button
-            type="button"
-            className="sms-brand-btn"
-            onClick={() => setActiveView('home')}
-            aria-label="Return to Case Desk"
-            title="SecureMailScope Case Desk"
-          >
-            <BrandLogo variant="compact" size="md" />
-          </button>
-
-          {inWorkbench && activeRun && (
-            <div className="sms-header__case-crumb">
-              <span className="sms-header__sep" aria-hidden="true">/</span>
-              <button
-                type="button"
-                className="sms-header__case-pill"
-                onClick={onOpenRunPicker}
-                title={`Switch active capture (Current: ${activeRun.source_filename})`}
-                aria-haspopup="dialog"
-              >
-                <FileSpreadsheet size={13} className="sms-header__case-icon" aria-hidden="true" />
-                <span className="sms-header__case-name">{activeRun.source_filename}</span>
-                <span className="sms-badge sms-badge--muted sms-header__case-meta" title={`${totalSessions} reconstructed session(s)`}>
-                  {totalSessions} {totalSessions === 1 ? 'session' : 'sessions'}
-                </span>
-                {totalFindings > 0 && (
-                  <span className="sms-badge sms-header__finding-badge" title={`${totalFindings} security finding(s)`}>
-                    <ShieldAlert size={10} aria-hidden="true" />
-                    {totalFindings}
-                  </span>
-                )}
-                <ChevronDown size={13} className="sms-header__chevron" aria-hidden="true" />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Center: Persistent Posture & Determination Summary */}
-        <div className="sms-header__center">
-          {inWorkbench && posture ? (
-            <div className="sms-header__posture-cluster">
-              <PosturePill
-                band={posture.known ? posture.value : null}
-                withheld={posture.withheld}
-                onClick={openScore}
-              />
-              <button
-                type="button"
-                className="sms-header__score-link"
-                onClick={openScore}
-                title="View Score Deduction Waterfall"
-                aria-label="View score deduction waterfall"
-              >
-                <span className="sms-mono sms-header__score-val">
-                  {posture.withheld
-                    ? '—'
-                    : posture.score_text || (posture.score_value != null ? `${posture.score_value.toFixed(1)} / 100` : '—')}
-                </span>
-                <span className="sms-header__score-sub">WATERFALL</span>
-              </button>
-            </div>
-          ) : (
-            <div className="sms-header__mode-tag">
-              <span className="sms-mono" style={{ fontSize: 'var(--ds-text-11)', letterSpacing: '0.08em', color: 'var(--sms-text-muted)' }}>
-                PASSIVE CRYPTOGRAPHIC FORENSICS
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Right: Engine Status, Telemetry & Global Controls */}
-        <div className="sms-header__right">
-          {/* Real Backend Engine Liveness */}
-          <div
-            className={`sms-status-pill ${isUsingFixtures ? 'sms-status-pill--fixture' : 'sms-status-pill--live'}`}
-            role="status"
-            title={isUsingFixtures ? 'Running against demo fixture data' : 'Connected to live forensic backend (127.0.0.1:8001)'}
-          >
-            <span className="sms-status-dot" aria-hidden="true" />
-            <span className="sms-status-label">{isUsingFixtures ? 'Demo Fixture' : 'Engine Live'}</span>
-          </div>
-
-          {/* Passive Architecture Badge */}
-          <div className="sms-header__arch-badge" title="Passive PCAP forensic analysis only. Zero active packet injection.">
-            <Cpu size={12} aria-hidden="true" />
-            <span>Passive TShark</span>
-          </div>
-
-          {/* Global Keyboard Shortcut Triggers */}
-          <button
-            type="button"
-            className="sms-kbd-trigger"
-            onClick={() => setShowCommandPalette(true)}
-            aria-label="Open command palette"
-            title="Forensic command palette (⌘K / Ctrl+K)"
-          >
-            <kbd>⌘K</kbd>
-          </button>
-
-          <button
-            type="button"
-            className="sms-kbd-trigger"
-            onClick={() => setShowShortcuts(true)}
-            aria-label="Keyboard shortcuts reference"
-            title="Keyboard shortcuts reference (?)"
-          >
-            <kbd>?</kbd>
-          </button>
-
-          {/* New Investigation Action */}
-          {inWorkbench && (
+        <div className="sms-header__top-row">
+          {/* Left: Brand Identity & Active Case Selector */}
+          <div className="sms-header__left">
             <button
               type="button"
-              className="sms-btn sms-btn--primary sms-btn--sm sms-header__new-btn"
+              className="sms-brand-btn"
               onClick={() => setActiveView('home')}
-              title="Return to intake bay to analyze a new capture"
+              aria-label="Return to Case Desk"
+              title="SecureMailScope Case Desk"
             >
-              <Plus size={13} aria-hidden="true" />
-              <span>Intake Bay</span>
+              <BrandLogo variant="compact" size="md" />
             </button>
-          )}
+
+            {inWorkbench && activeRun && (
+              <div className="sms-header__case-crumb sms-hide-tablet">
+                <span className="sms-header__sep" aria-hidden="true">/</span>
+                <button
+                  type="button"
+                  className="sms-header__case-pill"
+                  onClick={onOpenRunPicker}
+                  title={`Active capture: ${activeRun.source_filename} (${totalSessions} sessions, ${totalFindings} findings). Click to switch.`}
+                  aria-haspopup="dialog"
+                >
+                  <FileSpreadsheet size={13} className="sms-header__case-icon" aria-hidden="true" />
+                  <span className="sms-header__case-name">{activeRun.source_filename}</span>
+                  <ChevronDown size={13} className="sms-header__chevron" aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Center: Persistent Posture & Determination Summary */}
+          <div className="sms-header__center">
+            {inWorkbench && posture ? (
+              <div className="sms-header__posture-cluster">
+                <PosturePill
+                  band={posture.known ? posture.value : null}
+                  withheld={posture.withheld}
+                  onClick={openScore}
+                />
+                <button
+                  type="button"
+                  className="sms-header__score-link"
+                  onClick={openScore}
+                  title="View score deduction breakdown"
+                  aria-label="View score deduction breakdown"
+                >
+                  <span className="sms-mono sms-header__score-val">
+                    {posture.withheld
+                      ? '—'
+                      : posture.score_text || (posture.score_value != null ? `${posture.score_value.toFixed(1)} / 100` : '—')}
+                  </span>
+                </button>
+              </div>
+            ) : (
+              <div className="sms-header__mode-tag">
+                <span className="sms-mono" style={{ fontSize: 'var(--ds-text-11)', letterSpacing: '0.08em', color: 'var(--sms-text-muted)' }}>
+                  PASSIVE CRYPTOGRAPHIC FORENSICS
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Right: Engine Status & Global Controls */}
+          <div className="sms-header__right">
+            {/* Real Backend Engine Liveness */}
+            <div
+              className={`sms-status-pill ${isUsingFixtures ? 'sms-status-pill--fixture' : 'sms-status-pill--live'}`}
+              role="status"
+              title={isUsingFixtures ? 'Running against demo fixture data' : 'Connected to live forensic backend (127.0.0.1:8001) · TShark Available · Passive / Offline'}
+            >
+              <span className="sms-status-dot" aria-hidden="true" />
+              <span className="sms-status-label">{isUsingFixtures ? 'Demo Fixture' : 'ENGINE LIVE'}</span>
+            </div>
+
+            {/* Global Keyboard Shortcut Triggers */}
+            <button
+              type="button"
+              className="sms-kbd-trigger"
+              onClick={() => setShowCommandPalette(true)}
+              aria-label="Open command palette"
+              title="Forensic command palette (⌘K / Ctrl+K)"
+            >
+              <kbd>⌘K</kbd>
+            </button>
+
+            <button
+              type="button"
+              className="sms-kbd-trigger"
+              onClick={() => setShowShortcuts(true)}
+              aria-label="Keyboard shortcuts reference"
+              title="Keyboard shortcuts reference (?)"
+            >
+              <kbd>?</kbd>
+            </button>
+
+            {/* New Investigation Action */}
+            {inWorkbench && (
+              <button
+                type="button"
+                className="sms-btn sms-btn--primary sms-btn--sm sms-header__new-btn"
+                onClick={() => setActiveView('home')}
+                title="Return to intake bay to analyze a new capture"
+              >
+                <Plus size={13} aria-hidden="true" />
+                <span>Intake</span>
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Mobile/Tablet Case Selector Row (shown only on <= 820px when in workbench) */}
+        {inWorkbench && activeRun && (
+          <div className="sms-header__case-row sms-show-tablet">
+            <button
+              type="button"
+              className="sms-header__case-pill sms-header__case-pill--full"
+              onClick={onOpenRunPicker}
+              title={`Active capture: ${activeRun.source_filename}. Click to switch case.`}
+              aria-haspopup="dialog"
+            >
+              <FileSpreadsheet size={13} className="sms-header__case-icon" aria-hidden="true" />
+              <span className="sms-header__case-name">{activeRun.source_filename}</span>
+              <span className="sms-mono sms-header__case-meta">{totalSessions} sessions · {totalFindings} findings</span>
+              <ChevronDown size={13} className="sms-header__chevron" aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Score Deduction Breakdown Modal */}

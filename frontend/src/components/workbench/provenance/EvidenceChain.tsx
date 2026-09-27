@@ -1,7 +1,6 @@
 import React from 'react';
 import type { AssessmentResponse, FindingRow, RunResponse, ScoreComponentRow, SessionEvidence } from '../../../api/types';
-import { evidenceRefsForFinding, fieldLabel, sourcesForFinding } from '../../../utils/findingEvidence';
-import { framesLabel } from '../../../utils/evidence';
+import { evidenceRefsForFinding, fieldLabel } from '../../../utils/findingEvidence';
 import { EvidenceBadge } from '../../common/EvidenceBadge';
 import { ForensicHash } from '../../common/ForensicHash';
 import { SeverityBadge } from '../../common/SeverityBadge';
@@ -18,114 +17,144 @@ interface Props {
   onOpenFrame: (frame: number, streamKey?: string) => void;
 }
 
-const Step: React.FC<{ label: string; keyStep?: boolean; children: React.ReactNode }> = ({ label, keyStep, children }) => (
-  <li className={`sms-chain__step${keyStep ? ' sms-chain__step--key' : ''}`}>
-    <span className="sms-label">{label}</span>
-    <div style={{ marginTop: 'var(--ds-space-4)' }}>{children}</div>
-  </li>
-);
-
 export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessment, component, formulaId, onOpenFrame }) => {
   const refs = evidenceRefsForFinding(assessment, finding);
-  const sources = sourcesForFinding(assessment, finding);
+  const primaryFrame = finding.frames && finding.frames.length > 0 ? finding.frames[0] : (refs[0]?.frames?.[0] ?? null);
+  const ruleId = finding.source_rule_ids?.[0] || finding.issue_class || 'RULE';
+  const citation = finding.citations?.[0];
+  const standardText = citation ? [citation.standard, citation.section].filter(Boolean).join(' ') : null;
+  const clientEndpoint = session?.client ? `${session.client.ip}:${session.client.port}` : null;
+  const serverEndpoint = session?.server ? `${session.server.ip}:${session.server.port}` : null;
+  const penalty = component?.penalty ?? ((finding as any).penalty ?? null);
 
   return (
-    <ol className="sms-chain" aria-label={`Provenance for ${finding.title}`}>
-      <Step label="Capture">
-        <p className="sms-mono" style={{ fontSize: 'var(--ds-text-13)', color: 'var(--ds-ink-primary)' }}>{run.source_filename}</p>
-        <ForensicHash value={run.capture_id} length={24} label="SHA-256" />
-      </Step>
+    <div className="sms-provenance-flow" aria-label={`Provenance trace for ${finding.title}`}>
+      {/* 1. CAPTURE */}
+      <div className="sms-prov-node sms-prov-node--capture">
+        <span className="sms-prov-node__stage">1. CAPTURE</span>
+        <div className="sms-prov-node__content">
+          <span className="sms-mono sms-prov-node__title">{run.source_filename}</span>
+          <ForensicHash value={run.capture_id} length={20} label="SHA-256" />
+        </div>
+      </div>
 
-      {session && (
-        <Step label="TCP stream">
-          <p className="sms-mono" style={{ fontSize: 'var(--ds-text-13)', color: 'var(--ds-ink-primary)' }}>
-            {sessionLabel(session)}
-          </p>
-          {finding.affected_sessions != null && finding.affected_sessions > 1 && (
-            <p className="sms-muted" style={{ fontSize: 'var(--ds-text-12)' }}>Representative stream; the finding covers {finding.affected_sessions} sessions.</p>
+      <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+
+      {/* 2. TCP STREAM */}
+      <div className="sms-prov-node sms-prov-node--stream">
+        <span className="sms-prov-node__stage">2. TCP STREAM #{session?.tcp_stream_id ?? finding.tcp_stream_id ?? 0}</span>
+        <div className="sms-prov-node__content">
+          {clientEndpoint && serverEndpoint ? (
+            <span className="sms-mono sms-prov-node__endpoints">
+              {clientEndpoint} <span className="sms-prov-node__arrow-char">→</span> {serverEndpoint}
+            </span>
+          ) : (
+            <span className="sms-mono">{session ? sessionLabel(session) : `Stream #${finding.tcp_stream_id ?? 0}`}</span>
           )}
-        </Step>
+          {finding.affected_sessions != null && finding.affected_sessions > 1 && (
+            <span className="sms-muted sms-text-xs">Finding observed across {finding.affected_sessions} sessions</span>
+          )}
+        </div>
+      </div>
+
+      <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+
+      {/* 3. FRAME */}
+      {primaryFrame != null && (
+        <>
+          <button
+            type="button"
+            className="sms-prov-node sms-prov-node--frame is-interactive"
+            onClick={() => onOpenFrame(primaryFrame, finding.stream_key ?? undefined)}
+            title={`Click to focus Frame #${primaryFrame} in Protocol Journey`}
+          >
+            <span className="sms-prov-node__stage">3. WIRE FRAME</span>
+            <div className="sms-prov-node__content">
+              <span className="sms-mono sms-prov-node__frame-val">Frame #{primaryFrame}</span>
+              <span className="sms-prov-node__action-hint">Jump to packet dissection →</span>
+            </div>
+          </button>
+          <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+        </>
       )}
 
-      <Step label="Evidence cited" keyStep>
-        {refs.length === 0 ? (
-          <p className="sms-prose">The assessment lists no evidence fields for this finding.</p>
-        ) : (
-          <div className="sms-stack sms-stack--tight">
-            {refs.map((r, i) => (
-              <div key={`${r.field}-${i}`} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: 'var(--ds-space-8)', alignItems: 'start' }}>
-                <div>
-                  <p style={{ fontSize: 'var(--ds-text-13)', color: 'var(--ds-ink-primary)' }}>
-                    {fieldLabel(r.field)} <span className="sms-mono" style={{ color: 'var(--ds-ink-secondary)' }}>= {r.observed_value ?? 'no value'}</span>
-                  </p>
-                  {r.basis && <p className="sms-prose" style={{ fontSize: 'var(--ds-text-12)' }}>{r.basis}</p>}
-                  <p className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-12)' }}>
-                    provenance: {r.provenance ?? 'not reported'}
-                    {framesLabel(r.frames) && (
-                      <>
-                        {' · '}
-                        <button type="button" className="sms-link" onClick={() => onOpenFrame(r.frames[0], finding.stream_key ?? undefined)}>{framesLabel(r.frames)}</button>
-                      </>
-                    )}
-                  </p>
-                </div>
+      {/* 4. WIRE EVIDENCE */}
+      <div className="sms-prov-node sms-prov-node--evidence">
+        <span className="sms-prov-node__stage">4. WIRE EVIDENCE</span>
+        <div className="sms-prov-node__facts">
+          {refs.length > 0 ? (
+            refs.map((r, i) => (
+              <div key={`${r.field}-${i}`} className="sms-prov-fact-row">
+                <span className="sms-mono sms-prov-fact-key">{fieldLabel(r.field)}</span>
+                <span className="sms-mono sms-prov-fact-val">= {r.observed_value ?? 'UNKNOWN'}</span>
                 <EvidenceBadge state={r.evidence_state} size="sm" />
               </div>
-            ))}
-          </div>
-        )}
-      </Step>
-
-      <Step label="Rules">
-        {sources.length === 0 ? (
-          <p className="sms-mono" style={{ fontSize: 'var(--ds-text-12)' }}>{finding.source_rule_ids?.join(', ') || '—'}</p>
-        ) : (
-          <ul className="sms-list">
-            {sources.map((s, i) => (
-              <li key={`${s.rule_id}-${i}`} className="sms-mono" style={{ fontSize: 'var(--ds-text-12)', color: 'var(--ds-ink-secondary)' }}>
-                <span style={{ color: 'var(--ds-ink-primary)' }}>{s.rule_id}</span>
-                {s.lane && <span className="sms-muted"> · {s.lane.toLowerCase().replace(/_/g, ' ')}</span>}
-                {s.relation && <span className="sms-muted"> · {s.relation}</span>}
-              </li>
-            ))}
-          </ul>
-        )}
-      </Step>
-
-      <Step label="Finding" keyStep>
-        <div style={{ display: 'flex', gap: 'var(--ds-space-8)', flexWrap: 'wrap', alignItems: 'center' }}>
-          <SeverityBadge severity={finding.severity} />
-          <FindingStatusBadge status={finding.status} />
-          <CertaintyBadge certainty={finding.certainty} />
+            ))
+          ) : (
+            <div className="sms-prov-fact-row">
+              <span className="sms-mono sms-prov-fact-key">EVALUATION</span>
+              <span className="sms-mono sms-prov-fact-val">{finding.conclusion || 'Observed wire evidence'}</span>
+            </div>
+          )}
         </div>
-        <p style={{ marginTop: 'var(--ds-space-8)', fontSize: 'var(--ds-text-14)', fontWeight: 500, color: 'var(--ds-ink-primary)' }}>{finding.title}</p>
-        {finding.certainty && refs.length > 0 && (
-          <p className="sms-prose" style={{ marginTop: 'var(--ds-space-4)' }}>
-            Certainty is reported as <span className="sms-mono">{finding.certainty}</span>. The engine derives certainty from the states of the evidence it cites; here:{' '}
-            {refs.map((r) => `${fieldLabel(r.field)} (${r.evidence_state})`).join(', ')}.
-          </p>
-        )}
-      </Step>
+      </div>
 
-      {finding.citations?.length > 0 && (
-        <Step label="Standards">
-          <ul className="sms-list">
-            {finding.citations.map((c, i) => (
-              <li key={`${c.standard}-${c.section ?? ''}-${i}`}>
-                <p className="sms-mono" style={{ fontSize: 'var(--ds-text-12)', color: 'var(--ds-ink-primary)' }}>{[c.standard, c.section].filter(Boolean).join(' ')}</p>
-                {c.reason && <p className="sms-prose" style={{ fontSize: 'var(--ds-text-12)' }}>{c.reason}</p>}
-              </li>
-            ))}
-          </ul>
-        </Step>
+      <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+
+      {/* 5. RULE */}
+      <div className="sms-prov-node sms-prov-node--rule">
+        <span className="sms-prov-node__stage">5. DETERMINISTIC RULE</span>
+        <div className="sms-prov-node__content">
+          <span className="sms-mono sms-prov-node__rule-id">{ruleId}</span>
+          {finding.issue_class_label && (
+            <span className="sms-muted sms-text-xs">{finding.issue_class_label}</span>
+          )}
+        </div>
+      </div>
+
+      <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+
+      {/* 6. STANDARD */}
+      {standardText && (
+        <>
+          <div className="sms-prov-node sms-prov-node--standard">
+            <span className="sms-prov-node__stage">6. NORMATIVE STANDARD</span>
+            <div className="sms-prov-node__content">
+              <span className="sms-mono sms-prov-node__standard-val">{standardText}</span>
+              {citation?.reason && (
+                <span className="sms-muted sms-text-xs">{citation.reason}</span>
+              )}
+            </div>
+          </div>
+          <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+        </>
       )}
 
-      {component?.penalty != null && (
-        <Step label="Posture impact">
-          <p className="sms-mono" style={{ fontSize: 'var(--ds-text-14)', color: 'var(--ds-crimson-ink)' }}>−{component.penalty.toFixed(2)} points{formulaId ? ` under ${formulaId}` : ''}</p>
-          {component.explanation && <p className="sms-prose" style={{ fontSize: 'var(--ds-text-12)' }}>{component.explanation}</p>}
-        </Step>
-      )}
-    </ol>
+      {/* 7. FINDING & CERTAINTY */}
+      <div className="sms-prov-node sms-prov-node--finding">
+        <span className="sms-prov-node__stage">7. POSTURE FINDING</span>
+        <div className="sms-prov-node__content">
+          <div className="sms-prov-node__badges">
+            <SeverityBadge severity={finding.severity} />
+            <CertaintyBadge certainty={finding.certainty} />
+            <FindingStatusBadge status={finding.status} />
+          </div>
+          <span className="sms-prov-node__title" style={{ marginTop: '4px' }}>{finding.title}</span>
+        </div>
+      </div>
+
+      <div className="sms-prov-arrow" aria-hidden="true">↓</div>
+
+      {/* 8. POSTURE DEDUCTION */}
+      <div className="sms-prov-node sms-prov-node--penalty">
+        <span className="sms-prov-node__stage">8. SCORE DEDUCTION</span>
+        <div className="sms-prov-node__content">
+          <span className="sms-mono sms-prov-node__penalty-val">
+            {penalty != null ? `−${penalty.toFixed(2)} pts` : 'Rule deduction'}
+          </span>
+          <span className="sms-muted sms-text-xs">{formulaId || 'F2-group-damped scoring'}</span>
+        </div>
+      </div>
+    </div>
   );
 };

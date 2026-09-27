@@ -12,7 +12,7 @@ import { FindingEvidenceDetail } from './FindingEvidenceDetail';
 import { SessionEvidencePanel } from './SessionEvidencePanel';
 
 export const EvidenceLedger: React.FC = () => {
-  const { dashboard, assessment, selectedFinding, selectFinding, sectionErrors, pivotToJourney, selectEventFrame } = useInvestigation();
+  const { dashboard, assessment, selectedFinding, selectFinding, sectionErrors, pivotToJourney, selectEventFrame, pivotToProvenance } = useInvestigation();
   const [stateFilter, setStateFilter] = useState<string | null>(null);
 
   const findings = useMemo(
@@ -40,6 +40,7 @@ export const EvidenceLedger: React.FC = () => {
   }, [selectedFinding, findings, selectFinding]);
 
   const openFrame = (frame: number, streamKey?: string) => { pivotToJourney(frame, streamKey); selectEventFrame(frame); };
+  const traceFinding = (f: FindingRow) => { selectFinding(f); pivotToProvenance(f.title); };
 
   return (
     <div className="sms-page">
@@ -74,12 +75,24 @@ export const EvidenceLedger: React.FC = () => {
           {findings.length === 0 ? (
             <EmptyState title="No findings for this capture" />
           ) : (
-            <FindingsTable findings={visible} selected={selected} onSelect={selectFinding} />
+            <FindingsTable
+              findings={visible}
+              selected={selected}
+              onSelect={selectFinding}
+              onOpenFrame={openFrame}
+              onTrace={traceFinding}
+            />
           )}
         </Panel>
         <div className="sms-sticky">
-          <Panel title="Evidence">
-            <FindingEvidenceDetail finding={selected} assessment={assessment} assessmentError={sectionErrors.assessment} onOpenFrame={openFrame} />
+          <Panel title="Focused evidence">
+            <FindingEvidenceDetail
+              finding={selected}
+              assessment={assessment}
+              assessmentError={sectionErrors.assessment}
+              onOpenFrame={openFrame}
+              onTrace={traceFinding}
+            />
           </Panel>
         </div>
       </div>

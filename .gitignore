@@ -32,3 +32,4 @@ frontend/dist/
 /audit/
 # Local browser profile used for manual testing
 .chrome-profile/
+.design-references/

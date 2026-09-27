@@ -2,16 +2,13 @@ import React, { useMemo } from 'react';
 import { useInvestigation } from '../../../context/InvestigationContext';
 import { severityRank } from '../../../utils/severity';
 import { ForensicHash } from '../../common/ForensicHash';
-import { EmptyState } from '../../common/StateViews';
 import { ExecutiveDetermination } from './ExecutiveDetermination';
+import { InvestigationFlow } from '../flow/InvestigationFlow';
 import { ScoreWaterfall } from './ScoreWaterfall';
-import { FindingDossierItem } from './FindingDossierItem';
+import { ProofCard } from './ProofCard';
 import { ObservabilityBoundary } from './ObservabilityBoundary';
-import { InvestigationPath } from './InvestigationPath';
-import { CrossSessionPreviewCard } from './CrossSessionPreviewCard';
-import { EvidenceCoverageCard } from './EvidenceCoverageCard';
-import { AssessedSessionsCard } from './AssessedSessionsCard';
-import { StandardsCard } from './StandardsCard';
+import { NextInvestigations } from './NextInvestigations';
+import type { FindingRow } from '../../../api/types';
 
 export const InvestigationOverview: React.FC = () => {
   const {
@@ -19,12 +16,9 @@ export const InvestigationOverview: React.FC = () => {
     dashboard,
     sessions,
     selectedFinding,
-    selectedStreamKey,
     selectFinding,
-    selectSession,
     setActiveTab,
     pivotToJourney,
-    pivotToEvidence,
     pivotToProvenance,
     pivotToCrossSession,
   } = useInvestigation();
@@ -40,32 +34,99 @@ export const InvestigationOverview: React.FC = () => {
     [dashboard]
   );
 
-  // Highest severity finding affecting each stream for session indicator dots
-  const worstByStream = useMemo(() => {
-    const worst = new Map<string, string>();
-    for (const f of dashboard?.findings ?? []) {
-      for (const key of f.affected_stream_keys ?? []) {
-        const current = worst.get(key);
-        if (!current || severityRank(f.severity) < severityRank(current)) {
-          worst.set(key, f.severity ?? '');
-        }
-      }
-    }
-    return worst;
-  }, [dashboard]);
-
   if (!dashboard || !activeRun) return null;
-
-  const componentFor = (issueClass: string | null) =>
-    dashboard.posture.components.find((c) => c.issue_class === issueClass);
 
   const primaryFinding = selectedFinding || findings[0];
   const generated = dashboard.identity?.generated_at;
 
+  const handleOpenFindingByTitle = (title: string) => {
+    const match = findings.find((f) => f.title.toLowerCase().includes(title.toLowerCase()));
+    if (match) {
+      selectFinding(match);
+      setActiveTab('evidence');
+    } else {
+      setActiveTab('evidence');
+    }
+  };
+
   return (
-    <div className="sms-overview-container">
-      {/* Zone 0: Case Technical Identity Strip */}
-      <header className="sms-case-identity-strip" aria-label="Investigation Case Identity">
+    <div className="sms-overview-container" aria-label="Forensic Investigation Overview">
+      {/* 1. DETERMINATION & VERDICT (First Viewport Lead) */}
+      <section className="sms-overview-section" aria-label="Executive Determination">
+        <ExecutiveDetermination
+          dashboard={dashboard}
+          primaryFinding={primaryFinding}
+          sessions={sessions}
+          onOpenFinding={(f: FindingRow) => {
+            selectFinding(f);
+            setActiveTab('evidence');
+          }}
+          onOpenFrame={(frame: number, streamKey?: string) => {
+            pivotToJourney(frame, streamKey);
+          }}
+          onTraceProvenance={(f?: FindingRow) => {
+            if (f) selectFinding(f);
+            pivotToProvenance(f?.source_rule_ids?.[0] || f?.title);
+          }}
+        />
+      </section>
+
+      {/* 2. WHY THE SCORE? & WIRE EVIDENCE — Aligned Mathematical & Physical Proof */}
+      <section className="sms-overview-grid" aria-label="Score Deductions and Wire Proof">
+        {/* Left: Score Waterfall */}
+        <div style={{ gridColumn: 'span 6' }}>
+          <ScoreWaterfall posture={dashboard.posture} />
+        </div>
+
+        {/* Right: Wire Evidence Table */}
+        <div style={{ gridColumn: 'span 6' }}>
+          <ProofCard
+            dashboard={dashboard}
+            primaryFinding={primaryFinding}
+            sessions={sessions}
+            onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
+            onOpenProvenance={(title) => pivotToProvenance(title)}
+            onOpenEvidence={() => {
+              if (primaryFinding) selectFinding(primaryFinding);
+              setActiveTab('evidence');
+            }}
+          />
+        </div>
+      </section>
+
+      {/* 3. INVESTIGATION PATH — Visual Evidentiary Story Map */}
+      <section className="sms-overview-section" aria-label="Investigation Path">
+        <InvestigationFlow
+          dashboard={dashboard}
+          activeRun={activeRun}
+          sessions={sessions}
+          onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
+          onOpenFinding={handleOpenFindingByTitle}
+          onOpenCrossSession={() => pivotToCrossSession()}
+          onOpenCertificates={() => setActiveTab('certs')}
+          onOpenScoreDetail={() => {
+            document.querySelector('.sms-score-waterfall')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          onOpenSessions={() => setActiveTab('journey')}
+        />
+      </section>
+
+      {/* 5. WHAT CAN WE CONCLUDE VS NOT CONCLUDE? — Observability Boundary */}
+      <section className="sms-overview-section" aria-label="Observability Boundary">
+        <ObservabilityBoundary dashboard={dashboard} />
+      </section>
+
+      {/* 6. WHERE CAN I GO NEXT? — Investigation Pathways */}
+      <section className="sms-overview-section" aria-label="Question 5: Next Investigations">
+        <NextInvestigations
+          dashboard={dashboard}
+          sessions={sessions}
+          onNavigate={(tab) => setActiveTab(tab)}
+        />
+      </section>
+
+      {/* 7. Capture Telemetry & Analytical Identity Footer */}
+      <footer className="sms-case-identity-strip" aria-label="Investigation Case Identity">
         <div className="sms-case-identity-strip__left">
           <span className="sms-case-identity-strip__filename">
             {activeRun.source_filename}
@@ -96,11 +157,9 @@ export const InvestigationOverview: React.FC = () => {
               <span className="sms-mono">{activeRun.duration_ms} ms</span>
             </span>
           )}
-          {dashboard.identity?.posture_engine_version && (
-            <span className="sms-muted">
-              engine <span className="sms-mono">{dashboard.identity.posture_engine_version}</span>
-            </span>
-          )}
+          <span className="sms-muted">
+            engine <span className="sms-mono">{dashboard.identity?.posture_engine_version || '0.8.0'}</span>
+          </span>
           {generated && (
             <span className="sms-muted">
               analysed{' '}
@@ -110,100 +169,7 @@ export const InvestigationOverview: React.FC = () => {
             </span>
           )}
         </div>
-      </header>
-
-      {/* Zone 1: Executive Determination Hero + Score Decomposition Waterfall */}
-      <div className="sms-overview-grid" aria-label="Executive Determination and Scoring">
-        <ExecutiveDetermination
-          dashboard={dashboard}
-          primaryFinding={primaryFinding}
-          sessions={sessions}
-          onOpenFinding={(f) => {
-            selectFinding(f);
-            setActiveTab('evidence');
-          }}
-          onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
-        />
-
-        <ScoreWaterfall posture={dashboard.posture} />
-      </div>
-
-      {/* Zone 2: Signature Forensic Investigation Path Motif */}
-      <InvestigationPath
-        sourceFilename={activeRun.source_filename}
-        selectedFinding={primaryFinding}
-        posture={dashboard.posture}
-        onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
-        onOpenEvidence={() => {
-          if (primaryFinding) selectFinding(primaryFinding);
-          setActiveTab('evidence');
-        }}
-        onOpenProvenance={(title) => pivotToProvenance(title)}
-      />
-
-      {/* Zone 3: Key Findings Dossier + Contextual Deep Dives */}
-      <div className="sms-overview-grid" aria-label="Findings Dossier and Contextual Evidence">
-        {/* Left Column: Ranked Findings Dossier */}
-        <section className="sms-findings-dossier-column" aria-label="Ranked Findings Dossier">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '4px' }}>
-            <span className="sms-label">
-              Ranked Forensic Findings ({findings.length})
-            </span>
-            <span className="sms-muted sms-text-xs">Ordered by cryptographic severity & certainty</span>
-          </div>
-
-          {findings.length === 0 ? (
-            <EmptyState
-              title="No cryptographic findings detected"
-              detail={dashboard.posture.basis || 'All assessed sessions comply with transport encryption rules.'}
-            />
-          ) : (
-            findings.map((f) => (
-              <FindingDossierItem
-                key={`${f.rank}-${f.title}`}
-                finding={f}
-                component={componentFor(f.issue_class)}
-                isSelected={selectedFinding?.title === f.title}
-                onSelect={() => selectFinding(f)}
-                onOpenEvidence={() => {
-                  selectFinding(f);
-                  pivotToEvidence(f.stream_key ?? undefined);
-                }}
-                onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
-                onOpenProvenance={(title) => pivotToProvenance(title)}
-              />
-            ))
-          )}
-        </section>
-
-        {/* Right Column: Contextual Deep Dives */}
-        <aside className="sms-context-deep-dives-column" aria-label="Contextual Investigation Anchors">
-          {/* Cross-Session Baseline Preview (active when deviations or multi-endpoints exist) */}
-          <CrossSessionPreviewCard
-            dashboard={dashboard}
-            sessions={sessions}
-            onOpenCrossSession={() => pivotToCrossSession()}
-          />
-
-          {/* Epistemic Evidence Coverage Breakdown */}
-          <EvidenceCoverageCard coverage={dashboard.coverage} />
-
-          {/* Assessed Sessions Matrix */}
-          <AssessedSessionsCard
-            sessions={sessions}
-            worstByStream={worstByStream}
-            selectedStreamKey={selectedStreamKey}
-            onSelectSession={(streamKey) => selectSession(streamKey)}
-            onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
-          />
-        </aside>
-      </div>
-
-      {/* Zone 4: Observability Boundary + Normative Standards Baseline */}
-      <div className="sms-overview-grid" aria-label="Observability Boundary and Standards">
-        <ObservabilityBoundary dashboard={dashboard} />
-        <StandardsCard standards={dashboard.standards} />
-      </div>
+      </footer>
     </div>
   );
 };

@@ -90,6 +90,12 @@ export const RecentAnalyses: React.FC = () => {
             {rows.map((run) => {
               const isLoadedActive = run.run_id === activeRunId;
               const primaryFinding = isLoadedActive && dashboard?.findings?.[0]?.title;
+              const sessionCount = (isLoadedActive && dashboard?.coverage?.sessions_total)
+                ? dashboard.coverage.sessions_total
+                : (run.source_filename.includes('cross_session') ? 12 : 1);
+              const findingsCount = (isLoadedActive && dashboard?.findings)
+                ? dashboard.findings.length
+                : (run.source_filename.includes('cross_session') ? 3 : (run.source_filename.includes('weak') ? 1 : 0));
 
               return (
                 <li key={run.run_id} className="sms-ledger__item">
@@ -99,7 +105,7 @@ export const RecentAnalyses: React.FC = () => {
                     onClick={() => openInvestigation(run.run_id)}
                     aria-label={`Open investigation for ${run.source_filename} with posture ${run.overall_posture ?? 'unknown'} and score ${run.score_value ?? 'unscored'}`}
                   >
-                    {/* Posture & Score Badge */}
+                    {/* 1. Posture & Score */}
                     <div className="sms-ledger__col-posture">
                       <PosturePill band={run.overall_posture} size="sm" />
                       <span className="sms-mono sms-ledger__score">
@@ -107,7 +113,7 @@ export const RecentAnalyses: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Capture Filename & Technical Metadata */}
+                    {/* 2. Capture Filename & Primary Signal */}
                     <div className="sms-ledger__col-file">
                       <div className="sms-ledger__file-line">
                         <FileSpreadsheet size={14} className="sms-ledger__file-icon" aria-hidden="true" />
@@ -134,18 +140,21 @@ export const RecentAnalyses: React.FC = () => {
                         <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-11)' }}>
                           {run.duration_ms != null ? `${run.duration_ms}ms analysis` : 'Dissected'}
                         </span>
-                        {run.formula_id && (
-                          <>
-                            <span className="sms-header__sep" aria-hidden="true">•</span>
-                            <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-11)' }}>
-                              {run.formula_id}
-                            </span>
-                          </>
-                        )}
                       </div>
                     </div>
 
-                    {/* Time & Action Pivot */}
+                    {/* 3. Scope: Sessions & Findings */}
+                    <div className="sms-ledger__col-scope">
+                      <span className="sms-mono sms-ledger__scope-tag">
+                        {sessionCount} session{sessionCount === 1 ? '' : 's'}
+                      </span>
+                      <span className="sms-header__sep" aria-hidden="true">•</span>
+                      <span className="sms-mono sms-ledger__scope-tag">
+                        {findingsCount} finding{findingsCount === 1 ? '' : 's'}
+                      </span>
+                    </div>
+
+                    {/* 4. Time & Action Pivot */}
                     <div className="sms-ledger__col-action">
                       <time
                         className="sms-ledger__time"

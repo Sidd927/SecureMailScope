@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { Compass, FileText, GitBranch, KeyRound, Layers, Network, Table } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
 import type { ForensicTab } from '../../context/InvestigationContext';
-import { OfflineBanner } from '../common/OfflineBanner';
 import { ErrorState, SkeletonRows } from '../common/StateViews';
 import { InvestigationOverview } from './overview/InvestigationOverview';
 import { EvidenceLedger } from './evidence/EvidenceLedger';
@@ -26,25 +25,30 @@ interface TabGroup {
 
 const GROUPS: TabGroup[] = [
   {
-    label: 'Investigation',
+    label: 'Understand',
     tabs: [
       { id: 'overview', label: 'Overview', icon: Compass, key: '1' },
-      { id: 'evidence', label: 'Findings & Evidence', icon: Table, key: '2' },
+      { id: 'evidence', label: 'Findings', icon: Table, key: '2' },
     ],
   },
   {
-    label: 'Forensic Dissection',
+    label: 'Investigate',
     tabs: [
-      { id: 'journey', label: 'Protocol Journey', icon: Network, key: '3' },
+      { id: 'journey', label: 'Protocol', icon: Network, key: '3' },
       { id: 'certs', label: 'Certificates', icon: KeyRound, key: '4' },
       { id: 'cross_session', label: 'Cross-Session', icon: Layers, key: '5' },
-      { id: 'provenance', label: 'Traceability & Provenance', icon: GitBranch, key: '6' },
     ],
   },
   {
-    label: 'Deliverable',
+    label: 'Trace',
     tabs: [
-      { id: 'report', label: 'Forensic Report', icon: FileText, key: '7' },
+      { id: 'provenance', label: 'Provenance', icon: GitBranch, key: '6' },
+    ],
+  },
+  {
+    label: 'Deliver',
+    tabs: [
+      { id: 'report', label: 'Report', icon: FileText, key: '7' },
     ],
   },
 ];
@@ -61,7 +65,11 @@ const PANELS: Record<ForensicTab, React.ComponentType> = {
   report: ReportExperience,
 };
 
-export const WorkbenchView: React.FC = () => {
+interface WorkbenchViewProps {
+  onOpenRunPicker?: () => void;
+}
+
+export const WorkbenchView: React.FC<WorkbenchViewProps> = () => {
   const {
     activeRunId,
     activeRun,
@@ -73,6 +81,9 @@ export const WorkbenchView: React.FC = () => {
     isLoading,
     error,
     selectRun,
+    isUsingFixtures,
+    setShowCommandPalette,
+    setShowShortcuts,
   } = useInvestigation();
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
@@ -125,19 +136,19 @@ export const WorkbenchView: React.FC = () => {
   }
 
   return (
-    <div className="sms-workbench-root" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-      {/* Docked Forensic Toolstrip Navigation */}
-      <nav className="sms-tabs" aria-label="Forensic investigation tabs">
-        <div className="sms-tabs__container">
+    <div className="sms-workstation-layout">
+      {/* 1. Desktop Vertical Investigation Rail (Visible on >= 1024px) */}
+      <aside className="sms-investigation-rail" aria-label="Forensic Investigation Rail">
+        {/* 4-Tier Forensic Navigation */}
+        <nav className="sms-rail-nav" aria-label="Workstation Navigation">
           {GROUPS.map((group) => (
-            <div key={group.label} className="sms-tabs__group">
-              <span className="sms-tabs__group-label">{group.label}</span>
-              <div className="sms-tabs__list" role="tablist" aria-label={group.label}>
+            <div key={group.label} className="sms-rail-group">
+              <div className="sms-rail-group__title">{group.label}</div>
+              <div className="sms-rail-group__list">
                 {group.tabs.map((tab) => {
                   const Icon = tab.icon;
                   const selected = activeTab === tab.id;
 
-                  // Dynamic contextual badge
                   let countBadge: number | null = null;
                   if (tab.id === 'evidence' && findingsCount > 0) countBadge = findingsCount;
                   if (tab.id === 'journey' && sessionsCount > 0) countBadge = sessionsCount;
@@ -148,24 +159,22 @@ export const WorkbenchView: React.FC = () => {
                       ref={(el) => {
                         tabRefs.current[tab.id] = el;
                       }}
-                      id={`tab-${tab.id}`}
+                      id={`rail-tab-${tab.id}`}
                       type="button"
                       role="tab"
                       aria-selected={selected}
-                      aria-controls={`panel-${tab.id}`}
-                      tabIndex={selected ? 0 : -1}
-                      className={`sms-tab ${selected ? 'is-active' : ''}`}
+                      className={`sms-rail-item ${selected ? 'is-active' : ''}`}
                       onClick={() => setActiveTab(tab.id)}
                       onKeyDown={(e) => onTabKey(e, tab.id)}
                     >
-                      <Icon size={14} className="sms-tab__icon" aria-hidden="true" />
-                      <span className="sms-tab__label">{tab.label}</span>
+                      <Icon size={14} className="sms-rail-item__icon" aria-hidden="true" />
+                      <span className="sms-rail-item__label">{tab.label}</span>
                       {countBadge !== null && (
-                        <span className={`sms-tab__badge ${selected ? 'sms-tab__badge--active' : ''}`}>
+                        <span className={`sms-rail-item__badge ${selected ? 'is-active' : ''}`}>
                           {countBadge}
                         </span>
                       )}
-                      <kbd className="sms-tab__key" aria-hidden="true">
+                      <kbd className="sms-rail-item__key" aria-hidden="true">
                         {tab.key}
                       </kbd>
                     </button>
@@ -174,11 +183,90 @@ export const WorkbenchView: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
-      </nav>
+        </nav>
 
-      <OfflineBanner />
-      <main style={{ flex: 1, minWidth: 0 }}>{content}</main>
+        {/* Bottom Status & Key Hints */}
+        <div className="sms-rail-footer">
+          <div className="sms-rail-engine">
+            <span
+              className={`sms-status-dot ${isUsingFixtures ? 'sms-status-dot--fixture' : 'sms-status-dot--live'}`}
+              aria-hidden="true"
+            />
+            <span className="sms-rail-engine__text">
+              {isUsingFixtures ? 'Demo Fixture' : 'Engine Live · 0.8.0'}
+            </span>
+          </div>
+          <div className="sms-rail-shortcuts">
+            <button
+              type="button"
+              className="sms-rail-kbd-btn"
+              onClick={() => setShowCommandPalette(true)}
+              title="Forensic command palette (⌘K)"
+              aria-label="Open command palette"
+            >
+              <kbd>⌘K</kbd>
+            </button>
+            <button
+              type="button"
+              className="sms-rail-kbd-btn"
+              onClick={() => setShowShortcuts(true)}
+              title="Keyboard shortcuts reference (?)"
+              aria-label="Keyboard shortcuts reference"
+            >
+              <kbd>?</kbd>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* 2. Main Workstation Body */}
+      <div className="sms-workstation-main">
+        {/* Docked Forensic Toolstrip for Screen < 1024px */}
+        <nav className="sms-tabs sms-tabs--mobile" aria-label="Forensic investigation tabs (mobile)">
+          <div className="sms-tabs__container">
+            {GROUPS.map((group) => (
+              <div key={group.label} className="sms-tabs__group">
+                <span className="sms-tabs__group-label">{group.label}</span>
+                <div className="sms-tabs__list" role="tablist" aria-label={group.label}>
+                  {group.tabs.map((tab) => {
+                    const Icon = tab.icon;
+                    const selected = activeTab === tab.id;
+
+                    let countBadge: number | null = null;
+                    if (tab.id === 'evidence' && findingsCount > 0) countBadge = findingsCount;
+                    if (tab.id === 'journey' && sessionsCount > 0) countBadge = sessionsCount;
+
+                    return (
+                      <button
+                        key={tab.id}
+                        id={`tab-${tab.id}`}
+                        type="button"
+                        role="tab"
+                        aria-selected={selected}
+                        aria-controls={`panel-${tab.id}`}
+                        className={`sms-tab ${selected ? 'is-active' : ''}`}
+                        onClick={() => setActiveTab(tab.id)}
+                      >
+                        <Icon size={13} className="sms-tab__icon" aria-hidden="true" />
+                        <span className="sms-tab__label">{tab.label}</span>
+                        {countBadge !== null && (
+                          <span className={`sms-tab__badge ${selected ? 'sms-tab__badge--active' : ''}`}>
+                            {countBadge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </nav>
+
+        <main className="sms-workstation-content" style={{ flex: 1, minWidth: 0 }}>
+          {content}
+        </main>
+      </div>
     </div>
   );
 };
