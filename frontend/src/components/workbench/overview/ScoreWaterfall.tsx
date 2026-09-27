@@ -41,7 +41,13 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture }) => {
             <div className="sms-waterfall-node__content">
               <div className="sms-waterfall-node__desc">
                 <span className="sms-waterfall-node__title">Starting Baseline Posture</span>
-                <span className="sms-muted sms-mono sms-text-xs">Normative 100-point baseline</span>
+                <div className="sms-waterfall-bar-track" aria-hidden="true">
+                  <div
+                    className="sms-waterfall-bar-fill sms-waterfall-bar-fill--base"
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <span className="sms-muted sms-mono sms-text-xs">Normative 100.00-point ceiling</span>
               </div>
               <span className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--base">
                 {starting.toFixed(2)}
@@ -74,6 +80,7 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture }) => {
               const isLast = idx === components.length - 1;
               const penalty = c.penalty ?? 0;
               const title = c.issue_class_label || c.issue_class;
+              const barWidthPct = Math.min(100, Math.max(2, (penalty / starting) * 100));
 
               return (
                 <div key={`${c.issue_class}-${idx}`} className="sms-waterfall-node sms-waterfall-node--deduction">
@@ -91,6 +98,18 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture }) => {
                         />
                         <span className="sms-waterfall-node__title">{title}</span>
                       </div>
+                      
+                      {/* Proportional visual deduction weight bar */}
+                      <div className="sms-waterfall-bar-track" aria-hidden="true" title={`Deduction: -${penalty.toFixed(2)} pts (${barWidthPct.toFixed(1)}% of 100-pt baseline)`}>
+                        <div
+                          className="sms-waterfall-bar-fill"
+                          style={{
+                            width: `${barWidthPct}%`,
+                            backgroundColor: sev ? sev.rule : 'var(--ds-sev-critical-rule)',
+                          }}
+                        />
+                      </div>
+
                       <div className="sms-waterfall-node__sub">
                         {c.recurrence != null && c.recurrence > 0 && (
                           <span className="sms-mono sms-muted">
@@ -102,6 +121,9 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture }) => {
                             · {c.severity}
                           </span>
                         )}
+                        <span className="sms-mono sms-muted" style={{ opacity: 0.75 }}>
+                          · {barWidthPct.toFixed(1)}% weight
+                        </span>
                       </div>
                     </div>
                     <span className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--deduct">
@@ -121,14 +143,42 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture }) => {
             <div className="sms-waterfall-node__content">
               <div className="sms-waterfall-node__desc">
                 <span className="sms-waterfall-node__title sms-waterfall-node__title--final">
-                  Final Posture Score
+                  Final Posture Score ({posture.value || 'UNRATED'})
                 </span>
+                <div className="sms-waterfall-bar-track" aria-hidden="true">
+                  <div
+                    className="sms-waterfall-bar-fill sms-waterfall-bar-fill--final"
+                    style={{
+                      width: `${Math.min(100, Math.max(2, (final / starting) * 100))}%`,
+                      backgroundColor:
+                        posture.value === 'CRITICAL'
+                          ? 'var(--ds-sev-critical-rule)'
+                          : posture.value === 'WEAK'
+                          ? 'var(--ds-sev-high-rule)'
+                          : posture.value === 'ADEQUATE'
+                          ? 'var(--ds-sev-medium-rule)'
+                          : 'var(--ds-sev-low-rule)',
+                    }}
+                  />
+                </div>
                 <span className="sms-muted sms-mono sms-text-xs">
                   {posture.formula_id || 'Deterministic Scoring Engine'}
                 </span>
               </div>
               <div className="sms-waterfall-node__val-group">
-                <span className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--final">
+                <span
+                  className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--final"
+                  style={{
+                    color:
+                      posture.value === 'CRITICAL'
+                        ? 'var(--ds-sev-critical-text)'
+                        : posture.value === 'WEAK'
+                        ? 'var(--ds-sev-high-text)'
+                        : posture.value === 'ADEQUATE'
+                        ? 'var(--ds-sev-medium-text)'
+                        : 'var(--ds-sev-low-text)',
+                  }}
+                >
                   {final.toFixed(2)}
                 </span>
                 <span className="sms-muted sms-text-xs">/ 100</span>

@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
             aria-label="Return to Case Desk"
             title="SecureMailScope Case Desk"
           >
-            <BrandLogo variant="compact" size="sm" />
+            <BrandLogo variant="compact" size="md" />
           </button>
 
           {inWorkbench && activeRun && (

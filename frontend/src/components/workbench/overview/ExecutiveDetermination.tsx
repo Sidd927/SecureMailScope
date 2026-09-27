@@ -198,33 +198,33 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
               {primaryFinding.title.toLowerCase().includes('authentication') ? (
                 <>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">AUTH_EXCHANGE:</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">OBSERVED (CLEARTEXT)</span>
+                    <span className="sms-proof-fact__key">AUTH_ACTIVITY =</span>
+                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">OBSERVED</span>
                   </div>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">TLS_UPGRADE:</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">FALSE (NO CRYPTO)</span>
+                    <span className="sms-proof-fact__key">TLS_TRANSITION =</span>
+                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">FALSE</span>
                   </div>
                 </>
               ) : primaryFinding.title.toLowerCase().includes('rsa') || primaryFinding.title.toLowerCase().includes('sha-1') ? (
                 <>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">RSA_KEY_SIZE:</span>
-                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">1024 BITS (MIN 2048 REQUIRED)</span>
+                    <span className="sms-proof-fact__key">RSA_KEY_SIZE =</span>
+                    <span className="sms-proof-fact__val sms-proof-fact__val--bad">1024 BITS</span>
                   </div>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">SIG_ALGORITHM:</span>
+                    <span className="sms-proof-fact__key">SIG_ALGORITHM =</span>
                     <span className="sms-proof-fact__val sms-proof-fact__val--bad">SHA-1 (DEPRECATED)</span>
                   </div>
                 </>
               ) : primaryFinding.title.toLowerCase().includes('starttls') ? (
                 <>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">SUBJECT_ENDPOINT:</span>
+                    <span className="sms-proof-fact__key">SUBJECT_ENDPOINT =</span>
                     <span className="sms-proof-fact__val sms-proof-fact__val--bad">STARTTLS NOT ADVERTISED</span>
                   </div>
                   <div className="sms-proof-fact">
-                    <span className="sms-proof-fact__key">CONTROL_BASELINE:</span>
+                    <span className="sms-proof-fact__key">CONTROL_BASELINE =</span>
                     <span className="sms-proof-fact__val sms-proof-fact__val--good">STARTTLS ADVERTISED</span>
                   </div>
                 </>
@@ -242,7 +242,7 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
                 onClick={() => onOpenJourney(targetFrame, targetStream)}
                 title="Jump directly to this exact packet frame in the Protocol Journey"
               >
-                Inspect Frame #{targetFrame ?? 1} in Journey <ArrowRight size={13} aria-hidden="true" />
+                Open Frame #{targetFrame ?? 1} in Protocol Journey <ArrowRight size={13} aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -260,10 +260,14 @@ export const ExecutiveDetermination: React.FC<ExecutiveDeterminationProps> = ({
       {/* Case C Honest Observability Notice */}
       {isClean && (
         <div className="sms-determination-hero__clean-notice">
-          <span className="sms-label">Epistemic Observability Boundary</span>
-          <p className="sms-prose" style={{ margin: '4px 0 0 0', fontSize: 'var(--ds-text-13)', color: 'var(--sms-text-secondary)' }}>
-            Passive capture successfully verified TLS 1.3 encrypted transport with zero policy deviations. 
-            Under RFC 8446 specifications, server X.509 certificate exchanges are cryptographically encrypted on the wire and inherently <strong className="sms-mono" style={{ color: 'var(--sms-brand-cyan)' }}>NOT_OBSERVABLE</strong> via passive packet dissection.
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
+            <span className="sms-label">Epistemic Observability Boundary</span>
+            <span className="sms-badge sms-badge--info sms-mono">
+              CERTIFICATE CONTENT: NOT_OBSERVABLE
+            </span>
+          </div>
+          <p className="sms-prose" style={{ margin: '4px 0 0 0', fontSize: 'var(--ds-text-13)', color: 'var(--sms-text-secondary)', lineHeight: 1.5 }}>
+            No certificate fields were observable in this passive capture. Under RFC 8446 specifications, server X.509 certificate handshakes in TLS 1.3 are cryptographically encrypted on the wire. This is an intentional epistemic boundary of passive packet analysis, not an engine error or missing data.
           </p>
         </div>
       )}
