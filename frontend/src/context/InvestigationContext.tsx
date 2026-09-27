@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../api/client';
 import { FIXTURES, type FixtureKey } from '../fixtures';
+
+/**
+ * Verification Mode: Set to true to disable all fixture fallbacks.
+ * In this mode, any failure to reach the real backend immediately surfaces an error,
+ * strictly preventing fixture data from ever entering the state.
+ */
+export const DISABLE_FIXTURE_FALLBACK = true;
+
 import type {
   RunResponse,
   DashboardViewModel,
@@ -167,8 +175,8 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const initialFrame = urlParams.get('frame') ? parseInt(urlParams.get('frame')!, 10) : null;
   const initialModal = urlParams.get('modal');
 
-  const [runs, setRuns] = useState<RunResponse[]>(DEFAULT_FALLBACK_RUNS);
-  const [activeRunId, setActiveRunId] = useState<string | null>(initialRunId || DEFAULT_FALLBACK_RUNS[0].run_id);
+  const [runs, setRuns] = useState<RunResponse[]>(DISABLE_FIXTURE_FALLBACK ? [] : DEFAULT_FALLBACK_RUNS);
+  const [activeRunId, setActiveRunId] = useState<string | null>(initialRunId || (DISABLE_FIXTURE_FALLBACK ? null : DEFAULT_FALLBACK_RUNS[0].run_id));
   const [dashboard, setDashboard] = useState<DashboardViewModel | null>(null);
   const [assessment, setAssessment] = useState<AssessmentResponse | null>(null);
   const [reports, setReports] = useState<ReportItem[]>([]);
@@ -277,10 +285,13 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const activeRun = useMemo(() => {
+    if (!activeRunId) return null;
     const found = runs.find((r) => r.run_id === activeRunId);
     if (found) return found;
-    const fix = Object.values(FIXTURES).find((f) => f.run.run_id === activeRunId);
-    if (fix) return fix.run as unknown as RunResponse;
+    if (!DISABLE_FIXTURE_FALLBACK) {
+      const fix = Object.values(FIXTURES).find((f) => f.run.run_id === activeRunId);
+      if (fix) return fix.run as unknown as RunResponse;
+    }
     // Runs outside the 50-item list come from GET /analyses/{id}; nothing is synthesised.
     if (runDetail?.run_id === activeRunId) return runDetail;
     return null;
@@ -300,12 +311,24 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
         setRunsLoaded(true);
         return resp.items;
       }
+      if (DISABLE_FIXTURE_FALLBACK) {
+        setRuns([]);
+        setRunsFromFixtures(false);
+        setRunsLoaded(true);
+        return [];
+      }
       setRuns(DEFAULT_FALLBACK_RUNS);
       setRunsFromFixtures(true);
       setRunsLoaded(true);
       return DEFAULT_FALLBACK_RUNS;
     } catch (err: any) {
       console.warn('Backend unavailable, using authentic offline PCAP fixtures:', err);
+      if (DISABLE_FIXTURE_FALLBACK) {
+        setRuns([]);
+        setRunsFromFixtures(false);
+        setRunsLoaded(true);
+        throw err;
+      }
       setRuns(DEFAULT_FALLBACK_RUNS);
       setRunsFromFixtures(true);
       setRunsLoaded(true);
@@ -377,6 +400,12 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     } catch (err: any) {
       console.warn('Failed to fetch from backend, checking authentic fixtures for runId:', runId, err);
+      if (DISABLE_FIXTURE_FALLBACK) {
+        setDashboard(null);
+        setInvestigationFromFixtures(false);
+        setError(`REAL-BACKEND FAIL: Backend request failed for runId "${runId}". Fixture fallback is strictly disabled. Error: ${err?.message || err}`);
+        return;
+      }
       // Find matching fixture
       const fixtureKey = (Object.keys(FIXTURES) as FixtureKey[]).find(
         (k) => FIXTURES[k].run.run_id === runId || FIXTURES[k].run.source_filename === runId || runId.includes(k)
@@ -419,8 +448,10 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Initial load
   useEffect(() => {
-    const targetRun = initialRunId || DEFAULT_FALLBACK_RUNS[0].run_id;
-    selectRun(targetRun);
+    const targetRun = initialRunId || (DISABLE_FIXTURE_FALLBACK ? null : DEFAULT_FALLBACK_RUNS[0].run_id);
+    if (targetRun) {
+      selectRun(targetRun);
+    }
     refreshRuns();
   }, [refreshRuns, selectRun, initialRunId]);
 

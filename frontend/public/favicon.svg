@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#0f1e33"/><rect x="0.5" y="0.5" width="31" height="31" rx="5.5" fill="none" stroke="#1e3a5f"/><g transform="translate(6 6) scale(0.8333)" fill="none" stroke="#4c8edb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 22V2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none">
+  <defs>
+    <linearGradient id="sms-logo-accent" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00d2ff" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="sms-shield-bg" x1="18" y1="4" x2="18" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0c1729" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#080e1b" stop-opacity="0.98" />
+    </linearGradient>
+  </defs>
+  <rect width="36" height="36" rx="8" fill="#070b12" />
+  <path d="M 6.5 13.5 C 10.5 8.5 25.5 8.5 29.5 13.5" stroke="url(#sms-logo-accent)" stroke-width="1.25" stroke-dasharray="2 1.5" stroke-opacity="0.45" />
+  <path d="M 18 4.2 L 28.5 8.5 C 28.5 18 24 25.5 18 29.8 C 12 25.5 7.5 18 7.5 8.5 L 18 4.2 Z" fill="url(#sms-shield-bg)" stroke="url(#sms-logo-accent)" stroke-width="1.6" stroke-linejoin="round" />
+  <rect x="11.5" y="12" width="13" height="9" rx="1" fill="#0f1929" stroke="url(#sms-logo-accent)" stroke-width="1.1" />
+  <path d="M 11.8 12.5 L 18 17.2 L 24.2 12.5" stroke="#38bdf8" stroke-width="1.25" />
+  <path d="M 4 19.5 C 6 25 18 29 32 17.5" stroke="url(#sms-logo-accent)" stroke-width="1.5" stroke-linecap="round" />
+  <circle cx="31.2" cy="18" r="1.75" fill="#00d2ff" />
+</svg>

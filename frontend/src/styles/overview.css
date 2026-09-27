@@ -1,0 +1,946 @@
+/**
+ * SecureMailScope — Forensic Investigation Overview Styles (Phase 1C)
+ * 12-Column Spatial Architecture, Executive Hero, Score Waterfall,
+ * Wire Proof Anchors, and Epistemic Observability Boundary.
+ */
+
+/* ==========================================================================
+   1. Spatial Workspace System
+   ========================================================================== */
+.sms-overview-container {
+  width: 100%;
+  max-width: clamp(1360px, 94vw, 1520px);
+  margin: 0 auto;
+  padding: var(--ds-space-16) var(--ds-space-24) var(--ds-space-48);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-20);
+  min-width: 0;
+}
+
+/* 12-Column Responsive Row Primitives */
+.sms-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--ds-space-20);
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .sms-overview-grid {
+    grid-template-columns: 1fr;
+    gap: var(--ds-space-16);
+  }
+}
+
+/* ==========================================================================
+   2. Case Technical Identity Strip (Zone 0)
+   ========================================================================== */
+.sms-case-identity-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ds-space-12);
+  padding-bottom: var(--ds-space-12);
+  border-bottom: 1px solid var(--sms-border-hairline);
+  font-size: var(--ds-text-12);
+  color: var(--sms-text-secondary);
+}
+
+.sms-case-identity-strip__left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ds-space-12);
+  min-width: 0;
+}
+
+.sms-case-identity-strip__filename {
+  font-size: var(--ds-text-14);
+  font-weight: 600;
+  color: var(--sms-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.sms-case-identity-strip__sep {
+  color: var(--sms-text-faint);
+}
+
+.sms-case-identity-strip__right {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-12);
+}
+
+/* ==========================================================================
+   3. Executive Determination Hero (Zone 1A)
+   ========================================================================== */
+.sms-determination-hero {
+  grid-column: span 7;
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-20) var(--ds-space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 1024px) {
+  .sms-determination-hero {
+    grid-column: span 12;
+  }
+}
+
+.sms-determination-hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-16);
+  flex-wrap: wrap;
+}
+
+.sms-determination-hero__band-group {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-10);
+}
+
+.sms-posture-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+  padding: 4px 10px;
+  border: 1px solid;
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-13);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sms-posture-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sms-determination-hero__formula {
+  font-size: var(--ds-text-11);
+  color: var(--sms-text-muted);
+  background: var(--sms-surface-recessed);
+  padding: 2px 6px;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--sms-border-subtle);
+}
+
+.sms-determination-hero__score-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.sms-determination-hero__score-value {
+  font-family: var(--ds-font-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sms-determination-hero__score-max {
+  font-size: var(--ds-text-14);
+  font-weight: 500;
+  color: var(--sms-text-muted);
+}
+
+.sms-determination-hero__headline {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--sms-text-primary);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.sms-determination-hero__anchors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-8);
+}
+
+/* Wire-Level Proof Anchor Box */
+.sms-determination-hero__proof-box {
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-12) var(--ds-space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-10);
+}
+
+.sms-determination-hero__proof-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-12);
+  border-bottom: 1px solid var(--sms-border-subtle);
+  padding-bottom: 6px;
+}
+
+.sms-determination-hero__proof-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ds-space-12);
+}
+
+.sms-determination-hero__proof-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-12);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-12);
+}
+
+.sms-proof-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sms-proof-fact__key {
+  color: var(--sms-text-muted);
+  font-weight: 500;
+}
+
+.sms-proof-fact__val {
+  font-weight: 600;
+}
+
+.sms-proof-fact__val--bad {
+  color: var(--ds-sev-critical-text);
+}
+
+.sms-proof-fact__val--good {
+  color: var(--ds-sev-low-text);
+}
+
+.sms-determination-hero__proof-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+}
+
+.sms-determination-hero__clean-notice {
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-12) var(--ds-space-16);
+}
+
+/* ==========================================================================
+   4. Score Waterfall (Zone 1B)
+   ========================================================================== */
+.sms-score-waterfall {
+  grid-column: span 5;
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-16) var(--ds-space-20);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  min-height: 280px;
+}
+
+@media (max-width: 1024px) {
+  .sms-score-waterfall {
+    grid-column: span 12;
+  }
+}
+
+.sms-score-waterfall__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--ds-space-10);
+  border-bottom: 1px solid var(--sms-border-subtle);
+}
+
+.sms-score-waterfall__tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-8);
+  margin: var(--ds-space-12) 0;
+}
+
+.sms-waterfall-node {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-10);
+  font-size: var(--ds-text-13);
+}
+
+.sms-waterfall-node__spine {
+  width: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+.sms-waterfall-node__branch {
+  font-family: var(--ds-font-mono);
+  color: var(--sms-text-muted);
+  font-size: var(--ds-text-13);
+  line-height: 1;
+}
+
+.sms-waterfall-node__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sms-waterfall-node__dot--start {
+  background: var(--sms-text-secondary);
+}
+
+.sms-waterfall-node__dot--final {
+  background: var(--sms-brand-cyan);
+}
+
+.sms-waterfall-node__line {
+  width: 1px;
+  height: 100%;
+  min-height: 14px;
+  background: var(--sms-border-hairline);
+  margin-top: 2px;
+}
+
+.sms-waterfall-node__content {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ds-space-12);
+  min-width: 0;
+}
+
+.sms-waterfall-node__desc {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sms-waterfall-node__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sms-waterfall-node__title {
+  font-weight: 500;
+  color: var(--sms-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sms-waterfall-node__title--final {
+  font-weight: 600;
+  color: var(--sms-text-primary);
+}
+
+.sms-waterfall-node__sub {
+  font-size: var(--ds-text-11);
+  color: var(--sms-text-muted);
+}
+
+.sms-waterfall-node__val {
+  font-weight: 600;
+  font-feature-settings: "tnum" 1;
+  flex-shrink: 0;
+}
+
+.sms-waterfall-node__val--base {
+  color: var(--sms-text-secondary);
+}
+
+.sms-waterfall-node__val--deduct {
+  color: var(--ds-sev-critical-text);
+}
+
+.sms-waterfall-node__val--final {
+  color: var(--sms-text-primary);
+  font-size: var(--ds-text-16);
+  font-weight: 700;
+}
+
+.sms-waterfall-node__val-group {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.sms-score-waterfall__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--ds-space-10);
+  border-top: 1px solid var(--sms-border-subtle);
+}
+
+/* ==========================================================================
+   5. Investigation Path Signature Motif (Zone 2)
+   ========================================================================== */
+.sms-investigation-path {
+  grid-column: span 12;
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: 8px var(--ds-space-16);
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-16);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.sms-investigation-path__label-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid var(--sms-border-hairline);
+  padding-right: var(--ds-space-12);
+}
+
+.sms-investigation-path__steps {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.sms-path-step {
+  display: flex;
+  align-items: center;
+}
+
+.sms-path-step__arrow {
+  color: var(--sms-text-muted);
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.sms-path-step__node {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-subtle);
+  border-radius: var(--ds-radius-sm);
+  padding: 3px 8px;
+  font-size: var(--ds-text-12);
+  color: var(--sms-text-secondary);
+  white-space: nowrap;
+  transition: all var(--ds-transition-fast);
+}
+
+.sms-path-step__node--btn {
+  cursor: pointer;
+}
+
+.sms-path-step__node--btn:hover {
+  background: var(--sms-surface-elevated);
+  border-color: var(--sms-border-medium);
+  color: var(--sms-text-primary);
+}
+
+.sms-path-step__node--final {
+  border-width: 1px;
+}
+
+.sms-path-step__icon {
+  color: var(--sms-text-muted);
+}
+
+.sms-path-step__tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--sms-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.sms-path-step__val {
+  color: var(--sms-text-primary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   6. Key Findings & Proof Dossier (Zone 3A)
+   ========================================================================== */
+.sms-findings-dossier-column {
+  grid-column: span 8;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-12);
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .sms-findings-dossier-column {
+    grid-column: span 12;
+  }
+}
+
+.sms-finding-dossier {
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-left-width: 3px;
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-10);
+  cursor: pointer;
+  transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast), transform var(--ds-transition-fast);
+  outline: none;
+}
+
+.sms-finding-dossier:hover {
+  background: var(--sms-surface-elevated);
+  border-color: var(--sms-border-medium);
+  transform: translateY(-1px);
+}
+
+.sms-finding-dossier:focus-visible {
+  border-color: var(--sms-brand-cyan);
+  box-shadow: 0 0 0 1px var(--sms-brand-cyan);
+}
+
+.sms-finding-dossier--selected {
+  background: var(--sms-surface-elevated);
+  border-color: var(--sms-border-medium);
+  box-shadow: inset 0 0 0 1px var(--sms-border-medium);
+}
+
+.sms-finding-dossier__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-12);
+}
+
+.sms-finding-dossier__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+  flex-wrap: wrap;
+}
+
+.sms-finding-dossier__penalty {
+  font-size: var(--ds-text-12);
+  font-weight: 600;
+  color: var(--ds-sev-critical-text);
+  background: var(--ds-sev-critical-bg);
+  padding: 2px 6px;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--ds-sev-critical-border);
+}
+
+.sms-finding-dossier__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sms-text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.sms-finding-dossier__conclusion {
+  font-size: var(--ds-text-13);
+  line-height: var(--ds-leading-body);
+  color: var(--sms-text-secondary);
+  margin: 0;
+  max-width: 72ch;
+}
+
+.sms-finding-dossier__wire-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ds-space-10);
+  padding-top: var(--ds-space-8);
+  border-top: 1px solid var(--sms-border-subtle);
+}
+
+.sms-finding-dossier__wire-anchors {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sms-finding-dossier__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Contextual Badges */
+.sms-badge--rule {
+  color: var(--sms-text-primary);
+  background: var(--sms-surface-recessed);
+  border-color: var(--sms-border-hairline);
+}
+
+.sms-badge--standard {
+  color: var(--sms-brand-cyan);
+  background: var(--sms-brand-surface);
+  border-color: var(--sms-brand-border);
+}
+
+/* ==========================================================================
+   7. Contextual Deep Dives Column (Zone 3B)
+   ========================================================================== */
+.sms-context-deep-dives-column {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .sms-context-deep-dives-column {
+    grid-column: span 12;
+  }
+}
+
+.sms-context-card {
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-12);
+}
+
+.sms-context-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-8);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sms-border-subtle);
+}
+
+/* Pairwise Cross-Session Comparison */
+.sms-cs-comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--ds-space-8);
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-subtle);
+  border-radius: var(--ds-radius-sm);
+  padding: var(--ds-space-10);
+}
+
+.sms-cs-comparison__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sms-cs-comparison__vs {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-11);
+  color: var(--sms-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Multi-segment Coverage Bar */
+.sms-coverage-bar {
+  display: flex;
+  height: 8px;
+  border-radius: var(--ds-radius-sm);
+  overflow: hidden;
+  background: var(--sms-surface-recessed);
+}
+
+.sms-coverage-bar__seg {
+  height: 100%;
+  transition: width var(--ds-transition-fast);
+}
+
+.sms-coverage-bar__seg--observed {
+  background: var(--sms-brand-cyan);
+}
+
+.sms-coverage-bar__seg--unknown {
+  background: var(--sms-text-muted);
+}
+
+.sms-coverage-bar__seg--ambiguous {
+  background: var(--ds-sev-medium-rule);
+}
+
+.sms-coverage-bar__seg--not-observable {
+  background: var(--sms-brand-blue);
+}
+
+.sms-coverage-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sms-coverage-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--ds-text-12);
+}
+
+.sms-coverage-legend__label {
+  color: var(--sms-text-secondary);
+  flex: 1;
+}
+
+.sms-coverage-legend__val {
+  color: var(--sms-text-primary);
+}
+
+/* Stream List */
+.sms-stream-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sms-stream-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 8px 36px 1fr auto;
+  align-items: center;
+  gap: var(--ds-space-8);
+  padding: 5px 8px;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  border: none;
+  font-size: var(--ds-text-12);
+  text-align: left;
+  transition: background-color var(--ds-transition-fast);
+}
+
+.sms-stream-row:hover {
+  background: var(--sms-surface-elevated);
+}
+
+.sms-stream-row--active {
+  background: var(--sms-surface-elevated);
+  outline: 1px solid var(--sms-border-medium);
+}
+
+.sms-stream-row__id {
+  color: var(--sms-text-primary);
+  font-weight: 600;
+}
+
+.sms-stream-row__ip {
+  color: var(--sms-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   8. Observability Boundary & Standards (Zone 4)
+   ========================================================================== */
+.sms-observability-boundary {
+  grid-column: span 7;
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-16) var(--ds-space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-12);
+}
+
+@media (max-width: 1024px) {
+  .sms-observability-boundary {
+    grid-column: span 12;
+  }
+}
+
+.sms-observability-boundary__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sms-border-subtle);
+}
+
+.sms-observability-boundary__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sms-text-primary);
+  margin: 0;
+}
+
+.sms-observability-boundary__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-16);
+}
+
+@media (max-width: 768px) {
+  .sms-observability-boundary__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sms-boundary-lane {
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-subtle);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-8);
+}
+
+.sms-boundary-lane__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--ds-text-12);
+  font-weight: 600;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--sms-border-subtle);
+}
+
+.sms-boundary-lane__icon--can {
+  color: var(--ds-sev-low-rule);
+}
+
+.sms-boundary-lane__icon--cannot {
+  color: var(--sms-brand-blue);
+}
+
+.sms-boundary-lane__label {
+  color: var(--sms-text-primary);
+}
+
+.sms-boundary-lane__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--ds-text-12);
+  line-height: 1.45;
+  color: var(--sms-text-secondary);
+}
+
+.sms-boundary-lane__list li strong {
+  color: var(--sms-text-primary);
+}
+
+/* Standards Dossier */
+.sms-standards-dossier {
+  grid-column: span 5;
+  background: var(--sms-surface-panel);
+  border: 1px solid var(--sms-border-hairline);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-16) var(--ds-space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-12);
+}
+
+@media (max-width: 1024px) {
+  .sms-standards-dossier {
+    grid-column: span 12;
+  }
+}
+
+.sms-standards-dossier__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sms-border-subtle);
+}
+
+.sms-standards-dossier__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sms-text-primary);
+  margin: 0;
+}
+
+.sms-standards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sms-standard-item {
+  background: var(--sms-surface-recessed);
+  border: 1px solid var(--sms-border-subtle);
+  border-radius: var(--ds-radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sms-standard-item__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sms-standard-item__name {
+  font-size: var(--ds-text-12);
+  font-weight: 600;
+  color: var(--sms-text-primary);
+}
+
+.sms-standard-item__sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}

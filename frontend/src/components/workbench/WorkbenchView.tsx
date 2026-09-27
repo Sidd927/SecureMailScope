@@ -12,23 +12,43 @@ import { CrossSessionWorkspace } from './crosssession/CrossSessionWorkspace';
 import { ProvenanceGraph } from './provenance/ProvenanceGraph';
 import { ReportExperience } from './report/ReportExperience';
 
-interface TabDef { id: ForensicTab; label: string; icon: React.ElementType; key: string }
+interface TabDef {
+  id: ForensicTab;
+  label: string;
+  icon: React.ElementType;
+  key: string;
+}
 
-const GROUPS: Array<{ label: string; tabs: TabDef[] }> = [
-  { label: 'Analysis', tabs: [
-    { id: 'overview', label: 'Summary', icon: Compass, key: '1' },
-    { id: 'evidence', label: 'Evidence & Findings', icon: Table, key: '2' },
-  ] },
-  { label: 'Technical', tabs: [
-    { id: 'journey', label: 'Protocol Journey', icon: Network, key: '3' },
-    { id: 'certs', label: 'Certificates', icon: KeyRound, key: '4' },
-    { id: 'cross_session', label: 'Cross-Session', icon: Layers, key: '5' },
-    { id: 'provenance', label: 'Provenance', icon: GitBranch, key: '6' },
-  ] },
-  { label: 'Deliverable', tabs: [
-    { id: 'report', label: 'Report', icon: FileText, key: '7' },
-  ] },
+interface TabGroup {
+  label: string;
+  tabs: TabDef[];
+}
+
+const GROUPS: TabGroup[] = [
+  {
+    label: 'Investigation',
+    tabs: [
+      { id: 'overview', label: 'Overview', icon: Compass, key: '1' },
+      { id: 'evidence', label: 'Findings & Evidence', icon: Table, key: '2' },
+    ],
+  },
+  {
+    label: 'Forensic Dissection',
+    tabs: [
+      { id: 'journey', label: 'Protocol Journey', icon: Network, key: '3' },
+      { id: 'certs', label: 'Certificates', icon: KeyRound, key: '4' },
+      { id: 'cross_session', label: 'Cross-Session', icon: Layers, key: '5' },
+      { id: 'provenance', label: 'Traceability & Provenance', icon: GitBranch, key: '6' },
+    ],
+  },
+  {
+    label: 'Deliverable',
+    tabs: [
+      { id: 'report', label: 'Forensic Report', icon: FileText, key: '7' },
+    ],
+  },
 ];
+
 const ALL_TABS = GROUPS.flatMap((g) => g.tabs);
 
 const PANELS: Record<ForensicTab, React.ComponentType> = {
@@ -42,7 +62,18 @@ const PANELS: Record<ForensicTab, React.ComponentType> = {
 };
 
 export const WorkbenchView: React.FC = () => {
-  const { activeRunId, activeRun, dashboard, activeTab, setActiveTab, setActiveView, isLoading, error, selectRun } = useInvestigation();
+  const {
+    activeRunId,
+    activeRun,
+    dashboard,
+    sessions,
+    activeTab,
+    setActiveTab,
+    setActiveView,
+    isLoading,
+    error,
+    selectRun,
+  } = useInvestigation();
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const onTabKey = (e: React.KeyboardEvent, id: ForensicTab) => {
@@ -53,6 +84,9 @@ export const WorkbenchView: React.FC = () => {
     setActiveTab(next.id);
     tabRefs.current[next.id]?.focus();
   };
+
+  const findingsCount = dashboard?.findings?.length || 0;
+  const sessionsCount = sessions?.length || dashboard?.coverage?.sessions_total || 0;
 
   let content: React.ReactNode;
   if (isLoading && !dashboard) {
@@ -75,49 +109,74 @@ export const WorkbenchView: React.FC = () => {
           onRetry={activeRunId ? () => selectRun(activeRunId) : undefined}
         />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button type="button" className="sms-btn" onClick={() => setActiveView('home')}>Back to home</button>
+          <button type="button" className="sms-btn" onClick={() => setActiveView('home')}>
+            Back to Case Desk
+          </button>
         </div>
       </div>
     );
   } else {
     const Panel = PANELS[activeTab];
-    content = <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}><Panel /></div>;
+    content = (
+      <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
+        <Panel />
+      </div>
+    );
   }
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-      <nav className="sms-tabs" aria-label="Investigation sections">
-        {GROUPS.map((group) => (
-          <div key={group.label} className="sms-tabs__group">
-            <span className="sms-label">{group.label}</span>
-            <div className="sms-tabs__list" role="tablist" aria-label={group.label}>
-              {group.tabs.map((tab) => {
-                const Icon = tab.icon;
-                const selected = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    ref={(el) => { tabRefs.current[tab.id] = el; }}
-                    id={`tab-${tab.id}`}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-controls={`panel-${tab.id}`}
-                    tabIndex={selected ? 0 : -1}
-                    className="sms-tab"
-                    onClick={() => setActiveTab(tab.id)}
-                    onKeyDown={(e) => onTabKey(e, tab.id)}
-                  >
-                    <Icon size={14} aria-hidden="true" />
-                    {tab.label}
-                    <span className="sms-tab__key" aria-hidden="true">{tab.key}</span>
-                  </button>
-                );
-              })}
+    <div className="sms-workbench-root" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      {/* Docked Forensic Toolstrip Navigation */}
+      <nav className="sms-tabs" aria-label="Forensic investigation tabs">
+        <div className="sms-tabs__container">
+          {GROUPS.map((group) => (
+            <div key={group.label} className="sms-tabs__group">
+              <span className="sms-tabs__group-label">{group.label}</span>
+              <div className="sms-tabs__list" role="tablist" aria-label={group.label}>
+                {group.tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  const selected = activeTab === tab.id;
+
+                  // Dynamic contextual badge
+                  let countBadge: number | null = null;
+                  if (tab.id === 'evidence' && findingsCount > 0) countBadge = findingsCount;
+                  if (tab.id === 'journey' && sessionsCount > 0) countBadge = sessionsCount;
+
+                  return (
+                    <button
+                      key={tab.id}
+                      ref={(el) => {
+                        tabRefs.current[tab.id] = el;
+                      }}
+                      id={`tab-${tab.id}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      aria-controls={`panel-${tab.id}`}
+                      tabIndex={selected ? 0 : -1}
+                      className={`sms-tab ${selected ? 'is-active' : ''}`}
+                      onClick={() => setActiveTab(tab.id)}
+                      onKeyDown={(e) => onTabKey(e, tab.id)}
+                    >
+                      <Icon size={14} className="sms-tab__icon" aria-hidden="true" />
+                      <span className="sms-tab__label">{tab.label}</span>
+                      {countBadge !== null && (
+                        <span className={`sms-tab__badge ${selected ? 'sms-tab__badge--active' : ''}`}>
+                          {countBadge}
+                        </span>
+                      )}
+                      <kbd className="sms-tab__key" aria-hidden="true">
+                        {tab.key}
+                      </kbd>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </nav>
+
       <OfflineBanner />
       <main style={{ flex: 1, minWidth: 0 }}>{content}</main>
     </div>
