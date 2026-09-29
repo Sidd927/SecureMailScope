@@ -12,7 +12,9 @@ import type {
   SessionListResponse,
 } from './types';
 
-const BASE_URL = '/api/v1';
+// Relative by default (dev proxy / same-origin deployment). VITE_API_BASE_URL lets a
+// production build point at a backend on a different origin (e.g. Vercel -> Render).
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) || '/api/v1';
 
 export class ApiError extends Error {
   code: string;
