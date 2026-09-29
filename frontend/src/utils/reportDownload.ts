@@ -97,19 +97,30 @@ export function reportPdfBytes(doc: ReportDocument, captureName?: string | null)
   return new TextEncoder().encode(pdf);
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function reportHtml(doc: ReportDocument, captureName?: string | null): string {
   const findings = (doc.issue_groups ?? [])
     .filter((group) => group.penalising)
-    .map((group) => `<li><strong>${group.severity || 'INFO'}</strong> ${group.title}</li>`)
+    .map((group) => `<li><strong>${escapeHtml(group.severity || 'INFO')}</strong> ${escapeHtml(group.title)}</li>`)
     .join('');
   const actions = (doc.remediation_summary ?? [])
     .filter((item) => item.recommended_action)
-    .map((item) => `<li>${item.recommended_action}</li>`)
+    .map((item) => `<li>${escapeHtml(item.recommended_action as string)}</li>`)
     .join('');
+  const posture = escapeHtml(doc.score?.band || doc.overall_posture || 'UNRATED');
+  const basis = escapeHtml(doc.score?.basis || '');
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>SecureMailScope report</title></head><body>
 <h1>SecureMailScope forensic assessment</h1>
-<p>${captureName ? `Capture: ${captureName}<br>` : ''}Posture: ${doc.score?.band || doc.overall_posture || 'UNRATED'}${doc.score?.value != null ? ` · ${doc.score.value.toFixed(2)} / 100` : ''}</p>
-<p>${doc.score?.basis || ''}</p>
+<p>${captureName ? `Capture: ${escapeHtml(captureName)}<br>` : ''}Posture: ${posture}${doc.score?.value != null ? ` · ${doc.score.value.toFixed(2)} / 100` : ''}</p>
+<p>${basis}</p>
 <h2>Findings</h2><ul>${findings || '<li>None recorded</li>'}</ul>
 ${actions ? `<h2>Recorded actions</h2><ul>${actions}</ul>` : ''}
 </body></html>`;
