@@ -33,3 +33,13 @@ frontend/dist/
 # Local browser profile used for manual testing
 .chrome-profile/
 .design-references/
+
+# Archify (tt-a1i/archify) dev-tooling skill: vendored copy is machine-local, matching
+# the existing skills-lock.json pattern for third-party skills (not vendored in-repo).
+# Reinstall with a pinned-commit copy or `npx skills add tt-a1i/archify`; see
+# docs/releases/ARCHIFY-INTEGRATION-REPORT.md.
+/.claude/skills/archify/
+# Generated diagrams are reproducible from their candidate.json + the pinned repo
+# revision; keep candidate.json only for diagrams the team wants to preserve, and
+# regenerate the HTML rather than committing working output.
+/.archify/
