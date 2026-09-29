@@ -77,6 +77,16 @@ def create_app(service: Optional[AnalysisService] = None,
     )
     app.state.service = svc
 
+    # CORS is opt-in and off by default: unset SMS_ALLOWED_ORIGINS reproduces today's
+    # behaviour (same-origin only). Set it to deploy the frontend on a different origin
+    # (e.g. Vercel) from this API (e.g. Render). No auth exists on this API (ADR-0011),
+    # so this must be an explicit origin allowlist, never a wildcard.
+    _origins = [o.strip() for o in os.environ.get("SMS_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+    if _origins:
+        from fastapi.middleware.cors import CORSMiddleware
+        app.add_middleware(CORSMiddleware, allow_origins=_origins,
+                           allow_methods=["GET", "POST"], allow_headers=["*"])
+
     # Interrupted runs are swept once, at construction: a run left non-terminal by a
     # killed process must never be observable as COMPLETED (doc 21 §13).
     recovered = svc.recover()

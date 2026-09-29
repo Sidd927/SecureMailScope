@@ -1,0 +1,25 @@
+# Render Blueprint for the SecureMailScope backend.
+# TShark requires Docker (Render's native Python runtime has no apt access) --
+# see docs/deployment/DEPLOYMENT-ARCHITECTURE.md for why.
+#
+# Apply with: Render Dashboard -> New -> Blueprint -> this repository.
+services:
+  - type: web
+    name: securemailscope-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /api/v1/health
+    disk:
+      name: securemailscope-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: SMS_DATA_DIR
+        value: /data
+      - key: SMS_ALLOWED_ORIGINS
+        sync: false   # set to the deployed Vercel frontend URL after it exists
+      # All other SMS_* limits (SMS_MAX_UPLOAD_BYTES, SMS_MAX_ANALYSIS_SECONDS, etc.)
+      # keep their documented defaults unless a deployment-specific reason requires
+      # overriding them -- see README.md "Backend (Phase 8)" for the full list.
