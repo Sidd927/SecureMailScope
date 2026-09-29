@@ -3,9 +3,9 @@
 Passive PCAP cryptographic security posture assessment for email — **SIH26159** (NTRO).
 
 > **Checkout the release, not the default branch.** `main` is deliberately frozen at an early
-> phase (see [Status](#status) below). The released system is the tag **`v0.6.0-phase11`**:
+> phase (see [Status](#status) below). The released system is the tag **`v0.7.0-sih-baseline`**:
 > ```bash
-> git checkout v0.6.0-phase11
+> git checkout v0.7.0-sih-baseline
 > ```
 
 Reads captured SMTP / IMAP / POP3 traffic — including implicit-TLS SMTPS/IMAPS/POP3S — and
@@ -147,6 +147,30 @@ Future frontend development should branch directly from the validated release ta
 git checkout -b frontend/next-feature frontend-v1.0.1
 ```
 
+### Run the full demo (backend + frontend)
+
+The frontend's dev server proxy is fixed to port **8001** (`frontend/vite.config.ts`) —
+this is the port to use, not the `--port 8000` example in [Backend](#backend-phase-8)
+above (that example is for testing the API alone with `curl`, no frontend involved).
+
+Requires: Python ≥ 3.9, Node ≥ 18, **tshark** on `PATH` (`tshark --version`), and the
+backend extras installed (see [Backend](#backend-phase-8)).
+
+**Terminal 1 — backend, port 8001:**
+```bash
+PYTHONPATH=src python3 -m securemailscope.backend --host 127.0.0.1 --port 8001
+```
+
+**Terminal 2 — frontend, port 5173:**
+```bash
+cd frontend && npm ci && npm run dev
+```
+
+Open **http://localhost:5173**. The header shows **Engine Live** (green) when the
+frontend can reach the backend on 8001; it shows **Demo Fixture** (amber) and a
+console warning if it cannot — if you see that, check Terminal 1 is actually bound to
+8001, not 8000.
+
 ## Where to look
 
 | Document | Why |
@@ -167,11 +191,15 @@ git checkout -b frontend/next-feature frontend-v1.0.1
 
 ## Status
 
-**Released: `v0.6.0-phase11`** — the tag to check out, not `main` (below). Nineteen
-standards-bound rules (16 single-session + 3 cross-session) cover TLS version, cipher,
-key exchange, X.509 extraction/expiry/key-strength/signature, forward secrecy, insecure
-configuration, STARTTLS/STLS integrity, and plaintext exposure — each finding cited to an
-RFC or NIST publication, never an invented weight. 1219 tests pass, zero known flakes.
+**Released: `v0.7.0-sih-baseline`** — the tag to check out, not `main` (below). This baseline
+adds the production-grade React/TypeScript forensic workstation frontend (see
+[Forensic Workstation Frontend](#forensic-workstation-frontend)) on top of the engine
+released at `v0.6.0-phase11`. Nineteen standards-bound rules (16 single-session + 3
+cross-session) cover TLS version, cipher, key exchange, X.509 extraction/expiry/key-
+strength/signature, forward secrecy, insecure configuration, STARTTLS/STLS integrity, and
+plaintext exposure — each finding cited to an RFC or NIST publication, never an invented
+weight. 1234 tests pass, zero known flakes (verified at `v0.7.0-sih-baseline`; see
+`docs/releases/SECUREMAILSCOPE-FINAL-SYSTEM-VALIDATION.md` for the full validation record).
 
 Two requirements are honestly **PARTIAL**, not incomplete-for-lack-of-time:
 
@@ -188,5 +216,5 @@ Full reasoning for both: `docs/phase12/01-final-requirements-audit.md`.
 `main` deliberately still points at Phase 3 — every phase from 4 onward lives on its own
 branch, tagged at release. This is a **process choice** (keep `main` as a stable early
 anchor while phases are developed and reviewed on their own branches), not a sign of
-incomplete work; check out `v0.6.0-phase11` for the released system. Known limitations are
+incomplete work; check out `v0.7.0-sih-baseline` for the released system. Known limitations are
 recorded per phase rather than summarised away — start with `ARCHITECTURE_STATUS.md`.

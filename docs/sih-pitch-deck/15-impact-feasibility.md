@@ -56,7 +56,7 @@ This is operational impact, fully supported, and it does not require a single in
 
 ## Feasibility summary for Slide 4
 
-**Built and tested** (1219 tests, 0 failures) · **validated on real vendor traffic** (10 Postfix
+**Built and tested** (1234 tests, 0 failures) · **validated on real vendor traffic** (10 Postfix
 and Dovecot captures, 3 protocols, 4 TLS modes) · **reproducible** (20/20 identical repeat runs) ·
 **fast** (115–320 ms) · **deployable** (runs without network access; 0 third-party Python runtime packages in the analysis core; TShark required as an external binary).
 

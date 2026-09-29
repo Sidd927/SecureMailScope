@@ -378,6 +378,29 @@
   }
 }
 
+@media (max-width: 600px) {
+  .sms-header__top-row {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 52px;
+    row-gap: 8px;
+    padding: 8px 12px;
+  }
+  .sms-header__left,
+  .sms-header__right {
+    justify-self: unset;
+    grid-column: unset;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .sms-header__right {
+    justify-content: flex-end;
+  }
+}
+
 /* ==========================================================================
    Forensic Investigation Workstation Layout (Desktop Rail + Main Area)
    ========================================================================== */

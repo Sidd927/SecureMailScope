@@ -18,7 +18,7 @@ overclaim risk.
 | 16 rules + 3 cross-session rules | 3 | concrete, verifiable, compact |
 | Six evidence states | 3 | second-strongest differentiator, and highly visual |
 | AI bounded (4.0 vs 30-point tier gap) | 3 | title says "AI-Assisted" — must be addressed, and this is the honest framing |
-| 1219 tests, 0 failures | 4 | single strongest "this is real" signal |
+| 1234 tests, 0 failures | 4 | single strongest "this is real" signal |
 | 10 real Postfix/Dovecot captures | 4 | real-world validation, not toy data |
 | TLS 1.3 certificate limitation | 4 | mandatory "risks" pointer; pre-empts the most likely judge challenge |
 | D-11 + A-02 stated honestly | 4 | converts the deck's biggest vulnerability into its strongest credibility signal |

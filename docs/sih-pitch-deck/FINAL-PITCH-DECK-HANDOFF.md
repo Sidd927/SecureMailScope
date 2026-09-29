@@ -105,7 +105,7 @@ Full table with correct alternatives: `DO-NOT-CLAIM.md`.
 
 | Metric | Value |
 |---|---|
-| Automated tests | **1219**, 0 failures, 0 skips (3 independent runs) |
+| Automated tests | **1234**, 0 failures, 0 skips (3 independent runs) |
 | Real validated captures | **10** (Postfix + Dovecot) |
 | Protocols / TLS modes | **3** / **4** |
 | Deterministic rules | **16** · Cross-session rules: **3** |

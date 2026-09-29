@@ -71,6 +71,16 @@ export const CrossSessionWorkspace: React.FC = () => {
         />
       </Panel>
     );
+  } else if (deviations.length === 0 && controlSessions.length === 0) {
+    body = (
+      <Panel>
+        <EmptyState
+          icon={<Layers size={20} aria-hidden="true" />}
+          title="No control endpoint observed"
+          detail="This capture shows traffic from one client only. Cross-session comparison needs a second client talking to the same server, and none was observed, so no divergence can be established."
+        />
+      </Panel>
+    );
   } else {
     const subjectFacts = sideFacts(subjectSessions);
     const controlFacts = sideFacts(controlSessions);

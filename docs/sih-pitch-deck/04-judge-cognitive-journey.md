@@ -45,7 +45,7 @@ Treat it as a compliance checkbox. Do not try to make it clever.
 | | |
 |---|---|
 | **JUDGE QUESTION** | "Does it actually work? What breaks it? Are they aware of their own limits?" |
-| **OUR ANSWER** | 1219 tests; validated on 10 real Postfix/Dovecot captures; 20/20 reproducible demo runs; 115–320 ms per capture; offline. **And**: TLS 1.3 hides certificates, trust can't be validated passively, AI showed no detection value — each named with its mitigation. |
+| **OUR ANSWER** | 1234 tests; validated on 10 real Postfix/Dovecot captures; 20/20 reproducible demo runs; 115–320 ms per capture; offline. **And**: TLS 1.3 hides certificates, trust can't be validated passively, AI showed no detection value — each named with its mitigation. |
 | **EVIDENCE** | test counts, real-corpus results, the two PARTIAL requirements |
 | **VISUAL** | compact results strip + a short risks/mitigations table |
 | **TAKEAWAY** | "They know exactly what their system can and cannot prove — which makes me trust the parts that work." |

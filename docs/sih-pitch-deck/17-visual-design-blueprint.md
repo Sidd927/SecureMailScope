@@ -81,7 +81,7 @@ strip. **Omit:** formula names, ADR numbers, code.
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ TOP: results strip — five large numbers, evenly spaced    │
-│  1219        10          11          <1s        0 of 10  │
+│  1234        10          11          <1s        0 of 10  │
 │  tests    real captures standards   analysis  certs under │
 │                                                TLS 1.3   │
 ├──────────────────────────────────────────────────────────┤

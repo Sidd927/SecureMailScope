@@ -28,7 +28,7 @@ the deck already answers it.
 
 | Challenge | Pre-empted? | Answer |
 |---|---|---|
-| *"1219 tests — what's the coverage?"* | ❌ | **Q&A:** coverage percentage was never measured; we don't claim one. The tests include adversarial cases asserting forbidden inferences cannot occur. |
+| *"1234 tests — what's the coverage?"* | ❌ | **Q&A:** coverage percentage was never measured; we don't claim one. The tests include adversarial cases asserting forbidden inferences cannot occur. |
 | *"10 captures is a small corpus."* | ⚠️ partially | **Q&A:** agreed — two vendors, loopback-generated. Stated as a limitation. The golden corpus adds 25 scenario captures. |
 | *"You can't see certificates at all in your real data?"* | ✅ on slide | Correct, and it's on the slide as a measured result: 0 of 10, because TLS 1.3 encrypts it. Certificate capability is validated on generated TLS 1.2 fixtures, labelled as such. |
 | *"So certificate analysis is untested on real traffic?"* | ✅ on slide | Yes — stated explicitly rather than hidden. |

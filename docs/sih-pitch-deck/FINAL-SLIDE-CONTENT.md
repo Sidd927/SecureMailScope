@@ -153,7 +153,7 @@ A working prototype — and we can name exactly what it cannot prove
 
 **BODY — Feasibility (results strip):**
 
-| **1219** | **10** | **11** | **< 1 s** | **20/20** |
+| **1234** | **10** | **11** | **< 1 s** | **20/20** |
 |---|---|---|---|---|
 | automated tests, 0 failures | real Postfix + Dovecot captures | published standards cited | per-capture analysis (115–320 ms) | identical repeat runs |
 
@@ -170,7 +170,7 @@ A working prototype — and we can name exactly what it cannot prove
 | ML showed **no detection value** on held-out data | 0 unique true detections | ship bounded as prioritisation only; deterministic rules remain the source of truth |
 | tshark is an external dependency | required binary | version-checked at startup, **fails closed** |
 
-**KEY METRIC:** 1219 tests · 0 failures · 0 of 10 certificates visible under TLS 1.3
+**KEY METRIC:** 1234 tests · 0 failures · 0 of 10 certificates visible under TLS 1.3
 
 **VISUAL:** five-number results strip across the top; risk/strategy table beneath.
 

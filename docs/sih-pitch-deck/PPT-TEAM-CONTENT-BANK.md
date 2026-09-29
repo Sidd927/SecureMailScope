@@ -35,7 +35,7 @@ DO NOT USE.**
 
 | Fact | Exact value |
 |---|---|
-| Automated tests | 1219, 0 failures, 0 skips |
+| Automated tests | 1234, 0 failures, 0 skips |
 | Real-vendor captures validated | 10 (Postfix + Dovecot) |
 | Protocols | SMTP, IMAP, POP3 (+ SMTPS/IMAPS/POP3S) |
 | TLS modes covered | 4 |

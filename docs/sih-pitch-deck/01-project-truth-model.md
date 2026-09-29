@@ -96,7 +96,7 @@ generally (Zeek, Arkime).
 
 ## H. What is proven?
 
-- **1219 tests**, 0 failures, 0 skips — run 3× independently in finalization.
+- **1234 tests**, 0 failures, 0 skips — run 3× independently in finalization.
 - **10 real captures** (Postfix + Dovecot, SMTP/IMAP/POP3, 4 TLS modes) score identically before
   and after the Phase-11 certificate work — zero regression, verified against the tag.
 - **Cross-session reasoning demonstrated live** on real multi-session data: a `MEDIUM` finding
