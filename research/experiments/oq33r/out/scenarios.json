@@ -1,0 +1,102 @@
+[
+ {
+  "client_result": "starttls ok; pre-tls caps=['8bitmime', 'chunking', 'dsn', 'enhancedstatuscodes', 'etrn', 'pipelining', 'size', 'smtputf8', 'starttls', 'vrfy']",
+  "expected": "STARTTLS advertised and upgrade completes",
+  "pcap": "postfix_smtp_starttls_upgrade.pcap",
+  "protocol": "smtp",
+  "scenario": "starttls_upgrade",
+  "status": "captured",
+  "tls_mode": "starttls",
+  "vendor": "postfix"
+ },
+ {
+  "client_result": "client declined; advertised=True",
+  "expected": "STARTTLS advertised, client never upgrades",
+  "pcap": "postfix_smtp_client_declines.pcap",
+  "protocol": "smtp",
+  "scenario": "client_declines",
+  "status": "captured",
+  "tls_mode": "starttls",
+  "vendor": "postfix"
+ },
+ {
+  "client_result": "cleartext session; caps=['8bitmime', 'chunking', 'dsn', 'enhancedstatuscodes', 'etrn', 'pipelining', 'size', 'smtputf8', 'starttls', 'vrfy']",
+  "expected": "cleartext dialogue, advertisement present",
+  "pcap": "postfix_smtp_plaintext_session.pcap",
+  "protocol": "smtp",
+  "scenario": "plaintext_session",
+  "status": "captured",
+  "tls_mode": "cleartext",
+  "vendor": "postfix"
+ },
+ {
+  "client_result": "cleartext session; caps=['8bitmime', 'chunking', 'dsn', 'enhancedstatuscodes', 'etrn', 'pipelining', 'size', 'smtputf8', 'vrfy']",
+  "expected": "no STARTTLS advertised; absence must stay AMBIGUOUS",
+  "pcap": "postfix_smtp_no_starttls_offered.pcap",
+  "protocol": "smtp",
+  "scenario": "no_starttls_offered",
+  "status": "captured",
+  "tls_mode": "none",
+  "vendor": "postfix"
+ },
+ {
+  "client_result": "imap starttls ok; pre-tls caps=['AUTH=LOGIN', 'AUTH=PLAIN', 'ENABLE', 'ID', 'IDLE', 'IMAP4REV1']",
+  "expected": "STARTTLS advertised and upgrade completes",
+  "pcap": "dovecot_imap_starttls_upgrade.pcap",
+  "protocol": "imap",
+  "scenario": "starttls_upgrade",
+  "status": "captured",
+  "tls_mode": "starttls",
+  "vendor": "dovecot"
+ },
+ {
+  "client_result": "imap cleartext login; caps=['AUTH=LOGIN', 'AUTH=PLAIN', 'ENABLE', 'ID', 'IDLE', 'IMAP4REV1']",
+  "expected": "cleartext LOGIN",
+  "pcap": "dovecot_imap_plaintext_login.pcap",
+  "protocol": "imap",
+  "scenario": "plaintext_login",
+  "status": "captured",
+  "tls_mode": "cleartext",
+  "vendor": "dovecot"
+ },
+ {
+  "client_result": "pop3 stls ok; capa=['AUTH-RESP-CODE', 'CAPA', 'PIPELINING', 'RESP-CODES', 'SASL', 'STLS']",
+  "expected": "STLS advertised and upgrade completes",
+  "pcap": "dovecot_pop3_stls_upgrade.pcap",
+  "protocol": "pop3",
+  "scenario": "stls_upgrade",
+  "status": "captured",
+  "tls_mode": "starttls",
+  "vendor": "dovecot"
+ },
+ {
+  "client_result": "pop3 cleartext; capa=['AUTH-RESP-CODE', 'CAPA', 'PIPELINING', 'RESP-CODES', 'SASL', 'STLS']",
+  "expected": "cleartext USER/PASS",
+  "pcap": "dovecot_pop3_plaintext_login.pcap",
+  "protocol": "pop3",
+  "scenario": "plaintext_login",
+  "status": "captured",
+  "tls_mode": "cleartext",
+  "vendor": "dovecot"
+ },
+ {
+  "client_result": "imaps implicit TLS login ok",
+  "expected": "implicit TLS; no cleartext capability exchange at all",
+  "pcap": "dovecot_imap_imaps_implicit_tls.pcap",
+  "protocol": "imap",
+  "scenario": "imaps_implicit_tls",
+  "status": "captured",
+  "tls_mode": "implicit",
+  "vendor": "dovecot"
+ },
+ {
+  "client_result": "pop3s implicit TLS login ok",
+  "expected": "implicit TLS; no cleartext capability exchange at all",
+  "pcap": "dovecot_pop3_pop3s_implicit_tls.pcap",
+  "protocol": "pop3",
+  "scenario": "pop3s_implicit_tls",
+  "status": "captured",
+  "tls_mode": "implicit",
+  "vendor": "dovecot"
+ }
+]

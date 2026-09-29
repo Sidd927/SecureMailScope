@@ -8,6 +8,7 @@ from securemailscope.config import Config
 from securemailscope.dissect import TsharkAdapter, DissectStatus
 from securemailscope.evidence import RunStatus
 from securemailscope.ingest import analyze_capture, validate_capture, ValidationResult
+from tests.test_tshark_adapter import MALFORMED_FIXTURE
 
 P = "research/experiments/oq28/pcaps"
 
@@ -135,7 +136,15 @@ def test_missing_file_fails_cleanly():
 
 @needs_tshark
 def test_malformed_capture_fails_not_crashes(tmp_path):
-    p = tmp_path / "junk.pcap"; p.write_bytes(os.urandom(512))
+    """Deterministic input, for the reason recorded on `MALFORMED_FIXTURE`.
+
+    This test drove `os.urandom(512)` through tshark. libwiretap recognises dozens of
+    legacy capture formats with short or loose magic numbers, so random bytes matched
+    one of them often enough to make the test intermittently pass a malformed file as
+    COMPLETED. The same defect was found and fixed in `test_tshark_adapter.py` during
+    Phase 11; this is the second instance of it, and it reuses the same fixed bytes.
+    """
+    p = tmp_path / "junk.pcap"; p.write_bytes(MALFORMED_FIXTURE)
     run, _ = analyze_capture(str(p))
     assert run.status is RunStatus.FAILED
     assert run.dissection_status == DissectStatus.MALFORMED.value

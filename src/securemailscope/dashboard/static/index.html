@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SecureMailScope — Analyst Console</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <div class="brand-block">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="brand-words">
+        <h1><a href="#/" class="brand">SecureMailScope</a></h1>
+        <p class="tagline">Cryptographic security posture assessment · analyst console</p>
+      </div>
+    </div>
+    <nav class="masthead-actions" aria-label="Console">
+      <a class="navlink" id="nav-new" href="#/">Analyses</a>
+      <a class="navlink" id="nav-about" href="#/about">About</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol id="crumbs"></ol>
+  </div>
+</nav>
+
+<!-- The tab row also carries the persistent run actions (export, new analysis) on its
+     right edge, so both are reachable from Overview, Findings and Evidence alike —
+     not gated behind whichever tab happens to be open. -->
+<nav class="tabs" id="run-tabs" hidden aria-label="Analysis views">
+  <div class="wrap tabs-inner">
+    <ul id="tab-list"></ul>
+    <div id="tab-actions" class="tab-actions"></div>
+  </div>
+</nav>
+
+<main id="main" class="wrap" tabindex="-1">
+  <!-- Views render here. Every node is created with createElement and filled with
+       textContent; no markup is ever built from API data (doc 23 section 11). -->
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p id="foot-note">SecureMailScope · passive PCAP analysis · this console displays
+      the canonical assessment and computes no security conclusion of its own.</p>
+  </div>
+</footer>
+
+<script type="module" src="./app.js"></script>
+<noscript>
+  <div class="wrap notice">
+    This console requires JavaScript. The same assessment is available without it:
+    request the HTML or JSON report from the API directly.
+  </div>
+</noscript>
+</body>
+</html>

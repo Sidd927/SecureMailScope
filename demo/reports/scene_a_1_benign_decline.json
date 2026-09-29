@@ -1,0 +1,490 @@
+{
+  "abstentions": [
+    {
+      "frames": [
+        8
+      ],
+      "issue_class": "STARTTLS_BEHAVIOUR_DEVIATION",
+      "protocol": "smtp",
+      "reason": "INSUFFICIENT_CAPTURE",
+      "resolved_by": "re-capture the full session including connection setup and teardown",
+      "rule_id": "CS-STARTTLS-001",
+      "stream_key": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0",
+      "what_could_not_be_concluded": "STARTTLS/STLS advertisement deviation from baseline",
+      "why": "Insufficient comparable history to assess this session."
+    },
+    {
+      "frames": [
+        8
+      ],
+      "issue_class": "STARTTLS_BEHAVIOUR_DEVIATION",
+      "protocol": "smtp",
+      "reason": "INSUFFICIENT_CAPTURE",
+      "resolved_by": "re-capture the full session including connection setup and teardown",
+      "rule_id": "CS-STARTTLS-002",
+      "stream_key": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0",
+      "what_could_not_be_concluded": "STARTTLS/STLS upgrade deviation from baseline",
+      "why": "Insufficient comparable history to assess this session."
+    }
+  ],
+  "ai_enabled": false,
+  "assessment_id": "d2aa0d9898616dfe",
+  "capture_id": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+  "coverage": {
+    "assessed_fraction": 1.0,
+    "completeness_counts": {
+      "COMPLETE": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 5,
+      "UNKNOWN": 3
+    },
+    "observation_fractions": {
+      "OBSERVED": 0.625,
+      "UNKNOWN": 0.375
+    },
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "sessions_abstained": 0,
+    "sessions_assessed": 1,
+    "sessions_total": 1
+  },
+  "generated_at": "2026-09-22T04:49:50Z",
+  "issue_groups": [
+    {
+      "affected_stream_keys": [
+        "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+        },
+        {
+          "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+          "section": "SS3",
+          "standard": "RFC 8314",
+          "text": "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection"
+        }
+      ],
+      "dimension": "PLAINTEXT_EXPOSURE",
+      "fact_kind": "BASE_SECURITY_ISSUE",
+      "finding_count": 1,
+      "issue_class": "NO_TLS_PROTECTION",
+      "penalising": true,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": {
+        "affected_scope": "session 1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0 (smtp)",
+        "citations": [
+          {
+            "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+            "section": "SS3.1",
+            "standard": "NIST SP 800-52r2",
+            "text": "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+          },
+          {
+            "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+            "section": "SS3",
+            "standard": "RFC 8314",
+            "text": "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection"
+          }
+        ],
+        "limitations": [
+          "this recommendation addresses what the capture showed; the service may have other configuration that was not exercised by the captured traffic",
+          "SecureMailScope cannot confirm that a change was applied or effective -- only a later capture can"
+        ],
+        "observed": "A mail session completed without any TLS protection.",
+        "recommended_action": "Require TLS for this service, preferring implicit TLS on the dedicated port, or enforce STARTTLS/STLS for the cleartext port. Rule guidance: Require TLS for this service, preferring implicit TLS on the dedicated ports (RFC 8314) or enforced STARTTLS/STLS.",
+        "verification": "Re-capture and confirm TLS records are present on every session to this service.",
+        "why_it_matters": "The entire session, including message content and any credentials, was carried in cleartext. RFC 8314 declares this obsolete for submission and access."
+      },
+      "severity": "MEDIUM",
+      "title": "Mail session carried no TLS"
+    },
+    {
+      "affected_stream_keys": [
+        "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+      ],
+      "certainty": "UNDETERMINED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2: TLS server configuration guidance"
+        },
+        {
+          "reason": "prohibits negotiating TLS 1.0 and TLS 1.1",
+          "section": "SS4-5",
+          "standard": "RFC 8996 (BCP 195)",
+          "text": "RFC 8996 (BCP 195): TLS 1.0 and TLS 1.1 MUST NOT be used"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "NIST SP 800-57 Part 1 Rev.5: key length guidance"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 9155: SHA-1 must not be used for digital signatures"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "INSECURE_CONFIGURATION",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Insecure protocol configuration"
+    },
+    {
+      "affected_stream_keys": [
+        "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "documents that a man-in-the-middle can strip the SMTP STARTTLS capability",
+          "section": "SS6",
+          "standard": "RFC 3207",
+          "text": "RFC 3207 SS6 (SMTP STARTTLS security considerations)"
+        }
+      ],
+      "dimension": "UPGRADE_INTEGRITY",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "STARTTLS_ADVERTISEMENT",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "STARTTLS/STLS advertisement posture"
+    }
+  ],
+  "limitations": [
+    "passive analysis: conclusions describe what the capture shows, not the server's configuration",
+    "no attacker, intent or attribution is or can be established from a packet capture",
+    "certificate chain, expiry and key strength are not observable for TLS 1.3 or resumed sessions (RFC 8446 SS2, SS2.2)",
+    "absence of a STARTTLS advertisement is ambiguous: stripping and genuine non-support are byte-identical at the application layer",
+    "SecureMailScope cannot confirm that any remediation was applied or effective"
+  ],
+  "model_summary": {
+    "ai_enabled": false,
+    "note": "ML lane disabled; posture computed from deterministic and cross-session evidence only"
+  },
+  "overall_posture": "ADEQUATE",
+  "prioritised": [
+    {
+      "affected_sessions": 1,
+      "affected_stream_keys": [
+        "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+      ],
+      "explanation": "MEDIUM BASE_SECURITY_ISSUE on CONFIRMED evidence across 1 session(s); ranked on actionable 2, certainty 6, fact_kind 5, severity 40, standards_backed 3",
+      "factors": {
+        "actionable": 2.0,
+        "certainty": 6.0,
+        "fact_kind": 5.0,
+        "recurrence": 0.0,
+        "severity": 40.0,
+        "standards_backed": 3.0
+      },
+      "ml_adjustment": 0.0,
+      "priority_score": 56.0,
+      "rank": 1,
+      "representative_finding": {
+        "certainty": "CONFIRMED",
+        "citations": [
+          {
+            "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+            "section": "SS3.1",
+            "standard": "NIST SP 800-52r2",
+            "text": "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+          },
+          {
+            "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+            "section": "SS3",
+            "standard": "RFC 8314",
+            "text": "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection"
+          }
+        ],
+        "conclusion": "The mail session carried no TLS protection.",
+        "contradictions": [],
+        "dimension": "PLAINTEXT_EXPOSURE",
+        "explanation": "No TLS records were observed in this stream, so message and command content travelled in cleartext. This states what was observed. It does not attribute a cause: a session may be unprotected through client choice, server configuration, or interference, and this capture alone cannot distinguish those.",
+        "frames": [
+          8
+        ],
+        "key": {
+          "fact_kind": "BASE_SECURITY_ISSUE",
+          "issue_class": "NO_TLS_PROTECTION",
+          "scope_key": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+        },
+        "limitations": [
+          "The cause of the missing protection is not determined by this rule."
+        ],
+        "ml_signal": null,
+        "observability": "OBSERVABLE",
+        "penalising": true,
+        "remediation": {
+          "affected_scope": "session 1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0 (smtp)",
+          "citations": [
+            {
+              "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+              "section": "SS3.1",
+              "standard": "NIST SP 800-52r2",
+              "text": "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+            },
+            {
+              "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+              "section": "SS3",
+              "standard": "RFC 8314",
+              "text": "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection"
+            }
+          ],
+          "limitations": [
+            "this recommendation addresses what the capture showed; the service may have other configuration that was not exercised by the captured traffic",
+            "SecureMailScope cannot confirm that a change was applied or effective -- only a later capture can"
+          ],
+          "observed": "A mail session completed without any TLS protection.",
+          "recommended_action": "Require TLS for this service, preferring implicit TLS on the dedicated port, or enforce STARTTLS/STLS for the cleartext port. Rule guidance: Require TLS for this service, preferring implicit TLS on the dedicated ports (RFC 8314) or enforced STARTTLS/STLS.",
+          "verification": "Re-capture and confirm TLS records are present on every session to this service.",
+          "why_it_matters": "The entire session, including message content and any credentials, was carried in cleartext. RFC 8314 declares this obsolete for submission and access."
+        },
+        "session": {
+          "capture_id": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+          "protocol": "smtp",
+          "stream_key": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0",
+          "tcp_stream_id": 0
+        },
+        "severity": "MEDIUM",
+        "source_rule_ids": [
+          "SEC-PLAIN-002"
+        ],
+        "sources": [
+          {
+            "detail": "The mail session carried no TLS protection.",
+            "deviation": null,
+            "evidence_refs": [
+              {
+                "basis": "no TLS records in this stream",
+                "evidence_state": "OBSERVED",
+                "field": "tls_transition",
+                "frames": [],
+                "observed_value": "False",
+                "provenance": "observed"
+              },
+              {
+                "basis": "STARTTLS listed in the EHLO capability response",
+                "evidence_state": "OBSERVED",
+                "field": "starttls_advertised",
+                "frames": [
+                  8
+                ],
+                "observed_value": "True",
+                "provenance": "observed"
+              }
+            ],
+            "finding_id": "91691888c5ab1903",
+            "frames": [
+              8
+            ],
+            "lane": "DETERMINISTIC",
+            "relation": "supports",
+            "rule_id": "SEC-PLAIN-002",
+            "severity": "MEDIUM",
+            "standards": [
+              "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection",
+              "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+            ],
+            "status": "OBSERVED_ISSUE",
+            "stream_key": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0"
+          }
+        ],
+        "status": "OBSERVED_ISSUE",
+        "title": "Mail session carried no TLS"
+      }
+    }
+  ],
+  "protocol_posture": [
+    {
+      "abstentions": 2,
+      "dimensions_assessed": [
+        "CRYPTO_CONFIGURATION",
+        "PLAINTEXT_EXPOSURE",
+        "UPGRADE_INTEGRITY"
+      ],
+      "dimensions_not_observable": [],
+      "issue_classes": [
+        "NO_TLS_PROTECTION"
+      ],
+      "protocol": "smtp",
+      "score": {
+        "band": "ADEQUATE",
+        "basis": "100 minus 12.00 across 1 issue group(s) under F2-group-damped",
+        "components": [
+          {
+            "base_weight": 12.0,
+            "explanation": "MEDIUM weight 12 x recurrence multiplier 1.00 for 1 affected session(s)",
+            "issue_class": "NO_TLS_PROTECTION",
+            "penalty": 12.0,
+            "recurrence": 1,
+            "recurrence_multiplier": 1.0,
+            "severity": "MEDIUM"
+          }
+        ],
+        "formula_id": "F2-group-damped",
+        "starting_value": 100.0,
+        "total_penalty": 12.0,
+        "value": 88.0
+      },
+      "sessions": 1
+    }
+  ],
+  "provenance": {
+    "contradictions_recorded": 0,
+    "duplicate_sources_merged": 0,
+    "note": "every severity, status and standard originates in a Phase-4 or Phase-5 rule; the posture engine aggregates and never re-judges",
+    "rule_ids": [
+      "CS-STARTTLS-001",
+      "CS-STARTTLS-002",
+      "SEC-CFG-001",
+      "SEC-PLAIN-002",
+      "SEC-STLS-002"
+    ],
+    "source_counts": {
+      "abstentions": 2,
+      "cross_session_findings": 2,
+      "deterministic_findings": 3,
+      "fused_findings": 3,
+      "ml_results": 0
+    },
+    "versions": {
+      "posture_engine": "0.8.0",
+      "posture_schema": "1.0",
+      "scoring_formula": "F2-group-damped"
+    }
+  },
+  "remediation_summary": [
+    {
+      "affected_scope": "session 1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0:0 (smtp)",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.1 (TLS required to protect transmitted data)"
+        },
+        {
+          "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+          "section": "SS3",
+          "standard": "RFC 8314",
+          "text": "RFC 8314 SS3: cleartext email submission/access is obsolete; TLS is required for credential protection"
+        }
+      ],
+      "limitations": [
+        "this recommendation addresses what the capture showed; the service may have other configuration that was not exercised by the captured traffic",
+        "SecureMailScope cannot confirm that a change was applied or effective -- only a later capture can"
+      ],
+      "observed": "A mail session completed without any TLS protection.",
+      "recommended_action": "Require TLS for this service, preferring implicit TLS on the dedicated port, or enforce STARTTLS/STLS for the cleartext port. Rule guidance: Require TLS for this service, preferring implicit TLS on the dedicated ports (RFC 8314) or enforced STARTTLS/STLS.",
+      "verification": "Re-capture and confirm TLS records are present on every session to this service.",
+      "why_it_matters": "The entire session, including message content and any credentials, was carried in cleartext. RFC 8314 declares this obsolete for submission and access."
+    }
+  ],
+  "risk_summary": {
+    "abstentions": {
+      "affected_sessions": 1,
+      "by_issue_class": {
+        "STARTTLS_BEHAVIOUR_DEVIATION": 2
+      },
+      "by_reason": {
+        "INSUFFICIENT_CAPTURE": 2
+      },
+      "how_to_resolve": {
+        "INSUFFICIENT_CAPTURE": "re-capture the full session including connection setup and teardown"
+      },
+      "total": 2
+    },
+    "affected_sessions": 1,
+    "anomaly_signals": 0,
+    "behavioural_deviations": 0,
+    "by_dimension": {
+      "PLAINTEXT_EXPOSURE": 1
+    },
+    "by_fact_kind": {
+      "BASE_SECURITY_ISSUE": 1,
+      "POSITIVE_EVIDENCE": 2
+    },
+    "by_severity": {
+      "MEDIUM": 1
+    },
+    "highest_severity": "MEDIUM",
+    "issue_groups": 1,
+    "note": "a behavioural deviation is a difference from a baseline, not a vulnerability; an anomaly signal is a prioritisation input and neither asserts nor implies an attack",
+    "positive_evidence": 2
+  },
+  "run_id": "5e3ede6c1edf48ff9e9998f8b90ca123",
+  "score": {
+    "band": "ADEQUATE",
+    "basis": "100 minus 12.00 across 1 issue group(s) under F2-group-damped",
+    "components": [
+      {
+        "base_weight": 12.0,
+        "explanation": "MEDIUM weight 12 x recurrence multiplier 1.00 for 1 affected session(s)",
+        "issue_class": "NO_TLS_PROTECTION",
+        "penalty": 12.0,
+        "recurrence": 1,
+        "recurrence_multiplier": 1.0,
+        "severity": "MEDIUM"
+      }
+    ],
+    "formula_id": "F2-group-damped",
+    "starting_value": 100.0,
+    "total_penalty": 12.0,
+    "value": 88.0
+  },
+  "standards_summary": {
+    "distinct_standards": 4,
+    "note": "every citation originates from a Phase-4/5 rule; the Phase-7 registry adds structure and introduces no new standard",
+    "standards": {
+      "NIST SP 800-52r2": [
+        "SS3.1"
+      ],
+      "RFC 3207": [
+        "SS6"
+      ],
+      "RFC 8314": [
+        "SS3"
+      ],
+      "RFC 8996 (BCP 195)": [
+        "SS4-5"
+      ]
+    },
+    "unmapped_citations": [
+      "NIST SP 800-57 Part 1 Rev.5: key length guidance",
+      "RFC 9155: SHA-1 must not be used for digital signatures"
+    ]
+  },
+  "versions": {
+    "engine": "0.8.0",
+    "schema": "1.0"
+  }
+}

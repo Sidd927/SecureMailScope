@@ -5,15 +5,22 @@ Each uses its own grammar. SMTP speaks numeric response codes, IMAP tagged respo
 with untagged '*' data lines, POP3 '+OK'/'-ERR' indicators -- so these are genuinely
 different parsers behind one interface (Phase-3 §8, §15, §16).
 
-Two tshark behaviours are handled explicitly because they silently break naive matching:
+Three tshark behaviours are handled explicitly because they silently break naive matching:
   - SMTP request commands are TRUNCATED TO 4 CHARACTERS ("STARTTLS" -> "STAR"), so we
     match on the full smtp_command_line and treat the truncated field as a fallback.
   - The multi-line SMTP 250 reply arrives as a LIST; the STARTTLS capability is one of
     the later elements, so capability checks must scan all of them (see pick_all).
+  - When TCP segmentation splits a multi-line 250 reply MID-LINE, tshark's structured
+    output becomes lossy in two distinct ways (OQ-47, docs/research/22): the capability
+    token is cut ("STARTTLS" -> "STARTTL", trailing "S" dropped entirely), and a
+    continuation segment can be parsed as a bogus new response code. Neither is
+    recoverable from the structured fields, so the capability line is re-read from the
+    reassembled application payload -- the same remedy already used for POP3 CAPA.
 """
 from __future__ import annotations
 
-from typing import List, Optional, Sequence
+import re
+from typing import List, Optional, Sequence, Tuple
 
 from securemailscope.dissect.normalize import FrameEvidence
 from securemailscope.evidence.states import EvidenceField
@@ -94,6 +101,94 @@ class SMTPReconstructor(ProtocolSessionReconstructor):
                                          command.split()[0]))
         return events
 
+    #: A capability line in the EHLO response. Anchored and whole-token: a bare mention
+    #: of the word anywhere in a payload must never be read as an advertisement.
+    _CAPABILITY_LINE = re.compile(r"^250[- ]STARTTLS\s*$", re.IGNORECASE)
+
+    #: Client commands that end the capability phase. Payload after one of these is
+    #: message or authentication traffic and is never scanned for capabilities.
+    _PHASE_ENDING = ("STARTTLS", "STAR", "AUTH", "MAIL", "RCPT", "DATA", "QUIT",
+                     "BDAT", "VRFY", "EXPN", "NOOP", "RSET")
+
+    def _capability_window(self, group: StreamGroup) -> Tuple[Optional[int], Optional[int]]:
+        """Frame range of the EHLO response: from the EHLO itself to the next client
+        command. Bounding the scan this tightly is what keeps attacker-controlled
+        message content out of it -- DATA cannot occur inside this window."""
+        start = end = None
+        for frame in group.frames:
+            command = self._command_text(frame)
+            if command is None:
+                continue
+            if start is None:
+                if command.startswith(("EHLO", "HELO")):
+                    start = frame.frame_number
+                continue
+            if command.startswith(self._PHASE_ENDING):
+                end = frame.frame_number
+                break
+        return start, end
+
+    def _reassembled_advertisement(self, group: StreamGroup) -> List[int]:
+        """Frames carrying a STARTTLS capability line in the REASSEMBLED payload.
+
+        tshark's structured parameters lose the capability when a segment boundary falls
+        inside the line, so the server->client bytes of the EHLO response are rejoined
+        by TCP sequence and the capability line is matched against the result. Returns
+        the frames that actually carried the matched bytes, so provenance still points
+        at real packets rather than at a synthetic reassembly.
+        """
+        start, end = self._capability_window(group)
+        if start is None:
+            return []
+
+        chunks: List[Tuple[int, Optional[int], str]] = []
+        seen_seq = set()
+        for frame in group.frames:
+            number = frame.frame_number
+            if number is None or number <= start:
+                continue
+            if end is not None and number >= end:
+                break
+            if group.direction_of(frame) is not Direction.SERVER_TO_CLIENT:
+                continue
+            payload = frame.payload_text
+            if not payload:
+                continue
+            # Retransmissions repeat a sequence number; counting them twice would
+            # duplicate capability text and corrupt the offsets.
+            if frame.tcp_seq is not None:
+                if frame.tcp_seq in seen_seq:
+                    continue
+                seen_seq.add(frame.tcp_seq)
+            chunks.append((number, frame.tcp_seq, payload))
+
+        if not chunks:
+            return []
+        # Order by sequence where tshark gave one, so out-of-order arrival reassembles
+        # correctly; fall back to capture order when it did not.
+        if all(seq is not None for _, seq, _ in chunks):
+            chunks.sort(key=lambda c: c[1])
+
+        spans: List[Tuple[int, int, int]] = []
+        buffer = []
+        offset = 0
+        for number, _, payload in chunks:
+            spans.append((offset, offset + len(payload), number))
+            buffer.append(payload)
+            offset += len(payload)
+        stream = "".join(buffer)
+
+        frames: List[int] = []
+        cursor = 0
+        for line in stream.splitlines(keepends=True):
+            if self._CAPABILITY_LINE.match(line.strip("\r\n")):
+                line_start, line_end = cursor, cursor + len(line)
+                frames.extend(
+                    number for begin, stop, number in spans
+                    if begin < line_end and stop > line_start)
+            cursor += len(line)
+        return sorted(set(frames))
+
     def advertisement_evidence(self, events: Sequence[ProtocolEvent],
                                group: StreamGroup) -> EvidenceField:
         advertised = [e for e in events if e.kind == "starttls_advertised"]
@@ -101,6 +196,18 @@ class SMTPReconstructor(ProtocolSessionReconstructor):
             return EvidenceField.observed(
                 True, "STARTTLS listed in the EHLO capability response",
                 frames=[e.frame_number for e in advertised if e.frame_number])
+        # Structured parameters gave nothing. Before concluding absence -- the most
+        # consequential judgement this system makes -- check whether tshark simply lost
+        # the line to a segment boundary (OQ-47).
+        reassembled = self._reassembled_advertisement(group)
+        if reassembled:
+            return EvidenceField.observed(
+                True,
+                "STARTTLS capability line recovered from the reassembled EHLO response; "
+                "TCP segmentation split the line so tshark's structured parameters "
+                "did not carry it",
+                frames=reassembled)
+
         capability = [e for e in events if e.kind == "capability_response"]
         if capability:
             return EvidenceField.ambiguous(
@@ -156,6 +263,94 @@ class IMAPReconstructor(ProtocolSessionReconstructor):
                     events.append(_event("starttls_rejected", frame, group,
                                          f"tagged {status} for STARTTLS"))
         return events
+
+    #: A capability line in the EHLO response. Anchored and whole-token: a bare mention
+    #: of the word anywhere in a payload must never be read as an advertisement.
+    _CAPABILITY_LINE = re.compile(r"^250[- ]STARTTLS\s*$", re.IGNORECASE)
+
+    #: Client commands that end the capability phase. Payload after one of these is
+    #: message or authentication traffic and is never scanned for capabilities.
+    _PHASE_ENDING = ("STARTTLS", "STAR", "AUTH", "MAIL", "RCPT", "DATA", "QUIT",
+                     "BDAT", "VRFY", "EXPN", "NOOP", "RSET")
+
+    def _capability_window(self, group: StreamGroup) -> Tuple[Optional[int], Optional[int]]:
+        """Frame range of the EHLO response: from the EHLO itself to the next client
+        command. Bounding the scan this tightly is what keeps attacker-controlled
+        message content out of it -- DATA cannot occur inside this window."""
+        start = end = None
+        for frame in group.frames:
+            command = self._command_text(frame)
+            if command is None:
+                continue
+            if start is None:
+                if command.startswith(("EHLO", "HELO")):
+                    start = frame.frame_number
+                continue
+            if command.startswith(self._PHASE_ENDING):
+                end = frame.frame_number
+                break
+        return start, end
+
+    def _reassembled_advertisement(self, group: StreamGroup) -> List[int]:
+        """Frames carrying a STARTTLS capability line in the REASSEMBLED payload.
+
+        tshark's structured parameters lose the capability when a segment boundary falls
+        inside the line, so the server->client bytes of the EHLO response are rejoined
+        by TCP sequence and the capability line is matched against the result. Returns
+        the frames that actually carried the matched bytes, so provenance still points
+        at real packets rather than at a synthetic reassembly.
+        """
+        start, end = self._capability_window(group)
+        if start is None:
+            return []
+
+        chunks: List[Tuple[int, Optional[int], str]] = []
+        seen_seq = set()
+        for frame in group.frames:
+            number = frame.frame_number
+            if number is None or number <= start:
+                continue
+            if end is not None and number >= end:
+                break
+            if group.direction_of(frame) is not Direction.SERVER_TO_CLIENT:
+                continue
+            payload = frame.payload_text
+            if not payload:
+                continue
+            # Retransmissions repeat a sequence number; counting them twice would
+            # duplicate capability text and corrupt the offsets.
+            if frame.tcp_seq is not None:
+                if frame.tcp_seq in seen_seq:
+                    continue
+                seen_seq.add(frame.tcp_seq)
+            chunks.append((number, frame.tcp_seq, payload))
+
+        if not chunks:
+            return []
+        # Order by sequence where tshark gave one, so out-of-order arrival reassembles
+        # correctly; fall back to capture order when it did not.
+        if all(seq is not None for _, seq, _ in chunks):
+            chunks.sort(key=lambda c: c[1])
+
+        spans: List[Tuple[int, int, int]] = []
+        buffer = []
+        offset = 0
+        for number, _, payload in chunks:
+            spans.append((offset, offset + len(payload), number))
+            buffer.append(payload)
+            offset += len(payload)
+        stream = "".join(buffer)
+
+        frames: List[int] = []
+        cursor = 0
+        for line in stream.splitlines(keepends=True):
+            if self._CAPABILITY_LINE.match(line.strip("\r\n")):
+                line_start, line_end = cursor, cursor + len(line)
+                frames.extend(
+                    number for begin, stop, number in spans
+                    if begin < line_end and stop > line_start)
+            cursor += len(line)
+        return sorted(set(frames))
 
     def advertisement_evidence(self, events: Sequence[ProtocolEvent],
                                group: StreamGroup) -> EvidenceField:
@@ -223,6 +418,94 @@ class POP3Reconstructor(ProtocolSessionReconstructor):
                                              "STLS line in CAPA body"))
                         break
         return events
+
+    #: A capability line in the EHLO response. Anchored and whole-token: a bare mention
+    #: of the word anywhere in a payload must never be read as an advertisement.
+    _CAPABILITY_LINE = re.compile(r"^250[- ]STARTTLS\s*$", re.IGNORECASE)
+
+    #: Client commands that end the capability phase. Payload after one of these is
+    #: message or authentication traffic and is never scanned for capabilities.
+    _PHASE_ENDING = ("STARTTLS", "STAR", "AUTH", "MAIL", "RCPT", "DATA", "QUIT",
+                     "BDAT", "VRFY", "EXPN", "NOOP", "RSET")
+
+    def _capability_window(self, group: StreamGroup) -> Tuple[Optional[int], Optional[int]]:
+        """Frame range of the EHLO response: from the EHLO itself to the next client
+        command. Bounding the scan this tightly is what keeps attacker-controlled
+        message content out of it -- DATA cannot occur inside this window."""
+        start = end = None
+        for frame in group.frames:
+            command = self._command_text(frame)
+            if command is None:
+                continue
+            if start is None:
+                if command.startswith(("EHLO", "HELO")):
+                    start = frame.frame_number
+                continue
+            if command.startswith(self._PHASE_ENDING):
+                end = frame.frame_number
+                break
+        return start, end
+
+    def _reassembled_advertisement(self, group: StreamGroup) -> List[int]:
+        """Frames carrying a STARTTLS capability line in the REASSEMBLED payload.
+
+        tshark's structured parameters lose the capability when a segment boundary falls
+        inside the line, so the server->client bytes of the EHLO response are rejoined
+        by TCP sequence and the capability line is matched against the result. Returns
+        the frames that actually carried the matched bytes, so provenance still points
+        at real packets rather than at a synthetic reassembly.
+        """
+        start, end = self._capability_window(group)
+        if start is None:
+            return []
+
+        chunks: List[Tuple[int, Optional[int], str]] = []
+        seen_seq = set()
+        for frame in group.frames:
+            number = frame.frame_number
+            if number is None or number <= start:
+                continue
+            if end is not None and number >= end:
+                break
+            if group.direction_of(frame) is not Direction.SERVER_TO_CLIENT:
+                continue
+            payload = frame.payload_text
+            if not payload:
+                continue
+            # Retransmissions repeat a sequence number; counting them twice would
+            # duplicate capability text and corrupt the offsets.
+            if frame.tcp_seq is not None:
+                if frame.tcp_seq in seen_seq:
+                    continue
+                seen_seq.add(frame.tcp_seq)
+            chunks.append((number, frame.tcp_seq, payload))
+
+        if not chunks:
+            return []
+        # Order by sequence where tshark gave one, so out-of-order arrival reassembles
+        # correctly; fall back to capture order when it did not.
+        if all(seq is not None for _, seq, _ in chunks):
+            chunks.sort(key=lambda c: c[1])
+
+        spans: List[Tuple[int, int, int]] = []
+        buffer = []
+        offset = 0
+        for number, _, payload in chunks:
+            spans.append((offset, offset + len(payload), number))
+            buffer.append(payload)
+            offset += len(payload)
+        stream = "".join(buffer)
+
+        frames: List[int] = []
+        cursor = 0
+        for line in stream.splitlines(keepends=True):
+            if self._CAPABILITY_LINE.match(line.strip("\r\n")):
+                line_start, line_end = cursor, cursor + len(line)
+                frames.extend(
+                    number for begin, stop, number in spans
+                    if begin < line_end and stop > line_start)
+            cursor += len(line)
+        return sorted(set(frames))
 
     def advertisement_evidence(self, events: Sequence[ProtocolEvent],
                                group: StreamGroup) -> EvidenceField:

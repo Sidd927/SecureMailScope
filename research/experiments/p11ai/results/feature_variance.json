@@ -1,0 +1,482 @@
+{
+  "rows": [
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_imap_imaps_implicit_tls.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [
+        "29"
+      ],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_imap_plaintext_login.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_imap_starttls_upgrade.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [
+        "29"
+      ],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_pop3_plaintext_login.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_pop3_pop3s_implicit_tls.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [
+        "29"
+      ],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "dovecot_pop3_stls_upgrade.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [
+        "29"
+      ],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "postfix_smtp_client_declines.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "postfix_smtp_no_starttls_offered.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "postfix_smtp_plaintext_session.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "real_oq33r",
+      "pcap": "postfix_smtp_starttls_upgrade.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [
+        "29"
+      ],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B01_all_upgrade.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B02_legit_decline.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B03_no_support.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B04_strip_with_control.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B05_strip_blind.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B06_strip_command.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B07_failed_upgrade.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B08_config_change.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B09_mixed_legit.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B10_imap_strip_control.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B11_imap_legit.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B12_pop3_strip_control.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B13_pop3_legit.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B14_implicit.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B15_implicit_imaps.pcap",
+      "selected_suite": "0x1302",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genB",
+      "pcap": "B16_legacy_tls.pcap",
+      "selected_suite": "0xc030",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C01_upgrade_smtp.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C02_decline_smtp.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C03_no_support_smtp.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C04_strip_control.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C05_strip_blind.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C06_strip_command.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C07_reject_upgrade.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C08_failed_upgrade.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C09_mixed_legit.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C10_config_change.pcap",
+      "selected_suite": "0x1301",
+      "kex": "TLS1.3-key_share",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C11_imap_strip_control.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C12_imap_upgrade.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C13_pop3_strip_control.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C14_pop3_no_support.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C15_implicit_smtps.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C16_implicit_pop3s.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C17_legacy_tls.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C18_reset_teardown.pcap",
+      "selected_suite": "0xc02f",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "genC",
+      "pcap": "C19_truncated.pcap",
+      "selected_suite": null,
+      "kex": null,
+      "key_share_groups": [],
+      "forward_secret": null,
+      "x509_field_count": 0
+    },
+    {
+      "corpus": "synthetic_tls12_p11",
+      "pcap": "tls12_selfsigned_rsa2048.pcap",
+      "selected_suite": "0xc030",
+      "kex": "ECDHE",
+      "key_share_groups": [],
+      "forward_secret": true,
+      "x509_field_count": 64
+    }
+  ],
+  "variance": {
+    "real_oq33r": {
+      "kex": [
+        "None",
+        "TLS1.3-key_share"
+      ],
+      "forward_secret": [
+        "None",
+        "True"
+      ],
+      "x509_present": [
+        "False"
+      ]
+    },
+    "genB": {
+      "kex": [
+        "ECDHE",
+        "None",
+        "TLS1.3-key_share"
+      ],
+      "forward_secret": [
+        "None",
+        "True"
+      ],
+      "x509_present": [
+        "False"
+      ]
+    },
+    "genC": {
+      "kex": [
+        "ECDHE",
+        "None",
+        "TLS1.3-key_share"
+      ],
+      "forward_secret": [
+        "None",
+        "True"
+      ],
+      "x509_present": [
+        "False"
+      ]
+    },
+    "synthetic_tls12_p11": {
+      "kex": [
+        "ECDHE"
+      ],
+      "forward_secret": [
+        "True"
+      ],
+      "x509_present": [
+        "True"
+      ]
+    }
+  }
+}

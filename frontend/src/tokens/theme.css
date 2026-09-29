@@ -1,0 +1,312 @@
+/**
+ * SecureMailScope — Technical Design System Tokens 4.0
+ * Archival / Forensic Investigation Environment Theme
+ * WCAG-AA Verified Contrast & Exact Epistemic State Semantics
+ * Inspired by Arkime density, Cloudflare hierarchy, VirusTotal pivots & Linear polish
+ */
+
+:root {
+  /* ==========================================================================
+     1. Surface Plane Hierarchy (5-Plane Architecture)
+     ========================================================================== */
+  --sms-surface-ground: #06090f;
+  --sms-surface-canvas: #0b1220;
+  --sms-surface-panel: #101a2b;
+  --sms-surface-elevated: #151d2c;  /* Hover states, active selections, cards */
+  --sms-surface-overlay: #1a2436;   /* Dropdowns, modals, command palettes */
+  --sms-surface-recessed: #05070b;  /* Packet hex, code, raw evidence wells */
+
+  /* Backward Compatibility Mappings */
+  --ds-bg-app: var(--sms-surface-ground);
+  --ds-bg-canvas: var(--sms-surface-canvas);
+  --ds-bg-subtle: var(--sms-surface-panel);
+  --ds-bg-elevated: var(--sms-surface-elevated);
+  --ds-bg-inset: var(--sms-surface-recessed);
+  --ds-bg-hover: var(--sms-surface-elevated);
+
+  /* ==========================================================================
+     2. Hairline Structural Borders
+     ========================================================================== */
+  --sms-border-subtle: rgba(255, 255, 255, 0.06);
+  --sms-border-hairline: rgba(255, 255, 255, 0.10);
+  --sms-border-medium: rgba(255, 255, 255, 0.16);
+  --sms-border-strong: rgba(255, 255, 255, 0.24);
+  --sms-border-focus: #3b82f6;
+
+  /* Backward Compatibility Mappings */
+  --ds-border-subtle: #16202f;
+  --ds-border-light: #1f2b3f;
+  --ds-border-medium: #2b3b55;
+  --ds-border-strong: #3b4e6d;
+  --ds-border-focus: #3b82f6;
+
+  /* ==========================================================================
+     3. Ink & Readability Scale
+     ========================================================================== */
+  --sms-text-primary: #f8fafc;     /* Crisp high-contrast readable white */
+  --sms-text-secondary: #94a3b8;   /* Balanced technical slate */
+  --sms-text-muted: #64748b;       /* Readable secondary metadata (4.5:1+) */
+  --sms-text-faint: #334155;       /* Structural separators, never text */
+  --sms-text-inverse: #070a0f;
+
+  /* Backward Compatibility Mappings */
+  --ds-ink-primary: var(--sms-text-primary);
+  --ds-ink-secondary: var(--sms-text-secondary);
+  --ds-ink-muted: var(--sms-text-muted);
+  --ds-ink-faint: var(--sms-text-faint);
+  --ds-ink-inverse: var(--sms-text-inverse);
+
+  /* ==========================================================================
+     4. Brand Accent (Shield / Orbit / Mail motif)
+     ========================================================================== */
+  --sms-brand-cyan: #22d3ee;
+  --sms-brand-blue: #3b82f6;
+  --sms-brand-purple: #3b82f6;
+  --sms-brand-gradient: radial-gradient(circle at 30% 20%, #22d3ee 0%, #3b82f6 70%);
+  --sms-brand-surface: rgba(0, 210, 255, 0.06);
+  --sms-brand-border: rgba(0, 210, 255, 0.24);
+
+  /* Carbon Legacy Tokens */
+  --ds-carbon: #38bdf8;
+  --ds-carbon-hover: #22d3ee;
+  --ds-carbon-soft: rgba(56, 189, 248, 0.08);
+  --ds-carbon-border: rgba(56, 189, 248, 0.28);
+
+  /* ==========================================================================
+     5. Semantic Severity Tokens (Restrained, Technical)
+     CRITICAL, HIGH, MEDIUM, LOW, INFO
+     ========================================================================== */
+  --ds-sev-critical-text: #f87171;
+  --ds-sev-critical-bg: rgba(239, 68, 68, 0.12);
+  --ds-sev-critical-border: rgba(239, 68, 68, 0.35);
+  --ds-sev-critical-rule: #ef4444;
+
+  --ds-sev-high-text: #fb923c;
+  --ds-sev-high-bg: rgba(249, 115, 22, 0.12);
+  --ds-sev-high-border: rgba(249, 115, 22, 0.35);
+  --ds-sev-high-rule: #f97316;
+
+  --ds-sev-medium-text: #fbbf24;
+  --ds-sev-medium-bg: rgba(245, 158, 11, 0.12);
+  --ds-sev-medium-border: rgba(245, 158, 11, 0.35);
+  --ds-sev-medium-rule: #f59e0b;
+
+  --ds-sev-low-text: #34d399;
+  --ds-sev-low-bg: rgba(16, 185, 129, 0.12);
+  --ds-sev-low-border: rgba(16, 185, 129, 0.35);
+  --ds-sev-low-rule: #10b981;
+
+  --ds-sev-info-text: #60a5fa;
+  --ds-sev-info-bg: rgba(59, 130, 246, 0.12);
+  --ds-sev-info-border: rgba(59, 130, 246, 0.35);
+  --ds-sev-info-rule: #3b82f6;
+
+  /* Hue Families */
+  --ds-crimson: #ef4444;
+  --ds-crimson-soft: rgba(239, 68, 68, 0.10);
+  --ds-crimson-border: rgba(239, 68, 68, 0.28);
+  --ds-crimson-ink: #fca5a5;
+  --ds-crimson-rail: #ef4444;
+
+  --ds-emerald: #10b981;
+  --ds-emerald-soft: rgba(16, 185, 129, 0.10);
+  --ds-emerald-border: rgba(16, 185, 129, 0.28);
+  --ds-emerald-ink: #6ee7b7;
+  --ds-emerald-rail: #10b981;
+
+  --ds-amber: #f59e0b;
+  --ds-amber-soft: rgba(245, 158, 11, 0.10);
+  --ds-amber-border: rgba(245, 158, 11, 0.28);
+  --ds-amber-ink: #fcd34d;
+
+  --ds-cyan: #06b6d4;
+  --ds-cyan-soft: rgba(6, 182, 212, 0.10);
+  --ds-cyan-border: rgba(6, 182, 212, 0.28);
+
+  --ds-indigo: #6366f1;
+  --ds-indigo-soft: rgba(99, 102, 241, 0.10);
+  --ds-indigo-border: rgba(99, 102, 241, 0.28);
+
+  /* ==========================================================================
+     6. Epistemic Evidence State Tokens (DO NOT MERGE WITH SEVERITY)
+     OBSERVED, INFERRED, UNKNOWN, AMBIGUOUS, INCOMPLETE, NOT_OBSERVABLE
+     ========================================================================== */
+  --ds-ev-observed-text: #e2e8f0;
+  --ds-ev-observed-bg: rgba(16, 185, 129, 0.10);
+  --ds-ev-observed-border: rgba(16, 185, 129, 0.30);
+
+  --ds-ev-inferred-text: #c7d2fe;
+  --ds-ev-inferred-bg: rgba(99, 102, 241, 0.10);
+  --ds-ev-inferred-border: rgba(99, 102, 241, 0.30);
+
+  --ds-ev-unknown-text: #94a3b8;
+  --ds-ev-unknown-bg: rgba(100, 116, 139, 0.10);
+  --ds-ev-unknown-border: rgba(100, 116, 139, 0.25);
+
+  --ds-ev-ambiguous-text: #fde68a;
+  --ds-ev-ambiguous-bg: rgba(245, 158, 11, 0.10);
+  --ds-ev-ambiguous-border: rgba(245, 158, 11, 0.30);
+
+  --ds-ev-incomplete-text: #fed7aa;
+  --ds-ev-incomplete-bg: rgba(249, 115, 22, 0.10);
+  --ds-ev-incomplete-border: rgba(249, 115, 22, 0.30);
+
+  /* NOT_OBSERVABLE: Outside passive visibility. NEVER red, NEVER treated as vulnerability */
+  --ds-ev-not-observable-text: #94a3b8;
+  --ds-ev-not-observable-bg: #090e16;
+  --ds-ev-not-observable-border: #1e293b;
+
+  /* ==========================================================================
+     7. Posture Band (PostureBand enum)
+     STRONG, ADEQUATE, WEAK, CRITICAL, INSUFFICIENT_EVIDENCE
+     ========================================================================== */
+  --ds-posture-strong-text: #34d399;
+  --ds-posture-strong-bg: rgba(16, 185, 129, 0.12);
+  --ds-posture-strong-rule: #10b981;
+
+  --ds-posture-adequate-text: #93c5fd;
+  --ds-posture-adequate-bg: rgba(59, 130, 246, 0.12);
+  --ds-posture-adequate-rule: #3b82f6;
+
+  --ds-posture-weak-text: #fbbf24;
+  --ds-posture-weak-bg: rgba(245, 158, 11, 0.12);
+  --ds-posture-weak-rule: #f59e0b;
+
+  --ds-posture-critical-text: #f87171;
+  --ds-posture-critical-bg: rgba(239, 68, 68, 0.14);
+  --ds-posture-critical-rule: #ef4444;
+
+  --ds-posture-insufficient-text: #94a3b8;
+  --ds-posture-insufficient-bg: rgba(100, 116, 139, 0.10);
+  --ds-posture-insufficient-rule: #64748b;
+
+  /* Job Lifecycle */
+  --ds-job-created-text: var(--ds-ink-muted);
+  --ds-job-created-bg: var(--ds-bg-subtle);
+  --ds-job-validating-text: var(--ds-sev-info-text);
+  --ds-job-validating-bg: var(--ds-sev-info-bg);
+  --ds-job-queued-text: var(--ds-sev-info-text);
+  --ds-job-queued-bg: var(--ds-sev-info-bg);
+  --ds-job-running-text: var(--ds-sev-info-text);
+  --ds-job-running-bg: var(--ds-sev-info-bg);
+  --ds-job-finalizing-text: var(--ds-sev-info-text);
+  --ds-job-finalizing-bg: var(--ds-sev-info-bg);
+  --ds-job-completed-text: var(--ds-emerald-ink);
+  --ds-job-completed-bg: var(--ds-emerald-soft);
+  --ds-job-failed-text: var(--ds-crimson-ink);
+  --ds-job-failed-bg: var(--ds-crimson-soft);
+  --ds-job-cancelled-text: var(--ds-ink-muted);
+  --ds-job-cancelled-bg: var(--ds-bg-subtle);
+  --ds-job-recovery-required-text: var(--ds-amber-ink);
+  --ds-job-recovery-required-bg: var(--ds-amber-soft);
+
+  /* Finding Status */
+  --ds-finding-observed-issue-text: var(--ds-crimson-ink);
+  --ds-finding-observed-issue-bg: var(--ds-crimson-soft);
+  --ds-finding-observed-issue-border: var(--ds-crimson-border);
+  --ds-finding-compliant-text: var(--ds-emerald-ink);
+  --ds-finding-compliant-bg: var(--ds-emerald-soft);
+  --ds-finding-compliant-border: var(--ds-emerald-border);
+  --ds-finding-informational-text: var(--ds-ink-secondary);
+  --ds-finding-informational-bg: var(--ds-bg-subtle);
+  --ds-finding-informational-border: var(--ds-border-light);
+  --ds-finding-ambiguous-text: var(--ds-ev-ambiguous-text);
+  --ds-finding-ambiguous-bg: var(--ds-ev-ambiguous-bg);
+  --ds-finding-ambiguous-border: var(--ds-ev-ambiguous-border);
+  --ds-finding-insufficient-evidence-text: var(--ds-ev-unknown-text);
+  --ds-finding-insufficient-evidence-bg: var(--ds-ev-unknown-bg);
+  --ds-finding-insufficient-evidence-border: var(--ds-ev-unknown-border);
+  --ds-finding-not-observable-text: var(--ds-ev-not-observable-text);
+  --ds-finding-not-observable-bg: var(--ds-ev-not-observable-bg);
+  --ds-finding-not-observable-border: var(--ds-ev-not-observable-border);
+
+  /* Certainty */
+  --ds-certainty-confirmed-text: var(--ds-ev-observed-text);
+  --ds-certainty-confirmed-bg: var(--ds-ev-observed-bg);
+  --ds-certainty-confirmed-border: var(--ds-ev-observed-border);
+  --ds-certainty-probable-text: var(--ds-ev-inferred-text);
+  --ds-certainty-probable-bg: var(--ds-ev-inferred-bg);
+  --ds-certainty-probable-border: var(--ds-ev-inferred-border);
+  --ds-certainty-uncertain-text: var(--ds-ev-ambiguous-text);
+  --ds-certainty-uncertain-bg: var(--ds-ev-ambiguous-bg);
+  --ds-certainty-uncertain-border: var(--ds-ev-ambiguous-border);
+  --ds-certainty-undetermined-text: var(--ds-ev-unknown-text);
+  --ds-certainty-undetermined-bg: var(--ds-ev-unknown-bg);
+  --ds-certainty-undetermined-border: var(--ds-ev-unknown-border);
+
+  /* ==========================================================================
+     8. Spacing Scale
+     ========================================================================== */
+  --ds-space-2: 2px;
+  --ds-space-4: 4px;
+  --ds-space-8: 8px;
+  --ds-space-12: 12px;
+  --ds-space-16: 16px;
+  --ds-space-20: 20px;
+  --ds-space-24: 24px;
+  --ds-space-32: 32px;
+  --ds-space-40: 40px;
+  --ds-space-48: 48px;
+  --ds-space-64: 64px;
+
+  /* ==========================================================================
+     9. Typography Scale
+     ========================================================================== */
+  --ds-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --ds-font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --ds-text-11: 0.6875rem; /* Overlines, uppercase section tags */
+  --ds-text-12: 0.75rem;   /* Badges, frame numbers, metadata */
+  --ds-text-13: 0.8125rem; /* Primary data rows, table cells */
+  --ds-text-14: 0.875rem;  /* Body, inputs, button labels */
+  --ds-text-16: 1rem;      /* Subtitles, elevated callouts */
+  --ds-text-20: 1.25rem;   /* Section headers */
+  --ds-text-24: 1.5rem;    /* Screen page titles */
+  --ds-text-32: 2rem;      /* Display score callout */
+
+  --ds-leading-tight: 1.2;
+  --ds-leading-body: 1.5;
+  --ds-leading-evidence: 1.6;
+
+  /* ==========================================================================
+     10. Border Radii & Elevation
+     ========================================================================== */
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 10px;
+  --ds-radius-lg: 12px;
+  --ds-radius-xl: 14px;
+
+  --ds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --ds-shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --ds-shadow-modal: 0 20px 48px rgba(0, 0, 0, 0.75), 0 4px 12px rgba(0, 0, 0, 0.45);
+  --ds-scrim: rgba(4, 7, 12, 0.82);
+
+  /* Motion */
+  --ds-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-duration-fast: 120ms;
+  --ds-duration-base: 200ms;
+  --ds-duration-slow: 300ms;
+  --ds-transition-fast: var(--ds-duration-fast) var(--ds-ease-out);
+  --ds-transition-base: var(--ds-duration-base) var(--ds-ease-out);
+  --ds-transition-slow: var(--ds-duration-slow) var(--ds-ease-out);
+}
+
+@keyframes sms-skeleton-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+
+.ds-skeleton {
+  background-color: var(--ds-bg-subtle);
+  border-radius: var(--ds-radius-md);
+  animation: sms-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

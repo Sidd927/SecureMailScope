@@ -26,13 +26,17 @@ def client_hello(sni: str = "mail.example.org") -> bytes:
     hs = b"\x01" + len(body).to_bytes(3,"big") + body
     return b"\x16\x03\x01" + len(hs).to_bytes(2,"big") + hs
 
-def server_hello(tls13: bool = True) -> bytes:
+def server_hello(tls13: bool = True, legacy_version: bytes = b"\x03\x03",
+                 cipher: bytes = None) -> bytes:
+    """ServerHello. For TLS<1.3, legacy_version carries the negotiated version and no
+    supported_versions extension is sent (RFC 8446 4.2.1)."""
     ext = b"\x00\x2b\x00\x02\x03\x04" if tls13 else b""
-    body = (b"\x03\x03" + b"\xBB"*32 + b"\x00"
-            + (b"\x13\x01" if tls13 else b"\xc0\x2f") + b"\x00"
+    suite = cipher if cipher is not None else (b"\x13\x01" if tls13 else b"\xc0\x2f")
+    body = (legacy_version + b"\xBB"*32 + b"\x00"
+            + suite + b"\x00"
             + len(ext).to_bytes(2,"big") + ext)
     hs = b"\x02" + len(body).to_bytes(3,"big") + body
-    return b"\x16\x03\x03" + len(hs).to_bytes(2,"big") + hs
+    return b"\x16" + legacy_version + len(hs).to_bytes(2,"big") + hs
 
 def app_data(n: int = 220) -> bytes:
     return b"\x17\x03\x03" + n.to_bytes(2,"big") + bytes((i*7) & 0xFF for i in range(n))
@@ -42,6 +46,14 @@ def alert_handshake_failure() -> bytes:
 
 
 # ------------------------------------------------------------------ TCP stream
+#: Pinned link-layer addresses. A bare Ether() takes the SOURCE MAC from the host's
+#: network interface, which made generated captures differ per machine and per session
+#: -- the golden hashes were not reproducible off this host. Pinning both addresses
+#: makes corpus generation fully deterministic.
+CLIENT_MAC = "02:00:00:00:00:01"
+SERVER_MAC = "02:00:00:00:00:02"
+
+
 class Stream:
     """Builds a real TCP conversation with correct seq/ack bookkeeping."""
     def __init__(self, cip, sip, cport, sport, t0=0.0):
@@ -56,7 +68,7 @@ class Stream:
         self.pkts.append(pkt)
 
     def _c(self, flags, payload=b""):
-        p = (Ether()/IP(src=self.cip, dst=self.sip)
+        p = (Ether(src=CLIENT_MAC, dst=SERVER_MAC)/IP(src=self.cip, dst=self.sip)
              / TCP(sport=self.cport, dport=self.sport, flags=flags,
                    seq=self.cseq, ack=self.sseq))
         if payload:
@@ -64,7 +76,7 @@ class Stream:
         return p
 
     def _s(self, flags, payload=b""):
-        p = (Ether()/IP(src=self.sip, dst=self.cip)
+        p = (Ether(src=SERVER_MAC, dst=CLIENT_MAC)/IP(src=self.sip, dst=self.cip)
              / TCP(sport=self.sport, dport=self.cport, flags=flags,
                    seq=self.sseq, ack=self.cseq))
         if payload:
@@ -106,10 +118,10 @@ class Stream:
         """Emit segment B before segment A (correct seqs, wrong wire order)."""
         seq_a = self.sseq
         seq_b = self.sseq + len(a)
-        pb = (Ether()/IP(src=self.sip, dst=self.cip)
+        pb = (Ether(src=SERVER_MAC, dst=CLIENT_MAC)/IP(src=self.sip, dst=self.cip)
               / TCP(sport=self.sport, dport=self.cport, flags="PA", seq=seq_b, ack=self.cseq)/Raw(load=b))
         self._emit(pb)
-        pa = (Ether()/IP(src=self.sip, dst=self.cip)
+        pa = (Ether(src=SERVER_MAC, dst=CLIENT_MAC)/IP(src=self.sip, dst=self.cip)
               / TCP(sport=self.sport, dport=self.cport, flags="PA", seq=seq_a, ack=self.cseq)/Raw(load=a))
         self._emit(pa)
         self.sseq = seq_b + len(b)
@@ -182,6 +194,18 @@ def build(kind, proto="smtp", cip="10.0.0.5", sip="10.0.0.80", cport=40001,
         s.s2c(CAPS_WITH[proto], mss=mss); s.c2s(STCMD[proto]); s.s2c(STOK[proto])
         s.c2s(client_hello()); s.s2c(alert_handshake_failure()); s.fin()
         return s.pkts, "FAILED_UPGRADE"
+
+    if kind.startswith("legacy_tls"):
+        # Successful STARTTLS upgrade that negotiates a DEPRECATED TLS version, so the
+        # Phase-4 RFC 8996 / NIST SP 800-52r2 rules have real evidence to evaluate.
+        ver = {"legacy_tls10": b"\x03\x01", "legacy_tls11": b"\x03\x02",
+               "legacy_tls12": b"\x03\x03"}[kind]
+        s.s2c(CAPS_WITH[proto], mss=mss); s.c2s(STCMD[proto]); s.s2c(STOK[proto])
+        s.c2s(client_hello())
+        s.s2c(server_hello(tls13=False, legacy_version=ver))
+        s.s2c(app_data()); s.fin()
+        return s.pkts, {"legacy_tls10": "LEGIT_TLS10", "legacy_tls11": "LEGIT_TLS11",
+                        "legacy_tls12": "LEGIT_TLS12"}[kind]
 
     if kind == "implicit_tls":
         # Implicit TLS (SMTPS/IMAPS/POP3S): the connection opens directly into TLS.
@@ -287,6 +311,12 @@ def write_corpus(outdir: str):
         manifest.append({"case": f"T_{nm}_implicit", "pcap": os.path.basename(path),
                          "packets": len(pkts), "sha256_16": h, "streams": truth})
 
+
+    # Deprecated/current TLS version corpus for Phase-4 version rules. Appended LAST so
+    # no existing capture's client-port sequence (and therefore hash) is perturbed.
+    for kind, nm in (("legacy_tls10","T_TLS10"), ("legacy_tls11","T_TLS11"),
+                     ("legacy_tls12","T_TLS12")):
+        add(nm, [(kind,"smtp",C,S)]*4)
 
     with open(os.path.join(outdir,"ground_truth.json"),"w") as f:
         json.dump(manifest, f, indent=2)

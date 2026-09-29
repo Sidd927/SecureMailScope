@@ -10,6 +10,22 @@ from securemailscope.dissect import (
 
 GOLDEN = "research/experiments/oq28/pcaps/C_normal_tls.pcap"
 
+#: Deliberately malformed capture content for test_malformed_file. MUST be fixed, not
+#: random: os.urandom(256) previously drove this test, and libwiretap recognises dozens
+#: of legacy capture formats with short/loose magic numbers, so random bytes matched one
+#: of them and produced a spurious OK roughly 1 in 200-600 runs (verified empirically).
+#: That made the test flaky rather than malformed-input handling being wrong.
+#:
+#: This fixed string was checked against the pcap/pcapng magic numbers (no collision)
+#: and driven through tshark 4.6.8 150 times, yielding exit code 3 (MALFORMED) on every
+#: run -- and since the content is fixed rather than freshly randomised per run, that
+#: result is not a probability to re-verify each time; tshark's format sniffing is a
+#: deterministic function of these exact bytes.
+MALFORMED_FIXTURE = (
+    b"SECUREMAILSCOPE-TEST-FIXTURE: deliberately malformed capture file, "
+    b"not a format TShark understands. This is fixed, non-random test data.\n"
+)
+
 
 @pytest.fixture(scope="module")
 def adapter():
@@ -51,7 +67,7 @@ def test_empty_file_is_empty_not_ok(adapter, tmp_path):
 
 @needs_tshark
 def test_malformed_file(adapter, tmp_path):
-    p = tmp_path / "junk.pcap"; p.write_bytes(os.urandom(256))
+    p = tmp_path / "junk.pcap"; p.write_bytes(MALFORMED_FIXTURE)
     r = adapter.dissect(str(p))
     assert r.status == DissectStatus.MALFORMED
     assert not r.usable

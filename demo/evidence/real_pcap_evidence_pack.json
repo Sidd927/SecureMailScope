@@ -1,0 +1,410 @@
+[
+  {
+    "capture": "dovecot_imap_imaps_implicit_tls.pcap",
+    "real_world": true,
+    "capture_sha256": "d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "imap": 1
+    },
+    "observation_counts": {
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 4
+    },
+    "overall_posture": "STRONG",
+    "score_value": 100.0,
+    "issue_classes": [
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "IMPLICIT_TLS_SESSION",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM",
+      "TLS_HANDSHAKE_EVIDENCE"
+    ],
+    "penalising_classes": [],
+    "abstention_reasons": [
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "7575e6bf983af6ae"
+  },
+  {
+    "capture": "dovecot_imap_plaintext_login.pcap",
+    "real_world": true,
+    "capture_sha256": "98a6d6dd94471bb4315fbd2d09d3f19707eca6458074545e47979568dc738560",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "imap": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 6,
+      "UNKNOWN": 2
+    },
+    "overall_posture": "WEAK",
+    "score_value": 60.0,
+    "issue_classes": [
+      "INSECURE_CONFIGURATION",
+      "NO_TLS_PROTECTION",
+      "PLAINTEXT_AUTH_EXPOSURE",
+      "STARTTLS_ADVERTISEMENT"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION",
+      "PLAINTEXT_AUTH_EXPOSURE"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE"
+    ],
+    "assessment_id": "bf6ee4aed1b1f0b4"
+  },
+  {
+    "capture": "dovecot_imap_starttls_upgrade.pcap",
+    "real_world": true,
+    "capture_sha256": "40ea40241d28c68378a0e58bc269e9a738bb56adc472f0c74313f7be8bb467b9",
+    "sessions_total": 2,
+    "sessions_assessed": 2,
+    "protocol_counts": {
+      "imap": 2
+    },
+    "observation_counts": {
+      "OBSERVED": 12,
+      "UNKNOWN": 4
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 88.0,
+    "issue_classes": [
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM",
+      "NO_TLS_PROTECTION",
+      "STARTTLS_UPGRADE_FAILURE",
+      "TLS_HANDSHAKE_EVIDENCE"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "567043055f57cfd4"
+  },
+  {
+    "capture": "dovecot_pop3_plaintext_login.pcap",
+    "real_world": true,
+    "capture_sha256": "2fef26f8bf34a0c2df28a957cb6de2fb5e0bd60788bfc8a604e8ef4648662285",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "pop3": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 5,
+      "UNKNOWN": 3
+    },
+    "overall_posture": "WEAK",
+    "score_value": 60.0,
+    "issue_classes": [
+      "INSECURE_CONFIGURATION",
+      "NO_TLS_PROTECTION",
+      "PLAINTEXT_AUTH_EXPOSURE",
+      "STARTTLS_ADVERTISEMENT"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION",
+      "PLAINTEXT_AUTH_EXPOSURE"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE"
+    ],
+    "assessment_id": "82e9e996f92257ee"
+  },
+  {
+    "capture": "dovecot_pop3_pop3s_implicit_tls.pcap",
+    "real_world": true,
+    "capture_sha256": "7cc4f7c97ba626668c834f4e168134394de212f5fd8eaaf25702c553380e4368",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "pop3": 1
+    },
+    "observation_counts": {
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 4
+    },
+    "overall_posture": "STRONG",
+    "score_value": 100.0,
+    "issue_classes": [
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "IMPLICIT_TLS_SESSION",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM",
+      "TLS_HANDSHAKE_EVIDENCE"
+    ],
+    "penalising_classes": [],
+    "abstention_reasons": [
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "82245994f3bba015"
+  },
+  {
+    "capture": "dovecot_pop3_stls_upgrade.pcap",
+    "real_world": true,
+    "capture_sha256": "0de89766cc83d39964ab9777f1f64a22c8643c04710fa9fe19816af635e789b2",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "pop3": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 8
+    },
+    "overall_posture": "STRONG",
+    "score_value": 100.0,
+    "issue_classes": [
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM",
+      "STARTTLS_UPGRADE_FAILURE",
+      "TLS_HANDSHAKE_EVIDENCE"
+    ],
+    "penalising_classes": [],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "52851e8af215a00b"
+  },
+  {
+    "capture": "postfix_smtp_client_declines.pcap",
+    "real_world": true,
+    "capture_sha256": "1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 5,
+      "UNKNOWN": 3
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 88.0,
+    "issue_classes": [
+      "INSECURE_CONFIGURATION",
+      "NO_TLS_PROTECTION",
+      "STARTTLS_ADVERTISEMENT"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE"
+    ],
+    "assessment_id": "d2aa0d9898616dfe"
+  },
+  {
+    "capture": "postfix_smtp_no_starttls_offered.pcap",
+    "real_world": true,
+    "capture_sha256": "eacbc065c3427acf406ec8f2059ded8b6e77162a60a3c1497b8fbd805a941e20",
+    "sessions_total": 2,
+    "sessions_assessed": 2,
+    "protocol_counts": {
+      "smtp": 2
+    },
+    "observation_counts": {
+      "AMBIGUOUS": 1,
+      "OBSERVED": 8,
+      "UNKNOWN": 7
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 85.0,
+    "issue_classes": [
+      "INSECURE_CONFIGURATION",
+      "NO_TLS_PROTECTION"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION"
+    ],
+    "abstention_reasons": [
+      "AMBIGUOUS_EVIDENCE",
+      "INSUFFICIENT_CAPTURE"
+    ],
+    "assessment_id": "0fb7067846c4cd02"
+  },
+  {
+    "capture": "postfix_smtp_plaintext_session.pcap",
+    "real_world": true,
+    "capture_sha256": "5223798d5c5bcad85672c093482a3c4eda1b325802231958f5a0fb99081ba48e",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "observation_counts": {
+      "OBSERVED": 5,
+      "UNKNOWN": 3
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 88.0,
+    "issue_classes": [
+      "INSECURE_CONFIGURATION",
+      "NO_TLS_PROTECTION",
+      "STARTTLS_ADVERTISEMENT"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE"
+    ],
+    "assessment_id": "c19344de4222d2be"
+  },
+  {
+    "capture": "postfix_smtp_starttls_upgrade.pcap",
+    "real_world": true,
+    "capture_sha256": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+    "sessions_total": 2,
+    "sessions_assessed": 2,
+    "protocol_counts": {
+      "smtp": 2
+    },
+    "observation_counts": {
+      "OBSERVED": 12,
+      "UNKNOWN": 4
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 88.0,
+    "issue_classes": [
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM",
+      "NO_TLS_PROTECTION",
+      "STARTTLS_UPGRADE_FAILURE",
+      "TLS_HANDSHAKE_EVIDENCE"
+    ],
+    "penalising_classes": [
+      "NO_TLS_PROTECTION"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "2647f6ab59fca5e9"
+  },
+  {
+    "capture": "smtps_tls12_weak_sha1_rsa1024.pcap",
+    "real_world": false,
+    "capture_sha256": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "observation_counts": {
+      "AMBIGUOUS": 1,
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 3
+    },
+    "overall_posture": "CRITICAL",
+    "score_value": 44.0,
+    "issue_classes": [
+      "CERTIFICATE_CHAIN_STRUCTURE",
+      "CERTIFICATE_EXTRACTION",
+      "CERTIFICATE_KEY_STRENGTH",
+      "CERTIFICATE_SIGNATURE_ALGORITHM",
+      "CERTIFICATE_VALIDITY",
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "IMPLICIT_TLS_SESSION",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM"
+    ],
+    "penalising_classes": [
+      "CERTIFICATE_KEY_STRENGTH",
+      "CERTIFICATE_SIGNATURE_ALGORITHM"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "645090e0bc44ba9d"
+  },
+  {
+    "capture": "smtps_tls12_selfsigned_rsa2048.pcap",
+    "real_world": false,
+    "capture_sha256": "c08508835713a7485fc8456a58b93c226786f7f46b6da483706f586240ac2caa",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "observation_counts": {
+      "AMBIGUOUS": 1,
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 3
+    },
+    "overall_posture": "ADEQUATE",
+    "score_value": 88.0,
+    "issue_classes": [
+      "CERTIFICATE_CHAIN_STRUCTURE",
+      "CERTIFICATE_EXTRACTION",
+      "CERTIFICATE_KEY_STRENGTH",
+      "CERTIFICATE_SIGNATURE_ALGORITHM",
+      "CERTIFICATE_VALIDITY",
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "IMPLICIT_TLS_SESSION",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM"
+    ],
+    "penalising_classes": [
+      "CERTIFICATE_CHAIN_STRUCTURE"
+    ],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "2cdc8de7905088ec"
+  },
+  {
+    "capture": "smtps_tls12_chain_rsa2048.pcap",
+    "real_world": false,
+    "capture_sha256": "43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d",
+    "sessions_total": 1,
+    "sessions_assessed": 1,
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "observation_counts": {
+      "AMBIGUOUS": 1,
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 3
+    },
+    "overall_posture": "STRONG",
+    "score_value": 100.0,
+    "issue_classes": [
+      "CERTIFICATE_CHAIN_STRUCTURE",
+      "CERTIFICATE_EXTRACTION",
+      "CERTIFICATE_KEY_STRENGTH",
+      "CERTIFICATE_SIGNATURE_ALGORITHM",
+      "CERTIFICATE_VALIDITY",
+      "DEPRECATED_TLS_VERSION",
+      "FORWARD_SECRECY",
+      "IMPLICIT_TLS_SESSION",
+      "INSECURE_CONFIGURATION",
+      "KEY_EXCHANGE_MECHANISM"
+    ],
+    "penalising_classes": [],
+    "abstention_reasons": [
+      "INSUFFICIENT_CAPTURE",
+      "NOT_OBSERVABLE"
+    ],
+    "assessment_id": "9290b1d722b89411"
+  }
+]

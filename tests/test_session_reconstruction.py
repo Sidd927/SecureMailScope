@@ -148,10 +148,22 @@ def test_truncation_preserves_observations_without_inventing_final_state():
     sessions = sessions_for("E_incomplete")
     assert len(sessions) == 5
     for s in sessions:
-        assert s.completeness is Completeness.INCOMPLETE
+        # EXPECTED CORRECTION (OQ-46, docs/research/22): this previously asserted every
+        # session was INCOMPLETE, which held only because `Completeness.TRUNCATED` was
+        # unreachable. The session that owns the capture's last frame is now correctly
+        # classified TRUNCATED. The property this test exists for -- that observations
+        # are preserved without inventing a final state -- is unchanged.
+        assert s.completeness is not Completeness.COMPLETE
         # Never manufacture a successful teardown or an established session.
         assert not any(t.to_state is AppState.CLOSED for t in s.transitions)
         assert s.app_state is not AppState.TLS_ESTABLISHED
+
+    # Exactly one session ends the capture, so exactly one is truncated; the rest went
+    # quiet while the recording continued and remain INCOMPLETE.
+    truncated = [s for s in sessions if s.completeness is Completeness.TRUNCATED]
+    assert len(truncated) == 1
+    last_frame = max(s.last_frame for s in sessions if s.last_frame is not None)
+    assert truncated[0].last_frame == last_frame
     # Progressive states are preserved up to each cut point.
     observed = {s.app_state for s in sessions}
     assert AppState.CAPABILITY_REQUESTED in observed

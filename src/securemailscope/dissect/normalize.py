@@ -137,11 +137,22 @@ class TlsEvidence:
     supported_version: Optional[str] = None
     session_id: Optional[str] = None
     has_app_data: bool = False
+    #: TLS 1.3 carries the key exchange here, not in the cipher suite (RFC 8446 SS4.2.8).
+    key_share_group: Optional[str] = None
+    #: Raw X.509 field lists from a cleartext Certificate message, as (name, values)
+    #: pairs so the dataclass stays hashable. Empty whenever no certificate is visible
+    #: -- which is the norm, since TLS 1.3 encrypts the Certificate message.
+    x509_fields: Tuple[Tuple[str, Tuple[str, ...]], ...] = ()
 
     @property
     def present(self) -> bool:
         return any((self.record_version, self.handshake_type is not None,
                     self.cipher_suite, self.sni, self.has_app_data))
+
+    @property
+    def x509(self) -> dict:
+        """The X.509 fields as a mapping, for crypto.certificates.build_chain."""
+        return {name: values for name, values in self.x509_fields}
 
 
 @dataclass(frozen=True)
@@ -231,6 +242,42 @@ def _app_protocol(stack: Tuple[str, ...]) -> Optional[str]:
     return None
 
 
+#: Logical name -> tshark field, for the raw X.509 lists handed to
+#: crypto.certificates.build_chain. Kept here so the tshark schema stays confined to
+#: dissect/, and named logically so the crypto layer never learns a tshark field name.
+_X509_FIELDS = (
+    ("cert_elements", F.X509_CERT_ELEMENT),
+    ("serials", F.X509_SERIAL),
+    ("versions", F.X509_VERSION),
+    ("validity_utc", F.X509_VALIDITY_UTC),
+    ("rsa_moduli", F.X509_RSA_MODULUS),
+    ("rsa_exponents", F.X509_RSA_EXPONENT),
+    ("subject_key_ids", F.X509_SUBJECT_KEY_ID),
+    ("authority_key_ids", F.X509_AUTHORITY_KEY_ID),
+    ("san_dns", F.X509_SAN_DNS),
+    ("dn_text", F.X509_DN_TEXT),
+    ("algorithm_ids", F.X509_ALGORITHM_ID),
+    ("extension_ids", F.X509_EXTENSION_ID),
+)
+
+
+def _x509(flat: dict) -> Tuple[Tuple[str, Tuple[str, ...]], ...]:
+    """Collect the raw certificate field lists, if a Certificate message was decoded.
+
+    Serial number anchors presence: it is mandatory per RFC 5280 SS4.1.2.2 and appears
+    exactly once per certificate, whereas signedCertificate_element is a bare null for
+    a single certificate.
+    """
+    if not pick_all(flat, F.X509_SERIAL):
+        return ()
+    collected = []
+    for name, tshark_names in _X509_FIELDS:
+        values = pick_all(flat, tshark_names)
+        if values:
+            collected.append((name, values))
+    return tuple(collected)
+
+
 def _tls(flat: dict) -> TlsEvidence:
     return TlsEvidence(
         record_version=pick(flat, F.TLS_RECORD_VERSION),
@@ -241,6 +288,8 @@ def _tls(flat: dict) -> TlsEvidence:
         supported_version=pick(flat, F.TLS_SUPPORTED_VERSION),
         session_id=pick(flat, F.TLS_SESSION_ID),
         has_app_data=pick(flat, F.TLS_APP_DATA) is not None,
+        key_share_group=pick(flat, F.TLS_KEY_SHARE_GROUP),
+        x509_fields=_x509(flat),
     )
 
 
@@ -286,9 +335,20 @@ def normalize_packet(record: dict, capture_id: str) -> FrameEvidence:
     missing = tuple(name for name, keys in _TRACKED.items() if pick(flat, keys) is None)
 
     app_proto = _app_protocol(stack)
-    # Retain decoded payload only for cleartext mail dialogue frames (bounded).
+    # Retain decoded payload for cleartext mail dialogue frames (bounded).
+    #
+    # The port fallback matters and was added for OQ-47: when TCP segmentation splits a
+    # line, or a segment arrives out of order, tshark cannot attribute that frame to
+    # SMTP and its protocol stack degrades to plain tcp -- yet the frame still carries
+    # `tcp.payload`, and it may hold the only copy of a capability line. Keying retention
+    # solely on the dissector's protocol verdict therefore threw away exactly the bytes
+    # needed to reconstruct a segmented reply. Frames already carrying TLS records are
+    # excluded: their payload is ciphertext and decoding it yields nothing but noise.
+    on_mail_port = (src_port in F.MAIL_PORTS or dst_port in F.MAIL_PORTS)
+    encrypted = "tls" in stack or "ssl" in stack
+    keep_payload = app_proto is not None or (on_mail_port and not encrypted)
     payload_text = (decode_payload(pick(flat, F.TCP_PAYLOAD))
-                    if app_proto is not None else None)
+                    if keep_payload else None)
 
     return FrameEvidence(
         capture_id=capture_id,

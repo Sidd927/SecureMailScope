@@ -1,0 +1,755 @@
+{
+  "abstentions": [
+    {
+      "frames": [
+        6
+      ],
+      "issue_class": "CERTIFICATE_OBSERVABILITY",
+      "protocol": "smtp",
+      "reason": "NOT_OBSERVABLE",
+      "resolved_by": "not resolvable by passive capture; this fact is structurally hidden from an observer without key material",
+      "rule_id": "SEC-TLS-003",
+      "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0",
+      "what_could_not_be_concluded": "Certificate trust and revocation boundary",
+      "why": "Certificate trust and revocation were not evaluated."
+    },
+    {
+      "frames": [
+        4,
+        6,
+        8,
+        9,
+        10,
+        12
+      ],
+      "issue_class": "TLS_HANDSHAKE_EVIDENCE",
+      "protocol": "smtp",
+      "reason": "INSUFFICIENT_CAPTURE",
+      "resolved_by": "re-capture the full session including connection setup and teardown",
+      "rule_id": "SEC-TLS-002",
+      "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0",
+      "what_could_not_be_concluded": "TLS handshake completion evidence",
+      "why": "TLS negotiation was observed but completion is not established."
+    }
+  ],
+  "ai_enabled": false,
+  "assessment_id": "645090e0bc44ba9d",
+  "capture_id": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+  "coverage": {
+    "assessed_fraction": 1.0,
+    "completeness_counts": {
+      "COMPLETE": 1
+    },
+    "observation_counts": {
+      "AMBIGUOUS": 1,
+      "NOT_OBSERVABLE": 4,
+      "OBSERVED": 3
+    },
+    "observation_fractions": {
+      "AMBIGUOUS": 0.125,
+      "NOT_OBSERVABLE": 0.5,
+      "OBSERVED": 0.375
+    },
+    "protocol_counts": {
+      "smtp": 1
+    },
+    "sessions_abstained": 0,
+    "sessions_assessed": 1,
+    "sessions_total": 1
+  },
+  "generated_at": "2026-09-22T04:49:51Z",
+  "issue_groups": [
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "NIST SP 800-57 Part 1 Rev.5 SS5.6.1: RSA moduli below 2048 bits provide less than 112 bits of security and are disallowed"
+        }
+      ],
+      "dimension": "CERTIFICATE_TRUST",
+      "fact_kind": "BASE_SECURITY_ISSUE",
+      "finding_count": 1,
+      "issue_class": "CERTIFICATE_KEY_STRENGTH",
+      "penalising": true,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "HIGH",
+      "title": "Certificate public key strength"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "NIST SP 800-131A Rev.2: SHA-1 signature generation is disallowed"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 9155: SHA-1 must not be used for digital signatures"
+        }
+      ],
+      "dimension": "CERTIFICATE_TRUST",
+      "fact_kind": "BASE_SECURITY_ISSUE",
+      "finding_count": 1,
+      "issue_class": "CERTIFICATE_SIGNATURE_ALGORITHM",
+      "penalising": true,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "HIGH",
+      "title": "Certificate signature algorithm"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 5280 SS4.2.1.1: the Authority Key Identifier identifies the key that signed a certificate, and is the intended means of chain building"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 5280 SS6: certification path validation requires a set of trust anchors, which a packet capture does not contain"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 6960: OCSP status is retrieved in a separate network transaction and is not present in a passively captured mail session"
+        }
+      ],
+      "dimension": "CERTIFICATE_TRUST",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "CERTIFICATE_CHAIN_STRUCTURE",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Certificate chain structure"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 5280: Internet X.509 PKI certificate and CRL profile"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS2: the TLS 1.3 Certificate message is encrypted"
+        }
+      ],
+      "dimension": "CERTIFICATE_TRUST",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "CERTIFICATE_EXTRACTION",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Certificate extraction"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 5280: Internet X.509 PKI certificate and CRL profile"
+        }
+      ],
+      "dimension": "CERTIFICATE_TRUST",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "CERTIFICATE_VALIDITY",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Certificate validity period"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.1: servers shall use TLS 1.2, should use TLS 1.3, should not use TLS 1.1, shall not use TLS 1.0/SSL 3.0/SSL 2.0"
+        },
+        {
+          "reason": "prohibits negotiating TLS 1.0 and TLS 1.1",
+          "section": "SS4-5",
+          "standard": "RFC 8996 (BCP 195)",
+          "text": "RFC 8996 (BCP 195) SS4-5: TLS 1.0 and TLS 1.1 MUST NOT be used"
+        }
+      ],
+      "dimension": "PROTOCOL_VERSION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "DEPRECATED_TLS_VERSION",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Negotiated TLS version posture"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2 SS3.3.1: servers shall be configured to use ephemeral key establishment"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS1.2 and App. D.5: TLS 1.3 removed static RSA and static Diffie-Hellman key exchange"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "FORWARD_SECRECY",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Forward secrecy"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "UNCERTAIN",
+      "citations": [
+        {
+          "reason": "declares cleartext email submission and access obsolete and specifies implicit TLS on the dedicated ports",
+          "section": "SS3",
+          "standard": "RFC 8314",
+          "text": "RFC 8314 (implicit TLS for email submission and access)"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "IMPLICIT_TLS_SESSION",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Implicit TLS session"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "defines the TLS versions a server shall and shall not be configured to use, and requires TLS to protect transmitted data",
+          "section": "SS3.1",
+          "standard": "NIST SP 800-52r2",
+          "text": "NIST SP 800-52r2: TLS server configuration guidance"
+        },
+        {
+          "reason": "prohibits negotiating TLS 1.0 and TLS 1.1",
+          "section": "SS4-5",
+          "standard": "RFC 8996 (BCP 195)",
+          "text": "RFC 8996 (BCP 195): TLS 1.0 and TLS 1.1 MUST NOT be used"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "NIST SP 800-57 Part 1 Rev.5: key length guidance"
+        },
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 9155: SHA-1 must not be used for digital signatures"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "INSECURE_CONFIGURATION",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Insecure protocol configuration"
+    },
+    {
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "certainty": "CONFIRMED",
+      "citations": [
+        {
+          "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+          "section": "",
+          "standard": "UNMAPPED",
+          "text": "RFC 8446 SS4.2.8: TLS 1.3 negotiates key exchange in the key_share extension; the cipher suite does not encode it"
+        }
+      ],
+      "dimension": "CRYPTO_CONFIGURATION",
+      "fact_kind": "POSITIVE_EVIDENCE",
+      "finding_count": 1,
+      "issue_class": "KEY_EXCHANGE_MECHANISM",
+      "penalising": false,
+      "protocols": [
+        "smtp"
+      ],
+      "recurrence": 1,
+      "remediation": null,
+      "severity": "INFO",
+      "title": "Key exchange mechanism"
+    }
+  ],
+  "limitations": [
+    "passive analysis: conclusions describe what the capture shows, not the server's configuration",
+    "no attacker, intent or attribution is or can be established from a packet capture",
+    "certificate chain, expiry and key strength are not observable for TLS 1.3 or resumed sessions (RFC 8446 SS2, SS2.2)",
+    "absence of a STARTTLS advertisement is ambiguous: stripping and genuine non-support are byte-identical at the application layer",
+    "SecureMailScope cannot confirm that any remediation was applied or effective"
+  ],
+  "model_summary": {
+    "ai_enabled": false,
+    "note": "ML lane disabled; posture computed from deterministic and cross-session evidence only"
+  },
+  "overall_posture": "CRITICAL",
+  "prioritised": [
+    {
+      "affected_sessions": 1,
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "explanation": "HIGH BASE_SECURITY_ISSUE on CONFIRMED evidence across 1 session(s); ranked on certainty 6, fact_kind 5, severity 70, standards_backed 3",
+      "factors": {
+        "actionable": 0.0,
+        "certainty": 6.0,
+        "fact_kind": 5.0,
+        "recurrence": 0.0,
+        "severity": 70.0,
+        "standards_backed": 3.0
+      },
+      "ml_adjustment": 0.0,
+      "priority_score": 84.0,
+      "rank": 1,
+      "representative_finding": {
+        "certainty": "CONFIRMED",
+        "citations": [
+          {
+            "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+            "section": "",
+            "standard": "UNMAPPED",
+            "text": "NIST SP 800-57 Part 1 Rev.5 SS5.6.1: RSA moduli below 2048 bits provide less than 112 bits of security and are disallowed"
+          }
+        ],
+        "conclusion": "A certificate uses an RSA key below the permitted length.",
+        "contradictions": [],
+        "dimension": "CERTIFICATE_TRUST",
+        "explanation": "leaf uses a 1024-bit RSA key. NIST SP 800-57 Part 1 Rev.5 SS5.6.1: RSA moduli below 2048 bits provide less than 112 bits of security and are disallowed.",
+        "frames": [
+          6
+        ],
+        "key": {
+          "fact_kind": "BASE_SECURITY_ISSUE",
+          "issue_class": "CERTIFICATE_KEY_STRENGTH",
+          "scope_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+        },
+        "limitations": [
+          "Key length is derived from the modulus in the captured certificate."
+        ],
+        "ml_signal": null,
+        "observability": "OBSERVABLE",
+        "penalising": true,
+        "remediation": null,
+        "session": {
+          "capture_id": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+          "protocol": "smtp",
+          "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0",
+          "tcp_stream_id": 0
+        },
+        "severity": "HIGH",
+        "source_rule_ids": [
+          "SEC-CERT-003"
+        ],
+        "sources": [
+          {
+            "detail": "A certificate uses an RSA key below the permitted length.",
+            "deviation": null,
+            "evidence_refs": [
+              {
+                "basis": "Certificate message observed in cleartext in this handshake",
+                "evidence_state": "OBSERVED",
+                "field": "tls_certificate_chain",
+                "frames": [
+                  6
+                ],
+                "observed_value": "1",
+                "provenance": "observed"
+              }
+            ],
+            "finding_id": "3520a59d80efbaf3",
+            "frames": [
+              6
+            ],
+            "lane": "DETERMINISTIC",
+            "relation": "supports",
+            "rule_id": "SEC-CERT-003",
+            "severity": "HIGH",
+            "standards": [
+              "NIST SP 800-57 Part 1 Rev.5 SS5.6.1: RSA moduli below 2048 bits provide less than 112 bits of security and are disallowed"
+            ],
+            "status": "OBSERVED_ISSUE",
+            "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+          }
+        ],
+        "status": "OBSERVED_ISSUE",
+        "title": "Certificate public key strength"
+      }
+    },
+    {
+      "affected_sessions": 1,
+      "affected_stream_keys": [
+        "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+      ],
+      "explanation": "HIGH BASE_SECURITY_ISSUE on CONFIRMED evidence across 1 session(s); ranked on certainty 6, fact_kind 5, severity 70, standards_backed 3",
+      "factors": {
+        "actionable": 0.0,
+        "certainty": 6.0,
+        "fact_kind": 5.0,
+        "recurrence": 0.0,
+        "severity": 70.0,
+        "standards_backed": 3.0
+      },
+      "ml_adjustment": 0.0,
+      "priority_score": 84.0,
+      "rank": 2,
+      "representative_finding": {
+        "certainty": "CONFIRMED",
+        "citations": [
+          {
+            "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+            "section": "",
+            "standard": "UNMAPPED",
+            "text": "NIST SP 800-131A Rev.2: SHA-1 signature generation is disallowed"
+          },
+          {
+            "reason": "cited by a rule but not present in the Phase-7 standards registry; carried through verbatim rather than dropped",
+            "section": "",
+            "standard": "UNMAPPED",
+            "text": "RFC 9155: SHA-1 must not be used for digital signatures"
+          }
+        ],
+        "conclusion": "A certificate in the chain is signed with a deprecated hash.",
+        "contradictions": [],
+        "dimension": "CERTIFICATE_TRUST",
+        "explanation": "Signature algorithms observed: sha1WithRSAEncryption. SHA-1 -- RFC 9155 and NIST SP 800-131A Rev.2: SHA-1 must not be used for digital signature generation. A chain is only as sound as its weakest signature.",
+        "frames": [
+          6
+        ],
+        "key": {
+          "fact_kind": "BASE_SECURITY_ISSUE",
+          "issue_class": "CERTIFICATE_SIGNATURE_ALGORITHM",
+          "scope_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+        },
+        "limitations": [
+          "Signature algorithms are reported for the chain as a whole: the dissector does not attribute them to individual certificates reliably."
+        ],
+        "ml_signal": null,
+        "observability": "OBSERVABLE",
+        "penalising": true,
+        "remediation": null,
+        "session": {
+          "capture_id": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501",
+          "protocol": "smtp",
+          "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0",
+          "tcp_stream_id": 0
+        },
+        "severity": "HIGH",
+        "source_rule_ids": [
+          "SEC-CERT-004"
+        ],
+        "sources": [
+          {
+            "detail": "A certificate in the chain is signed with a deprecated hash.",
+            "deviation": null,
+            "evidence_refs": [
+              {
+                "basis": "Certificate message observed in cleartext in this handshake",
+                "evidence_state": "OBSERVED",
+                "field": "tls_certificate_chain",
+                "frames": [
+                  6
+                ],
+                "observed_value": "1",
+                "provenance": "observed"
+              }
+            ],
+            "finding_id": "35bc9cdf240a1ccb",
+            "frames": [
+              6
+            ],
+            "lane": "DETERMINISTIC",
+            "relation": "supports",
+            "rule_id": "SEC-CERT-004",
+            "severity": "HIGH",
+            "standards": [
+              "RFC 9155: SHA-1 must not be used for digital signatures",
+              "NIST SP 800-131A Rev.2: SHA-1 signature generation is disallowed"
+            ],
+            "status": "OBSERVED_ISSUE",
+            "stream_key": "ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501:0"
+          }
+        ],
+        "status": "OBSERVED_ISSUE",
+        "title": "Certificate signature algorithm"
+      }
+    }
+  ],
+  "protocol_posture": [
+    {
+      "abstentions": 2,
+      "dimensions_assessed": [
+        "CERTIFICATE_TRUST",
+        "CRYPTO_CONFIGURATION",
+        "PROTOCOL_VERSION"
+      ],
+      "dimensions_not_observable": [
+        "CERTIFICATE_TRUST"
+      ],
+      "issue_classes": [
+        "CERTIFICATE_KEY_STRENGTH",
+        "CERTIFICATE_SIGNATURE_ALGORITHM"
+      ],
+      "protocol": "smtp",
+      "score": {
+        "band": "CRITICAL",
+        "basis": "100 minus 56.00 across 2 issue group(s) under F2-group-damped",
+        "components": [
+          {
+            "base_weight": 28.0,
+            "explanation": "HIGH weight 28 x recurrence multiplier 1.00 for 1 affected session(s)",
+            "issue_class": "CERTIFICATE_KEY_STRENGTH",
+            "penalty": 28.0,
+            "recurrence": 1,
+            "recurrence_multiplier": 1.0,
+            "severity": "HIGH"
+          },
+          {
+            "base_weight": 28.0,
+            "explanation": "HIGH weight 28 x recurrence multiplier 1.00 for 1 affected session(s)",
+            "issue_class": "CERTIFICATE_SIGNATURE_ALGORITHM",
+            "penalty": 28.0,
+            "recurrence": 1,
+            "recurrence_multiplier": 1.0,
+            "severity": "HIGH"
+          }
+        ],
+        "formula_id": "F2-group-damped",
+        "starting_value": 100.0,
+        "total_penalty": 56.0,
+        "value": 44.0
+      },
+      "sessions": 1
+    }
+  ],
+  "provenance": {
+    "contradictions_recorded": 0,
+    "duplicate_sources_merged": 0,
+    "note": "every severity, status and standard originates in a Phase-4 or Phase-5 rule; the posture engine aggregates and never re-judges",
+    "rule_ids": [
+      "SEC-CERT-001",
+      "SEC-CERT-002",
+      "SEC-CERT-003",
+      "SEC-CERT-004",
+      "SEC-CERT-005",
+      "SEC-CFG-001",
+      "SEC-FS-001",
+      "SEC-KEX-001",
+      "SEC-STLS-003",
+      "SEC-TLS-001",
+      "SEC-TLS-002",
+      "SEC-TLS-003"
+    ],
+    "source_counts": {
+      "abstentions": 2,
+      "cross_session_findings": 0,
+      "deterministic_findings": 12,
+      "fused_findings": 10,
+      "ml_results": 0
+    },
+    "versions": {
+      "posture_engine": "0.8.0",
+      "posture_schema": "1.0",
+      "scoring_formula": "F2-group-damped"
+    }
+  },
+  "remediation_summary": [],
+  "risk_summary": {
+    "abstentions": {
+      "affected_sessions": 1,
+      "by_issue_class": {
+        "CERTIFICATE_OBSERVABILITY": 1,
+        "TLS_HANDSHAKE_EVIDENCE": 1
+      },
+      "by_reason": {
+        "INSUFFICIENT_CAPTURE": 1,
+        "NOT_OBSERVABLE": 1
+      },
+      "how_to_resolve": {
+        "INSUFFICIENT_CAPTURE": "re-capture the full session including connection setup and teardown",
+        "NOT_OBSERVABLE": "not resolvable by passive capture; this fact is structurally hidden from an observer without key material"
+      },
+      "total": 2
+    },
+    "affected_sessions": 1,
+    "anomaly_signals": 0,
+    "behavioural_deviations": 0,
+    "by_dimension": {
+      "CERTIFICATE_TRUST": 2
+    },
+    "by_fact_kind": {
+      "BASE_SECURITY_ISSUE": 2,
+      "POSITIVE_EVIDENCE": 8
+    },
+    "by_severity": {
+      "HIGH": 2
+    },
+    "highest_severity": "HIGH",
+    "issue_groups": 2,
+    "note": "a behavioural deviation is a difference from a baseline, not a vulnerability; an anomaly signal is a prioritisation input and neither asserts nor implies an attack",
+    "positive_evidence": 8
+  },
+  "run_id": "2ae118f5d0da40daaaab5cc1d72a8bae",
+  "score": {
+    "band": "CRITICAL",
+    "basis": "100 minus 56.00 across 2 issue group(s) under F2-group-damped",
+    "components": [
+      {
+        "base_weight": 28.0,
+        "explanation": "HIGH weight 28 x recurrence multiplier 1.00 for 1 affected session(s)",
+        "issue_class": "CERTIFICATE_KEY_STRENGTH",
+        "penalty": 28.0,
+        "recurrence": 1,
+        "recurrence_multiplier": 1.0,
+        "severity": "HIGH"
+      },
+      {
+        "base_weight": 28.0,
+        "explanation": "HIGH weight 28 x recurrence multiplier 1.00 for 1 affected session(s)",
+        "issue_class": "CERTIFICATE_SIGNATURE_ALGORITHM",
+        "penalty": 28.0,
+        "recurrence": 1,
+        "recurrence_multiplier": 1.0,
+        "severity": "HIGH"
+      }
+    ],
+    "formula_id": "F2-group-damped",
+    "starting_value": 100.0,
+    "total_penalty": 56.0,
+    "value": 44.0
+  },
+  "standards_summary": {
+    "distinct_standards": 3,
+    "note": "every citation originates from a Phase-4/5 rule; the Phase-7 registry adds structure and introduces no new standard",
+    "standards": {
+      "NIST SP 800-52r2": [
+        "SS3.1"
+      ],
+      "RFC 8314": [
+        "SS3"
+      ],
+      "RFC 8996 (BCP 195)": [
+        "SS4-5"
+      ]
+    },
+    "unmapped_citations": [
+      "NIST SP 800-131A Rev.2: SHA-1 signature generation is disallowed",
+      "NIST SP 800-57 Part 1 Rev.5 SS5.6.1: RSA moduli below 2048 bits provide less than 112 bits of security and are disallowed",
+      "NIST SP 800-57 Part 1 Rev.5: key length guidance",
+      "RFC 5280 SS4.2.1.1: the Authority Key Identifier identifies the key that signed a certificate, and is the intended means of chain building",
+      "RFC 5280 SS6: certification path validation requires a set of trust anchors, which a packet capture does not contain",
+      "RFC 5280: Internet X.509 PKI certificate and CRL profile",
+      "RFC 6960: OCSP status is retrieved in a separate network transaction and is not present in a passively captured mail session",
+      "RFC 8446 SS1.2 and App. D.5: TLS 1.3 removed static RSA and static Diffie-Hellman key exchange",
+      "RFC 8446 SS2: the TLS 1.3 Certificate message is encrypted",
+      "RFC 8446 SS4.2.8: TLS 1.3 negotiates key exchange in the key_share extension; the cipher suite does not encode it",
+      "RFC 9155: SHA-1 must not be used for digital signatures"
+    ]
+  },
+  "versions": {
+    "engine": "0.8.0",
+    "schema": "1.0"
+  }
+}

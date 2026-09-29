@@ -31,6 +31,25 @@ class StreamGroup:
     client_port: Optional[int] = None
     role_basis: str = "undetermined"
 
+    #: Capture-level context, needed to tell a session the recording cut short from one
+    #: that merely went quiet while the capture kept running (OQ-46). Set once by
+    #: `group_streams`; defaults keep the group usable when built directly in a test.
+    capture_last_frame: Optional[int] = None
+    capture_truncated: bool = False
+
+    @property
+    def ends_at_capture_end(self) -> bool:
+        """True when nothing in the capture follows this stream's last frame.
+
+        This is the evidence that distinguishes truncation from a merely unterminated
+        stream: if other traffic was still being recorded afterwards, the recording did
+        not stop here and the missing teardown has some other cause.
+        """
+        if self.capture_last_frame is None or not self.frames:
+            return False
+        last = self.frames[-1].frame_number
+        return last is not None and last >= self.capture_last_frame
+
     @property
     def stream_key(self) -> Optional[str]:
         if self.tcp_stream_id is None:
@@ -121,17 +140,27 @@ def _resolve_roles(group: StreamGroup) -> None:
     group.role_basis = "indeterminate: no greeting and no well-known port"
 
 
-def group_streams(frames: List[FrameEvidence], capture_id: str) -> List[StreamGroup]:
+def group_streams(frames: List[FrameEvidence], capture_id: str,
+                  capture_truncated: bool = False) -> List[StreamGroup]:
     """Bucket frames by TCP stream, preserving capture order, then resolve roles.
 
     Single pass plus one pass per stream -- linear, no O(n^2) scan (Phase-3 §35).
+
+    `capture_truncated` is tshark's own report that the file was cut mid-packet. It is
+    threaded through so a session can distinguish "the recording stopped" from "this
+    stream stopped" (OQ-46); it defaults to False so existing callers are unaffected.
     """
     buckets: Dict[Optional[int], StreamGroup] = {}
     order: List[Optional[int]] = []
+    capture_last_frame = max(
+        (f.frame_number for f in frames if f.frame_number is not None), default=None)
     for frame in frames:
         sid = frame.tcp_stream_id
         if sid not in buckets:
-            buckets[sid] = StreamGroup(capture_id=capture_id, tcp_stream_id=sid)
+            buckets[sid] = StreamGroup(
+                capture_id=capture_id, tcp_stream_id=sid,
+                capture_last_frame=capture_last_frame,
+                capture_truncated=capture_truncated)
             order.append(sid)
         buckets[sid].frames.append(frame)
 

@@ -10,9 +10,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Optional, Sequence, Set, Tuple
 
+from securemailscope.crypto import certificates, keyexchange
 from securemailscope.dissect import fields as F
 from securemailscope.dissect.normalize import FrameEvidence
-from securemailscope.evidence.states import EvidenceField, EvidenceState
+from securemailscope.evidence.states import EvidenceField, EvidenceState, Provenance
 from securemailscope.session.grouping import StreamGroup
 from securemailscope.session.model import (
     AppState, Completeness, Direction, ProtocolEvent, SessionEvidence,
@@ -117,6 +118,9 @@ class ProtocolSessionReconstructor(ABC):
                    explicit_upgrade: bool) -> None:
         tls_state, frames_seen = classify_tls(group)
         session.tls_state = tls_state
+        session.tls_negotiated_version = negotiated_version(group)
+        session.tls_cipher_suite = negotiated_cipher(group)
+        self._apply_crypto(session, group)
 
         if tls_state is TlsState.NONE:
             session.tls_transition = EvidenceField.observed(
@@ -147,9 +151,34 @@ class ProtocolSessionReconstructor(ABC):
         # plaintext continuation: cleartext protocol events after the upgrade point
         session.plaintext_continuation = _plaintext_after_upgrade(session, group)
 
+    def _apply_crypto(self, session: SessionEvidence, group: StreamGroup) -> None:
+        """Phase-11 crypto derivations (D-09, D-17, D-10..D-14).
+
+        Shared by the explicit-upgrade and implicit-TLS paths: both negotiate a real
+        handshake, so both carry the same cipher, key exchange and certificate
+        evidence. Only the STARTTLS dialogue differs between them.
+        """
+        version = session.tls_negotiated_version
+        session.tls_cipher_suite_name = cipher_suite_name(group)
+        session.tls_key_exchange = negotiated_key_exchange(group, version)
+        session.tls_named_group = negotiated_group(group)
+        session.tls_forward_secrecy = forward_secrecy(group, version)
+
+        chain_field, chain = certificate_chain(group)
+        session.tls_certificate_chain = chain_field
+        session.certificates = chain.certificates
+        session.certificate_notes = tuple(chain.notes) + tuple(
+            f"{label} could not be attributed to a specific certificate"
+            for label in chain.unattributed)
+        session.chain_links = chain.links
+        session.chain_signature_oids = chain.signature_algorithm_oids
+
     def _apply_implicit_tls(self, session: SessionEvidence, group: StreamGroup) -> None:
         tls_state, frames_seen = classify_tls(group)
         session.tls_state = tls_state
+        session.tls_negotiated_version = negotiated_version(group)
+        session.tls_cipher_suite = negotiated_cipher(group)
+        self._apply_crypto(session, group)
         session.app_state = AppState.IMPLICIT_TLS
         na = "not applicable: implicit TLS carries no cleartext STARTTLS dialogue"
         session.starttls_advertised = EvidenceField.not_observable(na)
@@ -191,13 +220,49 @@ class ProtocolSessionReconstructor(ABC):
                     evidence_state=EvidenceState.OBSERVED,
                     basis="FIN/RST observed"))
         else:
-            session.completeness = Completeness.INCOMPLETE
+            session.completeness = _open_session_completeness(group, closed)
+            reason = ("the capture stops while this session is still open"
+                      if session.completeness is Completeness.TRUNCATED
+                      else "the capture continued after this session's last frame, so "
+                           "the missing boundary is not capture truncation")
             session.notes.append(
                 "session boundaries incomplete: "
-                f"setup={'yes' if setup else 'no'} teardown={'yes' if closed else 'no'}")
+                f"setup={'yes' if setup else 'no'} teardown={'yes' if closed else 'no'}; "
+                f"{reason}")
 
 
 # --------------------------------------------------------------------------- helpers
+def _open_session_completeness(group: StreamGroup,
+                               closed: Optional[bool] = None) -> Completeness:
+    """Classify a session with a missing boundary (OQ-46).
+
+    TRUNCATED means one specific thing: **the recording stopped while this session was
+    still open**. Three conditions must hold, and all three matter:
+
+      1. No teardown was observed. A session that closed is not truncated at its end --
+         if its SETUP is what is missing, the capture began late, which is a different
+         defect in the evidence and stays INCOMPLETE.
+      2. Either tshark reported the capture FILE as cut mid-packet (so every still-open
+         session was ended by the recording), or
+      3. nothing in the capture follows this stream's last frame.
+
+    A stream that simply went quiet while the capture kept running is NOT truncated:
+    other traffic was still being recorded, so the recording did not stop here. Keeping
+    these apart is the whole point. Phase 5 excludes truncated sessions from baselines
+    because their behaviour is an artefact of the capture, and over-applying that
+    exclusion would silently shrink history for no reason.
+    """
+    if closed is None:
+        flags = group.transport_flags()
+        closed = (TransportRole.TEARDOWN_OBSERVED in flags
+                  or TransportRole.RESET_OBSERVED in flags)
+    if closed:
+        return Completeness.INCOMPLETE
+    if group.capture_truncated or group.ends_at_capture_end:
+        return Completeness.TRUNCATED
+    return Completeness.INCOMPLETE
+
+
 #: Valid transitions per event kind, expressed as from-state -> to-state.
 #: Returning None means "not valid here" and the event is ignored with a note.
 def _t(mapping):
@@ -251,6 +316,157 @@ def dedupe(events: Sequence[ProtocolEvent]) -> List[ProtocolEvent]:
         seen.add(key)
         result.append(event)
     return result
+
+
+#: TLS version wire values -> canonical names (RFC 8446 / RFC 5246 etc.).
+TLS_VERSIONS = {
+    0x0200: "SSL2.0", 0x0300: "SSL3.0",
+    0x0301: "TLS1.0", 0x0302: "TLS1.1", 0x0303: "TLS1.2", 0x0304: "TLS1.3",
+}
+
+
+def _version_name(raw) -> Optional[str]:
+    try:
+        value = int(raw)
+    except (TypeError, ValueError):
+        return None
+    return TLS_VERSIONS.get(value)
+
+
+def negotiated_version(group: StreamGroup) -> EvidenceField:
+    """Resolve the negotiated TLS version from the ServerHello ONLY.
+
+    Order matters: supported_versions is authoritative when present because TLS 1.3
+    pins legacy_version to 0x0303. Reading handshake/record version first would
+    misreport every TLS 1.3 session as TLS 1.2 (doc 01A; RFC 8446 4.1.3/4.2.1).
+    """
+    for frame in group.frames:
+        tls = frame.tls
+        if tls.handshake_type != 2:      # ServerHello only; ClientHello is an offer
+            continue
+        frames = [frame.frame_number] if frame.frame_number else []
+        name = _version_name(tls.supported_version)
+        if name:
+            return EvidenceField.observed(
+                name, "ServerHello supported_versions extension (authoritative for TLS 1.3)",
+                frames=frames)
+        name = _version_name(tls.handshake_version)
+        if name:
+            return EvidenceField.observed(
+                name, "ServerHello handshake version (no supported_versions extension)",
+                frames=frames)
+        return EvidenceField.ambiguous(
+            None, f"ServerHello observed but version value unrecognised "
+                  f"(supported={tls.supported_version!r}, handshake={tls.handshake_version!r})",
+            frames=frames)
+    return EvidenceField.unknown(
+        "no ServerHello observed; the negotiated version cannot be established")
+
+
+def negotiated_cipher(group: StreamGroup) -> EvidenceField:
+    """Cipher suite selected by the server, from the ServerHello."""
+    for frame in group.frames:
+        if frame.tls.handshake_type != 2:
+            continue
+        frames = [frame.frame_number] if frame.frame_number else []
+        raw = frame.tls.cipher_suite
+        if raw is None:
+            return EvidenceField.unknown("ServerHello observed without a cipher suite value")
+        try:
+            return EvidenceField.observed(
+                f"0x{int(raw):04x}", "cipher suite selected in ServerHello", frames=frames)
+        except (TypeError, ValueError):
+            return EvidenceField.ambiguous(
+                None, f"unrecognised cipher suite value {raw!r}", frames=frames)
+    return EvidenceField.unknown("no ServerHello observed")
+
+
+def _server_hello(group: StreamGroup):
+    """The ServerHello frame, which is the only authoritative source for what was
+    actually negotiated. A ClientHello carries offers, not decisions."""
+    for frame in group.frames:
+        if frame.tls.handshake_type == 2:
+            return frame
+    return None
+
+
+def negotiated_key_exchange(group: StreamGroup, version: EvidenceField) -> EvidenceField:
+    """Key-exchange mechanism (D-09). See crypto.keyexchange for the two derivations."""
+    frame = _server_hello(group)
+    if frame is None:
+        return EvidenceField.unknown(
+            "no ServerHello observed; the key exchange cannot be established")
+    field = keyexchange.key_exchange(
+        version.value_or(None), frame.tls.cipher_suite, frame.tls.key_share_group)
+    return _with_frames(field, frame)
+
+
+def negotiated_group(group: StreamGroup) -> EvidenceField:
+    """Named group from the ServerHello key_share extension (RFC 8446 SS4.2.8)."""
+    frame = _server_hello(group)
+    if frame is None:
+        return EvidenceField.unknown("no ServerHello observed")
+    return _with_frames(keyexchange.named_group(frame.tls.key_share_group), frame)
+
+
+def cipher_suite_name(group: StreamGroup) -> EvidenceField:
+    """IANA standard name for the negotiated suite, beside the raw code."""
+    frame = _server_hello(group)
+    if frame is None:
+        return EvidenceField.unknown("no ServerHello observed")
+    return _with_frames(keyexchange.suite_name(frame.tls.cipher_suite), frame)
+
+
+def forward_secrecy(group: StreamGroup, version: EvidenceField) -> EvidenceField:
+    """Forward secrecy (D-17).
+
+    Never returns False from missing evidence: no ServerHello yields UNKNOWN, which is
+    a different claim from "not forward secret".
+    """
+    frame = _server_hello(group)
+    if frame is None:
+        return EvidenceField.unknown(
+            "no ServerHello observed; forward secrecy cannot be assessed. This is a "
+            "capture limitation, not an absence of forward secrecy.")
+    field = keyexchange.forward_secrecy(
+        version.value_or(None), frame.tls.cipher_suite, frame.tls.key_share_group)
+    return _with_frames(field, frame)
+
+
+def certificate_chain(group: StreamGroup) -> Tuple[EvidenceField, object]:
+    """Extract the certificate chain (D-10), with provenance.
+
+    Returns (observability field, ChainEvidence). Only Provenance.OBSERVED is ever
+    emitted: Phase 11 reads certificates from the captured bytes and from nowhere else
+    (docs/phase11/03 Category B). Absence is reported with its specific reason, and is
+    never treated as a certificate defect.
+    """
+    for frame in group.frames:
+        if not frame.tls.x509_fields:
+            continue
+        chain = certificates.build_chain(frame.tls.x509)
+        if not chain.present:
+            continue
+        frames = [frame.frame_number] if frame.frame_number else []
+        return EvidenceField.observed(
+            len(chain.certificates),
+            "Certificate message observed in cleartext in this handshake",
+            frames=frames, provenance=Provenance.OBSERVED), chain
+    return EvidenceField.not_observable(
+        "no cleartext Certificate message is present in this stream"), \
+        certificates.ChainEvidence()
+
+
+def _with_frames(field: EvidenceField, frame) -> EvidenceField:
+    """Re-attach the source frame to a field built by the crypto layer.
+
+    The crypto layer is pure and knows nothing about frames, so provenance is added
+    here rather than threading frame numbers through the reference tables.
+    """
+    if frame.frame_number is None or field.frames:
+        return field
+    return EvidenceField(field.value, field.state, field.basis, field.provenance,
+                         (frame.frame_number,))
 
 
 def classify_tls(group: StreamGroup) -> Tuple[TlsState, List[int]]:

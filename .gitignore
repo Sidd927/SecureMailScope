@@ -14,3 +14,22 @@ dist/
 # GPLv2 third-party source (striptls) — NOT vendored, to avoid imposing copyleft on this
 # repo. Regenerate locally with: python3 research/experiments/oq28/fetch_striptls.py
 research/experiments/oq28/striptls_py3_exceptfix.py
+
+# OQ-33r local test certificate and key: generated per run, never committed.
+research/experiments/oq33r/test.pem
+research/experiments/oq33r/test.key
+
+# Local backend data directory: SQLite catalog plus stored capture/report artifacts,
+# created by `python3 -m securemailscope.backend`. Machine-local runtime state, all of
+# it reproducible from the captures that produced it.
+/securemailscope-data/
+backend.log
+frontend/dist/
+
+# Playwright MCP scratch output (snapshots, console logs, recorded API responses)
+/.playwright-mcp/
+# Generated visual-regression screenshots; regenerate rather than commit
+/audit/
+# Local browser profile used for manual testing
+.chrome-profile/
+.design-references/

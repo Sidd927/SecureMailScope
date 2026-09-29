@@ -1,0 +1,110 @@
+{
+  "experiment": "P11-CERT",
+  "purpose": "measure X.509 and key-exchange observability from passive PCAP",
+  "tshark": "TShark (Wireshark) 4.6.8 (Git commit e677bf052328).",
+  "captures": {
+    "tls12_selfsigned_rsa2048 (synthetic, this experiment)": {
+      "handshake_types": [
+        "1",
+        "11",
+        "12",
+        "14",
+        "16",
+        "2",
+        "4"
+      ],
+      "x509_fields": [
+        "pkixalgs_pkixalgs_modulus",
+        "pkixalgs_pkixalgs_publicExponent",
+        "x509af_x509af_Extension_element",
+        "x509af_x509af_algorithmIdentifier_element",
+        "x509af_x509af_algorithm_element",
+        "x509af_x509af_algorithm_id",
+        "x509af_x509af_critical",
+        "x509af_x509af_encrypted",
+        "x509af_x509af_extension_id",
+        "x509af_x509af_extensions",
+        "x509af_x509af_issuer",
+        "x509af_x509af_notAfter",
+        "x509af_x509af_notBefore",
+        "x509af_x509af_rdnSequence",
+        "x509af_x509af_serialNumber",
+        "x509af_x509af_signature_element",
+        "x509af_x509af_signedCertificate_element",
+        "x509af_x509af_subject",
+        "x509af_x509af_subjectPublicKey",
+        "x509af_x509af_subjectPublicKeyInfo_element",
+        "x509af_x509af_subjectPublicKey_rsa",
+        "x509af_x509af_utcTime",
+        "x509af_x509af_validity_element",
+        "x509af_x509af_version",
+        "x509ce_x509ce_AuthorityKeyIdentifier_element",
+        "x509ce_x509ce_BasicConstraintsSyntax_element",
+        "x509ce_x509ce_GeneralName",
+        "x509ce_x509ce_GeneralNames",
+        "x509ce_x509ce_SubjectKeyIdentifier",
+        "x509ce_x509ce_cA",
+        "x509ce_x509ce_dNSName",
+        "x509ce_x509ce_keyIdentifier",
+        "x509if_x509if_RDNSequence_item",
+        "x509if_x509if_RelativeDistinguishedName_item_element",
+        "x509if_x509if_oid",
+        "x509if_x509if_rdnSequence",
+        "x509sat_x509sat_DirectoryString",
+        "x509sat_x509sat_uTF8String"
+      ],
+      "x509_field_count": 38,
+      "key_share_groups": [],
+      "supported_versions": [],
+      "cipher_suite_count": 28
+    },
+    "postfix_smtp_starttls_upgrade (real, OQ-33r)": {
+      "handshake_types": [
+        "1",
+        "2"
+      ],
+      "x509_fields": [],
+      "x509_field_count": 0,
+      "key_share_groups": [
+        "29"
+      ],
+      "supported_versions": [
+        "771",
+        "772"
+      ],
+      "cipher_suite_count": 18
+    },
+    "dovecot_imap_imaps_implicit_tls (real, OQ-33r)": {
+      "handshake_types": [
+        "1",
+        "2"
+      ],
+      "x509_fields": [],
+      "x509_field_count": 0,
+      "key_share_groups": [
+        "29"
+      ],
+      "supported_versions": [
+        "771",
+        "772"
+      ],
+      "cipher_suite_count": 18
+    },
+    "dovecot_pop3_stls_upgrade (real, OQ-33r)": {
+      "handshake_types": [
+        "1",
+        "2"
+      ],
+      "x509_fields": [],
+      "x509_field_count": 0,
+      "key_share_groups": [
+        "29"
+      ],
+      "supported_versions": [
+        "771",
+        "772"
+      ],
+      "cipher_suite_count": 18
+    }
+  }
+}

@@ -3,7 +3,7 @@
     "case": "A_legit_decline",
     "pcap": "A_legit_decline.pcap",
     "packets": 60,
-    "sha256_16": "5997a2879ea2973d",
+    "sha256_16": "ba420f353ac7c2d2",
     "streams": [
       {
         "stream": "10.0.0.5:40001->10.0.0.80",
@@ -47,7 +47,7 @@
     "case": "B_strip_advert",
     "pcap": "B_strip_advert.pcap",
     "packets": 60,
-    "sha256_16": "e8540632d503fb27",
+    "sha256_16": "c85fbd55425e6118",
     "streams": [
       {
         "stream": "10.0.0.5:40007->10.0.0.80",
@@ -91,7 +91,7 @@
     "case": "C_normal_tls",
     "pcap": "C_normal_tls.pcap",
     "packets": 84,
-    "sha256_16": "0095d7d66336e45d",
+    "sha256_16": "bc1295613c5ff3db",
     "streams": [
       {
         "stream": "10.0.0.5:40013->10.0.0.80",
@@ -135,7 +135,7 @@
     "case": "D_failed_upgrade",
     "pcap": "D_failed_upgrade.pcap",
     "packets": 96,
-    "sha256_16": "380c68e7e589d60e",
+    "sha256_16": "ead512ea148f2a39",
     "streams": [
       {
         "stream": "10.0.0.5:40019->10.0.0.80",
@@ -185,7 +185,7 @@
     "case": "E_incomplete",
     "pcap": "E_incomplete.pcap",
     "packets": 37,
-    "sha256_16": "e97d50cbbb39cef9",
+    "sha256_16": "ff12bbc09b9b95c1",
     "streams": [
       {
         "stream": "10.0.0.5:40026->10.0.0.80",
@@ -223,7 +223,7 @@
     "case": "F_shared_identity",
     "pcap": "F_shared_identity.pcap",
     "packets": 120,
-    "sha256_16": "c665bff7af3da7d4",
+    "sha256_16": "206b7dc43a8126f6",
     "streams": [
       {
         "stream": "10.0.0.5:40031->10.0.0.80",
@@ -291,7 +291,7 @@
     "case": "G_control_endpoint",
     "pcap": "G_control_endpoint.pcap",
     "packets": 144,
-    "sha256_16": "ce6d4f01c6f5cc09",
+    "sha256_16": "97b2b61aa870b748",
     "streams": [
       {
         "stream": "10.0.0.6:40041->10.0.0.80",
@@ -371,7 +371,7 @@
     "case": "H_no_control",
     "pcap": "H_no_control.pcap",
     "packets": 60,
-    "sha256_16": "9c6e7a1b584857c2",
+    "sha256_16": "adfb4628c131baf4",
     "streams": [
       {
         "stream": "10.0.0.6:40053->10.0.0.80",
@@ -415,7 +415,7 @@
     "case": "I_no_support",
     "pcap": "I_no_support.pcap",
     "packets": 60,
-    "sha256_16": "6124d8f4e51219b1",
+    "sha256_16": "fc104188bc908c92",
     "streams": [
       {
         "stream": "10.0.0.5:40059->10.0.0.81",
@@ -459,7 +459,7 @@
     "case": "J_strip_command",
     "pcap": "J_strip_command.pcap",
     "packets": 94,
-    "sha256_16": "182a7a6dc498f168",
+    "sha256_16": "9b9228a1acfdaf53",
     "streams": [
       {
         "stream": "10.0.0.5:40065->10.0.0.80",
@@ -509,7 +509,7 @@
     "case": "K_network_cond",
     "pcap": "K_network_cond.pcap",
     "packets": 40,
-    "sha256_16": "1518c99da11f5573",
+    "sha256_16": "057ee4dcfcc0b524",
     "streams": [
       {
         "stream": "10.0.0.5:40072->10.0.0.80",
@@ -535,7 +535,7 @@
     "case": "P_imap_decline",
     "pcap": "P_imap_decline.pcap",
     "packets": 60,
-    "sha256_16": "182f5e3f0d03ffdf",
+    "sha256_16": "92067e43fa77daf9",
     "streams": [
       {
         "stream": "10.0.0.5:40075->10.0.0.80",
@@ -579,7 +579,7 @@
     "case": "P_imap_tls",
     "pcap": "P_imap_tls.pcap",
     "packets": 84,
-    "sha256_16": "3cf4a4cfeead728d",
+    "sha256_16": "693083921ec52bb5",
     "streams": [
       {
         "stream": "10.0.0.5:40081->10.0.0.80",
@@ -623,7 +623,7 @@
     "case": "P_imap_strip",
     "pcap": "P_imap_strip.pcap",
     "packets": 60,
-    "sha256_16": "9458cafd1a095922",
+    "sha256_16": "2d547c9113d688f9",
     "streams": [
       {
         "stream": "10.0.0.5:40087->10.0.0.80",
@@ -667,7 +667,7 @@
     "case": "P_pop3_decline",
     "pcap": "P_pop3_decline.pcap",
     "packets": 60,
-    "sha256_16": "966f6e8bc837737e",
+    "sha256_16": "384076293475dd80",
     "streams": [
       {
         "stream": "10.0.0.5:40093->10.0.0.80",
@@ -711,7 +711,7 @@
     "case": "P_pop3_tls",
     "pcap": "P_pop3_tls.pcap",
     "packets": 84,
-    "sha256_16": "daf826818894e11c",
+    "sha256_16": "f2812b0ed704a41a",
     "streams": [
       {
         "stream": "10.0.0.5:40099->10.0.0.80",
@@ -755,7 +755,7 @@
     "case": "P_pop3_strip",
     "pcap": "P_pop3_strip.pcap",
     "packets": 60,
-    "sha256_16": "d3e4bc8259bf1615",
+    "sha256_16": "7d7ac0685d993e28",
     "streams": [
       {
         "stream": "10.0.0.5:40105->10.0.0.80",
@@ -799,7 +799,7 @@
     "case": "T_SMTPS_implicit",
     "pcap": "T_SMTPS_implicit.pcap",
     "packets": 54,
-    "sha256_16": "cec72088cd492638",
+    "sha256_16": "9a3d436f5d94bdec",
     "streams": [
       {
         "stream": "10.0.0.5:46000->10.0.0.80",
@@ -843,7 +843,7 @@
     "case": "T_IMAPS_implicit",
     "pcap": "T_IMAPS_implicit.pcap",
     "packets": 54,
-    "sha256_16": "bc61a27741da29d4",
+    "sha256_16": "990819fe37f7fef3",
     "streams": [
       {
         "stream": "10.0.0.5:46010->10.0.0.80",
@@ -887,7 +887,7 @@
     "case": "T_POP3S_implicit",
     "pcap": "T_POP3S_implicit.pcap",
     "packets": 54,
-    "sha256_16": "56f780e0d4a6bd75",
+    "sha256_16": "5114519902e50b08",
     "streams": [
       {
         "stream": "10.0.0.5:46020->10.0.0.80",
@@ -924,6 +924,102 @@
         "kind": "implicit_tls",
         "protocol": "pop3",
         "ground_truth": "LEGIT_IMPLICIT_TLS"
+      }
+    ]
+  },
+  {
+    "case": "T_TLS10",
+    "pcap": "T_TLS10.pcap",
+    "packets": 56,
+    "sha256_16": "927930414fd0d1d4",
+    "streams": [
+      {
+        "stream": "10.0.0.5:996->10.0.0.80",
+        "kind": "legacy_tls10",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS10"
+      },
+      {
+        "stream": "10.0.0.5:997->10.0.0.80",
+        "kind": "legacy_tls10",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS10"
+      },
+      {
+        "stream": "10.0.0.5:998->10.0.0.80",
+        "kind": "legacy_tls10",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS10"
+      },
+      {
+        "stream": "10.0.0.5:999->10.0.0.80",
+        "kind": "legacy_tls10",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS10"
+      }
+    ]
+  },
+  {
+    "case": "T_TLS11",
+    "pcap": "T_TLS11.pcap",
+    "packets": 56,
+    "sha256_16": "0c5a0125025193ee",
+    "streams": [
+      {
+        "stream": "10.0.0.5:1000->10.0.0.80",
+        "kind": "legacy_tls11",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS11"
+      },
+      {
+        "stream": "10.0.0.5:1001->10.0.0.80",
+        "kind": "legacy_tls11",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS11"
+      },
+      {
+        "stream": "10.0.0.5:1002->10.0.0.80",
+        "kind": "legacy_tls11",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS11"
+      },
+      {
+        "stream": "10.0.0.5:1003->10.0.0.80",
+        "kind": "legacy_tls11",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS11"
+      }
+    ]
+  },
+  {
+    "case": "T_TLS12",
+    "pcap": "T_TLS12.pcap",
+    "packets": 56,
+    "sha256_16": "c295a124e8152d85",
+    "streams": [
+      {
+        "stream": "10.0.0.5:1004->10.0.0.80",
+        "kind": "legacy_tls12",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS12"
+      },
+      {
+        "stream": "10.0.0.5:1005->10.0.0.80",
+        "kind": "legacy_tls12",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS12"
+      },
+      {
+        "stream": "10.0.0.5:1006->10.0.0.80",
+        "kind": "legacy_tls12",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS12"
+      },
+      {
+        "stream": "10.0.0.5:1007->10.0.0.80",
+        "kind": "legacy_tls12",
+        "protocol": "smtp",
+        "ground_truth": "LEGIT_TLS12"
       }
     ]
   }

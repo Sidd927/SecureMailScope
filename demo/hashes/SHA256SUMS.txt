@@ -1,0 +1,7 @@
+43ee75d5eae7b523dcc051b6e92a200a8d171342ddecf24ce32e3a0f140e216d  backup_healthy_chain.pcap  (-> research/experiments/p11cert/out/smtps_tls12_chain_rsa2048.pcap)
+c08508835713a7485fc8456a58b93c226786f7f46b6da483706f586240ac2caa  backup_selfsigned_certificate.pcap  (-> research/experiments/p11cert/out/smtps_tls12_selfsigned_rsa2048.pcap)
+ce5377348e22ad92c33d705e31388944bad8224534d478c38b57a75d3ba4a501  backup_weak_certificate.pcap  (-> research/experiments/p11cert/out/smtps_tls12_weak_sha1_rsa1024.pcap)
+1f9863aef21f602c7093c980750b13afb4f63262c94c978512bd0047779f04f0  scene_a_1_benign_decline.pcap  (-> research/experiments/oq33r/out/postfix_smtp_client_declines.pcap)
+eacbc065c3427acf406ec8f2059ded8b6e77162a60a3c1497b8fbd805a941e20  scene_a_2_genuine_nonsupport.pcap  (-> research/experiments/oq33r/out/postfix_smtp_no_starttls_offered.pcap)
+d257ec482cd486432e510f8ddb9cf9e46747c237e743036c977b67b76cc51f65  scene_b_certificate_honesty.pcap  (-> research/experiments/oq33r/out/dovecot_imap_imaps_implicit_tls.pcap)
+c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff  scene_c_no_ai_equivalence.pcap  (-> research/experiments/oq33r/out/postfix_smtp_starttls_upgrade.pcap)

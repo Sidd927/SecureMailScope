@@ -1,0 +1,113 @@
+{
+ "formulas": {
+  "F1-instance": {
+   "corpus": {
+    "at_hundred": 19,
+    "at_zero": 37,
+    "bands": {
+     "ADEQUATE": 2,
+     "CRITICAL": 37,
+     "STRONG": 19,
+     "WEAK": 2
+    },
+    "captures": 60,
+    "distinct_values": 5,
+    "max": 100.0,
+    "mean": 36.67,
+    "median": 0.0,
+    "min": 0.0
+   },
+   "properties": {
+    "capture_length_dominates": false,
+    "critical_still_registers": true,
+    "duplicate_delta": 0.0,
+    "duplicate_resistant": true,
+    "eight_medium_issues": 4.0,
+    "empty_evidence_band": "INSUFFICIENT_EVIDENCE",
+    "empty_evidence_score": 100.0,
+    "monotonic_on_new_high": true,
+    "one_critical_among_59_benign": 45.0,
+    "recurrence_monotone": true,
+    "recurrence_scores": {
+     "1": 72.0,
+     "10": 0.0,
+     "100": 0.0
+    },
+    "tail_collapses_to_zero": false
+   }
+  },
+  "F2-group-damped": {
+   "corpus": {
+    "at_hundred": 19,
+    "at_zero": 1,
+    "bands": {
+     "ADEQUATE": 4,
+     "CRITICAL": 34,
+     "STRONG": 19,
+     "WEAK": 3
+    },
+    "captures": 60,
+    "distinct_values": 16,
+    "max": 100.0,
+    "mean": 53.25,
+    "median": 34.58,
+    "min": 0.0
+   },
+   "properties": {
+    "capture_length_dominates": false,
+    "critical_still_registers": true,
+    "duplicate_delta": 0.0,
+    "duplicate_resistant": true,
+    "eight_medium_issues": 4.0,
+    "empty_evidence_band": "INSUFFICIENT_EVIDENCE",
+    "empty_evidence_score": 100.0,
+    "monotonic_on_new_high": true,
+    "one_critical_among_59_benign": 45.0,
+    "recurrence_monotone": true,
+    "recurrence_scores": {
+     "1": 72.0,
+     "10": 48.75,
+     "100": 44.0
+    },
+    "tail_collapses_to_zero": false
+   }
+  },
+  "F3-worst-dominant": {
+   "corpus": {
+    "at_hundred": 19,
+    "at_zero": 0,
+    "bands": {
+     "ADEQUATE": 4,
+     "CRITICAL": 33,
+     "STRONG": 19,
+     "WEAK": 4
+    },
+    "captures": 60,
+    "distinct_values": 16,
+    "max": 100.0,
+    "mean": 61.32,
+    "median": 44.03,
+    "min": 26.0
+   },
+   "properties": {
+    "capture_length_dominates": false,
+    "critical_still_registers": true,
+    "duplicate_delta": 0.0,
+    "duplicate_resistant": true,
+    "eight_medium_issues": 76.09,
+    "empty_evidence_band": "INSUFFICIENT_EVIDENCE",
+    "empty_evidence_score": 100.0,
+    "monotonic_on_new_high": true,
+    "one_critical_among_59_benign": 45.0,
+    "recurrence_monotone": true,
+    "recurrence_scores": {
+     "1": 72.0,
+     "10": 48.75,
+     "100": 44.0
+    },
+    "tail_collapses_to_zero": false
+   }
+  }
+ },
+ "selected": "F2-group-damped"
+}

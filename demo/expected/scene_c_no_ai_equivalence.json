@@ -1,0 +1,115 @@
+{
+  "capture_sha256": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+  "command": "PYTHONPATH=src python3 -c \"...submit_path('/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_c_no_ai_equivalence.pcap')...\"  (equivalently: curl -F file=@/Users/siddhant_patil/Projects/SecureMailScope/demo/captures/scene_c_no_ai_equivalence.pcap http://127.0.0.1:8000/api/v1/analyses?ai=true)",
+  "exit_status": "success",
+  "input_capture": "scene_c_no_ai_equivalence.pcap",
+  "purpose": "--no-ai equivalence",
+  "runs": {
+    "ai_false": {
+      "elapsed_ms": 115.1,
+      "run_id": "a6250fc23cb3430d8b3debb6f2edf964",
+      "summary": {
+        "abstention_count": 7,
+        "abstention_reasons": [
+          "INSUFFICIENT_CAPTURE",
+          "NOT_OBSERVABLE"
+        ],
+        "ai_enabled": false,
+        "all_issue_classes": [
+          "DEPRECATED_TLS_VERSION",
+          "FORWARD_SECRECY",
+          "INSECURE_CONFIGURATION",
+          "KEY_EXCHANGE_MECHANISM",
+          "NO_TLS_PROTECTION",
+          "STARTTLS_UPGRADE_FAILURE",
+          "TLS_HANDSHAKE_EVIDENCE"
+        ],
+        "assessment_id": "2647f6ab59fca5e9",
+        "capture_id": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+        "coverage": {
+          "assessed_fraction": 1.0,
+          "completeness_counts": {
+            "COMPLETE": 1,
+            "INCOMPLETE": 1
+          },
+          "observation_counts": {
+            "OBSERVED": 12,
+            "UNKNOWN": 4
+          },
+          "observation_fractions": {
+            "OBSERVED": 0.75,
+            "UNKNOWN": 0.25
+          },
+          "protocol_counts": {
+            "smtp": 2
+          },
+          "sessions_abstained": 0,
+          "sessions_assessed": 2,
+          "sessions_total": 2
+        },
+        "issue_group_count": 7,
+        "model_summary_role": null,
+        "overall_posture": "ADEQUATE",
+        "penalising_issue_classes": [
+          "NO_TLS_PROTECTION"
+        ],
+        "score_band": "ADEQUATE",
+        "score_value": 88.0
+      }
+    },
+    "ai_true": {
+      "elapsed_ms": 116.1,
+      "run_id": "c1d9d388b56f4447910c44285d1b7f6f",
+      "summary": {
+        "abstention_count": 7,
+        "abstention_reasons": [
+          "INSUFFICIENT_CAPTURE",
+          "NOT_OBSERVABLE"
+        ],
+        "ai_enabled": true,
+        "all_issue_classes": [
+          "ANOMALY",
+          "DEPRECATED_TLS_VERSION",
+          "FORWARD_SECRECY",
+          "INSECURE_CONFIGURATION",
+          "KEY_EXCHANGE_MECHANISM",
+          "NO_TLS_PROTECTION",
+          "STARTTLS_UPGRADE_FAILURE",
+          "TLS_HANDSHAKE_EVIDENCE"
+        ],
+        "assessment_id": "e59f38982ac55d9d",
+        "capture_id": "c2a84bf4ed973fcdff29bc5dd8ea24791d195fa186be3bbe7a359f68a3201fff",
+        "coverage": {
+          "assessed_fraction": 1.0,
+          "completeness_counts": {
+            "COMPLETE": 1,
+            "INCOMPLETE": 1
+          },
+          "observation_counts": {
+            "OBSERVED": 12,
+            "UNKNOWN": 4
+          },
+          "observation_fractions": {
+            "OBSERVED": 0.75,
+            "UNKNOWN": 0.25
+          },
+          "protocol_counts": {
+            "smtp": 2
+          },
+          "sessions_abstained": 0,
+          "sessions_assessed": 2,
+          "sessions_total": 2
+        },
+        "issue_group_count": 8,
+        "model_summary_role": "secondary prioritisation signal only",
+        "overall_posture": "ADEQUATE",
+        "penalising_issue_classes": [
+          "NO_TLS_PROTECTION"
+        ],
+        "score_band": "ADEQUATE",
+        "score_value": 88.0
+      }
+    }
+  },
+  "scene_id": "scene_c_no_ai_equivalence"
+}

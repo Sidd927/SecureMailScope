@@ -1,5 +1,12 @@
 # ADR-0007 — SQLite per-run + filesystem artifacts
-**Status:** Accepted 2026-09-16
+**Status:** Accepted 2026-09-16 · **SUPERSEDED 2026-09-21 by [ADR-0017](0017-backend-storage-supersession.md)**
+
+> Superseded in part. Written three phases before `PostureAssessment` existed. The
+> per-run database and the shredding of findings/anomaly scores into tables are
+> **withdrawn** — the latter would create a second, independently-writable representation
+> of a security conclusion, which ADR-0016 forbids. SQLite-over-PostgreSQL and
+> filesystem artifacts are **retained**. Read ADR-0017 for the current decision.
+
 **Context** Single-analyst offline forensic tool; moderate data; reproducibility and shareability matter.
 **Options** SQLite · PostgreSQL · analytical formats (parquet/duckdb) · filesystem only.
 **Decision** One SQLite DB per analysis run (keyed by capture hash) for structured

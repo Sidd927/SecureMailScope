@@ -4,7 +4,10 @@ from securemailscope.session.model import (
     TlsState, TransportRole, Transition,
 )
 from securemailscope.session.grouping import StreamGroup, group_streams
-from securemailscope.session.base import ProtocolSessionReconstructor, classify_tls, dedupe
+from securemailscope.session.base import (
+    ProtocolSessionReconstructor, classify_tls, dedupe,
+    negotiated_version, negotiated_cipher, TLS_VERSIONS,
+)
 from securemailscope.session.protocols import (
     SMTPReconstructor, IMAPReconstructor, POP3Reconstructor, RECONSTRUCTORS,
 )
@@ -15,6 +18,7 @@ __all__ = [
     "TlsState", "TransportRole", "Transition",
     "StreamGroup", "group_streams",
     "ProtocolSessionReconstructor", "classify_tls", "dedupe",
+    "negotiated_version", "negotiated_cipher", "TLS_VERSIONS",
     "SMTPReconstructor", "IMAPReconstructor", "POP3Reconstructor", "RECONSTRUCTORS",
     "reconstruct_sessions",
 ]
