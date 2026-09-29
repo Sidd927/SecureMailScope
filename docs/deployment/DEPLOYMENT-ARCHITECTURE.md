@@ -12,9 +12,11 @@ GitHub main (v0.7.1-sih-final state, plus deployment/readiness)
     │     Output: frontend/dist/
     │     Env (build-time): VITE_API_BASE_URL
     │
-    └── Backend → Render Web Service (Docker)
+    └── Backend → Render Web Service (Docker), Free compute plan
           Dockerfile (repo root)
-          FastAPI + uvicorn, TShark, SQLite on a Render Disk
+          FastAPI + uvicorn, TShark, SQLite on the container's own
+          ephemeral filesystem (no Render Disk -- Free web services
+          don't support one; see "Ephemeral storage" below)
           Env: SMS_DATA_DIR, SMS_ALLOWED_ORIGINS, PORT (set by Render)
 ```
 
@@ -68,14 +70,45 @@ output from there.
 
 ## Why SQLite, unchanged
 
-See `docs/deployment/DEPLOYMENT-ACCEPTANCE.md` for the restart-persistence test,
-and the main audit conversation for the full reasoning. Summary: SQLite here is
-deliberately durable application state (`synchronous=FULL`, described in
-`db.py` as a "forensic store"), `max_concurrent_analyses=1` is an explicit,
+SQLite itself is not migrated to anything else, and nothing about its
+*application-layer* design changes for this deployment. It remains deliberately
+durable-by-design application state (`synchronous=FULL`, described in `db.py`
+as a "forensic store"), and `max_concurrent_analyses=1` remains an explicit,
 documented architectural invariant (ADR-0018) — not a limitation this
-deployment needs to work around — and this is a bounded-scale SIH demo, not a
-multi-tenant service. Persistence across restarts/redeploys is achieved with a
-**Render Disk** mounted at `SMS_DATA_DIR`, not a different database engine.
+deployment needs to work around. This is a bounded-scale SIH demo, not a
+multi-tenant service, so nothing here required introducing Postgres or any
+other database engine.
+
+**What did change: where it's deployed.** The rest of this section (and the
+one below) explains the consequence.
+
+## Ephemeral storage on Render Free
+
+Render's **Free** web-service compute plan does not support attaching a
+persistent Disk (that capability requires a paid plan). This deployment
+targets Free, so:
+
+- `SMS_DATA_DIR=/data` is a plain directory inside the container's own
+  filesystem — created by `mkdir -p /data` in the `Dockerfile`, and by
+  `AnalysisService.__init__`'s own `os.makedirs(..., exist_ok=True)` if it
+  didn't already exist. No code change was needed for this: the application
+  already tolerates a completely empty, freshly created data directory on
+  every startup (verified — see `DEPLOYMENT-ACCEPTANCE.md`).
+- That directory, and everything in it — the SQLite catalog and every stored
+  artifact — **does not survive** a service restart, a redeploy, an instance
+  replacement, or Render's own maintenance/recycling of the underlying
+  compute. It is container-local, ephemeral storage, not a mounted volume.
+- **This is an accepted tradeoff for the SIH demonstration deployment, not
+  durable production persistence.** Say exactly that — do not describe this
+  deployment as retaining analysis history across restarts, and do not call
+  it "production-grade storage." A fresh capture submitted after any restart
+  works completely normally; a capture submitted *before* a restart will be
+  gone afterward.
+- If a future deployment needs analyses to survive restarts/redeploys, that
+  requires a separate persistence architecture — e.g. upgrading the Render
+  plan to one with an attachable Disk, or moving the artifact/catalog storage
+  to an external service — evaluated on its own merits at that time. It is
+  explicitly out of scope for this change.
 
 ## Known, pre-existing, unfixed risk
 
@@ -99,3 +132,17 @@ everything, with no per-user scoping — there is no concept of a user at all).
 This was not redesigned as part of this deployment preparation. If the SIH
 demo deployment needs to restrict access, do so at the platform layer (e.g.
 Render's own access controls) rather than inside the application.
+
+## Payment/billing truth
+
+`render.yaml` requests Render's **Free** web-service compute plan
+(`plan: free`) and declares no Disk, so nothing in this Blueprint requires a
+paid resource. That is the accurate, complete claim this document makes.
+
+It does **not** claim that Render's account/workspace signup or verification
+flow can never ask for billing details — that is a platform/account-level
+policy, independent of what any given Blueprint requests, and this repository
+has no visibility into or control over it. If Render's dashboard prompts for
+payment information during account setup, that is an account-level condition
+to resolve with Render directly, not something `render.yaml` can or should
+try to override.

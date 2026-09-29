@@ -63,11 +63,21 @@ a legitimately large capture.
 
 ## Restart loses all analysis history
 
-The Render Disk was not attached, or `SMS_DATA_DIR` doesn't point at its
-mount path. Without a persistent disk, Render's filesystem is ephemeral
-across restarts/redeploys — everything in `/data` (the SQLite catalog and all
-stored artifacts) is lost. Check the Render service's Disks tab and the
-`SMS_DATA_DIR` environment variable together.
+**This is expected on Render's Free plan — not a misconfiguration to fix.**
+Free web services don't support a persistent Disk, so `SMS_DATA_DIR=/data` is
+just a plain directory in the container's own ephemeral filesystem. It is
+recreated empty on every restart, redeploy, instance replacement, or Render
+maintenance recycle; the SQLite catalog and every stored artifact go with it.
+See `DEPLOYMENT-ARCHITECTURE.md` "Ephemeral storage on Render Free."
+
+If durable history genuinely is required, that is a plan/architecture
+decision (a paid Render plan with an attached Disk, or an external storage
+service), not a bug in this deployment's current configuration.
+
+The one thing worth checking: after a restart, the service must still start
+up cleanly against a **freshly empty** `/data` and accept a new submission
+normally. If it does not (e.g. it crashes, or `/api/v1/health` fails), that
+*is* a real bug — see "Backend health check fails" above.
 
 ## PDF report generation fails (JSON/HTML work fine)
 

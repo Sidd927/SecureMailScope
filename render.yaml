@@ -1,6 +1,16 @@
-# Render Blueprint for the SecureMailScope backend.
+# Render Blueprint for the SecureMailScope backend -- Free web-service compute plan.
 # TShark requires Docker (Render's native Python runtime has no apt access) --
 # see docs/deployment/DEPLOYMENT-ARCHITECTURE.md for why.
+#
+# No disk is declared: Render's Free web services do not support persistent disks.
+# SMS_DATA_DIR (/data, see Dockerfile) is a plain directory in the container's own
+# ephemeral filesystem -- it works with zero code changes, but everything in it
+# (the SQLite catalog and all stored artifacts) is lost on every restart, redeploy,
+# instance replacement, or Render maintenance recycle. See
+# docs/deployment/DEPLOYMENT-ARCHITECTURE.md "Ephemeral storage on Render Free" for
+# the full reasoning, and DEPLOYMENT-ACCEPTANCE.md for what this means for the SIH
+# demo specifically. This is a deliberate SIH-demo tradeoff, not an oversight -- do
+# not add a `disk:` block back without upgrading `plan` to a tier that supports one.
 #
 # Apply with: Render Dashboard -> New -> Blueprint -> this repository.
 services:
@@ -9,12 +19,8 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    plan: starter
+    plan: free
     healthCheckPath: /api/v1/health
-    disk:
-      name: securemailscope-data
-      mountPath: /data
-      sizeGB: 1
     envVars:
       - key: SMS_DATA_DIR
         value: /data

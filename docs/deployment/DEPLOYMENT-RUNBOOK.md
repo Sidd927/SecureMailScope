@@ -6,13 +6,21 @@ deploy from.
 
 ## 1. Backend — Render
 
+This deployment targets Render's **Free** web-service compute plan
+(`render.yaml` → `plan: free`). No Disk is attached — Free web services don't
+support one. Stored analyses are **ephemeral**: they do not survive a
+restart, redeploy, instance replacement, or Render maintenance recycle. This
+is an accepted tradeoff for the SIH demo, not durable production storage —
+see `DEPLOYMENT-ARCHITECTURE.md` "Ephemeral storage on Render Free."
+
 1. Render Dashboard → New → Blueprint → select this repository. Render will
    read `render.yaml` at the repo root.
 2. Confirm the service uses `runtime: docker` and `dockerfilePath: ./Dockerfile`
    — do not let Render fall back to a native Python runtime; it cannot install
    TShark (see `DEPLOYMENT-ARCHITECTURE.md`).
-3. Confirm the Render Disk (`securemailscope-data`, mounted at `/data`) is
-   attached. Without it, every redeploy silently loses all stored analyses.
+3. Confirm the plan is **Free** and that no Disk is attached (there is none in
+   `render.yaml`; don't add one by hand in the dashboard — a Free-plan service
+   can't mount one anyway).
 4. Leave `SMS_ALLOWED_ORIGINS` unset for the first deploy (no frontend exists
    to allow yet).
 5. Deploy. First build takes longer than usual — it installs TShark via the
@@ -91,8 +99,10 @@ genuine defect — this mirrors the `v0.7.1-sih-final` engineering freeze.
 ## Rollback procedure
 
 - **Backend:** Render Dashboard → Deploys → select the previous successful
-  deploy → "Redeploy". The Render Disk is untouched by a rollback (it is not
-  part of the image), so stored analyses survive.
+  deploy → "Redeploy". There is no Disk to worry about either way on this
+  plan — stored analyses don't survive a redeploy or a rollback, since both
+  restart the container onto a fresh ephemeral filesystem. This has no data
+  implications precisely because there is no persisted data to lose.
 - **Frontend:** Vercel Dashboard → Deployments → select the previous
   deployment → "Promote to Production". Instant, no data implications (the
   frontend is stateless).

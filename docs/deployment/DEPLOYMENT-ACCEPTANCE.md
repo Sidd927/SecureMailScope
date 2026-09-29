@@ -4,6 +4,12 @@ Run these against the actually-deployed services after `DEPLOYMENT-RUNBOOK.md`.
 Every item here was executed against a real local Docker build of the backend
 during the deployment readiness audit (not assumed) unless marked otherwise.
 
+**This deployment runs on Render's Free web-service compute plan with no
+persistent Disk.** Filesystem/SQLite state is ephemeral — see
+`DEPLOYMENT-ARCHITECTURE.md` "Ephemeral storage on Render Free." Item 21
+below tests for the *correct* ephemeral behavior (clean restart from empty
+state), not for persistence across restarts.
+
 | # | Test | Expected | Verified in audit? |
 |---|---|---|---|
 | 1 | Frontend loads | Vercel URL renders the landing page over HTTPS | Deployment-specific — verify after Vercel deploy |
@@ -26,7 +32,7 @@ during the deployment readiness audit (not assumed) unless marked otherwise.
 | 18 | Path traversal | Hostile filenames never reach disk | Same as above |
 | 19 | CORS | Configured origin allowed; other origins rejected | **Yes — verified both directions, through the real container** |
 | 20 | HTTPS | Both services serve only HTTPS | Deployment-specific — Render and Vercel both provide this by default; verify after deploy |
-| 21 | Restart behavior | Stored assessments survive a backend restart/redeploy | Deployment-specific — requires the Render Disk to actually be attached; verify by restarting the Render service and re-fetching a previous `run_id` |
+| 21 | Restart behavior | **On Render Free (no Disk), stored assessments are EXPECTED to be lost on restart/redeploy — this is not a bug.** Verify the service instead starts cleanly from an empty `/data` and accepts a fresh submission afterward (`state: COMPLETED`), rather than expecting a previous `run_id` to still resolve. | **Yes — verified directly: built the image, ran it against a brand-new, empty data directory, and confirmed startup, health, and a fresh golden-case submission all succeed with zero pre-existing state.** |
 
 **Note on items marked "not re-run against the container":** the backend's
 own test suite (1234 tests, including the hostile-payload and path-traversal
