@@ -31,7 +31,7 @@ H = not verified
 | 17 | ML has no demonstrated detection value | B+C | ADR-0015, ADR-0024 | **0 unique true detections on every held-out split** | "evaluated honestly; zero unique true detections on held-out data" | never claim ML detects attacks |
 | 18 | Feature space leaks generator identity | C | Phase-6 bake-off | **98.6%** separable by generator | "the corpus, not the model, is the limiting factor" | don't present as a model failure |
 | 19 | `--no-ai` equivalence proven | B+C | `test_scene_c_no_ai_equivalence_across_the_whole_stack`; `demo/expected/scene_c_no_ai_equivalence.json` | identical posture, score, penalising findings | "the security conclusion is identical with AI on or off — proven, not asserted" | none |
-| 20 | 1219 tests pass | B | 3 independent full-suite runs | 1219 / 0 fail / 0 skip | "1219 automated tests" | don't claim coverage % (not measured) |
+| 20 | 1234 tests pass | B | 3 independent full-suite runs | 1234 / 0 fail / 0 skip | "1234 automated tests" | don't claim coverage % (not measured) |
 | 21 | No regression from certificate work | B+C | Phase-11 baseline diff vs `v0.5.0-phase10` | 10/10 captures score identically | "adding certificate analysis changed no existing verdict" | none |
 | 22 | Provenance chain complete | A+C | `EvidenceRef`; 13 executions | frame, stream, timestamp, evidence state, provenance on every ref | "every finding traces to specific frames" | not legal chain-of-custody |
 | 23 | Content-addressed integrity | A+B | PCAP SHA-256 → capture_id → assessment_id → report_sha256 | re-hashed on access | "content-addressed and integrity-verified" | none |

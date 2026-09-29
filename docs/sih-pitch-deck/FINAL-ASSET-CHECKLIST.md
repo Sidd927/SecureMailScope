@@ -55,7 +55,7 @@ are marked `NOT CREATED`, not described as if they were ready.
 | **Slide** | 4 (primary visual) |
 | **Source** | `docs/finalization/14-final-release-gate.md`; measurements re-verified 2026-09-23 |
 | **Owner** | ⟨design⟩ |
-| **Required content** | `1219` automated tests, 0 failures · `10` real Postfix/Dovecot captures · `11` published standards · `<1 s` (115–320 ms) per capture · `20/20` identical repeat runs |
+| **Required content** | `1234` automated tests, 0 failures · `10` real Postfix/Dovecot captures · `11` published standards · `<1 s` (115–320 ms) per capture · `20/20` identical repeat runs |
 | **Must not** | round, embellish, or add a coverage percentage |
 
 ## 5. Provenance strip — 🟡 NOT CREATED

@@ -40,7 +40,7 @@ Slide 3 exists to answer exactly that. The pipeline diagram is the response to a
 deliberately provokes.
 
 **3 → 4.** Slide 3 shows an engineered system. The judge's next thought is **"does it work on
-anything real?"** — Slide 4 opens with 1219 tests and 10 real vendor captures. The transition is
+anything real?"** — Slide 4 opens with 1234 tests and 10 real vendor captures. The transition is
 from *architecture* to *evidence*.
 
 **4 → 5.** Slide 4 ends on honestly-stated limits. Having earned trust, the judge now asks **"so

@@ -51,7 +51,7 @@ measurement) · **REAL** (real-vendor capture) · **GEN** (generated capture/fix
 
 | Claim | Slide | Evidence source | Type | Verified? | Safe wording |
 |---|---|---|---|---|---|
-| 1219 automated tests, 0 failures, 0 skips | 4 | 3 independent full-suite runs | TEST+RUN | ✅ | as-is; **do not** add a coverage % (never measured) |
+| 1234 automated tests, 0 failures, 0 skips | 4 | 3 independent full-suite runs | TEST+RUN | ✅ | as-is; **do not** add a coverage % (never measured) |
 | 10 real Postfix + Dovecot captures | 4 | `research/experiments/oq33r/out/` | REAL | ✅ | "real Postfix/Dovecot captures" |
 | 3 protocols, 4 TLS modes | 4 | corpus composition: implicit TLS, STARTTLS/STLS upgrade, plaintext, declined/not-offered | REAL | ✅ | as-is |
 | 115–320 ms per validated capture | 4 | measured end-to-end, cold start included | RUN | ✅ | **never** "real-time" |

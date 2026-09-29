@@ -139,7 +139,7 @@ technical limits stated and mitigated rather than hidden.
 **MUST SHOW:** results strip (4–5 numbers) + risks/mitigation table (3 rows).
 
 **MUST SAY:**
-- *Feasibility:* **1219 automated tests**, 0 failures · validated on **10 real Postfix/Dovecot
+- *Feasibility:* **1234 automated tests**, 0 failures · validated on **10 real Postfix/Dovecot
   captures** across SMTP/IMAP/POP3 and 4 TLS modes · **115–320 ms** per capture · **20/20**
   reproducible demo runs · **runs without network access**; 0 third-party Python runtime
   packages in the analysis core (TShark required as an external binary).
