@@ -58,4 +58,12 @@ EXPOSE 8000
 # --host 0.0.0.0: Docker/Render need the service reachable from outside the
 # container, unlike the 127.0.0.1 local-dev default (see __main__.py's docstring on
 # why that default exists -- this prototype has no authentication, ADR-0011).
-CMD ["python3", "-m", "securemailscope.backend", "--host", "0.0.0.0", "--data-dir", "/data"]
+#
+# $PORT (Render's convention for the port a service must bind) is resolved here,
+# in the deployment layer, not in application code: src/securemailscope/backend/
+# __main__.py is a Phase-8 frozen module (enforced by
+# tests/test_backend_architecture.py::test_frozen_backend_modules_really_are_frozen)
+# that no later phase may edit. --port already accepts an explicit value, so the
+# shell-form CMD below supplies it from $PORT (defaulting to 8000, matching
+# __main__.py's own default) without touching that file.
+CMD python3 -m securemailscope.backend --host 0.0.0.0 --port "${PORT:-8000}" --data-dir /data

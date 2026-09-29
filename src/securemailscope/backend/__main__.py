@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import sys
 
 
@@ -17,9 +16,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="securemailscope.backend")
     parser.add_argument("--host", default="127.0.0.1",
                         help="bind address (default: loopback; there is no auth)")
-    # $PORT is Render's (and most PaaS's) convention for the port a service must bind;
-    # --port still wins if given explicitly, and 8000 remains the local-dev default.
-    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8000")))
+    parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--data-dir", default="./securemailscope-data")
     parser.add_argument("--log-level", default="info")
     args = parser.parse_args(argv)
