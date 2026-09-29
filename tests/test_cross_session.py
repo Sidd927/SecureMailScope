@@ -187,6 +187,25 @@ def test_stable_behaviour_yields_no_deviation():
     assert of_kind(report, Deviation.NONE)
 
 
+def test_control_present_and_consistent_yields_no_deviation():
+    """Negative cross-session case: a real control population exists (a different
+    client at the same server, matching test_control_from_another_client_is_found's
+    setup), and the subject's own behaviour matches both its own history and that
+    control -- so the engine must report no deviation, not withhold a verdict for
+    lack of evidence. This is distinct from test_stable_behaviour_yields_no_deviation
+    (single client, no control at all) and from test_no_control_means_not_applicable
+    (no second client, so contrast is NOT_APPLICABLE): here contrast evidence is
+    genuinely available, and the correct behaviour is a clean absence of a finding.
+    """
+    prior = [mk(i, ts=i) for i in range(6)]
+    controls = [mk(200 + i, client="10.0.0.9", ts=200 + i) for i in range(3)]
+    subject = mk(100, ts=100)  # same defaults as prior/controls: advertised & established
+    report = run(prior + controls + [subject])
+    assert of_kind(report, Deviation.SUSPICIOUS_DEVIATION) == []
+    assert of_kind(report, Deviation.DEVIATION) == []
+    assert of_kind(report, Deviation.NONE)
+
+
 def test_deviation_without_control_stays_ambiguous():
     """The core limitation: a deviation with no control cannot become a conclusion."""
     prior = [mk(i, ts=i) for i in range(6)]
