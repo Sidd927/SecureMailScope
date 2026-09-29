@@ -113,7 +113,7 @@ interface InvestigationContextType {
   selectedEventFrame: number | null;
   selectedEvent: ProtocolEvent | null;
   dossierOpen: boolean;
-  activeView: 'home' | 'workbench';
+  activeView: 'landing' | 'home' | 'workbench';
   activeTab: ForensicTab;
   isLoading: boolean;
   error: string | null;
@@ -134,7 +134,7 @@ interface InvestigationContextType {
   selectEventFrame: (frame: number | null) => void;
   selectEvent: (event: ProtocolEvent | null) => void;
   setDossierOpen: (open: boolean) => void;
-  setActiveView: (view: 'home' | 'workbench') => void;
+  setActiveView: (view: 'landing' | 'home' | 'workbench') => void;
   setActiveTab: (tab: ForensicTab) => void;
   setShowCommandPalette: (show: boolean) => void;
   setShowShortcuts: (show: boolean) => void;
@@ -165,9 +165,14 @@ function normalizeTab(tabParam: string | null): ForensicTab {
   return 'overview';
 }
 
+function readView(raw: string | null): 'landing' | 'home' | 'workbench' {
+  if (raw === 'home' || raw === 'workbench') return raw;
+  return 'landing';
+}
+
 export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const urlParams = useMemo(() => new URLSearchParams(window.location.search), []);
-  const initialView = (urlParams.get('view') as 'home' | 'workbench') || 'home';
+  const initialView = readView(urlParams.get('view'));
   const initialTab = normalizeTab(urlParams.get('tab'));
   const initialRunId = urlParams.get('run_id') || null;
   const initialStreamKey = urlParams.get('session') || null;
@@ -186,7 +191,7 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [selectedEventFrame, setSelectedEventFrame] = useState<number | null>(initialFrame);
   const [selectedEvent, setSelectedEvent] = useState<ProtocolEvent | null>(null);
   const [dossierOpen, setDossierOpen] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<'home' | 'workbench'>(initialView);
+  const [activeView, setActiveView] = useState<'landing' | 'home' | 'workbench'>(initialView);
   const [activeTab, setActiveTab] = useState<ForensicTab>(initialTab);
   const [showCommandPalette, setShowCommandPalette] = useState<boolean>(initialModal === 'command');
   const [showShortcuts, setShowShortcuts] = useState<boolean>(initialModal === 'shortcuts');
@@ -207,8 +212,9 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [filterSeverity, setFilterSeverity] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Sync state to URL without full refresh
+  // Sync state to URL without full refresh. `/` stays the landing entry so Back can return to it.
   useEffect(() => {
+    if (activeView === 'landing') return;
     const params = new URLSearchParams(window.location.search);
     if (activeView) params.set('view', activeView);
     if (activeTab) params.set('tab', activeTab);
@@ -231,6 +237,12 @@ export const InvestigationProvider: React.FC<{ children: React.ReactNode }> = ({
     const newRelativePathQuery = window.location.pathname + '?' + params.toString();
     window.history.replaceState(null, '', newRelativePathQuery);
   }, [activeView, activeTab, activeRunId, selectedStreamKey, selectedFinding, selectedEventFrame]);
+
+  useEffect(() => {
+    const syncView = () => setActiveView(readView(new URLSearchParams(window.location.search).get('view')));
+    window.addEventListener('popstate', syncView);
+    return () => window.removeEventListener('popstate', syncView);
+  }, []);
 
   // Global Keyboard Shortcuts
   useEffect(() => {

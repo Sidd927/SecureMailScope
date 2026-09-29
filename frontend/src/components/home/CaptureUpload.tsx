@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { AlertCircle, ArrowRight, CheckCircle2, ChevronDown, ChevronUp, FileCode, HardDrive, Loader2, RefreshCw, UploadCloud, X } from 'lucide-react';
+import { AlertCircle, ArrowRight, CheckCircle2, ChevronDown, ChevronUp, FileCode, RefreshCw, Upload, X } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
 
 const ACCEPTED_EXTENSIONS = ['pcap', 'pcapng', 'cap'];
@@ -28,10 +28,18 @@ interface CaptureUploadProps {
   disabled?: boolean;
 }
 
+const ANALYSIS_STAGES = [
+  'Reading capture',
+  'Analyzing packets',
+  'Reconstructing sessions',
+  'Inspecting protocols',
+  'Building security assessment',
+] as const;
+
 type IngestPhase =
   | { kind: 'idle' }
   | { kind: 'staged'; file: File; sha256: string; isComputingHash: boolean }
-  | { kind: 'analyzing'; file: File; sha256: string }
+  | { kind: 'analyzing'; file: File; sha256: string; stage: number }
   | { kind: 'error'; message: string; technicalDetail?: string; file?: File };
 
 export const CaptureUpload: React.FC<CaptureUploadProps> = ({
@@ -76,21 +84,31 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
     if (phase.kind !== 'staged') return;
     const { file, sha256 } = phase;
 
-    setPhase({ kind: 'analyzing', file, sha256 });
+    setPhase({ kind: 'analyzing', file, sha256, stage: 0 });
     setShowTechError(false);
+    const started = performance.now();
+    const timer = window.setInterval(() => {
+      setPhase((current) => (
+        current.kind === 'analyzing'
+          ? { ...current, stage: Math.min(current.stage + 1, ANALYSIS_STAGES.length - 1) }
+          : current
+      ));
+    }, 720);
 
     try {
-      // Synchronous backend pipeline: upload -> dissection -> rules -> posture
       await uploadCapture(file, { ai: false });
+      const remain = 3600 - (performance.now() - started);
+      if (remain > 0) await new Promise((resolve) => window.setTimeout(resolve, remain));
       setActiveTab('overview');
     } catch (err: any) {
       setPhase({
         kind: 'error',
-        message: 'The cryptographic analysis engine could not complete processing for this capture.',
+        message: 'This recording could not be checked.',
         technicalDetail: err?.message || String(err),
         file,
       });
     } finally {
+      window.clearInterval(timer);
       if (inputRef.current) inputRef.current.value = '';
     }
   };
@@ -133,7 +151,7 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
   };
 
   return (
-    <section className="sms-ingest-bay" aria-labelledby="sms-ingest-title">
+    <section id="sms-intake" className="sms-ingest-bay" aria-labelledby="sms-ingest-title">
       <input
         ref={inputRef}
         type="file"
@@ -156,19 +174,19 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
           onDragLeave={onDragLeave}
           onDrop={onDrop}
           role="region"
-          aria-label="Packet capture ingestion dropzone"
+          aria-label="Upload a saved email recording"
         >
           <div className="sms-ingest-drop__body">
             <div className="sms-ingest-drop__icon-wrap" aria-hidden="true">
-              <UploadCloud size={32} className="sms-ingest-drop__icon" />
+              <Upload size={18} className="sms-ingest-drop__icon" />
             </div>
 
             <div className="sms-ingest-drop__content">
               <h2 id="sms-ingest-title" className="sms-ingest-drop__title">
-                Start an Investigation
+                Check a recording
               </h2>
               <p className="sms-ingest-drop__desc">
-                Analyze an email packet capture and produce a cryptographic security posture assessment.
+                Upload a saved email capture. You get a score and a short report.
               </p>
             </div>
 
@@ -179,30 +197,17 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
                 onClick={openPicker}
                 disabled={disabled}
               >
-                <HardDrive size={15} aria-hidden="true" />
-                <span>Choose PCAP Capture</span>
+                <Upload size={15} aria-hidden="true" />
+                <span>Choose file</span>
               </button>
-              <span className="sms-ingest-drop__subtext">or drag and drop capture file directly</span>
+              <span className="sms-ingest-drop__subtext">or drag and drop it here</span>
             </div>
 
-            <div className="sms-ingest-drop__meta-bar">
-              <div className="sms-ingest-meta-item">
-                <span className="sms-ingest-meta-label">Supported:</span>
-                <span className="sms-mono sms-ingest-meta-val">PCAP, PCAPNG, CAP</span>
-              </div>
-              <span className="sms-header__sep" aria-hidden="true">•</span>
-              <div className="sms-ingest-meta-item">
-                <span className="sms-ingest-meta-label">Capacity:</span>
-                <span className="sms-mono sms-ingest-meta-val">
-                  {maxUploadBytes != null ? `Up to ${formatBytes(maxUploadBytes)}` : 'Up to 256 MB'}
-                </span>
-              </div>
-              <span className="sms-header__sep" aria-hidden="true">•</span>
-              <div className="sms-ingest-meta-item">
-                <span className="sms-ingest-meta-label">Architecture:</span>
-                <span className="sms-mono sms-ingest-meta-val">Passive TShark Ingest</span>
-              </div>
-            </div>
+            <p className="sms-ingest-drop__foot">
+              .pcap, .pcapng, or .cap
+              <span aria-hidden="true"> · </span>
+              {maxUploadBytes != null ? `up to ${formatBytes(maxUploadBytes)}` : 'up to 256 MB'}
+            </p>
           </div>
         </div>
       )}
@@ -213,7 +218,7 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
           <div className="sms-ingest-staged__head">
             <div className="sms-ingest-staged__title-wrap">
               <CheckCircle2 size={18} className="sms-emerald-icon" aria-hidden="true" />
-              <span className="sms-ingest-staged__title">Capture Staged for Forensic Analysis</span>
+              <span className="sms-ingest-staged__title">Capture staged for forensic analysis</span>
             </div>
             <button
               type="button"
@@ -244,11 +249,9 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
 
               {/* In-Browser Computed Hash */}
               <div className="sms-ingest-hash-row">
-                <span className="sms-mono sms-ingest-hash-label">SHA-256 (computed):</span>
+                <span className="sms-ingest-hash-label">SHA-256</span>
                 {phase.isComputingHash ? (
-                  <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-12)' }}>
-                    Computing cryptographic digest…
-                  </span>
+                  <span className="sms-mono sms-ingest-hash-val">Computing…</span>
                 ) : (
                   <span className="sms-mono sms-ingest-hash-val" title={phase.sha256}>
                     {phase.sha256}
@@ -278,24 +281,28 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
       {/* ANALYZING STATE: Honest Indeterminate Analysis Progress */}
       {phase.kind === 'analyzing' && (
         <div className="sms-ingest-analyzing" role="status" aria-live="polite">
-          <div className="sms-ingest-analyzing__spinner-wrap">
-            <Loader2 size={36} className="sms-spin sms-brand-cyan" aria-hidden="true" />
+          <div className="sms-analyze-visual" aria-hidden="true">
+            <span className="sms-analyze-ring" />
+            <span className="sms-analyze-scan" />
+            <span className="sms-analyze-packet" />
+            <span className="sms-analyze-packet sms-analyze-packet--b" />
           </div>
           <div className="sms-ingest-analyzing__content">
-            <h3 className="sms-ingest-analyzing__title">
-              Dissecting & Scoring {phase.file.name}
-            </h3>
-            <p className="sms-ingest-analyzing__desc">
-              TShark is reconstructing TCP streams, isolating email protocol flows (SMTP, IMAP, POP3), and computing cryptographic posture penalties.
-            </p>
+            <h3 className="sms-ingest-analyzing__title">{ANALYSIS_STAGES[phase.stage]}</h3>
+            <ol className="sms-analyze-stages">
+              {ANALYSIS_STAGES.map((label, index) => (
+                <li key={label} className={index === phase.stage ? 'is-on' : index < phase.stage ? 'is-done' : ''}>
+                  {label}
+                </li>
+              ))}
+            </ol>
             <div className="sms-ingest-analyzing__meta">
+              <span className="sms-mono">{phase.file.name}</span>
+              <span className="sms-header__sep" aria-hidden="true">·</span>
               <span className="sms-mono">{formatBytes(phase.file.size)}</span>
-              <span className="sms-header__sep" aria-hidden="true">•</span>
-              <span className="sms-mono">
-                {maxAnalysisSeconds != null
-                  ? `Timeout threshold: ${Math.round(maxAnalysisSeconds)}s`
-                  : 'Deterministic single-pass pipeline'}
-              </span>
+              {maxAnalysisSeconds != null && (
+                <span className="sms-mono">({Math.round(maxAnalysisSeconds)}s limit)</span>
+              )}
             </div>
           </div>
         </div>
@@ -307,7 +314,7 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
           <div className="sms-ingest-error__head">
             <div className="sms-ingest-error__title-wrap">
               <AlertCircle size={20} className="sms-crimson-icon" aria-hidden="true" />
-              <span className="sms-ingest-error__title">Analysis Could Not Complete</span>
+              <span className="sms-ingest-error__title">This recording could not be checked</span>
             </div>
             <button
               type="button"
@@ -356,8 +363,8 @@ export const CaptureUpload: React.FC<CaptureUploadProps> = ({
               className="sms-btn sms-btn--sm"
               onClick={openPicker}
             >
-              <HardDrive size={13} aria-hidden="true" />
-              <span>Choose Different Capture</span>
+              <Upload size={13} aria-hidden="true" />
+              <span>Choose a different file</span>
             </button>
           </div>
         </div>

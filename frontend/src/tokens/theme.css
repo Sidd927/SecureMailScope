@@ -9,9 +9,9 @@
   /* ==========================================================================
      1. Surface Plane Hierarchy (5-Plane Architecture)
      ========================================================================== */
-  --sms-surface-ground: #070a0f;    /* Deepest ground base: archival workspace */
-  --sms-surface-canvas: #0b0f17;    /* Investigation workspace canvas */
-  --sms-surface-panel: #101622;     /* Data containers, tables, inspectors */
+  --sms-surface-ground: #06090f;
+  --sms-surface-canvas: #0b1220;
+  --sms-surface-panel: #101a2b;
   --sms-surface-elevated: #151d2c;  /* Hover states, active selections, cards */
   --sms-surface-overlay: #1a2436;   /* Dropdowns, modals, command palettes */
   --sms-surface-recessed: #05070b;  /* Packet hex, code, raw evidence wells */
@@ -31,14 +31,14 @@
   --sms-border-hairline: rgba(255, 255, 255, 0.10);
   --sms-border-medium: rgba(255, 255, 255, 0.16);
   --sms-border-strong: rgba(255, 255, 255, 0.24);
-  --sms-border-focus: #00d2ff;
+  --sms-border-focus: #3b82f6;
 
   /* Backward Compatibility Mappings */
   --ds-border-subtle: #16202f;
   --ds-border-light: #1f2b3f;
   --ds-border-medium: #2b3b55;
   --ds-border-strong: #3b4e6d;
-  --ds-border-focus: #00d2ff;
+  --ds-border-focus: #3b82f6;
 
   /* ==========================================================================
      3. Ink & Readability Scale
@@ -59,16 +59,16 @@
   /* ==========================================================================
      4. Brand Accent (Shield / Orbit / Mail motif)
      ========================================================================== */
-  --sms-brand-cyan: #00d2ff;
+  --sms-brand-cyan: #22d3ee;
   --sms-brand-blue: #3b82f6;
-  --sms-brand-purple: #a855f7;
-  --sms-brand-gradient: linear-gradient(135deg, #00d2ff 0%, #3b82f6 50%, #a855f7 100%);
+  --sms-brand-purple: #3b82f6;
+  --sms-brand-gradient: radial-gradient(circle at 30% 20%, #22d3ee 0%, #3b82f6 70%);
   --sms-brand-surface: rgba(0, 210, 255, 0.06);
   --sms-brand-border: rgba(0, 210, 255, 0.24);
 
   /* Carbon Legacy Tokens */
   --ds-carbon: #38bdf8;
-  --ds-carbon-hover: #00d2ff;
+  --ds-carbon-hover: #22d3ee;
   --ds-carbon-soft: rgba(56, 189, 248, 0.08);
   --ds-carbon-border: rgba(56, 189, 248, 0.28);
 
@@ -271,10 +271,10 @@
   /* ==========================================================================
      10. Border Radii & Elevation
      ========================================================================== */
-  --ds-radius-sm: 3px;
-  --ds-radius-md: 5px;
-  --ds-radius-lg: 8px;
-  --ds-radius-xl: 12px;
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 10px;
+  --ds-radius-lg: 12px;
+  --ds-radius-xl: 14px;
 
   --ds-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.45);
   --ds-shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);

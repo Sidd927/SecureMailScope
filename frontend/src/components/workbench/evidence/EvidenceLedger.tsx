@@ -4,6 +4,7 @@ import type { FindingRow } from '../../../api/types';
 import { evidenceRefsForFinding } from '../../../utils/findingEvidence';
 import { EVIDENCE_STATES } from '../../../utils/evidence';
 import { severityRank } from '../../../utils/severity';
+import { ClipboardList, Search } from 'lucide-react';
 import { EvidenceBadge } from '../../common/EvidenceBadge';
 import { Panel } from '../../common/Panel';
 import { EmptyState } from '../../common/StateViews';
@@ -43,14 +44,16 @@ export const EvidenceLedger: React.FC = () => {
   const traceFinding = (f: FindingRow) => { selectFinding(f); pivotToProvenance(f.title); };
 
   return (
-    <div className="sms-page">
-      <header className="sms-page-head">
+    <div className="sms-page sms-evidence-page">
+      <header className="sms-page-head sms-evidence-hero">
         <div>
-          <h1 className="sms-page-title">Evidence & findings</h1>
-          <p className="sms-page-sub">Each finding is shown with the evidence fields the rule engine cited, their observed values, and the frames that contain them.</p>
+          <h1 className="sms-page-title">Findings</h1>
+          <p className="sms-page-sub">Severity, affected session, and proof.</p>
         </div>
         {chips.length > 0 && (
-          <div role="group" aria-label="Filter by evidence state" style={{ display: 'flex', gap: 'var(--ds-space-8)', flexWrap: 'wrap' }}>
+          <details className="sms-evidence-filters">
+            <summary>Filter</summary>
+            <div role="group" aria-label="Filter by evidence state" style={{ display: 'flex', gap: 'var(--ds-space-8)', flexWrap: 'wrap' }}>
             {chips.map((c) => {
               const on = stateFilter === c.state;
               return (
@@ -66,14 +69,20 @@ export const EvidenceLedger: React.FC = () => {
                 </button>
               );
             })}
-          </div>
+            </div>
+          </details>
         )}
       </header>
 
-      <div className="sms-split sms-split--60">
-        <Panel title="Findings" meta={stateFilter ? `${visible.length} of ${findings.length}` : String(findings.length)} flush>
+      <div className="sms-split sms-split--60 sms-evidence-grid">
+        <Panel
+          className="sms-evidence-card"
+          title={<span className="sms-evidence-card__label"><Search size={14} aria-hidden="true" /> Findings</span>}
+          meta={findings.length === 0 ? undefined : stateFilter ? `${visible.length} of ${findings.length}` : String(findings.length)}
+          flush={findings.length > 0}
+        >
           {findings.length === 0 ? (
-            <EmptyState title="No findings for this capture" />
+            <EmptyState icon={<Search size={28} aria-hidden="true" />} title="No findings in this capture." />
           ) : (
             <FindingsTable
               findings={visible}
@@ -84,8 +93,11 @@ export const EvidenceLedger: React.FC = () => {
             />
           )}
         </Panel>
-        <div className="sms-sticky">
-          <Panel title="Focused evidence">
+        <div className="sms-evidence-focus">
+          <Panel
+            className="sms-evidence-card"
+            title={<span className="sms-evidence-card__label"><ClipboardList size={14} aria-hidden="true" /> Focused evidence</span>}
+          >
             <FindingEvidenceDetail
               finding={selected}
               assessment={assessment}

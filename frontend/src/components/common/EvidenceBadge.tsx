@@ -6,6 +6,8 @@ interface EvidenceBadgeProps {
   state: string | null | undefined;
   size?: 'sm' | 'md';
   count?: number;
+  /** Sentence-case pill with a status dot. Same state, label, and count as the default badge. */
+  variant?: 'default' | 'pill';
 }
 
 const ICONS: Record<string, React.ElementType> = {
@@ -17,10 +19,19 @@ const ICONS: Record<string, React.ElementType> = {
   NOT_OBSERVABLE: EyeOff,
 };
 
-export const EvidenceBadge: React.FC<EvidenceBadgeProps> = ({ state, size = 'md', count }) => {
+export const EvidenceBadge: React.FC<EvidenceBadgeProps> = ({ state, size = 'md', count, variant = 'default' }) => {
   const meta = evidenceStateMeta(state);
   if (!meta) {
     return <span style={{ fontFamily: 'var(--ds-font-mono)', fontSize: 'var(--ds-text-12)', color: 'var(--ds-ink-muted)' }}>—</span>;
+  }
+  if (variant === 'pill') {
+    return (
+      <span className={`sms-ev-pill sms-ev-pill--${meta.token}`} title={`Evidence state: ${meta.label}`}>
+        <span className="sms-ev-pill__dot" aria-hidden="true" />
+        <span>{meta.label}</span>
+        {count !== undefined && <span className="sms-ev-pill__count">{count}</span>}
+      </span>
+    );
   }
   const Icon = ICONS[meta.state];
   const isSm = size === 'sm';

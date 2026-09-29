@@ -32,42 +32,42 @@ export const NextInvestigations: React.FC<NextInvestigationsProps> = ({
   const pathways = [
     {
       tab: 'evidence' as ForensicTab,
-      title: 'Ranked Findings',
+      title: 'Findings',
       count: findingsCount,
       countLabel: 'finding',
-      desc: 'Inspect detailed findings, certainty metrics, and associated wire evidence fields.',
+      desc: 'Severity and the frames that prove each issue.',
       icon: Table,
       action: 'Inspect Findings',
       accent: findingsCount > 0 ? 'var(--ds-sev-critical-text)' : 'var(--sms-text-secondary)',
     },
     {
       tab: 'journey' as ForensicTab,
-      title: 'Protocol Journey',
+      title: 'Protocol',
       count: sessionCount,
       countLabel: 'stream',
-      desc: 'Trace chronological packet sequence and wire state machine from greeting to close.',
+      desc: 'SMTP, IMAP, and POP3 from greeting to close.',
       icon: Network,
       action: 'Open Protocol Journey',
       accent: 'var(--sms-brand-cyan)',
     },
     {
       tab: 'certs' as ForensicTab,
-      title: 'Certificate Forensics',
+      title: 'Certificates',
       count: certCount,
       countLabel: 'cert',
-      desc: 'Examine X.509 public key strength, signature hashes, and TLS 1.3 encrypted handshake boundaries.',
+      desc: 'Key size, signature, and what the handshake showed.',
       icon: KeyRound,
       action: 'Examine Certificates',
-      accent: '#a855f7',
+      accent: 'var(--sms-brand-cyan)',
     },
     {
       tab: 'cross_session' as ForensicTab,
-      title: 'Cross-Session Analysis',
+      title: 'Cross-Session',
       count: sessionCount,
       countLabel: 'endpoint',
       desc: hasDeviations
         ? 'Active behavioral deviation: Subject 10.0.0.6 lacks STARTTLS capability advertised by Control 10.0.0.7.'
-        : 'Comparative baseline across all reconstructed TCP sessions to the same service.',
+        : 'Same service, compared across TCP sessions.',
       icon: Layers,
       action: 'Compare Sessions',
       accent: hasDeviations ? 'var(--ds-sev-high-text)' : 'var(--sms-text-secondary)',
@@ -75,16 +75,16 @@ export const NextInvestigations: React.FC<NextInvestigationsProps> = ({
     },
     {
       tab: 'provenance' as ForensicTab,
-      title: 'Traceability & Provenance',
-      desc: 'Trace unbroken evidentiary chain from PCAP bytes to rule citation and posture calculation.',
+      title: 'Provenance',
+      desc: 'PCAP bytes, the rule, and the score.',
       icon: GitBranch,
       action: 'Trace Chain',
       accent: 'var(--sms-brand-blue)',
     },
     {
       tab: 'report' as ForensicTab,
-      title: 'Forensic Report',
-      desc: 'Official cryptographic posture assessment deliverable exportable in PDF, HTML, or JSON format.',
+      title: 'Report',
+      desc: 'The posture assessment, ready to export.',
       icon: FileText,
       action: 'Generate Report',
       accent: 'var(--sms-brand-cyan)',
@@ -94,10 +94,7 @@ export const NextInvestigations: React.FC<NextInvestigationsProps> = ({
   return (
     <section className="sms-next-investigations" aria-label="Next Investigation Pathways">
       <div className="sms-next-investigations__head">
-        <span className="sms-label">Investigate further</span>
-        <span className="sms-muted sms-text-xs">
-          Select an investigation pathway to dive deeper into technical evidence
-        </span>
+        <h3 className="sms-section-title">Investigate further</h3>
       </div>
 
       <div className="sms-next-grid">

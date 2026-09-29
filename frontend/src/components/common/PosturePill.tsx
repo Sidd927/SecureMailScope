@@ -35,7 +35,7 @@ export const PosturePill: React.FC<PosturePillProps> = ({ band, score, withheld 
         alignItems: 'center',
         gap: isLg ? 'var(--ds-space-8)' : 'var(--ds-space-4)',
         padding: isLg ? 'var(--ds-space-4) var(--ds-space-12)' : isSm ? '1px 6px' : '2px var(--ds-space-8)',
-        borderRadius: 'var(--ds-radius-sm)',
+        borderRadius: '999px',
         backgroundColor: meta ? `var(--ds-posture-${meta.token}-bg)` : 'transparent',
         border: `1px solid ${rule}`,
         color: text,

@@ -24,9 +24,6 @@ export const FindingsTable: React.FC<FindingsTableProps> = ({
       {findings.map((f) => {
         const active = isSame(selected, f);
         const primaryFrame = f.frames && f.frames.length > 0 ? f.frames[0] : null;
-        const ruleId = f.source_rule_ids?.[0] || f.issue_class || null;
-        const citation = f.citations?.[0];
-        const standardStr = citation ? [citation.standard, citation.section].filter(Boolean).join(' ') : null;
         const sevClass = f.severity ? f.severity.toLowerCase() : 'info';
 
         return (
@@ -50,16 +47,10 @@ export const FindingsTable: React.FC<FindingsTableProps> = ({
                 <span className={`sms-queue-row__sev sms-queue-row__sev--${sevClass}`}>
                   {f.severity || 'INFO'}
                 </span>
-                <span className="sms-queue-row__sep" aria-hidden="true">·</span>
-                <span className="sms-queue-row__certainty">
-                  {f.certainty}
-                </span>
               </div>
 
-              {/* Title: Human Layer 1 */}
               <h3 className="sms-queue-row__title">{f.title}</h3>
 
-              {/* Scope & Wire Context */}
               <div className="sms-queue-row__meta">
                 {f.affected_sessions != null && (
                   <span>{f.affected_sessions} session{f.affected_sessions === 1 ? '' : 's'}</span>
@@ -77,52 +68,41 @@ export const FindingsTable: React.FC<FindingsTableProps> = ({
                   </>
                 )}
               </div>
-
-              {/* Normative / Rule Machine Layer 2 */}
-              <div className="sms-queue-row__anchors">
-                {ruleId && <span className="sms-mono sms-queue-row__rule">{ruleId}</span>}
-                {standardStr && (
-                  <>
-                    <span className="sms-queue-row__sep" aria-hidden="true">·</span>
-                    <span className="sms-queue-row__standard">{standardStr}</span>
-                  </>
-                )}
-              </div>
             </div>
 
             {/* Action Pivot */}
             <div className="sms-queue-row__actions" onClick={(e) => e.stopPropagation()}>
               <button
                 type="button"
-                className={`sms-btn sms-btn--sm${active ? ' sms-btn--primary' : ''}`}
+                className={`sms-btn sms-btn--sm sms-queue-iconbtn${active ? ' sms-btn--primary' : ''}`}
                 onClick={() => onSelect(f)}
                 title="Inspect evidence details"
+                aria-label="Inspect evidence details"
               >
-                <Search size={12} aria-hidden="true" />
-                <span>Inspect</span>
+                <Search size={13} aria-hidden="true" />
               </button>
 
               {primaryFrame != null && onOpenFrame && (
                 <button
                   type="button"
-                  className="sms-btn sms-btn--sm sms-btn--ghost"
+                  className="sms-btn sms-btn--sm sms-btn--ghost sms-queue-iconbtn"
                   onClick={() => onOpenFrame(primaryFrame, f.stream_key ?? undefined)}
                   title={`Open Frame #${primaryFrame} in Protocol Journey`}
+                  aria-label={`Open Frame #${primaryFrame}`}
                 >
-                  <Radio size={12} aria-hidden="true" />
-                  <span>#{primaryFrame}</span>
+                  <Radio size={13} aria-hidden="true" />
                 </button>
               )}
 
               {onTrace && (
                 <button
                   type="button"
-                  className="sms-btn sms-btn--sm sms-btn--ghost"
+                  className="sms-btn sms-btn--sm sms-btn--ghost sms-queue-iconbtn"
                   onClick={() => onTrace(f)}
                   title="Trace analytical provenance"
+                  aria-label="Trace provenance"
                 >
-                  <GitFork size={12} aria-hidden="true" />
-                  <span>Trace</span>
+                  <GitFork size={13} aria-hidden="true" />
                 </button>
               )}
             </div>

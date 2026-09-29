@@ -39,11 +39,11 @@ export const ProvenanceGraph: React.FC = () => {
   );
 
   return (
-    <div className="sms-page">
+    <div className="sms-page sms-stage">
       <header className="sms-page-head">
         <div>
           <h1 className="sms-page-title">Provenance</h1>
-          <p className="sms-page-sub">The forensic trace from capture bytes to a posture deduction: which stream, which evidence fields and frames, which rules, which standards.</p>
+          <p className="sms-page-sub">From the capture to the score.</p>
         </div>
       </header>
 

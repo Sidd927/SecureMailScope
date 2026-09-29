@@ -38,9 +38,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <defs>
         {/* Core Brand Accent Gradient: Cyan -> Blue -> Purple */}
         <linearGradient id="sms-logo-accent" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#00d2ff" />
-          <stop offset="50%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#a855f7" />
+          <stop offset="0%" stopColor="#22d3ee" />
+          <stop offset="100%" stopColor="#3b82f6" />
         </linearGradient>
 
         {/* Shield Ambient Fill */}
@@ -94,8 +93,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           strokeLinecap="round"
         />
         {/* Orbital Node / Spark */}
-        <circle cx="31.2" cy="18" r="1.75" fill="#00d2ff" />
-        <circle cx="31.2" cy="18" r="3" stroke="#00d2ff" strokeWidth="0.75" strokeOpacity="0.5" />
+        <circle cx="31.2" cy="18" r="1.75" fill="#22d3ee" />
+        <circle cx="31.2" cy="18" r="3" stroke="#22d3ee" strokeWidth="0.75" strokeOpacity="0.5" />
       </g>
     </svg>
   );

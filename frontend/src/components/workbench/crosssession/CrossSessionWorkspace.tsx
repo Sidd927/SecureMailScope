@@ -4,8 +4,27 @@ import { useInvestigation } from '../../../context/InvestigationContext';
 import { sourcesForFinding } from '../../../utils/findingEvidence';
 import { Panel } from '../../common/Panel';
 import { EmptyState, ErrorState, SkeletonRows } from '../../common/StateViews';
+import { presentBasis } from '../evidence/plainEvidence';
 import { DeviationPanel } from './DeviationPanel';
 import { SessionMatrix } from './SessionMatrix';
+import type { SessionEvidence } from '../../../api/types';
+
+function sideFacts(list: SessionEvidence[]) {
+  const starttls = list.filter((s) => s.evidence?.starttls_advertised?.value === true).length;
+  const tls = list.filter((s) => {
+    const state = (s.tls_state || '').toUpperCase();
+    return state !== '' && state !== 'NONE' && state !== 'UNKNOWN';
+  }).length;
+  const plaintextAuth = list.filter((s) => s.evidence?.auth_activity?.value === true && s.evidence?.starttls_advertised?.value !== true && ((s.tls_state || '').toUpperCase() === 'NONE' || !s.tls_state)).length;
+  return {
+    starttls: starttls > 0 ? `OBSERVED (${starttls})` : `NOT OBSERVED (${list.length})`,
+    tls: tls > 0 ? `ESTABLISHED (${tls})` : 'CLEAR',
+    auth: plaintextAuth > 0 ? `PLAINTEXT (${plaintextAuth})` : 'NONE RECORDED',
+    starttlsOn: starttls > 0,
+    tlsOn: tls > 0,
+    authPlain: plaintextAuth > 0,
+  };
+}
 
 export const CrossSessionWorkspace: React.FC = () => {
   const { sessions, dashboard, assessment, isLoading, sectionErrors, selectRun, activeRunId } = useInvestigation();
@@ -25,15 +44,15 @@ export const CrossSessionWorkspace: React.FC = () => {
     if (sessions.length < 2) {
       return { subjectEndpoint: null, controlEndpoint: null, subjectSessions: [], controlSessions: [] };
     }
-    const subList = sessions.filter((s) => subjects.has(s.stream_key) || (s.client?.ip === '10.0.0.6'));
-    const ctrlList = sessions.filter((s) => !subjects.has(s.stream_key) && (s.client?.ip !== '10.0.0.6'));
-    const subEp = subList[0]?.client?.ip ?? '10.0.0.6';
-    const ctrlEp = ctrlList[0]?.client?.ip ?? '10.0.0.7';
+    const subList = sessions.filter((s) => subjects.has(s.stream_key));
+    const subEp = subList[0]?.client?.ip ?? sessions.find((s) => s.client?.ip)?.client.ip ?? 'not recorded';
+    const other = sessions.find((s) => s.client?.ip && s.client.ip !== subEp);
+    const ctrlEp = other?.client?.ip ?? 'not recorded';
     return {
       subjectEndpoint: subEp,
       controlEndpoint: ctrlEp,
-      subjectSessions: subList.length > 0 ? subList : sessions.slice(0, Math.floor(sessions.length / 2)),
-      controlSessions: ctrlList.length > 0 ? ctrlList : sessions.slice(Math.floor(sessions.length / 2)),
+      subjectSessions: sessions.filter((s) => s.client?.ip === subEp),
+      controlSessions: ctrlEp === 'not recorded' ? [] : sessions.filter((s) => s.client?.ip === ctrlEp),
     };
   }, [sessions, subjects]);
 
@@ -53,12 +72,16 @@ export const CrossSessionWorkspace: React.FC = () => {
       </Panel>
     );
   } else {
+    const subjectFacts = sideFacts(subjectSessions);
+    const controlFacts = sideFacts(controlSessions);
+    const diverge = (a: string, b: string) => a.split(' ')[0] !== b.split(' ')[0];
+    const lead = deviations[0];
     body = (
       <div className="sms-stack">
         {/* 1. FIRST: SUBJECT VS CONTROL COMPARISON (SECTION 16) */}
         <section className="sms-cross-session-summary-card" aria-label="Subject vs Control baseline comparison">
           <header className="sms-cross-session-summary__header">
-            <span className="sms-label">Control-endpoint comparative analysis</span>
+            <span className="sms-label">Subject and control</span>
             <span className="sms-mono sms-text-xs sms-muted">{sessions.length} total streams evaluated</span>
           </header>
 
@@ -73,11 +96,15 @@ export const CrossSessionWorkspace: React.FC = () => {
               <div className="sms-endpoint-facts">
                 <div className="sms-endpoint-fact-row">
                   <span className="sms-endpoint-fact-label">STARTTLS</span>
-                  <span className="sms-endpoint-fact-val sms-endpoint-fact-val--bad">NOT OBSERVED ({subjectSessions.length} sessions)</span>
+                  <span className={`sms-endpoint-fact-val ${subjectFacts.starttlsOn ? 'sms-endpoint-fact-val--good' : 'sms-endpoint-fact-val--bad'}`}>{subjectFacts.starttls}</span>
+                </div>
+                <div className="sms-endpoint-fact-row">
+                  <span className="sms-endpoint-fact-label">TLS</span>
+                  <span className={`sms-endpoint-fact-val ${subjectFacts.tlsOn ? 'sms-endpoint-fact-val--good' : 'sms-endpoint-fact-val--bad'}`}>{subjectFacts.tls}</span>
                 </div>
                 <div className="sms-endpoint-fact-row">
                   <span className="sms-endpoint-fact-label">AUTH</span>
-                  <span className="sms-endpoint-fact-val sms-endpoint-fact-val--bad">PLAINTEXT AUTH ({subjectSessions.length} sessions)</span>
+                  <span className={`sms-endpoint-fact-val ${subjectFacts.authPlain ? 'sms-endpoint-fact-val--bad' : 'sms-endpoint-fact-val--good'}`}>{subjectFacts.auth}</span>
                 </div>
               </div>
             </div>
@@ -97,11 +124,15 @@ export const CrossSessionWorkspace: React.FC = () => {
               <div className="sms-endpoint-facts">
                 <div className="sms-endpoint-fact-row">
                   <span className="sms-endpoint-fact-label">STARTTLS</span>
-                  <span className="sms-endpoint-fact-val sms-endpoint-fact-val--good">OBSERVED ({controlSessions.length} sessions)</span>
+                  <span className={`sms-endpoint-fact-val ${controlFacts.starttlsOn ? 'sms-endpoint-fact-val--good' : 'sms-endpoint-fact-val--bad'}`}>{controlSessions.length ? controlFacts.starttls : 'not recorded'}</span>
                 </div>
                 <div className="sms-endpoint-fact-row">
                   <span className="sms-endpoint-fact-label">TLS</span>
-                  <span className="sms-endpoint-fact-val sms-endpoint-fact-val--good">TLS ESTABLISHED ({controlSessions.length} sessions)</span>
+                  <span className={`sms-endpoint-fact-val ${controlFacts.tlsOn ? 'sms-endpoint-fact-val--good' : 'sms-endpoint-fact-val--bad'}`}>{controlSessions.length ? controlFacts.tls : 'not recorded'}</span>
+                </div>
+                <div className="sms-endpoint-fact-row">
+                  <span className="sms-endpoint-fact-label">AUTH</span>
+                  <span className={`sms-endpoint-fact-val ${controlFacts.authPlain ? 'sms-endpoint-fact-val--bad' : 'sms-endpoint-fact-val--good'}`}>{controlSessions.length ? controlFacts.auth : 'not recorded'}</span>
                 </div>
               </div>
             </div>
@@ -119,45 +150,35 @@ export const CrossSessionWorkspace: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">STARTTLS</th>
-                  <td className="sms-mono" style={{ color: 'var(--ds-crimson-ink)' }}>NOT OBSERVED</td>
-                  <td className="sms-mono" style={{ color: 'var(--ds-emerald-ink)' }}>OBSERVED</td>
-                  <td><span className="sms-badge sms-badge--critical">Divergent</span></td>
-                </tr>
-                <tr>
-                  <th scope="row">TLS</th>
-                  <td className="sms-mono" style={{ color: 'var(--ds-crimson-ink)' }}>CLEAR</td>
-                  <td className="sms-mono" style={{ color: 'var(--ds-emerald-ink)' }}>ESTABLISHED</td>
-                  <td><span className="sms-badge sms-badge--critical">Divergent</span></td>
-                </tr>
-                <tr>
-                  <th scope="row">AUTH</th>
-                  <td className="sms-mono" style={{ color: 'var(--ds-crimson-ink)' }}>PLAINTEXT</td>
-                  <td className="sms-mono" style={{ color: 'var(--ds-emerald-ink)' }}>PROTECTED</td>
-                  <td><span className="sms-badge sms-badge--critical">Divergent</span></td>
-                </tr>
+                {[
+                  ['STARTTLS', subjectFacts.starttls, controlSessions.length ? controlFacts.starttls : 'not recorded'],
+                  ['TLS', subjectFacts.tls, controlSessions.length ? controlFacts.tls : 'not recorded'],
+                  ['AUTH', subjectFacts.auth, controlSessions.length ? controlFacts.auth : 'not recorded'],
+                ].map(([dim, left, right]) => (
+                  <tr key={dim}>
+                    <th scope="row">{dim}</th>
+                    <td className="sms-mono">{left}</td>
+                    <td className="sms-mono">{right}</td>
+                    <td><span className={`sms-badge ${diverge(left, right) ? 'sms-badge--critical' : ''}`}>{diverge(left, right) ? 'Divergent' : 'Aligned'}</span></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
           {/* SUPPORTED DEVIATION CALLOUT */}
-          <div className="sms-deviation-callout">
-            <div className="sms-deviation-callout__head">
-              <AlertTriangle size={15} className="sms-amber-icon" aria-hidden="true" />
-              <h4 className="sms-deviation-callout__title">SUPPORTED DEVIATION (CS-STARTTLS-001)</h4>
+          {lead && (
+            <div className="sms-deviation-callout">
+              <div className="sms-deviation-callout__head">
+                <AlertTriangle size={15} className="sms-amber-icon" aria-hidden="true" />
+                <h4 className="sms-deviation-callout__title">{lead.source.rule_id || 'Deviation'} · {lead.finding.title}</h4>
+              </div>
+              <blockquote className="sms-deviation-callout__quote">
+                {presentBasis(lead.finding.conclusion || lead.finding.explanation || lead.finding.title, 180).show}
+              </blockquote>
+              <p className="sms-forensic-caveat-text">Compared with the other endpoint in this capture. Not an attacker identity.</p>
             </div>
-            <blockquote className="sms-deviation-callout__quote">
-              “This endpoint consistently lacks the upgrade capability while comparable endpoints at the same server consistently have it.”
-            </blockquote>
-          </div>
-
-          {/* CRITICAL FORENSIC CAVEAT */}
-          <div className="sms-forensic-caveat-box" role="note" aria-label="Forensic Epistemic Caveat">
-            <p className="sms-forensic-caveat-text">
-              <strong>Forensic boundary:</strong> This supports a deviation from comparable endpoint behaviour. It does not establish capability removal, attacker identity, or causality beyond the observed capture.
-            </p>
-          </div>
+          )}
 
           <div className="sms-cross-session-actions">
             <button
@@ -196,11 +217,11 @@ export const CrossSessionWorkspace: React.FC = () => {
   }
 
   return (
-    <div className="sms-page">
+    <div className="sms-page sms-stage">
       <header className="sms-page-head">
         <div>
-          <h1 className="sms-page-title">Cross-session comparison</h1>
-          <p className="sms-page-sub">How each TCP stream in this capture compares, field by field. Determinations come from the engine's baseline and control-endpoint reasoning, not from this view.</p>
+          <h1 className="sms-page-title">Cross-session</h1>
+          <p className="sms-page-sub">Subject endpoint against the control endpoints.</p>
         </div>
       </header>
       {body}

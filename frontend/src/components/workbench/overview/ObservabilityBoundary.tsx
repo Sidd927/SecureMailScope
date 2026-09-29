@@ -18,8 +18,8 @@ export const ObservabilityBoundary: React.FC<ObservabilityBoundaryProps> = ({ da
           <Shield size={16} style={{ color: 'var(--sms-brand-cyan)' }} aria-hidden="true" />
           <h3 className="sms-observability-boundary__title">Observability Boundary</h3>
         </div>
-        <span className="sms-muted sms-mono sms-text-xs">
-          What this capture establishes vs what it cannot establish
+        <span className="sms-muted sms-text-xs">
+          What this capture can prove
         </span>
       </div>
 
@@ -93,7 +93,7 @@ export const ObservabilityBoundary: React.FC<ObservabilityBoundaryProps> = ({ da
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
           >
-            <span>{expanded ? 'Hide technical limitations & abstentions' : 'Inspect technical limitations & abstentions'}</span>
+            <span>{expanded ? 'Hide limitations' : 'Limitations'}</span>
             {expanded ? <ChevronUp size={13} aria-hidden="true" /> : <ChevronDown size={13} aria-hidden="true" />}
           </button>
 

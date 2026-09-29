@@ -1,0 +1,306 @@
+.sms-app--landing {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.sms-landing {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #06090f;
+}
+
+.sms-gate__nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  padding: 10px 28px;
+  background: rgba(6, 9, 15, 0.62);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  backdrop-filter: blur(16px);
+}
+
+.sms-gate__brand {
+  justify-self: start;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sms-gate__links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.sms-gate__links a {
+  color: #d5deea;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.sms-gate__links a:hover,
+.sms-gate__links a:focus-visible {
+  color: #f8fafc;
+}
+
+.sms-gate__links a:focus-visible,
+.sms-gate__cta:focus-visible {
+  outline: 2px solid #dbeafe;
+  outline-offset: 3px;
+}
+
+.sms-gate__nav .sms-gate__cta--nav {
+  justify-self: end;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.sms-gate {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #06090f;
+}
+
+.sms-gate__rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sms-gate__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 36% 32% at 50% 42%, rgba(6, 9, 15, 0.72), rgba(6, 9, 15, 0.28) 58%, transparent 78%),
+    linear-gradient(180deg, rgba(6, 9, 15, 0.28), transparent 16%, transparent 68%, rgba(5, 8, 14, 0.2));
+}
+
+.sms-gate__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: min(760px, calc(100% - 48px));
+  padding: 12px 0 10vh;
+}
+
+.sms-gate__eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb0c4;
+}
+
+.sms-gate__title {
+  margin: 16px 0 0;
+  font-size: clamp(2.7rem, 6.4vw, 4.75rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #f8fafc;
+}
+
+.sms-gate__title .is-mail {
+  background: linear-gradient(100deg, #22d3ee, #60a5fa 55%, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sms-gate__sub {
+  margin: 18px 0 0;
+  max-width: 16em;
+  font-size: clamp(1.2rem, 2.2vw, 1.65rem);
+  font-weight: 560;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #eef3f9;
+}
+
+.sms-gate__desc {
+  margin: 16px 0 0;
+  max-width: 38em;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #9aabbf;
+}
+
+.sms-gate__cta {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #2563eb, #22d3ee);
+  color: #f8fafc;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.sms-gate__cta svg {
+  transition: transform 160ms ease;
+}
+
+.sms-gate__cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.sms-gate__cta:active {
+  transform: scale(0.98);
+}
+
+.sms-gate__bloom {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  z-index: 1;
+  width: 42vmax;
+  height: 42vmax;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28), rgba(37, 99, 235, 0.08) 46%, transparent 70%);
+}
+
+.sms-landing.is-leaving .sms-gate__cta {
+  transform: scale(0.98);
+  filter: brightness(1.12);
+  box-shadow: 0 0 28px rgba(34, 211, 238, 0.5);
+  pointer-events: none;
+}
+
+.sms-landing.is-leaving .sms-gate__cta svg {
+  transform: translateX(4px);
+}
+
+.sms-landing.is-leaving .sms-gate__nav {
+  animation: sms-nav-leave 340ms ease forwards;
+}
+
+.sms-landing.is-leaving .sms-gate__copy {
+  animation: sms-hero-leave 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.sms-landing.is-leaving .sms-gate__bloom {
+  animation: sms-bloom 680ms ease forwards;
+}
+
+@keyframes sms-nav-leave {
+  to { opacity: 0; }
+}
+
+@keyframes sms-hero-leave {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.96); }
+}
+
+@keyframes sms-bloom {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.25); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.35); }
+}
+
+.sms-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 46% 42% at 50% 48%, rgba(37, 99, 235, 0.42), transparent 70%),
+    #05080f;
+}
+
+.sms-veil.is-on {
+  pointer-events: auto;
+  animation: sms-veil-in 380ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.sms-veil.is-on.is-out {
+  pointer-events: none;
+  animation: sms-veil-out 440ms ease forwards;
+}
+
+@keyframes sms-veil-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sms-veil-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+#main-content.is-revealing {
+  animation: sms-reveal 440ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sms-reveal {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@media (max-width: 640px) {
+  .sms-gate__nav {
+    grid-template-columns: 1fr auto;
+    padding: 10px 16px;
+  }
+  .sms-gate__links { display: none; }
+  .sms-gate__copy { padding-bottom: 8vh; }
+  .sms-gate__title { font-size: clamp(2.15rem, 11vw, 3rem); }
+  .sms-gate__sub { font-size: 1.15rem; }
+}
+
+@media (max-width: 700px) {
+  #main-content.is-revealing { animation-name: sms-reveal-lite; }
+  .sms-landing.is-leaving .sms-gate__bloom { animation-duration: 420ms; }
+}
+
+@keyframes sms-reveal-lite {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sms-gate__cta:hover { transform: none; }
+  .sms-gate__cta svg { transition-duration: 120ms; }
+  .sms-veil.is-on { animation-duration: 80ms; }
+  .sms-veil.is-on.is-out { animation-duration: 80ms; }
+  .sms-landing.is-leaving .sms-gate__copy { animation: none; opacity: 0; transition: opacity 100ms linear; }
+  .sms-landing.is-leaving .sms-gate__bloom,
+  .sms-landing.is-leaving .sms-gate__cta svg { animation: none; transform: none; }
+  #main-content.is-revealing { animation: sms-reveal-quiet 140ms linear both; }
+}
+
+@keyframes sms-reveal-quiet {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,10 +1,10 @@
 import React from 'react';
+import { Clock, FileCode, Hash, Lock, Monitor, Server, Shield, UserRound, Waypoints } from 'lucide-react';
 import { useInvestigation } from '../../../context/InvestigationContext';
-import { Panel } from '../../common/Panel';
 import { EmptyState, ErrorState, SkeletonRows } from '../../common/StateViews';
 import { JourneyTimeline } from './JourneyTimeline';
 import { ProtocolStateMachineStory } from './ProtocolStateMachineStory';
-import { endpointLabel, sessionLabel } from '../../../utils/session';
+import { endpointLabel, sessionRoute } from '../../../utils/session';
 
 const humanize = (s: string | null | undefined) => (s ? s.replace(/_/g, ' ').toLowerCase() : '—');
 
@@ -39,40 +39,76 @@ export const ProtocolJourney: React.FC = () => {
     ? `${((session.timing.end_epoch - session.timing.start_epoch) * 1000).toFixed(1)} ms`
     : null;
 
+  const hasFlow = session && ((session.events?.length ?? 0) > 0 || (session.transitions?.length ?? 0) > 0);
+  const selector = sessions.length > 1 && (
+    <label className="sms-proto-select sms-muted">
+      Stream
+      <select className="sms-btn sms-btn--sm sms-mono" value={session?.stream_key ?? ''} onChange={(e) => selectSession(e.target.value)}>
+        {sessions.map((s) => (
+          <option key={s.stream_key} value={s.stream_key}>#{s.tcp_stream_id} {s.protocol ?? ''} {sessionRoute(s)}</option>
+        ))}
+      </select>
+    </label>
+  );
+
+  const metrics = session ? [
+    { icon: UserRound, label: 'Client', value: endpointLabel(session.client) ?? 'not recorded' },
+    { icon: Server, label: 'Server', value: endpointLabel(session.server) ?? 'not recorded' },
+    { icon: Waypoints, label: 'Protocol', value: session.protocol ?? 'not identified' },
+    { icon: Monitor, label: 'Application', value: humanize(session.app_state) },
+    { icon: Lock, label: 'TLS', value: humanize(session.tls_state) },
+    { icon: Shield, label: 'Capture', value: humanize(session.completeness) },
+    { icon: Hash, label: 'Packets', value: session.timing?.packet_count != null ? String(session.timing.packet_count) : '—' },
+    { icon: FileCode, label: 'Frames', value: session.timing ? `#${session.timing.first_frame} to #${session.timing.last_frame}` : '—' },
+    { icon: Clock, label: 'Duration', value: duration ?? '—' },
+  ] : [];
+
   return (
-    <div className="sms-page">
-      <header className="sms-page-head">
+    <div className="sms-page sms-protocol-page">
+      <header className="sms-page-head sms-protocol-hero">
         <div>
           <h1 className="sms-page-title">Protocol journey</h1>
-          <p className="sms-page-sub">Wire events and state-machine transitions for one TCP stream, in frame order. Transition rows are coloured by the evidence state the engine assigned.</p>
+          <p className="sms-page-sub">One TCP stream, in frame order.</p>
         </div>
-        {sessions.length > 1 && (
-          <label className="sms-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--ds-space-8)', fontSize: 'var(--ds-text-12)' }}>
-            Stream
-            <select className="sms-btn sms-btn--sm sms-mono" value={session?.stream_key ?? ''} onChange={(e) => selectSession(e.target.value)}>
-              {sessions.map((s) => (
-                <option key={s.stream_key} value={s.stream_key}>{sessionLabel(s)}</option>
-              ))}
-            </select>
-          </label>
-        )}
+        <figure className="sms-context-visual sms-context-visual--handshake">
+          <img
+            src="/visuals/handshake.jpg"
+            alt="A connection between two endpoints."
+            width={736}
+            height={414}
+          />
+        </figure>
       </header>
 
       {session && (
-        <div className="sms-meta-strip" aria-label="Session facts">
-          <span>client <b>{endpointLabel(session.client) ?? 'not recorded'}</b></span>
-          <span>server <b>{endpointLabel(session.server) ?? 'not recorded'}</b></span>
-          <span>protocol <b>{session.protocol ?? 'not identified'}</b></span>
-          <span>application <b>{humanize(session.app_state)}</b></span>
-          <span>TLS <b>{humanize(session.tls_state)}</b></span>
-          <span>capture <b>{humanize(session.completeness)}</b></span>
-          {session.timing?.packet_count != null && <span>packets <b>{session.timing.packet_count}</b></span>}
-          {session.timing && <span>frames <b>#{session.timing.first_frame} to #{session.timing.last_frame}</b></span>}
-          {duration && <span>duration <b>{duration}</b></span>}
-        </div>
+        <section className="sms-stream-card" aria-label="Session facts">
+          <header className="sms-stream-card__bar">
+            <h2 className="sms-stream-card__id">
+              <Waypoints size={15} aria-hidden="true" />
+              <span>Stream #{session.tcp_stream_id}</span>
+              {session.protocol && <span className="sms-session-proto">{session.protocol.toUpperCase()}</span>}
+              <span className="sms-mono sms-stream-card__route">{sessionRoute(session)}</span>
+            </h2>
+            {selector}
+          </header>
+          <dl className="sms-stream-metrics">
+            {metrics.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.label} className="sms-stream-metric">
+                  <dt>
+                    <Icon size={14} aria-hidden="true" />
+                    {item.label}
+                  </dt>
+                  <dd className="sms-mono">{item.value}</dd>
+                </div>
+              );
+            })}
+          </dl>
+        </section>
       )}
 
-      {session && ((session.events?.length ?? 0) > 0 || (session.transitions?.length ?? 0) > 0) && (
+      {hasFlow && session && (
         <ProtocolStateMachineStory
           session={session}
           focusFrame={selectedEventFrame}
@@ -80,10 +116,16 @@ export const ProtocolJourney: React.FC = () => {
         />
       )}
 
-      <Panel title="Raw event timeline" meta={session ? `stream #${session.tcp_stream_id}` : undefined} flush>
+      <section className="sms-raw-card" aria-label="Raw event timeline">
+        <header className="sms-raw-card__head">
+          <div>
+            <h2>Raw event timeline</h2>
+            <p>Frame, time, direction, and evidence.</p>
+          </div>
+          {session && <span className="sms-mono sms-raw-card__meta">stream #{session.tcp_stream_id}</span>}
+        </header>
         {body}
-      </Panel>
+      </section>
     </div>
   );
 };
-

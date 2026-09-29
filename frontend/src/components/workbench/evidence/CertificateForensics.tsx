@@ -9,6 +9,7 @@ import { SeverityBadge } from '../../common/SeverityBadge';
 import { EmptyState, ErrorState, SkeletonRows } from '../../common/StateViews';
 import { CertificateCard } from './CertificateCard';
 import { endpointLabel } from '../../../utils/session';
+import { presentBasis } from './plainEvidence';
 
 const affects = (f: FindingRow, streamKey: string) => f.affected_stream_keys?.includes(streamKey) || f.stream_key === streamKey;
 
@@ -45,7 +46,12 @@ export const CertificateForensics: React.FC = () => {
   };
 
   const primaryCert = session?.certificates?.[0] ?? null;
-  const certFrame = keyFinding?.frames?.[0] ?? (chain?.frames?.[0] ?? 6);
+  const certFrame = keyFinding?.frames?.[0] ?? chain?.frames?.[0] ?? session?.timing?.first_frame ?? null;
+  const keyLine = primaryCert
+    ? [primaryCert.public_key_algorithm, primaryCert.key_bits != null ? `${primaryCert.key_bits}-bit` : null].filter(Boolean).join(' ') || 'Key not recorded'
+    : 'Not in cleartext';
+  const negotiated = formatEvidenceValue(session?.evidence?.tls_negotiated_version?.value);
+  const tls13 = Boolean(negotiated && /1\.3|0x0304/i.test(negotiated));
 
   let body: React.ReactNode;
   if (isLoading && sessions.length === 0) {
@@ -70,47 +76,49 @@ export const CertificateForensics: React.FC = () => {
 
             <div className="sms-cert-specs-grid">
               <div className="sms-cert-spec-item">
-                <span className="sms-cert-spec-label">Public Key</span>
-                <span className="sms-cert-spec-val sms-mono">
-                  {primaryCert?.public_key_algorithm ?? 'RSA'} {primaryCert?.key_bits ?? 1024} bits
-                </span>
+                <span className="sms-cert-spec-label">Public key</span>
+                <span className="sms-cert-spec-val sms-mono">{keyLine}</span>
               </div>
               <div className="sms-cert-spec-item">
-                <span className="sms-cert-spec-label">Signature Algorithm</span>
-                <span className="sms-cert-spec-val sms-mono">
-                  SHA-1 signature
-                </span>
+                <span className="sms-cert-spec-label">Validity</span>
+                <span className="sms-cert-spec-val sms-mono">{primaryCert ? `${primaryCert.not_before || '—'} to ${primaryCert.not_after || '—'}` : 'Not recorded'}</span>
               </div>
               <div className="sms-cert-spec-item">
-                <span className="sms-cert-spec-label">Severity</span>
-                <span className="sms-cert-spec-val sms-mono" style={{ color: 'var(--ds-crimson-ink)' }}>
-                  HIGH
-                </span>
+                <span className="sms-cert-spec-label">Identity</span>
+                <span className="sms-cert-spec-val sms-mono">{primaryCert?.san_dns_names?.length ? primaryCert.san_dns_names.join(', ') : primaryCert?.self_signed ? 'Self-signed' : 'Not recorded'}</span>
               </div>
               <div className="sms-cert-spec-item">
-                <span className="sms-cert-spec-label">Evidence Frame</span>
-                <span className="sms-cert-spec-val sms-mono">
-                  Frame #{certFrame}
-                </span>
+                <span className="sms-cert-spec-label">Issuer link</span>
+                <span className="sms-cert-spec-val sms-mono">{primaryCert?.authority_key_id || (primaryCert?.self_signed ? 'Same as subject key' : '—')}</span>
+              </div>
+              <div className="sms-cert-spec-item">
+                <span className="sms-cert-spec-label">TLS</span>
+                <span className="sms-cert-spec-val sms-mono">{negotiated || 'Not recorded'}</span>
+              </div>
+              <div className="sms-cert-spec-item">
+                <span className="sms-cert-spec-label">Evidence frame</span>
+                <span className="sms-cert-spec-val sms-mono">{certFrame != null ? `#${certFrame}` : '—'}</span>
               </div>
             </div>
 
             <div className="sms-cert-why">
               <span className="sms-label">Why it matters</span>
               <p className="sms-prose">
-                {keyFinding?.explanation || keyFinding?.conclusion || "The RSA-1024 key size and SHA-1 signature algorithm fail modern minimum cryptographic standards (RFC 8996, NIST SP 800-52r2) and are vulnerable to factorization and collision attacks."}
+                {presentBasis(keyFinding?.explanation || keyFinding?.conclusion || certFindings[0]?.explanation || certFindings[0]?.conclusion || 'The engine flagged this certificate. Open the technical details for the recorded fields.', 160).show}
               </p>
             </div>
 
             <div className="sms-cert-conclusion__actions">
+              {certFrame != null && (
               <button
                 type="button"
                 className="sms-btn sms-btn--primary"
                 onClick={() => openFrame(certFrame)}
               >
                 <Radio size={13} aria-hidden="true" />
-                Open Frame #{certFrame} in Protocol Journey
+                Open frame #{certFrame}
               </button>
+              )}
 
               <button
                 type="button"
@@ -119,14 +127,14 @@ export const CertificateForensics: React.FC = () => {
                 aria-expanded={showDetails}
               >
                 {showDetails ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                <span>{showDetails ? 'Hide technical certificate details' : 'Inspect technical certificate details'}</span>
+                <span>{showDetails ? 'Hide details' : 'Technical details'}</span>
               </button>
             </div>
           </div>
         )}
 
         {/* 2. CONCLUSION FIRST: TLS 1.3 / NOT OBSERVABLE */}
-        {!session.certificates?.length && (
+        {!session.certificates?.length && tls13 && (
           <div className="sms-cert-conclusion-card sms-cert-conclusion-card--neutral" role="region" aria-label="Certificate observability determination">
             <div className="sms-cert-conclusion__head">
               <div className="sms-cert-conclusion__title-wrap">
@@ -136,8 +144,8 @@ export const CertificateForensics: React.FC = () => {
               <span className="sms-badge sms-badge--muted">RFC 8446 Encrypted Handshake</span>
             </div>
 
-            <p className="sms-prose" style={{ color: 'var(--sms-text-secondary)', fontSize: 'var(--ds-text-14)', marginBottom: 'var(--ds-space-16)' }}>
-              Under TLS 1.3 (RFC 8446), the server Certificate and CertificateVerify messages are encrypted under temporary handshake keys. In a passive offline capture without private key disclosure, the certificate payload cannot be dissected in cleartext.
+            <p className="sms-prose sms-cert-lead">
+              TLS 1.3 encrypts the certificate. This passive capture cannot read the X.509 payload.
             </p>
 
             {/* EXPLICIT OBSERVABILITY BREAKDOWN */}
@@ -167,12 +175,10 @@ export const CertificateForensics: React.FC = () => {
               </div>
             </div>
 
-            <div className="sms-cert-honesty-note">
-              <span className="sms-label">Forensic honesty boundary</span>
-              <p className="sms-prose" style={{ fontSize: 'var(--ds-text-12)', color: 'var(--sms-text-muted)' }}>
-                SecureMailScope performs strictly passive offline wire dissection. Without active adversary interception or endpoint key disclosure, the encrypted certificate payload is cryptographically protected and deliberately reported as NOT_OBSERVABLE rather than fabricated.
-              </p>
-            </div>
+            <details className="sms-cert-honesty-note">
+              <summary>Why this is not a missing certificate</summary>
+              <p>The payload stays encrypted under handshake keys. Trust anchors and revocation are not in a passive capture, so they are reported as not observable.</p>
+            </details>
 
             {session.timing?.first_frame != null && (
               <div style={{ marginTop: 'var(--ds-space-12)' }}>
@@ -189,6 +195,10 @@ export const CertificateForensics: React.FC = () => {
           </div>
         )}
 
+        {!session.certificates?.length && !tls13 && certFindings.length === 0 && (
+          <EmptyState title="No certificate in cleartext" detail="This stream did not expose an X.509 certificate. That is not treated as a TLS 1.3 result unless the negotiated version says so." />
+        )}
+
         {/* 3. CHAIN EVIDENCE */}
         {chain && (
           <Panel title="Certificate chain evidence">
@@ -200,7 +210,7 @@ export const CertificateForensics: React.FC = () => {
                     {formatEvidenceValue(chain.value)} certificate(s) in chain
                   </p>
                 )}
-                {chain.basis && <p className="sms-prose">{chain.basis}</p>}
+                {chain.basis && <p className="sms-prose" title={chain.basis}>{presentBasis(chain.basis).show}</p>}
                 {framesLabel(chain.frames) && (
                   <p className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-12)' }}>
                     {framesLabel(chain.frames)}
@@ -214,7 +224,7 @@ export const CertificateForensics: React.FC = () => {
         {/* 4. TECHNICAL DETAILS (EXPANDABLE IF FINDINGS EXIST, OR VISIBLE DIRECTLY) */}
         {session.certificates?.length > 0 && (certFindings.length === 0 || showDetails) && (
           <Panel title="Technical certificate details" meta={`${session.certificates.length} certificate(s)`}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: 'var(--ds-space-16)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--ds-space-16)' }}>
               {session.certificates.map((c) => (
                 <CertificateCard
                   key={c.index}
@@ -237,11 +247,11 @@ export const CertificateForensics: React.FC = () => {
   }
 
   return (
-    <div className="sms-page">
+    <div className="sms-page sms-stage">
       <header className="sms-page-head">
         <div>
           <h1 className="sms-page-title">Certificates</h1>
-          <p className="sms-page-sub">X.509 certificates parsed from cleartext handshake records. Trust anchors and revocation are not observable from a passive capture.</p>
+          <p className="sms-page-sub">X.509 from the handshake. Trust and revocation are outside this capture.</p>
         </div>
         {sessions.length > 1 && (
           <label className="sms-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--ds-space-8)', fontSize: 'var(--ds-text-12)' }}>

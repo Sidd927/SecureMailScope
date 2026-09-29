@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Download, FileJson, FileText } from 'lucide-react';
-import { api } from '../../../api/client';
 import { useInvestigation } from '../../../context/InvestigationContext';
 import type { ReportDocument } from '../../../api/types';
 import { ForensicHash } from '../../common/ForensicHash';
@@ -8,6 +7,7 @@ import { Panel } from '../../common/Panel';
 import { PosturePill } from '../../common/PosturePill';
 import { EmptyState, ErrorState, SkeletonRows } from '../../common/StateViews';
 import { ReportDocumentView } from './ReportDocumentView';
+import { downloadReport } from '../../../utils/reportDownload';
 
 const FORMATS = [
   { fmt: 'pdf' as const, label: 'PDF', icon: Download, primary: true },
@@ -29,6 +29,7 @@ export const ReportExperience: React.FC = () => {
     loadReport,
     isUsingFixtures,
   } = useInvestigation();
+  const [saving, setSaving] = useState<string | null>(null);
 
   useEffect(() => {
     if (reportStatus === 'idle' && !isUsingFixtures) loadReport();
@@ -74,7 +75,7 @@ export const ReportExperience: React.FC = () => {
 
   if (!activeRunId) {
     return (
-      <div className="sms-page">
+      <div className="sms-page sms-stage">
         <Panel><EmptyState title="Run an analysis to generate a report" /></Panel>
       </div>
     );
@@ -98,11 +99,27 @@ export const ReportExperience: React.FC = () => {
     preview = <EmptyState title="Report unavailable" detail="No assessment data is loaded for this capture." />;
   }
 
+  const save = async (fmt: 'pdf' | 'html' | 'json') => {
+    if (!finalDoc || !activeRunId || saving) return;
+    setSaving(fmt);
+    try {
+      await downloadReport({
+        runId: activeRunId,
+        format: fmt,
+        doc: finalDoc,
+        captureName: activeRun?.source_filename,
+        useApi: !isUsingFixtures,
+      });
+    } finally {
+      setSaving(null);
+    }
+  };
+
   const postureBand = dashboard?.posture.value ?? activeRun?.overall_posture ?? 'CRITICAL';
   const scoreVal = dashboard?.posture.score_value ?? activeRun?.score_value;
 
   return (
-    <div className="sms-page">
+    <div className="sms-page sms-stage">
       {/* DELIVERABLE WORKSPACE HEADER */}
       <header className="sms-report-workspace-header" aria-label="Forensic Report Header">
         <div className="sms-report-top-bar">
@@ -122,16 +139,17 @@ export const ReportExperience: React.FC = () => {
 
           <div className="sms-report-actions">
             {FORMATS.map(({ fmt, label, icon: Icon, primary }) => (
-              <a
+              <button
                 key={fmt}
+                type="button"
                 className={`sms-btn${primary ? ' sms-btn--primary' : ''}`}
-                href={api.getReportUrl(activeRunId, fmt, true)}
-                download
-                title={`Download forensic report as ${label}`}
+                disabled={!finalDoc || saving !== null}
+                onClick={() => save(fmt)}
+                title={`Download the report as ${label}`}
               >
                 <Icon size={14} aria-hidden="true" />
-                <span>Download {label}</span>
-              </a>
+                <span>{saving === fmt ? 'Preparing…' : `Download ${label}`}</span>
+              </button>
             ))}
           </div>
         </div>
@@ -139,7 +157,7 @@ export const ReportExperience: React.FC = () => {
         <div className="sms-report-meta-strip">
           <span>Capture: <strong>{activeRun?.source_filename || 'capture.pcap'}</strong></span>
           <span>Sessions: <strong>{sessions.length} evaluated</strong></span>
-          <span>Findings: <strong>{dashboard?.findings.length ?? 0} confirmed</strong></span>
+          <span>Findings: <strong>{dashboard?.findings.length ?? 0}</strong></span>
           <span>Engine: <strong>0.8.0</strong></span>
           {activeRun?.capture_id && (
             <span>SHA-256: <strong className="sms-mono">{activeRun.capture_id.slice(0, 16)}…</strong></span>

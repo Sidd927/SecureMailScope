@@ -3,6 +3,7 @@ import { ChevronDown, Plus, FileSpreadsheet } from 'lucide-react';
 import { useInvestigation } from '../../context/InvestigationContext';
 import { PosturePill } from '../common/PosturePill';
 import { BrandLogo } from '../common/BrandLogo';
+import { openIngestion } from '../home/openIngestion';
 import { ScoreDecomposition } from './ScoreDecomposition';
 
 interface HeaderProps {
@@ -85,11 +86,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
                 </button>
               </div>
             )}
-          </div>
 
-          {/* Center: Persistent Posture & Determination Summary */}
-          <div className="sms-header__center">
-            {inWorkbench && posture ? (
+            {inWorkbench && posture && (
               <div className="sms-header__posture-cluster">
                 <PosturePill
                   band={posture.known ? posture.value : null}
@@ -110,12 +108,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
                   </span>
                 </button>
               </div>
-            ) : (
-              <div className="sms-header__mode-tag">
-                <span className="sms-mono" style={{ fontSize: 'var(--ds-text-11)', letterSpacing: '0.08em', color: 'var(--sms-text-muted)' }}>
-                  PASSIVE CRYPTOGRAPHIC FORENSICS
-                </span>
-              </div>
             )}
           </div>
 
@@ -128,7 +120,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
               title={isUsingFixtures ? 'Running against demo fixture data' : 'Connected to live forensic backend (127.0.0.1:8001) · TShark Available · Passive / Offline'}
             >
               <span className="sms-status-dot" aria-hidden="true" />
-              <span className="sms-status-label">{isUsingFixtures ? 'Demo Fixture' : 'ENGINE LIVE'}</span>
+              <span className="sms-status-label">{isUsingFixtures ? 'Demo Fixture' : 'Engine Live'}</span>
             </div>
 
             {/* Global Keyboard Shortcut Triggers */}
@@ -157,7 +149,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenRunPicker }) => {
               <button
                 type="button"
                 className="sms-btn sms-btn--primary sms-btn--sm sms-header__new-btn"
-                onClick={() => setActiveView('home')}
+                onClick={() => {
+                  setActiveView('home');
+                  openIngestion();
+                }}
                 title="Return to intake bay to analyze a new capture"
               >
                 <Plus size={13} aria-hidden="true" />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hash, GitBranch, ArrowUpRight, CheckCircle2, AlertOctagon } from 'lucide-react';
+import { Hash, GitBranch, ArrowUpRight, CheckCircle2, AlertOctagon, Mail, ShieldCheck } from 'lucide-react';
 import type { DashboardViewModel, FindingRow, SessionEvidence } from '../../../api/types';
 
 interface ProofCardProps {
@@ -29,9 +29,9 @@ export const ProofCard: React.FC<ProofCardProps> = ({
         <div className="sms-proof-card__head">
           <div className="sms-proof-card__title-wrap">
             <CheckCircle2 size={16} className="sms-proof-card__icon sms-proof-card__icon--success" aria-hidden="true" />
-            <span className="sms-label">Forensic Proof</span>
+            <span className="sms-label">Proof</span>
           </div>
-          <span className="sms-proof-card__meta">Zero Discovered Violations</span>
+          <span className="sms-proof-card__meta">No violations</span>
         </div>
 
         <div className="sms-proof-card__body">
@@ -62,10 +62,14 @@ export const ProofCard: React.FC<ProofCardProps> = ({
               className="sms-btn sms-btn--sm sms-btn--secondary"
               onClick={() => onOpenJourney(frame, session?.stream_key)}
             >
-              <span>View Handshake in Protocol Journey</span>
+              <span>Open handshake</span>
               <ArrowUpRight size={13} aria-hidden="true" />
             </button>
           </div>
+        </div>
+        <div className="sms-proof-visual" aria-hidden="true">
+          <Mail size={64} strokeWidth={1.15} />
+          <ShieldCheck size={22} />
         </div>
       </section>
     );
@@ -116,7 +120,7 @@ export const ProofCard: React.FC<ProofCardProps> = ({
       <div className="sms-proof-card__head">
         <div className="sms-proof-card__title-wrap">
           <AlertOctagon size={14} className="sms-proof-card__icon sms-proof-card__icon--danger" aria-hidden="true" />
-          <span className="sms-label">Wire evidence</span>
+          <span className="sms-label">Proof</span>
         </div>
         <span className="sms-mono sms-proof-card__meta">
           Stream #{streamId} · Frame #{frame}
@@ -176,6 +180,10 @@ export const ProofCard: React.FC<ProofCardProps> = ({
             <span>Inspect finding</span>
           </button>
         </div>
+      </div>
+      <div className="sms-proof-visual" aria-hidden="true">
+        <Mail size={64} strokeWidth={1.15} />
+        <ShieldCheck size={22} />
       </div>
     </section>
   );

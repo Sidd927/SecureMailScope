@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator, ChevronRight } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 import type { Posture } from '../../../api/types';
 import { getSeverityTokens } from '../../../utils/severity';
 import { ScoreDecomposition } from '../../shell/ScoreDecomposition';
@@ -24,156 +24,86 @@ export const ScoreWaterfall: React.FC<ScoreWaterfallProps> = ({ posture, onInspe
     }
   };
 
+  const finalColor =
+    posture.value === 'CRITICAL'
+      ? 'var(--ds-sev-critical-text)'
+      : posture.value === 'WEAK'
+      ? 'var(--ds-sev-high-text)'
+      : posture.value === 'ADEQUATE'
+      ? 'var(--ds-sev-medium-text)'
+      : 'var(--ds-sev-low-text)';
+
   return (
     <>
-      <section className="sms-score-waterfall" aria-label="Forensic Score Waterfall">
+      <section className="sms-score-waterfall" aria-label="Why this score">
         <div className="sms-score-waterfall__head">
           <div className="sms-score-waterfall__title-wrap">
-            <span className="sms-label">Why This Score?</span>
-            <span className="sms-muted sms-text-xs">
-              Sequential deductions from normative baseline
-            </span>
+            <BarChart3 size={16} aria-hidden="true" />
+            <div>
+              <span className="sms-score-waterfall__title">Why this score</span>
+            </div>
           </div>
-
           <button
             type="button"
-            className="sms-btn sms-btn--ghost sms-btn--sm"
+            className="sms-btn sms-btn--sm"
             onClick={handleOpenCalculation}
             title="Inspect mathematical formula and weights"
             aria-label="Inspect score calculation details"
           >
-            <Calculator size={13} aria-hidden="true" />
             <span>Inspect calculation</span>
           </button>
         </div>
 
-        <div className="sms-score-waterfall__tree">
-          {/* 1. Starting Baseline */}
-          <div className="sms-waterfall-node sms-waterfall-node--start">
-            <div className="sms-waterfall-node__spine" aria-hidden="true">
-              <span className="sms-waterfall-node__dot sms-waterfall-node__dot--start" />
-              <span className="sms-waterfall-node__line" />
-            </div>
-            <div className="sms-waterfall-node__content">
-              <div className="sms-waterfall-node__desc">
-                <span className="sms-waterfall-node__title">Starting Baseline</span>
-                <span className="sms-waterfall-node__meta">Normative transport security ceiling</span>
-              </div>
-              <span className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--base">
-                {starting.toFixed(2)}
-              </span>
-            </div>
-          </div>
-
-          {/* 2. Deductions (Clean, Uncluttered) */}
-          {components.length === 0 ? (
-            <div className="sms-waterfall-node">
-              <div className="sms-waterfall-node__spine" aria-hidden="true">
-                <span className="sms-waterfall-node__branch">├─</span>
-                <span className="sms-waterfall-node__line" />
-              </div>
-              <div className="sms-waterfall-node__content">
-                <div className="sms-waterfall-node__desc">
-                  <span className="sms-waterfall-node__title" style={{ color: 'var(--ds-sev-low-text)' }}>
-                    Zero Deductions
-                  </span>
-                  <span className="sms-waterfall-node__meta">All observed sessions comply with cryptographic rules</span>
-                </div>
-                <span className="sms-mono sms-waterfall-node__val" style={{ color: 'var(--ds-sev-low-text)' }}>
-                  0.00
-                </span>
-              </div>
-            </div>
-          ) : (
-            components.map((c, idx) => {
-              const sev = getSeverityTokens(c.severity);
-              const isLast = idx === components.length - 1;
-              const penalty = c.penalty ?? 0;
-              const title = c.issue_class_label || c.issue_class;
-
-              return (
-                <div key={`${c.issue_class}-${idx}`} className="sms-waterfall-node sms-waterfall-node--deduction">
-                  <div className="sms-waterfall-node__spine" aria-hidden="true">
-                    <span className="sms-waterfall-node__branch">{isLast ? '└─' : '├─'}</span>
-                    {!isLast && <span className="sms-waterfall-node__line" />}
-                  </div>
-                  <div className="sms-waterfall-node__content">
-                    <div className="sms-waterfall-node__desc">
-                      <div className="sms-waterfall-node__title-wrap">
-                        <span
-                          className="sms-dot"
-                          style={{ backgroundColor: sev ? sev.rule : 'var(--ds-border-strong)' }}
-                          aria-hidden="true"
-                        />
-                        <span className="sms-waterfall-node__title">{title}</span>
-                        {c.recurrence != null && c.recurrence > 1 && (
-                          <span className="sms-badge sms-badge--muted sms-badge--xs sms-mono">
-                            {c.recurrence} sessions
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <span className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--deduct">
-                      −{penalty.toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              );
-            })
-          )}
-
-          {/* 3. Final Posture */}
-          <div className="sms-waterfall-node sms-waterfall-node--final">
-            <div className="sms-flow-connector--down-spine" aria-hidden="true" />
-            <div className="sms-waterfall-node__content">
-              <div className="sms-waterfall-node__desc">
-                <span className="sms-waterfall-node__title sms-waterfall-node__title--final">
-                  Final Posture Score
-                </span>
-                <span className="sms-waterfall-node__meta">
-                  {posture.formula_id || 'Deterministic Scoring Engine'}
-                </span>
-              </div>
-              <div className="sms-waterfall-node__val-group">
-                <span
-                  className="sms-mono sms-waterfall-node__val sms-waterfall-node__val--final"
-                  style={{
-                    color:
-                      posture.value === 'CRITICAL'
-                        ? 'var(--ds-sev-critical-text)'
-                        : posture.value === 'WEAK'
-                        ? 'var(--ds-sev-high-text)'
-                        : posture.value === 'ADEQUATE'
-                        ? 'var(--ds-sev-medium-text)'
-                        : 'var(--ds-sev-low-text)',
-                  }}
-                >
-                  {final.toFixed(2)}
-                </span>
-                <span className="sms-badge sms-badge--xs" style={{ marginLeft: 6 }}>
-                  {posture.value || 'UNRATED'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer with progressive disclosure trigger */}
-        <div className="sms-score-waterfall__foot">
-          <span className="sms-muted sms-text-xs">
-            {totalPenalty > 0
-              ? `−${totalPenalty.toFixed(2)} total deduction across ${components.length} factor group${components.length === 1 ? '' : 's'}`
-              : 'Full compliance — zero deductions applied'}
-          </span>
-          <button
-            type="button"
-            className="sms-link"
-            style={{ fontSize: 'var(--ds-text-12)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-            onClick={handleOpenCalculation}
-          >
-            Inspect calculation <ChevronRight size={12} aria-hidden="true" />
-          </button>
-        </div>
+        <table className="sms-score-table">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Baseline</td>
+              <td className="sms-mono">{starting.toFixed(2)}</td>
+            </tr>
+            {components.length === 0 ? (
+              <tr>
+                <td>No deductions</td>
+                <td className="sms-mono">0.00</td>
+              </tr>
+            ) : (
+              components.map((c, idx) => {
+                const sev = getSeverityTokens(c.severity);
+                const title = c.issue_class_label || c.issue_class;
+                return (
+                  <tr key={`${c.issue_class}-${idx}`}>
+                    <td>
+                      <span className="sms-dot" style={{ backgroundColor: sev ? sev.rule : 'var(--ds-border-strong)', marginRight: 6 }} aria-hidden="true" />
+                      {title}
+                      {c.recurrence != null && c.recurrence > 1 ? ` · ${c.recurrence} sessions` : ''}
+                    </td>
+                    <td className="sms-mono">−{(c.penalty ?? 0).toFixed(2)}</td>
+                  </tr>
+                );
+              })
+            )}
+            <tr className="sms-score-table__end">
+              <td>
+                Final score
+                {posture.formula_id && <span className="sms-muted"> · {posture.formula_id}</span>}
+              </td>
+              <td className="sms-mono" style={{ color: finalColor }}>
+                {final.toFixed(2)}
+                <span className="sms-score-table__band"> · {posture.value || 'UNRATED'}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="sms-score-waterfall__note">
+          {totalPenalty > 0
+            ? `−${totalPenalty.toFixed(2)} total deduction across ${components.length} factor group${components.length === 1 ? '' : 's'}`
+            : 'No deductions applied.'}
+        </p>
       </section>
 
       {modalOpen && (

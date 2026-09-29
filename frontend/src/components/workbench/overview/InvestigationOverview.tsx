@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { useInvestigation } from '../../../context/InvestigationContext';
 import { severityRank } from '../../../utils/severity';
+import { FileSpreadsheet, FileText } from 'lucide-react';
 import { ForensicHash } from '../../common/ForensicHash';
+import { relativeTime } from '../../../utils/time';
 import { ExecutiveDetermination } from './ExecutiveDetermination';
 import { InvestigationFlow } from '../flow/InvestigationFlow';
 import { ScoreWaterfall } from './ScoreWaterfall';
@@ -49,9 +51,37 @@ export const InvestigationOverview: React.FC = () => {
     }
   };
 
+  const sessionTotal = sessions.length || dashboard.coverage?.sessions_total || 0;
+
   return (
     <div className="sms-overview-container" aria-label="Forensic Investigation Overview">
-      {/* 1. DETERMINATION & VERDICT (First Viewport Lead) */}
+      <div className="sms-case-strip">
+        <div className="sms-case-strip__file">
+          <FileSpreadsheet size={16} aria-hidden="true" />
+          <span className="sms-mono sms-case-strip__name" title={activeRun.source_filename}>
+            {activeRun.source_filename}
+          </span>
+          <ForensicHash
+            value={dashboard.identity?.capture_id || activeRun.capture_id}
+            length={12}
+            label="SHA-256"
+          />
+        </div>
+        <div className="sms-case-strip__meta">
+          <span>{sessionTotal} TCP session{sessionTotal === 1 ? '' : 's'}</span>
+          <span>{dashboard.findings.length} finding{dashboard.findings.length === 1 ? '' : 's'}</span>
+          {activeRun.duration_ms != null && <span>{activeRun.duration_ms} ms</span>}
+          {generated && <span>Analysed {relativeTime(generated)}</span>}
+        </div>
+      </div>
+
+      <div className="sms-overview-head">
+        <h2 className="sms-overview-title">
+          <FileText size={18} aria-hidden="true" />
+          Overview
+        </h2>
+      </div>
+
       <section className="sms-overview-section" aria-label="Executive Determination">
         <ExecutiveDetermination
           dashboard={dashboard}
@@ -71,27 +101,22 @@ export const InvestigationOverview: React.FC = () => {
         />
       </section>
 
-      {/* 2. WHY THE SCORE? & WIRE EVIDENCE — Aligned Mathematical & Physical Proof */}
-      <section className="sms-overview-grid" aria-label="Score Deductions and Wire Proof">
-        {/* Left: Score Waterfall */}
-        <div style={{ gridColumn: 'span 6' }}>
-          <ScoreWaterfall posture={dashboard.posture} />
-        </div>
+      <section className="sms-overview-section" aria-label="Score Deductions">
+        <ScoreWaterfall posture={dashboard.posture} />
+      </section>
 
-        {/* Right: Wire Evidence Table */}
-        <div style={{ gridColumn: 'span 6' }}>
-          <ProofCard
-            dashboard={dashboard}
-            primaryFinding={primaryFinding}
-            sessions={sessions}
-            onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
-            onOpenProvenance={(title) => pivotToProvenance(title)}
-            onOpenEvidence={() => {
-              if (primaryFinding) selectFinding(primaryFinding);
-              setActiveTab('evidence');
-            }}
-          />
-        </div>
+      <section className="sms-overview-section" aria-label="Wire Proof">
+        <ProofCard
+          dashboard={dashboard}
+          primaryFinding={primaryFinding}
+          sessions={sessions}
+          onOpenJourney={(frame, streamKey) => pivotToJourney(frame, streamKey)}
+          onOpenProvenance={(title) => pivotToProvenance(title)}
+          onOpenEvidence={() => {
+            if (primaryFinding) selectFinding(primaryFinding);
+            setActiveTab('evidence');
+          }}
+        />
       </section>
 
       {/* 3. INVESTIGATION PATH — Visual Evidentiary Story Map */}
@@ -124,52 +149,6 @@ export const InvestigationOverview: React.FC = () => {
           onNavigate={(tab) => setActiveTab(tab)}
         />
       </section>
-
-      {/* 7. Capture Telemetry & Analytical Identity Footer */}
-      <footer className="sms-case-identity-strip" aria-label="Investigation Case Identity">
-        <div className="sms-case-identity-strip__left">
-          <span className="sms-case-identity-strip__filename">
-            {activeRun.source_filename}
-          </span>
-          <span className="sms-case-identity-strip__sep">/</span>
-          <ForensicHash
-            value={dashboard.identity?.capture_id || activeRun.capture_id}
-            length={16}
-            label="SHA-256"
-          />
-        </div>
-
-        <div className="sms-case-identity-strip__right">
-          <span className="sms-muted">
-            <span className="sms-mono" style={{ color: 'var(--sms-text-primary)' }}>
-              {sessions.length || dashboard.coverage?.sessions_total || 0}
-            </span>{' '}
-            TCP session{(sessions.length || dashboard.coverage?.sessions_total || 0) === 1 ? '' : 's'}
-          </span>
-          <span className="sms-muted">
-            <span className="sms-mono" style={{ color: 'var(--sms-text-primary)' }}>
-              {dashboard.findings.length}
-            </span>{' '}
-            finding{dashboard.findings.length === 1 ? '' : 's'}
-          </span>
-          {activeRun.duration_ms != null && (
-            <span className="sms-muted">
-              <span className="sms-mono">{activeRun.duration_ms} ms</span>
-            </span>
-          )}
-          <span className="sms-muted">
-            engine <span className="sms-mono">{dashboard.identity?.posture_engine_version || '0.8.0'}</span>
-          </span>
-          {generated && (
-            <span className="sms-muted">
-              analysed{' '}
-              <span className="sms-mono">
-                {generated.replace('T', ' ').replace('Z', ' UTC')}
-              </span>
-            </span>
-          )}
-        </div>
-      </footer>
     </div>
   );
 };

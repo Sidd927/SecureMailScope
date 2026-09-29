@@ -27,11 +27,16 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
   const serverEndpoint = session?.server ? `${session.server.ip}:${session.server.port}` : null;
   const penalty = component?.penalty ?? ((finding as any).penalty ?? null);
 
+  const stops = ['Source', 'Evidence', 'Derivation', 'Finding'];
+
   return (
     <div className="sms-provenance-flow" aria-label={`Provenance trace for ${finding.title}`}>
+      <ol className="sms-prov-rail" aria-label="Trace order">
+        {stops.map((stop) => <li key={stop}>{stop}</li>)}
+      </ol>
       {/* 1. CAPTURE */}
       <div className="sms-prov-node sms-prov-node--capture">
-        <span className="sms-prov-node__stage">1. CAPTURE</span>
+        <span className="sms-prov-node__stage">Source · Capture</span>
         <div className="sms-prov-node__content">
           <span className="sms-mono sms-prov-node__title">{run.source_filename}</span>
           <ForensicHash value={run.capture_id} length={20} label="SHA-256" />
@@ -42,7 +47,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
 
       {/* 2. TCP STREAM */}
       <div className="sms-prov-node sms-prov-node--stream">
-        <span className="sms-prov-node__stage">2. TCP STREAM #{session?.tcp_stream_id ?? finding.tcp_stream_id ?? 0}</span>
+        <span className="sms-prov-node__stage">Source · TCP stream #{session?.tcp_stream_id ?? finding.tcp_stream_id ?? 0}</span>
         <div className="sms-prov-node__content">
           {clientEndpoint && serverEndpoint ? (
             <span className="sms-mono sms-prov-node__endpoints">
@@ -68,7 +73,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
             onClick={() => onOpenFrame(primaryFrame, finding.stream_key ?? undefined)}
             title={`Click to focus Frame #${primaryFrame} in Protocol Journey`}
           >
-            <span className="sms-prov-node__stage">3. WIRE FRAME</span>
+            <span className="sms-prov-node__stage">Evidence · Frame</span>
             <div className="sms-prov-node__content">
               <span className="sms-mono sms-prov-node__frame-val">Frame #{primaryFrame}</span>
               <span className="sms-prov-node__action-hint">Jump to packet dissection →</span>
@@ -80,7 +85,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
 
       {/* 4. WIRE EVIDENCE */}
       <div className="sms-prov-node sms-prov-node--evidence">
-        <span className="sms-prov-node__stage">4. WIRE EVIDENCE</span>
+        <span className="sms-prov-node__stage">Evidence · Wire</span>
         <div className="sms-prov-node__facts">
           {refs.length > 0 ? (
             refs.map((r, i) => (
@@ -103,7 +108,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
 
       {/* 5. RULE */}
       <div className="sms-prov-node sms-prov-node--rule">
-        <span className="sms-prov-node__stage">5. DETERMINISTIC RULE</span>
+        <span className="sms-prov-node__stage">Derivation · Rule</span>
         <div className="sms-prov-node__content">
           <span className="sms-mono sms-prov-node__rule-id">{ruleId}</span>
           {finding.issue_class_label && (
@@ -118,7 +123,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
       {standardText && (
         <>
           <div className="sms-prov-node sms-prov-node--standard">
-            <span className="sms-prov-node__stage">6. NORMATIVE STANDARD</span>
+            <span className="sms-prov-node__stage">Derivation · Standard</span>
             <div className="sms-prov-node__content">
               <span className="sms-mono sms-prov-node__standard-val">{standardText}</span>
               {citation?.reason && (
@@ -132,7 +137,7 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
 
       {/* 7. FINDING & CERTAINTY */}
       <div className="sms-prov-node sms-prov-node--finding">
-        <span className="sms-prov-node__stage">7. POSTURE FINDING</span>
+        <span className="sms-prov-node__stage">Finding</span>
         <div className="sms-prov-node__content">
           <div className="sms-prov-node__badges">
             <SeverityBadge severity={finding.severity} />
@@ -147,12 +152,12 @@ export const EvidenceChain: React.FC<Props> = ({ finding, run, session, assessme
 
       {/* 8. POSTURE DEDUCTION */}
       <div className="sms-prov-node sms-prov-node--penalty">
-        <span className="sms-prov-node__stage">8. SCORE DEDUCTION</span>
+        <span className="sms-prov-node__stage">Finding · Score</span>
         <div className="sms-prov-node__content">
           <span className="sms-mono sms-prov-node__penalty-val">
             {penalty != null ? `−${penalty.toFixed(2)} pts` : 'Rule deduction'}
           </span>
-          <span className="sms-muted sms-text-xs">{formulaId || 'F2-group-damped scoring'}</span>
+          <span className="sms-muted sms-text-xs">{formulaId || 'Deterministic scoring'}</span>
         </div>
       </div>
     </div>

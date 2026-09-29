@@ -1,5 +1,4 @@
 import React from 'react';
-import { AlertTriangle, ShieldCheck, CheckCircle2, Lock } from 'lucide-react';
 import type { SessionEvidence } from '../../../api/types';
 
 interface StoryNode {
@@ -28,14 +27,14 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
 
   // 1. Connection established
   const firstFrame = session.timing?.first_frame ?? (events[0]?.frame ?? 1);
-  nodes.push({
-    id: 'connected',
-    label: 'CONNECTED',
-    sublabel: 'TCP Stream Established',
-    frame: firstFrame,
-    status: 'neutral',
-    iconType: 'dot',
-  });
+    nodes.push({
+      id: 'connected',
+      label: 'CONNECTION',
+      sublabel: 'TCP session up',
+      frame: firstFrame,
+      status: 'neutral',
+      iconType: 'dot',
+    });
 
   // 2. Greeting
   const greetingEv = events.find((e) => e.kind === 'greeting');
@@ -43,7 +42,7 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
     nodes.push({
       id: 'greeting',
       label: 'GREETING',
-      sublabel: greetingEv.detail || '220 Service Ready',
+      sublabel: greetingEv.detail || 'Server greeting',
       frame: greetingEv.frame,
       status: 'neutral',
       iconType: 'dot',
@@ -56,7 +55,7 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
     nodes.push({
       id: 'ehlo',
       label: 'EHLO',
-      sublabel: ehloEv.detail || 'Client Handshake',
+      sublabel: ehloEv.detail || 'Client EHLO',
       frame: ehloEv.frame,
       status: 'neutral',
       iconType: 'dot',
@@ -72,7 +71,7 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
     nodes.push({
       id: 'capabilities',
       label: 'CAPABILITIES',
-      sublabel: capRespEv.detail || 'Server 250 Response',
+      sublabel: capRespEv.detail || 'Server capabilities',
       frame: capRespEv.frame,
       status: 'neutral',
       iconType: 'dot',
@@ -80,12 +79,13 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
   }
 
   // STARTTLS decision point
+  const implicitTls = /implicit/i.test(`${session.app_state ?? ''} ${session.protocol ?? ''}`);
   if (starttlsOffered) {
     const advFrame = starttlsAdvEv?.frame ?? capRespEv?.frame ?? null;
     nodes.push({
       id: 'starttls-offered',
-      label: 'STARTTLS ADVERTISED',
-      sublabel: 'Upgrade Capability Offered',
+      label: 'STARTTLS STATUS',
+      sublabel: 'Upgrade offered',
       frame: advFrame,
       status: 'good',
       iconType: 'shield',
@@ -97,7 +97,7 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
       nodes.push({
         id: 'starttls-upgrade',
         label: 'TLS UPGRADE',
-        sublabel: 'STARTTLS Accepted (220)',
+        sublabel: 'STARTTLS accepted',
         frame: starttlsAcceptEv?.frame ?? starttlsCmdEv?.frame ?? null,
         status: 'good',
         iconType: 'lock',
@@ -108,7 +108,7 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
       nodes.push({
         id: 'tls-protected',
         label: 'PROTECTED CHANNEL',
-        sublabel: session.certificates?.length ? `${session.certificates.length} Cert(s) Inspected` : 'TLS 1.3 Active',
+        sublabel: session.certificates?.length ? `${session.certificates.length} certificate${session.certificates.length === 1 ? '' : 's'} in the handshake` : 'TLS established',
         frame: starttlsAcceptEv ? starttlsAcceptEv.frame + 1 : null,
         status: 'good',
         iconType: 'check',
@@ -116,40 +116,43 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
     }
   } else {
     // STARTTLS NOT ADVERTISED (Attack vector / downgrade)
-    const missFrame = capRespEv?.frame ?? 6;
+    const missFrame = capRespEv?.frame ?? evidence.starttls_advertised?.frames?.[0] ?? null;
+    const capDetail = capRespEv?.detail ?? '';
     nodes.push({
       id: 'starttls-missing',
-      label: 'STARTTLS NOT ADVERTISED',
-      sublabel: 'No upgrade capability in 250',
+      label: 'STARTTLS STATUS',
+      sublabel: implicitTls
+        ? 'Does not apply. Session opened in TLS.'
+        : capDetail.startsWith('250') ? 'Absent from the 250 reply' : 'Upgrade not advertised',
       frame: missFrame,
-      status: 'critical',
-      iconType: 'alert',
+      status: implicitTls ? 'neutral' : 'warning',
+      iconType: implicitTls ? 'lock' : 'alert',
     });
   }
 
   // 5. Authentication Activity
   const authEv = events.find((e) => e.kind === 'auth_command' || e.kind === 'auth_plain' || e.kind === 'auth_login');
   const authActivityObserved = evidence.auth_activity?.value === true || Boolean(authEv);
-  const isPlaintextAuth = authActivityObserved && !starttlsOffered;
+  const isPlaintextAuth = authActivityObserved && !starttlsOffered && !implicitTls;
 
   if (authActivityObserved) {
     const authFrame = authEv?.frame ?? (evidence.auth_activity?.frames?.[0] ?? 7);
     nodes.push({
       id: 'auth',
-      label: isPlaintextAuth ? 'PLAINTEXT AUTH' : 'AUTHENTICATION',
-      sublabel: isPlaintextAuth ? 'Credentials sent without TLS' : 'Protected Authentication',
+      label: 'AUTH',
+      sublabel: isPlaintextAuth ? 'Credentials without TLS' : 'Protected authentication',
       frame: authFrame,
-      status: isPlaintextAuth ? 'critical' : 'good',
+      status: isPlaintextAuth ? 'warning' : 'good',
       iconType: isPlaintextAuth ? 'alert' : 'lock',
     });
 
     if (isPlaintextAuth) {
       nodes.push({
         id: 'plaintext-continuation',
-        label: 'PLAINTEXT CONTINUATION',
-        sublabel: 'Unencrypted session traffic',
+        label: 'PLAINTEXT CONSEQUENCE',
+        sublabel: 'Cleartext after AUTH',
         frame: authFrame + 1,
-        status: 'critical',
+        status: 'warning',
         iconType: 'alert',
       });
     }
@@ -159,79 +162,58 @@ export const ProtocolStateMachineStory: React.FC<Props> = ({
   const lastFrame = session.timing?.last_frame ?? (events[events.length - 1]?.frame ?? null);
   nodes.push({
     id: 'closed',
-    label: 'CLOSED',
-    sublabel: 'Session Terminated',
+      label: 'SESSION CLOSE',
+      sublabel: 'Session ended',
     frame: lastFrame,
     status: 'neutral',
     iconType: 'dot',
   });
 
   return (
-    <div className="sms-protocol-timeline-card" aria-label="Visual protocol state machine timeline">
-      <div className="sms-protocol-timeline-head">
-        <span className="sms-label">Protocol progression timeline</span>
-        <span className="sms-mono sms-muted" style={{ fontSize: 'var(--ds-text-11)' }}>
-          Chronological protocol states and packet evidence. Click any event to focus wire dissection.
-        </span>
+    <section className="sms-progress-card" aria-label="Protocol progression">
+      <header className="sms-progress-card__head">
+        <h2>Protocol progression</h2>
+        <p>Click a row to open that frame.</p>
+      </header>
+      <div className="sms-progress-table-wrap">
+        <table className="sms-progress-table">
+          <thead>
+            <tr>
+              <th>Frame</th>
+              <th>State</th>
+              <th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            {nodes.map((node) => {
+              const isActive = focusFrame != null && node.frame != null && focusFrame === node.frame;
+              return (
+                <tr
+                  key={node.id}
+                  className={`sms-progress-row sms-progress-row--${node.status}${isActive ? ' is-active' : ''}${node.frame != null ? ' is-clickable' : ''}`}
+                  tabIndex={node.frame != null ? 0 : -1}
+                  onClick={() => { if (node.frame != null) onSelectFrame(node.frame); }}
+                  onKeyDown={(e) => {
+                    if ((e.key === 'Enter' || e.key === ' ') && node.frame != null) {
+                      e.preventDefault();
+                      onSelectFrame(node.frame);
+                    }
+                  }}
+                >
+                  <td className="sms-mono sms-progress-frame">{node.frame != null ? `#${node.frame}` : '—'}</td>
+                  <td>
+                    <span className={`sms-progress-state sms-progress-state--${node.status}`}>
+                      <span className="sms-progress-state__dot" aria-hidden="true" />
+                      {node.label}
+                    </span>
+                  </td>
+                  <td>{node.sublabel}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-
-      <div className="sms-protocol-vtimeline" role="list">
-        {nodes.map((node, idx) => {
-          const isActive = focusFrame != null && node.frame != null && focusFrame === node.frame;
-          const isLast = idx === nodes.length - 1;
-
-          return (
-            <div key={node.id} className="sms-vtimeline-row">
-              {/* Left Column: Anchored Frame Number */}
-              <div className="sms-vtimeline-frame-col">
-                {node.frame != null ? (
-                  <span className={`sms-mono sms-vtimeline-frame${isActive ? ' is-active' : ''}`}>
-                    #{node.frame}
-                  </span>
-                ) : (
-                  <span className="sms-mono sms-vtimeline-frame-dash">—</span>
-                )}
-              </div>
-
-              {/* Center Spine: Dot and Connecting Vertical Line */}
-              <div className="sms-vtimeline-spine" aria-hidden="true">
-                <span className={`sms-vtimeline-dot sms-vtimeline-dot--${node.status}${isActive ? ' is-active' : ''}`}>
-                  {node.iconType === 'alert' && <AlertTriangle size={10} />}
-                  {node.iconType === 'shield' && <ShieldCheck size={10} />}
-                  {node.iconType === 'lock' && <Lock size={10} />}
-                  {node.iconType === 'check' && <CheckCircle2 size={10} />}
-                </span>
-                {!isLast && <span className="sms-vtimeline-line" />}
-              </div>
-
-              {/* Right Column: Event Content Card */}
-              <div
-                role="listitem"
-                tabIndex={node.frame != null ? 0 : -1}
-                className={`sms-vtimeline-node sms-vtimeline-node--${node.status}${isActive ? ' is-active' : ''}${node.frame != null ? ' is-clickable' : ''}`}
-                onClick={() => {
-                  if (node.frame != null) onSelectFrame(node.frame);
-                }}
-                onKeyDown={(e) => {
-                  if ((e.key === 'Enter' || e.key === ' ') && node.frame != null) {
-                    e.preventDefault();
-                    onSelectFrame(node.frame);
-                  }
-                }}
-                title={node.frame != null ? `Focus Frame #${node.frame} evidence` : undefined}
-              >
-                <div className="sms-vtimeline-node__head">
-                  <span className="sms-vtimeline-node__label">{node.label}</span>
-                  {isActive && <span className="sms-badge sms-badge--cyan sms-badge--xs">Focused</span>}
-                </div>
-                {node.sublabel && (
-                  <span className="sms-vtimeline-node__sublabel sms-mono">{node.sublabel}</span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </section>
   );
 };

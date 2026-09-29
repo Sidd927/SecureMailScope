@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Cpu, Lock, GitCompare, FileCheck } from 'lucide-react';
 import { api } from '../../api/client';
 import type { HealthResponse } from '../../api/types';
-import { BrandLogo } from '../common/BrandLogo';
 import { CaptureUpload } from './CaptureUpload';
 import { ForensicProcessPipeline } from './ForensicProcessPipeline';
 import { RecentAnalyses } from './RecentAnalyses';
@@ -18,76 +16,27 @@ export const HomeView: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <main className="sms-case-desk" role="main" aria-label="Forensic Investigation Case Desk">
+    <main className="sms-case-desk" role="main" aria-label="Secure email analysis">
         <div className="sms-case-desk__inner">
-          {/* A. PRODUCT & EDITORIAL HERO */}
-          <header className="sms-case-desk__hero">
-            <div className="sms-case-desk__badge-row">
-              <span className="sms-label sms-case-desk__overline">
-                Forensic Workstation
-              </span>
-              <span className="sms-badge sms-badge--muted sms-case-desk__version-badge">
-                Engine {health?.posture_engine_version ?? '0.8.0'}
-              </span>
-            </div>
+        <ForensicProcessPipeline />
 
-            <div className="sms-case-desk__brand-heading">
-              <BrandLogo variant="full" size="lg" showSubtitle={false} />
-            </div>
+        <CaptureUpload
+          maxUploadBytes={health?.limits.max_upload_bytes ?? null}
+          maxAnalysisSeconds={health?.limits.max_analysis_seconds ?? null}
+          disabled={healthFailed}
+        />
 
-            <p className="sms-case-desk__tagline">
-              Passive cryptographic forensics for email communications.
-            </p>
+        {healthFailed && (
+          <div className="sms-case-desk__alert" role="alert">
+            <span className="sms-dot" style={{ background: 'var(--ds-crimson-rail)' }} aria-hidden="true" />
+            <span>
+              The analysis service is unavailable. Saved checks can still be opened. New recordings cannot be checked until it is back.
+            </span>
+          </div>
+        )}
 
-            {/* Technical Characteristics Line */}
-            <div className="sms-case-desk__tech-pills" aria-label="System characteristics">
-              <div className="sms-tech-pill" title="Passive offline packet capture only; zero active network probing">
-                <Shield size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>Passive Ingestion</span>
-              </div>
-              <div className="sms-tech-pill" title="Full TLS handshake and cryptographic suite extraction via TShark">
-                <Cpu size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>{health?.tshark ? `TShark ${health.tshark.slice(0, 12)}` : 'TShark Dissection'}</span>
-              </div>
-              <div className="sms-tech-pill" title="Evaluated against RFC 8314, RFC 8996, and NIST SP 800-52r2 standards">
-                <Lock size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>NIST & RFC Rules</span>
-              </div>
-              <div className="sms-tech-pill" title="Multi-session comparison for capability stripping and downgrade detection">
-                <GitCompare size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>Cross-Session Reasoning</span>
-              </div>
-              <div className="sms-tech-pill" title="Full provenance from capture bytes to posture determination">
-                <FileCheck size={12} className="sms-tech-pill__icon" aria-hidden="true" />
-                <span>Byte-to-Posture Provenance</span>
-              </div>
-            </div>
-          </header>
-
-          {/* B. FORENSIC METHODOLOGY PIPELINE (CAPTURE → RECONSTRUCT → ANALYZE → CORRELATE → PROVE → REPORT) */}
-          <ForensicProcessPipeline />
-
-          {/* C. START AN INVESTIGATION (PRIMARY FORENSIC INGEST BAY) */}
-          <CaptureUpload
-            maxUploadBytes={health?.limits.max_upload_bytes ?? null}
-            maxAnalysisSeconds={health?.limits.max_analysis_seconds ?? null}
-            disabled={healthFailed}
-          />
-
-          {healthFailed && (
-            <div className="sms-case-desk__alert" role="alert">
-              <span className="sms-dot" style={{ background: 'var(--ds-crimson-rail)' }} aria-hidden="true" />
-              <span>
-                Forensic analysis engine at <code>127.0.0.1:8001</code> is currently unavailable. Stored investigations can still be viewed, but new captures cannot be processed until the service is restored.
-              </span>
-            </div>
-          )}
-
-          {/* D. RECENT INVESTIGATIONS LEDGER & SECONDARY VALIDATED SCENARIOS */}
-          <RecentAnalyses />
+        <RecentAnalyses />
         </div>
       </main>
-    </>
   );
 };
