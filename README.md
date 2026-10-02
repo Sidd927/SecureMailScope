@@ -1,220 +1,323 @@
 # SecureMailScope
 
-Passive PCAP cryptographic security posture assessment for email — **SIH26159** (NTRO).
+**Passive PCAP analysis of the cryptographic security posture of secure email — reasoning across sessions, not just parsing packets.**
 
-> **Checkout the release, not the default branch.** `main` is deliberately frozen at an early
-> phase (see [Status](#status) below). The released system is the tag **`v0.7.0-sih-baseline`**:
-> ```bash
-> git checkout v0.7.0-sih-baseline
-> ```
-
-Reads captured SMTP / IMAP / POP3 traffic — including implicit-TLS SMTPS/IMAPS/POP3S — and
-reports the **transport** security posture: TLS version, cipher suite, key exchange, X.509
-certificate properties where a cleartext handshake exposes them, forward secrecy, STARTTLS/STLS
-upgrade integrity, plaintext exposure, insecure configuration, and what the capture genuinely
-could not establish. It is passive and offline — it never connects to a mail server, needs no
-keys, and reads no message content.
-
-**Certificate visibility is bounded by the protocol, not by this tool.** TLS 1.3 encrypts the
-Certificate message (RFC 8446 §2), so a TLS 1.3 session correctly reports the certificate as
-`NOT_OBSERVABLE` — that is never rendered as "certificate invalid" or "certificate absent."
-Chain **structure** is validated where a certificate is visible; chain **trust** and
-**revocation** are not, because a passive capture carries no trust anchor and no OCSP/CRL
-access — this project does not claim otherwise (see [Status](#status)).
-
-Out of scope by design: SPF, DKIM, DMARC, DNS, DANE, MTA-STS, S/MIME, PGP, phishing, attacker
-attribution. None appears in the authoritative problem statement
-(`docs/research/19-authoritative-ps-verification.md`), and passive packet evidence cannot
-establish attribution regardless.
-
-## Principles
-
-- **Evidence over assumptions.** Every conclusion traces to frames, a rule and a standard.
-- **UNKNOWN ≠ SECURE.** `AMBIGUOUS` and `NOT_OBSERVABLE` are not compliant states and
-  never improve a score. A capture that shows too little gets `INSUFFICIENT_EVIDENCE`,
-  not a good grade.
-- **`PostureAssessment` is canonical.** The backend, and every later layer, consume it
-  and recompute nothing.
-- **ML cannot create security facts.** The anomaly lane is a bounded, unsupervised
-  prioritisation signal — it can re-order findings within one severity tier and can never
-  create, upgrade, or downgrade a finding. Evaluated honestly across every held-out split and
-  every capture this project holds, it currently demonstrates **no independent detection
-  value**, and the tool reports that rather than hiding it (ADR-0015, ADR-0024). Every
-  assessment is identical with the AI lane on or off — `--no-ai` is a proof, not a toggle for
-  looking less capable.
-
-## Requirements
-
-Python ≥ 3.9 and **tshark** (developed against 4.6.8). The core package has **zero**
-runtime dependencies.
-
-`pip install -e .` is unreliable on the system pip — use `PYTHONPATH=src`.
-
-## Tests
-
-```bash
-PYTHONPATH=src python3 -m pytest -q
-```
-
-Tests needing tshark or the research captures skip cleanly when they are absent.
-
-## Backend (Phase 8)
-
-Optional extra; the analysis core stays dependency-free without it.
-
-```bash
-python3 -m pip install 'fastapi>=0.110' 'pydantic>=2' 'uvicorn>=0.27' 'python-multipart>=0.0.9'
-```
-
-```bash
-PYTHONPATH=src python3 -m securemailscope.backend --port 8000
-```
-
-Binds to loopback. **There is no authentication** — this is a local single-analyst
-prototype (ADR-0011), not a deployable service.
-
-```bash
-curl -s -F file=@capture.pcap http://127.0.0.1:8000/api/v1/analyses
-```
-
-| Method | Path |
+| | |
 |---|---|
-| GET | `/api/v1/health` |
-| POST | `/api/v1/analyses` — `?ai=true` enables the ML lane, `?force=true` re-runs |
-| GET | `/api/v1/analyses` |
-| GET | `/api/v1/analyses/{run_id}` |
-| GET | `/api/v1/analyses/{run_id}/assessment` |
-| GET | `/api/v1/analyses/{run_id}/artifacts` — `?verify=true` re-hashes |
-| GET | `/api/v1/analyses/{run_id}/reports` — available formats + integrity |
-| GET | `/api/v1/analyses/{run_id}/reports/{html\|pdf\|json}` |
-| GET | `/api/v1/analyses/{run_id}/dashboard` — console view model |
+| **Problem statement** | [SIH26159](https://sih.gov.in/sih2026PS) — *SecureMailScope: AI-Assisted Cryptographic Security Posture Assessment for Secure Email Communications* |
+| **Organization** | National Technical Research Organisation (NTRO) |
+| **Category / Theme** | Software · Blockchain & Cybersecurity |
+| **Release** | `v0.7.1-sih-final` (engineering freeze) + deployment adaptation on `main` |
 
-The assessment endpoint returns the canonical document unaltered. Read `coverage`
-alongside `overall_posture`: a band without its evidence coverage is a misleading claim,
-which is why the band is withheld below 50 % assessed coverage.
+### 🚀 [Try the live prototype → secure-mail-scope-psi.vercel.app](https://secure-mail-scope-psi.vercel.app)
 
-Interactive API docs at `/docs` once running.
+Upload a `.pcap` and get a score, evidence-linked findings and a downloadable report. The public instance runs on free-tier hosting with ephemeral storage and no authentication — **use test captures only** (details in [Live deployment](#live-deployment)). Ready-made captures are in [`demo/captures/`](demo/captures/).
 
-## Forensic reports (Phase 9)
+<!-- DEMO_VIDEO_URL: add the 🎥 Prototype Demo link here once the video is published (no public demo URL exists in the repository yet). -->
 
-JSON and HTML need **no dependency**. PDF needs one extra:
+![Cross-session comparison of endpoint 10.0.0.6 against control endpoint 10.0.0.7](docs/assets/screenshots/03-cross-session.jpg)
 
-```bash
-python3 -m pip install 'reportlab>=4'
+*Real screenshot of the deployed prototype analysing [`deepdive_cross_session_control_endpoint.pcap`](demo/captures/) (SHA-256 `97b2b61a…dbe83`): posture **22.15 / 100 — CRITICAL**.*
+
+---
+
+## What is SecureMailScope?
+
+SecureMailScope reads captured **SMTP, IMAP and POP3** traffic — including implicit-TLS SMTPS/IMAPS/POP3S — and reports the **transport** security posture of the email infrastructure that produced it: TLS version, cipher suite, key exchange, forward secrecy, STARTTLS/STLS upgrade integrity, plaintext exposure, insecure configuration, X.509 properties where a cleartext handshake exposes them, and what the capture genuinely could not establish.
+
+It is **passive and offline by design**: it never connects to a mail server, needs no keys or mailbox access, performs no decryption, and does not read message content.
+
+## The problem
+
+TLS protects email content, but it does not tell an analyst whether the security protecting that traffic is sound. Obsolete TLS versions, weak ciphers, STARTTLS that is silently skipped, and misconfigured certificates leave SMTP/IMAP/POP3 deployments open to downgrade and interception — yet general packet tools (Wireshark, TShark) decode protocols without judging posture. The evidence is also scattered: protocol state, the TLS handshake, certificates and **other sessions** each hold part of the picture.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[PCAP] --> B[TShark dissection]
+    B --> C[TCP session<br/>reconstruction]
+    C --> D[Mail protocol +<br/>STARTTLS/STLS state]
+    D --> E[TLS · key exchange ·<br/>X.509 evidence]
+    E --> F[Single-session<br/>rules · 16]
+    E --> G[Cross-session<br/>reasoning · 3 rules]
+    F --> H[Fusion + posture<br/>score]
+    G --> H
+    H --> I[Findings · provenance ·<br/>JSON / HTML / PDF]
 ```
 
-```bash
-curl -s http://127.0.0.1:8000/api/v1/analyses/<run_id>/reports/html -o report.html
+1. **Ingest & dissect** — the upload is hashed (SHA-256) and parsed read-only with `tshark -r <file> -T ek` (argument array, no shell).
+2. **Reconstruct** — TCP streams become protocol sessions with an explicit STARTTLS/STLS state machine.
+3. **Extract evidence** — every fact is wrapped with an evidence state, frame reference and provenance (see [Evidence & provenance](#evidence--provenance)).
+4. **Judge deterministically** — 19 versioned, standards-bound rules (16 single-session + 3 cross-session), each cited to an RFC or NIST publication.
+5. **Fuse & score** — findings become one `PostureAssessment` (score 0–100, band, coverage, prioritised remediation). Everything downstream consumes it and recomputes nothing.
+6. **Report** — the same assessment is projected to a dashboard and to JSON, HTML and PDF reports.
+
+## Why cross-session reasoning?
+
+| | Question it answers |
+|---|---|
+| **Single-session analysis** | *What happened in this connection?* |
+| **Cross-session reasoning** | *How does this connection behave relative to related sessions, or to a control population?* |
+
+A client that never upgrades to TLS looks unremarkable on its own — 5 sessions out of 5 with no STARTTLS is simply consistent. The same behaviour becomes informative when **other clients at the same server** do upgrade. Comparisons are only made between genuinely comparable sessions (same client, server, port, protocol, TLS mode), against prior history only, and the engine **abstains** below a minimum history.
+
+**The demonstrated scenario** ([`deepdive_cross_session_control_endpoint.pcap`](demo/captures/), 12 SMTP sessions to one server):
+
+| | Subject `10.0.0.6` | Control `10.0.0.7` |
+|---|---|---|
+| STARTTLS | not observed (6 sessions) | observed (6 sessions) |
+| TLS | none — clear | established (TLS 1.3) |
+| Authentication | plaintext (6 sessions) | none recorded |
+
+The engine reports `CS-STARTTLS-001` as a **deviation worth investigating**. It deliberately does **not** claim an attack or an attacker: a client-specific server policy produces identical bytes, and a capture alone cannot tell the two apart. With **no** control endpoint (`deepdive_cross_session_no_control.pcap`), the same behaviour is reported `COMPLIANT` together with an explicit statement of what passive evidence cannot rule out. Full walkthrough with verbatim engine output: [`docs/finalization/06-cross-session-demo.md`](docs/finalization/06-cross-session-demo.md).
+
+## What an analyst sees
+
+![Overview: 22.15 / 100 CRITICAL with itemised score deductions and proof](docs/assets/screenshots/01-overview.jpg)
+
+Seven views: **Overview** (score, why-this-score, proof, observability boundary) · **Findings** · **Protocol** (per-stream journey) · **Certificates** · **Cross-Session** · **Provenance** · **Report**. For the capture above the score is `100 − 46.09 (plaintext authentication) − 19.75 (no TLS) − 12.00 (STARTTLS deviation) = 22.15`, every deduction traceable to a rule, frame and standard.
+
+<details>
+<summary>More screenshots (Findings · Provenance · Report)</summary>
+
+![Findings with focused evidence](docs/assets/screenshots/02-findings.jpg)
+![Provenance chain from capture to score](docs/assets/screenshots/04-provenance.jpg)
+![Report export](docs/assets/screenshots/05-report.jpg)
+
+</details>
+
+## Evidence & provenance
+
+SecureMailScope separates **what the capture establishes** from **what it cannot**. Every extracted fact carries one of six production `EvidenceState` values:
+
+| State | Meaning |
+|---|---|
+| `OBSERVED` | directly present in the captured bytes |
+| `INFERRED` | deduced from observed facts, with the basis recorded |
+| `UNKNOWN` | insufficient evidence to decide |
+| `AMBIGUOUS` | the evidence supports more than one reading |
+| `INCOMPLETE` | the capture is truncated at the relevant point |
+| `NOT_OBSERVABLE` | structurally impossible to see passively (e.g. a TLS 1.3 certificate, RFC 8446 §2) |
+
+Silent conversions such as `UNKNOWN → SECURE` or `NOT_OBSERVABLE → FALSE` are forbidden by the evidence wrapper. `UNKNOWN` never improves a score, and a capture that shows too little yields `INSUFFICIENT_EVIDENCE`, not a good grade. *(Related but distinct vocabularies: `FindingStatus` includes `INSUFFICIENT_EVIDENCE`; baseline outcomes include `NOT_APPLICABLE`.)*
+
+**Traceability** — each assessment can be followed from its source:
+
+```
+PCAP SHA-256 (= capture_id) → TCP stream / frame / timestamp → evidence (state + provenance)
+   → rule + standard → finding → posture score → assessment_id → report_sha256
 ```
 
-The HTML is a single standalone file — no CDN, no webfont, no script — so it opens from
-disk and prints cleanly. The PDF is composed from the same report model, not from the
-HTML, and both are byte-deterministic: the report is a pure function of its assessment,
-so the same assessment always renders to the same bytes and can be cited by
-`report_sha256`.
+This is forensic provenance and assessment traceability — **not** a legal chain-of-custody claim. The same capture + versions yield identical evidence and findings; reports are deterministic, so the same assessment always renders to the same bytes.
 
-The timestamp shown in a report is the **analysis** time, not a print time.
+## AI/ML: bounded by design
 
-## Analyst console (Phase 10)
+The **deterministic security lane** (rules, cross-session reasoning, scoring) is the single source of every fact, finding and score. A **secondary ML lane** — an unsupervised robust-z-score anomaly model — emits only an anomaly score, band and feature attribution. By construction it can re-order findings *within* a severity tier and can never create, raise or lower a security finding or change the posture score. Score and band are identical with the lane on or off; when it is on, the assessment may additionally carry a clearly labelled, non-penalising anomaly-signal entry and a model summary.
 
-Open **http://127.0.0.1:8000/dashboard/** once the backend is running. No build step, no
-npm packages — it is static ES modules served by the same FastAPI app.
+We evaluated it honestly and the repository reports the result: across every held-out split and every capture the project holds, the lane currently shows **no independent detection value** ([ADR-0015](docs/architecture/adr/0015-ml-model-selection.md), [`docs/architecture/17-ml-model-evaluation.md`](docs/architecture/17-ml-model-evaluation.md)). The lane is off by default (`POST /api/v1/analyses?ai=true` enables it), including in the public prototype. SecureMailScope makes no claim that AI detects attacks or produces the score.
 
-Four screens: **History** (every run and its lifecycle state), **Overview** (posture and
-coverage together, protocol posture, distributions, top findings, the ML panel, report
-links), **Findings** (prioritised in canonical order, filterable on eight canonical
-facets), and **Evidence & provenance** (abstentions with how to resolve them,
-limitations, standards including unmapped citations, rule ids, artifact integrity).
+## Key capabilities
 
-The console renders the canonical assessment and computes no security conclusion of its
-own. It shows what the assessment could not determine as readily as what it could, and
-states plainly what the contract does not carry — there is no packet-level drill-down,
-because the assessment does not contain one.
+| Capability | Status |
+|---|---|
+| SMTP / IMAP / POP3 identification and session reconstruction, incl. implicit TLS | Implemented |
+| STARTTLS / STLS detection and integrity (upgrade outcome, advertisement, plaintext exposure) | Implemented |
+| TLS version, cipher suite, key exchange, forward secrecy, insecure-configuration checklist | Implemented |
+| X.509 extraction, key algorithm/size, signature algorithm, expiry, chain *structure* | Implemented **where the handshake is cleartext** (TLS ≤ 1.2); TLS 1.3 → `NOT_OBSERVABLE` |
+| Certificate chain **trust and revocation** | Not assessed — a passive capture has no trust anchor or OCSP/CRL access |
+| Cross-session baseline + control-endpoint reasoning | Implemented (3 rules; abstains on thin history) |
+| Posture score, prioritisation, remediation guidance | Implemented (deterministic) |
+| Unsupervised anomaly lane | Implemented, bounded, off by default |
+| JSON / HTML / PDF reports | Implemented |
+| Interactive analyst dashboard | Implemented (React/TypeScript) |
 
-There is **no authentication**: bind to loopback only.
+## Reports
 
-## Forensic Workstation Frontend
+`GET /api/v1/analyses/{run_id}/reports/{json|html|pdf}` — all rendered from one canonical report model:
 
-The production-grade React/TypeScript forensic workstation interface provides deep packet exploration, protocol state machine timelines, cross-session comparative matrices, and 8-stage byte-to-posture provenance tracing.
+- **JSON** — the structured, canonical assessment (score, band, coverage, findings with evidence references, standards, limitations).
+- **HTML** — a single standalone file with no script, CDN or webfont; opens from disk and prints cleanly.
+- **PDF** — composed with ReportLab from the same report model (not from the HTML).
 
-- **Current Release Branch:** `frontend/final-polish`
-- **Release Tags:** `frontend-v1.0.0` (implementation baseline) / `frontend-v1.0.1` (team handoff)
-- **Team Handoff Guide:** [`docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md`](docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md)
-- **Release Manifest:** [`docs/releases/SECUREMAILSCOPE-FRONTEND-RELEASE-MANIFEST.md`](docs/releases/SECUREMAILSCOPE-FRONTEND-RELEASE-MANIFEST.md)
+Rendering is byte-deterministic and each report is identified by `report_sha256`. The timestamp shown is the analysis time. Details: [`docs/architecture/22-forensic-reporting.md`](docs/architecture/22-forensic-reporting.md).
 
-Future frontend development should branch directly from the validated release tag:
-```bash
-git checkout -b frontend/next-feature frontend-v1.0.1
+## Architecture
+
+```mermaid
+flowchart TB
+    U[Analyst browser] --> FE[React dashboard<br/>Vercel]
+    FE -->|HTTPS + CORS| API[FastAPI service<br/>Render · Docker]
+    API --> ING[Ingest · SHA-256 · limits]
+    ING --> TS[TShark read-only dissection]
+    TS --> SES[Session reconstruction<br/>SMTP · IMAP · POP3 · STARTTLS]
+    SES --> EV[Evidence + provenance<br/>TLS · key exchange · X.509]
+    subgraph DET[Deterministic security lane — source of truth]
+        R1[16 single-session rules]
+        R2[3 cross-session rules]
+    end
+    EV --> R1
+    EV --> R2
+    EV -.->|optional ?ai=true| ML[Unsupervised anomaly lane<br/>score only]
+    R1 --> POS[Fusion · posture · priority]
+    R2 --> POS
+    ML -.->|bounded ordering signal| POS
+    POS --> DB[(SQLite catalog +<br/>file artifacts)]
+    POS --> REP[JSON · HTML · PDF reports]
 ```
 
-### Run the full demo (backend + frontend)
+A deeper component-by-component description is in [`docs/architecture/ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md).
 
-The frontend's dev server proxy is fixed to port **8001** (`frontend/vite.config.ts`) —
-this is the port to use, not the `--port 8000` example in [Backend](#backend-phase-8)
-above (that example is for testing the API alone with `curl`, no frontend involved).
+## Security & privacy
 
-Requires: Python ≥ 3.9, Node ≥ 18, **tshark** on `PATH` (`tshark --version`), and the
-backend extras installed (see [Backend](#backend-phase-8)).
+Verified against the source and the final security audit ([`docs/finalization/13-final-security-audit.md`](docs/finalization/13-final-security-audit.md)):
 
-**Terminal 1 — backend, port 8001:**
+- **Passive** — analysis reads an uploaded file only; no live capture, no active probing, no outbound network calls in `src/securemailscope/`.
+- **No decryption, keys or mailbox access** — message content is not read; credential values are not extracted.
+- **Hostile-input handling** — TShark is invoked with an argument array (never `shell=True`) under a timeout; upload size, concurrency, queue and analysis-time limits are enforced; download filenames are generated from `assessment_id`, not from the uploaded name; HTML reports escape all content.
+- **No authentication** — this is a single-analyst prototype ([ADR-0011](docs/architecture/adr/)). The backend binds to loopback by default; do not expose it publicly with sensitive captures.
+
+## Validation
+
+| Check | Result | Basis |
+|---|---|---|
+| Backend test suite (`PYTHONPATH=src python3 -m pytest -q`) | **1234 passed**, 0 failed (Python 3.9, TShark 4.6.8) | re-run on `main` for this README |
+| Frontend `npm run build` / `npx oxlint` | build succeeds · 0 errors (a few style warnings) | re-run on `main` for this README |
+| Golden case B — `deepdive_cross_session_control_endpoint.pcap` | 22.15 · CRITICAL | reproduced on the live deployment |
+| Golden case A — `backup_weak_certificate.pcap` | 44.0 · CRITICAL (RSA-1024 / SHA-1 certificate) | [final freeze](docs/releases/SECUREMAILSCOPE-FINAL-ENGINEERING-FREEZE.md); reproduced in the Docker image ([acceptance](docs/deployment/DEPLOYMENT-ACCEPTANCE.md)) |
+| Golden case C — `scene_b_certificate_honesty.pcap` | 100.0 · STRONG (TLS 1.3; certificate `NOT_OBSERVABLE`, never "invalid") | final freeze |
+| Negative cross-session — `deepdive_cross_session_no_control.pcap` | 34.15 · CRITICAL, with an explicit stated limitation | final freeze |
+| AI lane on vs. off | identical posture and score | [`demo/expected/`](demo/expected/scene_c_no_ai_equivalence.json) |
+
+Hostile-payload, path-traversal and report-injection regressions are part of the suite. Research captures and the experiments behind the design decisions are indexed in the [research index](docs/research/00-research-index.md).
+
+## Live deployment
+
+| Component | Where | Stack |
+|---|---|---|
+| Frontend | [Vercel](https://secure-mail-scope-psi.vercel.app) | React 19 · TypeScript · Vite (static build) |
+| Backend API | [Render](https://securemailscope-api-lahb.onrender.com/api/v1/health) (Docker, Free plan) | FastAPI · Uvicorn · Ubuntu 24.04 + TShark 4.6 |
+| Storage | container filesystem | SQLite catalog + file artifacts under `/data` |
+
+The frontend talks directly to the backend over HTTPS (CORS allow-list via `SMS_ALLOWED_ORIGINS`). **The public deployment is a prototype constraint, not the analysis engine's design:** Render Free has no persistent disk, so stored analyses can disappear after a restart or redeploy, and an idle instance may sleep so the first request can be slow. There is no authentication — analyse test captures only. See [`docs/deployment/`](docs/deployment/DEPLOYMENT-ARCHITECTURE.md).
+
+## Technology stack
+
+| Layer | Technology | Role |
+|---|---|---|
+| Analysis core | Python ≥ 3.9, standard library only | evidence model, sessions, rules, cross-session, posture (zero runtime dependencies) |
+| Packet dissection | TShark (validated against 4.6.x) | read-only PCAP dissection |
+| API | FastAPI, Pydantic, Uvicorn | upload, jobs, assessment, report endpoints |
+| Storage | SQLite + file artifacts | run catalog, content-addressed reports |
+| Reports | stdlib (JSON, HTML) · ReportLab (PDF) | forensic reports |
+| ML lane | Python (robust-z-score model; scikit-learn models evaluated) | secondary anomaly signal |
+| Frontend | React 19, TypeScript, Vite, IBM Plex (self-hosted) | analyst dashboard |
+| Packaging | Docker (Ubuntu 24.04), Render Blueprint, Vercel | deployment |
+| Testing | pytest (+ httpx, pypdf) | 1234 backend tests |
+
+## Quick start
+
+**Prerequisites:** Python ≥ 3.9, **TShark** on `PATH` (`tshark --version`; developed against 4.6.8 — other versions can change dissection output), Node ≥ 18.
+
+```bash
+git clone https://github.com/Sidd927/SecureMailScope.git && cd SecureMailScope
+python3 -m pip install 'fastapi>=0.110' 'pydantic>=2' 'uvicorn>=0.27' 'python-multipart>=0.0.9' 'reportlab>=4'
+```
+
+**Terminal 1 — backend (port 8001):**
+
 ```bash
 PYTHONPATH=src python3 -m securemailscope.backend --host 127.0.0.1 --port 8001
 ```
 
-**Terminal 2 — frontend, port 5173:**
+**Terminal 2 — frontend (port 5173, proxied to 8001):**
+
 ```bash
 cd frontend && npm ci && npm run dev
 ```
 
-Open **http://localhost:5173**. The header shows **Engine Live** (green) when the
-frontend can reach the backend on 8001; it shows **Demo Fixture** (amber) and a
-console warning if it cannot — if you see that, check Terminal 1 is actually bound to
-8001, not 8000.
+Open <http://localhost:5173>; the header shows **Engine Live** when the backend is reachable (**Demo Fixture** if not). Then upload a file from [`demo/captures/`](demo/captures/), or use the API directly:
 
-## Where to look
+```bash
+curl -s -F file=@demo/captures/deepdive_cross_session_control_endpoint.pcap http://127.0.0.1:8001/api/v1/analyses
+```
 
-| Document | Why |
+Run the tests (tests needing TShark or optional extras skip cleanly):
+
+```bash
+python3 -m pip install pytest httpx pypdf
+PYTHONPATH=src python3 -m pytest -q
+```
+
+`pip install -e .` is unreliable on some system pips — use `PYTHONPATH=src`. Configuration is through `SMS_*` environment variables (`SMS_DATA_DIR`, `SMS_ALLOWED_ORIGINS`, `SMS_MAX_UPLOAD_BYTES`, `SMS_MAX_ANALYSIS_SECONDS`, …; see [`docs/architecture/21-backend-persistence-api.md`](docs/architecture/21-backend-persistence-api.md)). A backend-only analyst console is also served at `/dashboard/`.
+
+### Docker
+
+The [`Dockerfile`](Dockerfile) (Ubuntu 24.04 + TShark 4.6 from the Wireshark PPA) is what the public backend runs. TShark's version is pinned deliberately because a different version was found to change scores on the project's golden captures.
+
+```bash
+docker build -t securemailscope .
+docker run --rm -p 8000:8000 -e PORT=8000 securemailscope
+curl http://localhost:8000/api/v1/health        # expect "tshark":"available"
+```
+
+State lives in `/data` inside the container (add a volume to persist it). Full deployment steps: [`docs/deployment/DEPLOYMENT-RUNBOOK.md`](docs/deployment/DEPLOYMENT-RUNBOOK.md).
+
+## Repository structure
+
+```
+src/securemailscope/   analysis core and backend
+  dissect/ session/ evidence/ analysis/ crypto/ crosssession/ ml/ posture/ reporting/ ingest/ backend/ dashboard/
+frontend/              React + TypeScript analyst dashboard
+tests/                 1234 backend tests (incl. golden, adversarial, report, security)
+demo/                  demo captures, expected outputs, pre-rendered reports, runbook
+research/experiments/  captures and scripts behind the research and ML evaluation
+docs/                  architecture, research, deployment, releases (start at docs/README.md)
+Dockerfile, render.yaml   backend container and Render blueprint
+```
+
+## Documentation
+
+Start at the **[documentation index](docs/README.md)**. Highlights:
+
+| Need | Read |
 |---|---|
-| `docs/releases/SECUREMAILSCOPE-FRONTEND-HANDOFF.md` | **Frontend engineering team handoff & running guide** |
-| `docs/CLAUDE_CONTINUATION_CONTEXT.md` | orientation for a fresh session |
-| `docs/architecture/ARCHITECTURE_STATUS.md` | current status and open questions |
-| `docs/architecture/requirements-traceability.md` | requirement status with evidence |
-| `docs/architecture/19-evidence-fusion-and-posture.md` | the canonical output |
-| `docs/architecture/21-backend-persistence-api.md` | backend, storage and API |
-| `docs/architecture/22-forensic-reporting.md` | reporting, HTML/PDF, report identity |
-| `docs/architecture/23-dashboard-architecture.md` | analyst console, projection, security boundary |
-| `docs/phase11/05-architecture.md` | key exchange, X.509, forward secrecy, insecure config (`crypto/` package) |
-| `docs/phase11/06-final-audit.md` | why D-11 and A-02 are PARTIAL, with the measured reasons |
-| `docs/phase12/01-final-requirements-audit.md` | the authoritative requirement-by-requirement status table |
-| `docs/phase12/11-judge-question-bank.md` | short/technical answers to the questions this project is most likely to be asked |
-| `docs/architecture/adr/` | 24 ADRs; every significant decision with its alternatives |
+| Architecture | [`docs/architecture/ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md) |
+| Requirement-by-requirement SIH status | [`docs/phase12/01-final-requirements-audit.md`](docs/phase12/01-final-requirements-audit.md) |
+| Evidence states & provenance contract | [`docs/architecture/04-evidence-provenance.md`](docs/architecture/04-evidence-provenance.md) |
+| Cross-session reasoning | [`docs/architecture/14-cross-session-reasoning.md`](docs/architecture/14-cross-session-reasoning.md) |
+| Rule catalogues | [`13`](docs/architecture/13-rule-catalog.md) · [`15`](docs/architecture/15-cross-session-rule-catalog.md) |
+| Judge Q&A | [`docs/phase12/11-judge-question-bank.md`](docs/phase12/11-judge-question-bank.md) |
+| Final validation | [`docs/releases/`](docs/releases/SECUREMAILSCOPE-FINAL-SYSTEM-VALIDATION.md) |
 
-## Status
+## Limitations
 
-**Released: `v0.7.0-sih-baseline`** — the tag to check out, not `main` (below). This baseline
-adds the production-grade React/TypeScript forensic workstation frontend (see
-[Forensic Workstation Frontend](#forensic-workstation-frontend)) on top of the engine
-released at `v0.6.0-phase11`. Nineteen standards-bound rules (16 single-session + 3
-cross-session) cover TLS version, cipher, key exchange, X.509 extraction/expiry/key-
-strength/signature, forward secrecy, insecure configuration, STARTTLS/STLS integrity, and
-plaintext exposure — each finding cited to an RFC or NIST publication, never an invented
-weight. 1234 tests pass, zero known flakes (verified at `v0.7.0-sih-baseline`; see
-`docs/releases/SECUREMAILSCOPE-FINAL-SYSTEM-VALIDATION.md` for the full validation record).
+- **Passive evidence has hard limits.** TLS 1.3 encrypts certificates, so they are reported `NOT_OBSERVABLE`. Certificate *chain structure* is validated; *trust* and *revocation* are not (no trust anchor or OCSP/CRL in a PCAP) — requirement D-11 is therefore only partially met, by design.
+- **Cross-session reasoning needs context.** It requires comparable prior history (default ≥ 5 sessions) and, for a stronger signal, a control endpoint; otherwise it abstains. Consistent stripping at every client is passively indistinguishable from server policy.
+- **The ML lane adds no demonstrated detection value** on the data this project holds (see above); it is a bounded prioritisation signal only.
+- **No authentication, ephemeral public storage.** The prototype is single-analyst; the hosted instance loses history on restart.
+- **TShark-version sensitive.** Results were validated against TShark 4.6.x.
+- **Scale untested.** The pipeline runs synchronously inside the request (one concurrent analysis by default); only small captures have been exercised.
+- **Known backend debt:** a shared SQLite connection can fail under overlapping requests; the frontend serialises requests as a mitigation ([`TECH-DEBT.md`](TECH-DEBT.md) #10).
+- **Frontend has no automated unit tests** (build, lint and scripted browser checks only).
+- **Bundled demo captures are synthetic SMTP/lab-generated.** IMAP/POP3 are implemented and tested; sample captures are under `research/experiments/oq28/pcaps/`.
 
-Two requirements are honestly **PARTIAL**, not incomplete-for-lack-of-time:
+## SIH26159 alignment
 
-- **D-11** (certificate chain validation) — chain *structure* is fully validated; chain
-  *trust* and *revocation* are not, because a passive capture contains no trust anchor and
-  no OCSP/CRL access (RFC 5280 §6; RFC 6960). A bundled public root store was evaluated and
-  rejected — it would flag legitimate private-CA enterprise deployments as untrusted.
-- **A-02** (AI-assisted anomaly detection) — a real, evaluated, unsupervised model ships and
-  is proven not to change any security conclusion when disabled; it currently demonstrates
-  zero unique true detections on any held-out split or corpus this project holds.
+Checked against the official portal. Full requirement-by-requirement audit: [`docs/phase12/01-final-requirements-audit.md`](docs/phase12/01-final-requirements-audit.md).
 
-Full reasoning for both: `docs/phase12/01-final-requirements-audit.md`.
+| Official objective / deliverable | Status |
+|---|---|
+| Passive analysis of SMTP, IMAP, POP3 from PCAP; protocol identification; TCP stream reconstruction | ✅ |
+| STARTTLS negotiation detection and validation; TLS handshake reconstruction | ✅ |
+| Negotiated TLS version, cipher suite, key-exchange mechanism; forward-secrecy assessment | ✅ |
+| Weak/deprecated algorithms and insecure configuration detection | ✅ |
+| X.509 extraction; expiry, key algorithm/length, signature algorithm | ✅ where the handshake is cleartext (TLS 1.3 → `NOT_OBSERVABLE`) |
+| Certificate chain validation | ⚠️ structure validated; trust/revocation not possible passively |
+| Cryptographic risk classification, posture scoring, prioritisation, mitigation advice | ✅ deterministic engine |
+| AI/ML anomaly detection | ⚠️ implemented as a bounded unsupervised lane; no independent detection value demonstrated |
+| Forensic reports (JSON, HTML, PDF) and interactive dashboard | ✅ |
 
-`main` deliberately still points at Phase 3 — every phase from 4 onward lives on its own
-branch, tagged at release. This is a **process choice** (keep `main` as a stable early
-anchor while phases are developed and reviewed on their own branches), not a sign of
-incomplete work; check out `v0.7.0-sih-baseline` for the released system. Known limitations are
-recorded per phase rather than summarised away — start with `ARCHITECTURE_STATUS.md`.
+## License
+
+No license has been selected for this repository yet.
